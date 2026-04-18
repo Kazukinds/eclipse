@@ -2002,20 +2002,19 @@ input[type="number"]{-moz-appearance:textfield}
               <div class="profile-field"><label>Email</label><div class="profile-field-val" id="pf-email">email@exemplo.com</div></div>
               <div class="profile-field"><label>Telefone</label><div class="profile-field-val" id="pf-phone"></div></div>
               <div class="profile-field"><label>Fuso Horário</label><div class="profile-field-val" id="pf-tz">UTC-03:00 Brasília</div></div>
-              <div class="profile-field"><label>Data de Criação</label><div class="profile-field-val" id="pf-created"></div></div>
-              <div class="profile-field"><label>Linhagem</label><div class="profile-field-val empty" id="pf-linhagem"></div></div>
-              <div class="profile-field"><label>Passado</label><div class="profile-field-val empty" id="pf-passado"></div></div>
-              <div class="profile-field"><label>Arquétipo</label><div class="profile-field-val empty" id="pf-arquetipo"></div></div>
-              <div class="profile-field"><label>Caminho</label><div class="profile-field-val empty" id="pf-caminho"></div></div>
             </div>
           </div>
           <div class="profile-section">
-            <div class="profile-section-title">Detalhes do Personagem</div>
-            <div class="profile-fields">
-              <div class="profile-field"><label>Nivel</label><div class="profile-field-val" id="pf-level">14</div></div>
-              <div class="profile-field"><label>XP</label><div class="profile-field-val" id="pf-xp">3,420 / 5,000</div></div>
-              <div class="profile-field"><label>Vida</label><div class="profile-field-val" id="pf-hp">78 / 100</div></div>
-              <div class="profile-field"><label>Credito Total</label><div class="profile-field-val" id="pf-gold">0</div></div>
+            <div class="profile-section-title">Detalhes do Personagem <button class="profile-edit-btn" onclick="toggleProfileEdit()">Editar</button></div>
+            <div class="profile-fields" id="profile-details-fields">
+              <div class="profile-field"><label>Linhagem</label><div class="profile-field-val empty" id="pf-linhagem"></div></div>
+              <div class="profile-field"><label>Arquétipo</label><div class="profile-field-val empty" id="pf-arquetipo"></div></div>
+              <div class="profile-field"><label>Passado</label><div class="profile-field-val empty" id="pf-passado"></div></div>
+              <div class="profile-field"><label>Caminho</label><div class="profile-field-val empty" id="pf-caminho"></div></div>
+              <div class="profile-field"><label>Nível</label><div class="profile-field-val" id="pf-level">0</div></div>
+              <div class="profile-field"><label>XP</label><div class="profile-field-val" id="pf-xp">0 / 5.000</div></div>
+              <div class="profile-field"><label>Vida</label><div class="profile-field-val" id="pf-hp">0 / 0</div></div>
+              <div class="profile-field"><label>Crédito Total</label><div class="profile-field-val" id="pf-gold">0</div></div>
               <div class="profile-field"><label>Total de Itens</label><div class="profile-field-val" id="pf-items">0</div></div>
               <div class="profile-field"><label>Habilidades</label><div class="profile-field-val" id="pf-skills">0</div></div>
             </div>
@@ -4387,7 +4386,6 @@ function renderProfile(){
   document.getElementById('pf-email').textContent=profileData.email;
   document.getElementById('pf-phone').textContent=profileData.phone;
   document.getElementById('pf-tz').textContent=profileData.tz;
-  document.getElementById('pf-created').textContent=profileData.created;
   const setPf=(id,v)=>{const el=document.getElementById(id);if(!el)return;const val=(v||'').toString().trim();el.textContent=val;el.classList.toggle('empty',!val)};
   setPf('pf-linhagem',profileData.linhagem);
   setPf('pf-passado',profileData.passado);
@@ -4421,12 +4419,14 @@ function renderProfileLog(){
 
 function toggleProfileEdit(){
   profileEditing=!profileEditing;
-  const fields=document.getElementById('profile-fields');
-  const btn=fields.parentElement.querySelector('.profile-edit-btn');
+  const infoFields=document.getElementById('profile-fields');
+  const detFields=document.getElementById('profile-details-fields');
+  const btns=document.querySelectorAll('.profile-edit-btn');
   const fusosBR=['UTC-02:00 Fernando de Noronha','UTC-03:00 Brasília','UTC-04:00 Manaus','UTC-05:00 Rio Branco'];
   if(profileEditing){
-    btn.textContent='Salvar';btn.style.borderColor='var(--lime)';btn.style.color='var(--lime)';
-    fields.innerHTML=`<div class="profile-field"><label>Nome</label><input type="text" id="pf-name" value="${profileData.name}"></div><div class="profile-field"><label>Email</label><input type="text" id="pf-email" value="${profileData.email}"></div><div class="profile-field"><label>Telefone</label><input type="text" id="pf-phone" value="${profileData.phone}"></div><div class="profile-field"><label>Fuso Horário</label><select id="pf-tz">${fusosBR.map(f=>`<option${profileData.tz===f?' selected':''}>${f}</option>`).join('')}</select></div><div class="profile-field"><label>Linhagem</label><input type="text" id="pf-linhagem" value="${profileData.linhagem||''}" placeholder="Ex: Humano, Elfo..."></div><div class="profile-field"><label>Passado</label><input type="text" id="pf-passado" value="${profileData.passado||''}" placeholder="Ex: Mercenário..."></div><div class="profile-field"><label>Arquétipo</label><input type="text" id="pf-arquetipo" value="${profileData.arquetipo||''}" placeholder="Ex: Guerreiro..."></div><div class="profile-field"><label>Caminho</label><input type="text" id="pf-caminho" value="${profileData.caminho||''}" placeholder="Ex: Luz, Trevas..."></div>`;
+    btns.forEach(b=>{b.textContent='Salvar';b.style.borderColor='var(--lime)';b.style.color='var(--lime)'});
+    infoFields.innerHTML=`<div class="profile-field"><label>Nome</label><input type="text" id="pf-name" value="${profileData.name}"></div><div class="profile-field"><label>Email</label><input type="text" id="pf-email" value="${profileData.email}"></div><div class="profile-field"><label>Telefone</label><input type="text" id="pf-phone" value="${profileData.phone}"></div><div class="profile-field"><label>Fuso Horário</label><select id="pf-tz">${fusosBR.map(f=>`<option${profileData.tz===f?' selected':''}>${f}</option>`).join('')}</select></div>`;
+    if(detFields)detFields.innerHTML=`<div class="profile-field"><label>Linhagem</label><input type="text" id="pf-linhagem" value="${profileData.linhagem||''}" placeholder="Ex: Humano, Elfo..."></div><div class="profile-field"><label>Arquétipo</label><input type="text" id="pf-arquetipo" value="${profileData.arquetipo||''}" placeholder="Ex: Guerreiro..."></div><div class="profile-field"><label>Passado</label><input type="text" id="pf-passado" value="${profileData.passado||''}" placeholder="Ex: Mercenário..."></div><div class="profile-field"><label>Caminho</label><input type="text" id="pf-caminho" value="${profileData.caminho||''}" placeholder="Ex: Luz, Trevas..."></div><div class="profile-field"><label>Nível</label><div class="profile-field-val" id="pf-level">${playerLevel}</div></div><div class="profile-field"><label>XP</label><div class="profile-field-val" id="pf-xp">${playerXP.toLocaleString()} / ${xpToNext.toLocaleString()}</div></div><div class="profile-field"><label>Vida</label><div class="profile-field-val" id="pf-hp">${playerHP} / ${playerHPMax}</div></div><div class="profile-field"><label>Crédito Total</label><div class="profile-field-val" id="pf-gold">${playerGold.toLocaleString()}</div></div><div class="profile-field"><label>Total de Itens</label><div class="profile-field-val" id="pf-items">${inventory.reduce((s,i)=>s+i.qty,0)}</div></div><div class="profile-field"><label>Habilidades</label><div class="profile-field-val" id="pf-skills">${skills.length}</div></div>`;
   } else {
     profileData.name=document.getElementById('pf-name').value||profileData.name;
     profileData.email=document.getElementById('pf-email').value||profileData.email;
@@ -4435,7 +4435,10 @@ function toggleProfileEdit(){
     const pfL=document.getElementById('pf-linhagem'),pfP=document.getElementById('pf-passado'),pfA=document.getElementById('pf-arquetipo'),pfC=document.getElementById('pf-caminho');
     if(pfL)profileData.linhagem=pfL.value;if(pfP)profileData.passado=pfP.value;
     if(pfA)profileData.arquetipo=pfA.value;if(pfC)profileData.caminho=pfC.value;
-    btn.textContent='Editar';btn.style.borderColor='';btn.style.color='';
+    btns.forEach(b=>{b.textContent='Editar';b.style.borderColor='';b.style.color=''});
+    // Reconstrói a estrutura de display dos campos
+    infoFields.innerHTML=`<div class="profile-field"><label>Nome</label><div class="profile-field-val" id="pf-name"></div></div><div class="profile-field"><label>Email</label><div class="profile-field-val" id="pf-email"></div></div><div class="profile-field"><label>Telefone</label><div class="profile-field-val" id="pf-phone"></div></div><div class="profile-field"><label>Fuso Horário</label><div class="profile-field-val" id="pf-tz"></div></div>`;
+    if(detFields)detFields.innerHTML=`<div class="profile-field"><label>Linhagem</label><div class="profile-field-val empty" id="pf-linhagem"></div></div><div class="profile-field"><label>Arquétipo</label><div class="profile-field-val empty" id="pf-arquetipo"></div></div><div class="profile-field"><label>Passado</label><div class="profile-field-val empty" id="pf-passado"></div></div><div class="profile-field"><label>Caminho</label><div class="profile-field-val empty" id="pf-caminho"></div></div><div class="profile-field"><label>Nível</label><div class="profile-field-val" id="pf-level">0</div></div><div class="profile-field"><label>XP</label><div class="profile-field-val" id="pf-xp">0 / 5.000</div></div><div class="profile-field"><label>Vida</label><div class="profile-field-val" id="pf-hp">0 / 0</div></div><div class="profile-field"><label>Crédito Total</label><div class="profile-field-val" id="pf-gold">0</div></div><div class="profile-field"><label>Total de Itens</label><div class="profile-field-val" id="pf-items">0</div></div><div class="profile-field"><label>Habilidades</label><div class="profile-field-val" id="pf-skills">0</div></div>`;
     renderProfile();toast('Perfil atualizado');
   }
 }
