@@ -1503,7 +1503,7 @@ input[type="number"]{-moz-appearance:textfield}
 @keyframes splash-text-in{0%{opacity:0;letter-spacing:12px}100%{opacity:1;letter-spacing:6px}}
 @keyframes splash-out{0%{opacity:1}100%{opacity:0;visibility:hidden}}
 .app-fade-in{animation:app-fade-in .6s cubic-bezier(.4,0,.2,1) .8s both}
-@keyframes app-fade-in{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes app-fade-in{0%{opacity:0}100%{opacity:1}}
 @media (prefers-reduced-motion:reduce){.app-splash{animation-duration:.2s;animation-delay:.3s}.app-splash .splash-bolt,.app-splash .splash-name{animation:none;opacity:1}.app-fade-in{animation:none}}
 
 /* ═══════════ MOBILE VERTICAL REFINEMENTS ═══════════ */
@@ -1639,8 +1639,11 @@ input[type="number"]{-moz-appearance:textfield}
     min-height:calc(56px + env(safe-area-inset-bottom,0px))!important;
     padding:0 8px env(safe-area-inset-bottom,0px) 8px!important;
     display:flex!important;flex-direction:row!important;align-items:center;
-    background:var(--bg-sidebar)!important;border-top:1px solid var(--border)!important;
-    z-index:250;overflow:visible!important
+    background:color-mix(in srgb,var(--bg-sidebar) 92%,transparent)!important;
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+    border-top:1px solid var(--border)!important;
+    z-index:250;overflow:visible!important;
+    transform:none!important
   }
   .sidebar .sidebar-nav{flex-direction:row!important;display:flex!important;width:100%;height:56px;align-items:center;justify-content:space-around;gap:2px}
   .main-wrapper{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))!important}
