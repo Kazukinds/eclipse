@@ -1592,6 +1592,41 @@ body[data-immersive="true"] .main-wrapper{padding-left:env(safe-area-inset-left,
   .fs-toggle{display:flex}
 }
 body[data-immersive="true"] .fs-toggle{background:rgba(200,245,66,.12);border-color:var(--lime-dim);color:var(--lime)}
+
+/* ═══════════ CÍRCULOS — BLINDAGEM GLOBAL (propocao 1:1) ═══════════ */
+.topbar-icon-btn,.xp-gear,.attr-gear,.size-gear,.dual-gear,.veh-cfg-btn,
+.fs-toggle,.modal-close,.register-close,.notif-icon,.credit-log-icon,
+.credit-asset-icon,.account-badge,.qa-swap-circle,.skill-use,.skill-del,
+.item-gear-float,.veh-hero-badge,.veh-hero-act,.sidebar-logo{
+  aspect-ratio:1/1;box-sizing:border-box
+}
+.topbar-icon-btn{width:38px;height:38px;flex-shrink:0}
+.profile-avatar{aspect-ratio:1/1}
+
+/* ═══════════ POLIMENTO GERAL ═══════════ */
+.card{transition:border-color .2s,transform .2s,box-shadow .2s}
+.card:hover{border-color:var(--border-light)}
+.summary-bar{border-radius:16px}
+.modal{border-radius:16px}
+.topbar{backdrop-filter:blur(12px);background:color-mix(in srgb,var(--bg-body) 85%,transparent)}
+
+/* ═══════════ CHANGELOG / ATUALIZAÇÕES ═══════════ */
+.changelog-body{max-height:60vh;overflow-y:auto;padding-right:6px;margin-top:4px}
+.changelog-body::-webkit-scrollbar{width:4px}
+.changelog-body::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:2px}
+.chl-entry{padding:14px 0;border-bottom:1px solid var(--border);position:relative;padding-left:20px}
+.chl-entry:last-child{border-bottom:none}
+.chl-entry::before{content:'';position:absolute;left:0;top:20px;width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 3px var(--lime-bg)}
+.chl-version{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--lime);letter-spacing:1px;text-transform:uppercase}
+.chl-date{font-size:10px;color:var(--text-dim);margin-left:8px;font-family:'JetBrains Mono',monospace}
+.chl-title{font-size:14px;font-weight:700;color:var(--text-primary);margin:4px 0 6px}
+.chl-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px}
+.chl-list li{font-size:12px;color:var(--text-secondary);line-height:1.5;padding-left:14px;position:relative}
+.chl-list li::before{content:'›';position:absolute;left:0;color:var(--lime);font-weight:700}
+.chl-tag{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:1px 6px;border-radius:6px;margin-right:4px;vertical-align:1px}
+.chl-tag.feat{background:var(--lime-bg-strong);color:var(--lime)}
+.chl-tag.fix{background:var(--blue-dim);color:var(--blue)}
+.chl-tag.ui{background:var(--purple-dim);color:var(--purple)}
 </style>
 </head>
 <body class="app-fade-in">
@@ -1607,7 +1642,6 @@ body[data-immersive="true"] .fs-toggle{background:rgba(200,245,66,.12);border-co
   <div class="sidebar-logo"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
   <nav class="sidebar-nav">
     <button class="sidebar-btn active" data-tab="dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="sidebar-label">Dashboard</span></button>
-    <button class="sidebar-btn" data-tab="inventory"><svg viewBox="0 0 24 24"><path d="M20 7H4a1 1 0 0 0-1 1v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a1 1 0 0 0-1-1Z"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span class="sidebar-label">Inventário</span></button>
     <button class="sidebar-btn" data-tab="progress"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span class="sidebar-label">Progresso</span></button>
     <button class="sidebar-btn" data-tab="credit"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 8.5c-.7-.8-1.6-1.5-3-1.5-2.2 0-4 1.8-4 4s1.8 4 4 4c1.4 0 2.3-.7 3-1.5"/><line x1="12" y1="3" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21"/></svg><span class="sidebar-label">Crédito</span></button>
     <button class="sidebar-btn" data-tab="pericias"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span class="sidebar-label">Perícias</span></button>
@@ -1642,6 +1676,7 @@ body[data-immersive="true"] .fs-toggle{background:rgba(200,245,66,.12);border-co
           <div class="notif-footer"><button onclick="clearNotifs()">Limpar Tudo</button></div>
         </div>
       </div>
+      <button class="topbar-icon-btn" title="Atualizações" onclick="openChangelog()"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></button>
       <button class="topbar-icon-btn" title="Perfil" onclick="switchToProfile()"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
     </div>
   </header>
@@ -1650,19 +1685,11 @@ body[data-immersive="true"] .fs-toggle{background:rgba(200,245,66,.12);border-co
     <!-- ═══ DASHBOARD ═══ -->
     <section class="tab-content active" id="tab-dashboard">
       <div class="summary-bar">
-        <div class="summary-block"><div class="summary-label">Inventário</div><div class="summary-value"><span class="unit">ITM</span><span id="sum-items">0</span></div><div class="summary-sub"><span class="dot" style="background:var(--lime)"></span><span style="color:var(--text-dim)">Capacidade &middot; <span id="sum-weight">0</span> kg</span></div></div>
+        <div class="summary-block"><div class="summary-label">Nível</div><div class="summary-value"><span id="sum-level-display">1</span></div><div class="summary-sub"><span class="dot" style="background:var(--lime)"></span><span style="color:var(--text-dim)">XP · <span id="sum-xp-display">0</span></span></div></div>
         <div class="summary-block"><div class="summary-label" id="sum-currency-label">Crédito</div><div class="summary-value medium" style="color:var(--yellow)"><span class="unit" id="sum-currency-sym">C$</span><span id="sum-gold">0</span></div><div class="summary-sub"><span class="dot" style="background:var(--yellow)"></span><span style="color:var(--text-dim)">Saldo total</span></div></div>
         <div class="summary-progress-row" id="sum-progress"></div>
       </div>
       <div class="dash-grid">
-        <div class="card item-list-section">
-          <div class="card-header"><div class="card-title">Inventário</div><div class="card-actions"><div class="card-action-btn"><svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="16" y2="12"/><line x1="4" y1="18" x2="12" y2="18"/></svg></div></div></div>
-          <div class="item-list-group-label">ARMAS <button class="see-all">VER TUDO</button></div>
-          <div class="item-list" id="dash-weapons"></div>
-          <div class="item-list-divider"></div>
-          <div class="item-list-group-label">CONSUMÍVEIS <button class="see-all">VER TUDO</button></div>
-          <div class="item-list" id="dash-consumables"></div>
-        </div>
         <div class="card"><div class="card-header"><div class="card-title">Evolução</div><div class="toggle-pills"><button class="toggle-pill active" data-mode="xp">XP</button><button class="toggle-pill" data-mode="credito">Crédito</button></div></div><div class="chart-area"><canvas class="chart-canvas" id="lineChart"></canvas></div><div class="chart-time-pills"><span style="font-size:11px;color:var(--text-dim)" id="chart-info">Sem dados</span></div></div>
         <!-- ROW 2: Status | Atributos -->
         <div class="card">
@@ -1691,19 +1718,16 @@ body[data-immersive="true"] .fs-toggle{background:rgba(200,245,66,.12);border-co
       </div>
     </section>
 
-    <!-- ═══ INVENTORY (placeholder) ═══ -->
-    <section class="tab-content" id="tab-inventory">
-      <div class="card" style="padding:60px 40px;text-align:center">
-        <div style="width:80px;height:80px;margin:0 auto 20px;border-radius:50%;background:color-mix(in srgb,var(--yellow) 18%,transparent);display:flex;align-items:center;justify-content:center;color:var(--yellow)"><svg viewBox="0 0 24 24" style="width:42px;height:42px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><path d="M20 7H4a1 1 0 0 0-1 1v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a1 1 0 0 0-1-1Z"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="10" y1="12" x2="14" y2="12"/></svg></div>
-        <h2 style="font-size:22px;font-weight:700;margin-bottom:8px">Inventário</h2>
-        <p style="font-size:13px;color:var(--text-dim);max-width:420px;margin:0 auto">Sistema de inventário em reformulação. Em breve você poderá organizar seus itens numa maleta com slots personalizáveis e categorias.</p>
-      </div>
-      <div style="display:none" aria-hidden="true" id="inv-hidden-root">
-        <div class="inv-grid" id="inv-grid"></div>
-        <div id="inv-detail"><span id="overflow-count">0</span><div id="overflow-list"></div></div>
-        <span id="inv-cap-label"></span>
-      </div>
-    </section>
+    <!-- Inventário removido para ser reconstruído como módulo separado. Raízes ocultas pra estabilidade do JS. -->
+    <div style="display:none" aria-hidden="true" id="inv-hidden-root">
+      <div class="inv-grid" id="inv-grid"></div>
+      <div id="inv-detail"><span id="overflow-count">0</span><div id="overflow-list"></div></div>
+      <span id="inv-cap-label"></span>
+      <div id="dash-weapons"></div>
+      <div id="dash-consumables"></div>
+      <span id="sum-items"></span>
+      <span id="sum-weight"></span>
+    </div>
 
     <!-- ═══ PROGRESS ═══ -->
     <section class="tab-content" id="tab-progress">
@@ -2069,9 +2093,11 @@ function renderSummary(){
   const totalItems=inventory.reduce((s,i)=>s+i.qty,0);
   const totalWeight=inventory.reduce((s,i)=>s+(i.weight*i.qty),0).toFixed(1);
   const potions=inventory.filter(i=>i.cat==='consumivel').reduce((s,i)=>s+i.qty,0);
-  document.getElementById('sum-items').textContent=totalItems;
-  document.getElementById('sum-weight').textContent=totalWeight;
-  document.getElementById('sum-gold').textContent=playerGold.toLocaleString();
+  const siEl=document.getElementById('sum-items');if(siEl)siEl.textContent=totalItems;
+  const swEl=document.getElementById('sum-weight');if(swEl)swEl.textContent=totalWeight;
+  const sgEl=document.getElementById('sum-gold');if(sgEl)sgEl.textContent=playerGold.toLocaleString();
+  const sLD=document.getElementById('sum-level-display');if(sLD)sLD.textContent=playerLevel;
+  const sXD=document.getElementById('sum-xp-display');if(sXD)sXD.textContent=playerXP.toLocaleString();
   const cl=document.getElementById('sum-currency-label');if(cl)cl.textContent=currencyName;
   const cs=document.getElementById('sum-currency-sym');if(cs)cs.textContent=currencySymbol;
   const sxEl=document.getElementById('sum-xp');if(sxEl)sxEl.textContent=playerXP.toLocaleString();
@@ -4610,6 +4636,104 @@ window.addEventListener('keydown',e=>{
   }
 });
 
+// Autosave reforçado: IndexedDB como fallback quando localStorage estiver cheio
+const IDB_NAME='ficha-eclipse-db',IDB_STORE='saves';
+function idbSave(data){
+  return new Promise((resolve)=>{
+    try{
+      const req=indexedDB.open(IDB_NAME,1);
+      req.onupgradeneeded=()=>{req.result.createObjectStore(IDB_STORE)};
+      req.onsuccess=()=>{
+        const tx=req.result.transaction(IDB_STORE,'readwrite');
+        tx.objectStore(IDB_STORE).put(data,'autosave');
+        tx.oncomplete=()=>{req.result.close();resolve(true)};
+        tx.onerror=()=>{req.result.close();resolve(false)};
+      };
+      req.onerror=()=>resolve(false);
+    }catch(_){resolve(false)}
+  });
+}
+function idbLoad(){
+  return new Promise((resolve)=>{
+    try{
+      const req=indexedDB.open(IDB_NAME,1);
+      req.onupgradeneeded=()=>{req.result.createObjectStore(IDB_STORE)};
+      req.onsuccess=()=>{
+        const tx=req.result.transaction(IDB_STORE,'readonly');
+        const g=tx.objectStore(IDB_STORE).get('autosave');
+        g.onsuccess=()=>{req.result.close();resolve(g.result||null)};
+        g.onerror=()=>{req.result.close();resolve(null)};
+      };
+      req.onerror=()=>resolve(null);
+    }catch(_){resolve(null)}
+  });
+}
+// Salva também no IndexedDB em paralelo ao localStorage
+const _origAutosave=autosaveNow;
+autosaveNow=function(){
+  const ok=_origAutosave();
+  try{if(typeof collectAllData==='function')idbSave(collectAllData())}catch(_){}
+  return ok;
+};
+// Restaura do IndexedDB se localStorage não tiver (ex.: limpeza do app)
+window.addEventListener('load',async()=>{
+  try{
+    if(!localStorage.getItem(AUTOSAVE_KEY)){
+      const data=await idbLoad();
+      if(data&&typeof applyAllData==='function'&&applyAllData(data)){
+        if(typeof refreshAll==='function')refreshAll();
+        if(typeof toast==='function')setTimeout(()=>toast('Ficha restaurada (IndexedDB)'),2500);
+      }
+    }
+  }catch(_){}
+});
+
+// ═══ CHANGELOG / ATUALIZAÇÕES ═══
+const APP_CHANGELOG=[
+  {version:'v1.3',date:'2026-04-18',title:'Tela cheia, UI polida e remoção do inventário',items:[
+    {tag:'feat',text:'Modo tela cheia imersivo por padrão — barra do sistema oculta, revela com swipe'},
+    {tag:'feat',text:'Área de Atualizações (este painel) no topo, para acompanhar novidades'},
+    {tag:'feat',text:'Autosave em IndexedDB como backup do localStorage'},
+    {tag:'ui',text:'Blindagem global de círculos — nenhum botão redondo vira oval'},
+    {tag:'ui',text:'Polimento geral: topbar com blur, cards com hover suave, raios consistentes'},
+    {tag:'fix',text:'Módulo de inventário removido para ser reconstruído do zero em código limpo'},
+  ]},
+  {version:'v1.2',date:'2026-04-18',title:'Ficha Eclipse — autosave e proteção contra recarga',items:[
+    {tag:'feat',text:'Rebrand: ficha.dexport → Ficha Eclipse em todos os lugares'},
+    {tag:'feat',text:'Autosave a cada 8s, ao minimizar e antes de fechar o app'},
+    {tag:'feat',text:'Restauração automática da ficha ao abrir o app'},
+    {tag:'feat',text:'Confirmação nativa antes de recarregar; Ctrl+R e F5 pedem confirmação extra'},
+    {tag:'fix',text:'Pull-to-refresh desabilitado (overscroll-behavior-y:contain)'},
+  ]},
+  {version:'v1.1',date:'2026-04-18',title:'Correções mobile e tela vertical',items:[
+    {tag:'fix',text:'Integridade, HP e Base iniciam zerados'},
+    {tag:'fix',text:'Tooltip de atributos funciona no toque'},
+    {tag:'fix',text:'Mensagem "Bem-vindo, aventureiro" visível no mobile/tablet'},
+    {tag:'fix',text:'iOS não transforma mais "0" em link de telefone'},
+    {tag:'ui',text:'Crédito, XP, grade e veículo em 1 coluna no vertical'},
+    {tag:'ui',text:'Quadradinhos de status reformulados (mini-cards)'},
+    {tag:'ui',text:'Entalhe do celular respeitado + botão de alternar tela cheia'},
+    {tag:'feat',text:'Splash animada na abertura do app'},
+  ]},
+  {version:'v1.0',date:'2026-04-17',title:'Release inicial',items:[
+    {tag:'feat',text:'Ficha RPG completa: atributos, status, perícias, veículos, crédito'},
+    {tag:'feat',text:'PWA instalável com ícone lightning'},
+    {tag:'feat',text:'Service worker com cache offline'},
+  ]},
+];
+function openChangelog(){
+  if(typeof currentModal!=='undefined')currentModal='changelog';
+  const title=document.getElementById('modal-title'),body=document.getElementById('modal-body');
+  if(!title||!body)return;
+  title.textContent='Atualizações · Ficha Eclipse';
+  const entries=APP_CHANGELOG.map(e=>{
+    const lis=e.items.map(it=>`<li><span class="chl-tag ${it.tag}">${it.tag}</span>${it.text}</li>`).join('');
+    return `<div class="chl-entry"><div><span class="chl-version">${e.version}</span><span class="chl-date">${e.date}</span></div><div class="chl-title">${e.title}</div><ul class="chl-list">${lis}</ul></div>`;
+  }).join('');
+  body.innerHTML=`<div class="changelog-body">${entries}</div><div class="modal-btns" style="margin-top:10px"><button class="modal-btn primary" onclick="closeModal()">Fechar</button></div>`;
+  const ov=document.getElementById('modal-overlay');if(ov)ov.classList.add('open');
+}
+
 
 // ═══ IMMERSIVE (FULLSCREEN) MODE ═══
 function applyImmersiveMode(on){
@@ -4627,7 +4751,12 @@ function toggleImmersiveMode(){
   try{localStorage.setItem('ficha-immersive',on?'1':'0')}catch(_){}
   if(typeof toast==='function')toast(on?'Modo tela cheia ativado':'Modo seguro (respeita entalhe)');
 }
-try{applyImmersiveMode(localStorage.getItem('ficha-immersive')==='1')}catch(_){}
+try{
+  const stored=localStorage.getItem('ficha-immersive');
+  // Default: imersivo LIGADO (barra do sistema oculta, revela com swipe)
+  applyImmersiveMode(stored===null?true:stored==='1');
+  if(stored===null)localStorage.setItem('ficha-immersive','1');
+}catch(_){applyImmersiveMode(true)}
 
 // ═══ PWA / SERVICE WORKER ═══
 if('serviceWorker' in navigator){
