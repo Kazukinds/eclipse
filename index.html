@@ -826,7 +826,21 @@ input[type="number"]{-moz-appearance:textfield}
 .modal .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .modal-btns{display:flex;gap:8px;margin-top:6px}
 .veh-layout{display:grid;grid-template-columns:580px 1fr;gap:20px;align-items:stretch;max-height:calc(100vh - 110px)}
-.veh-wrap{display:flex;flex-direction:column;gap:18px;padding:22px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+.veh-wrap{display:flex;flex-direction:column;gap:18px;padding:22px;padding-bottom:30px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+.imgcrop{display:flex;flex-direction:column;gap:14px}
+.imgcrop-stage{position:relative;width:100%;aspect-ratio:16/9;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;cursor:grab;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+.imgcrop-stage:active{cursor:grabbing}
+.imgcrop-stage img{position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;max-width:none;max-height:none;user-select:none;pointer-events:none;transition:transform .08s}
+.imgcrop-stage::after{content:'';position:absolute;inset:0;border:1px dashed rgba(200,245,66,.25);pointer-events:none;border-radius:var(--radius-sm)}
+.imgcrop-ctrls{display:flex;flex-direction:column;gap:10px}
+.imgcrop-row{display:grid;grid-template-columns:80px 1fr 58px;align-items:center;gap:10px}
+.imgcrop-row label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+.imgcrop-row input[type=range]{width:100%;height:6px;background:var(--bg-input);border-radius:3px;outline:none;-webkit-appearance:none;appearance:none}
+.imgcrop-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--lime);cursor:pointer;border:2px solid var(--bg-card);box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.imgcrop-row input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--lime);cursor:pointer;border:2px solid var(--bg-card)}
+.imgcrop-val{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--lime);font-weight:700;text-align:right}
+.imgcrop-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.imgcrop-actions .modal-btn{padding:10px;font-size:11px}
 .veh-top{padding:2px}
 .veh-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
 .veh-title-group{display:flex;align-items:center;gap:10px}
@@ -837,10 +851,12 @@ input[type="number"]{-moz-appearance:textfield}
 .veh-subtitle{font-size:12px;color:var(--text-dim);margin-top:3px}
 .veh-pct{font-size:40px;font-weight:700;color:var(--text-primary);letter-spacing:-1.5px;line-height:1;white-space:nowrap}
 .veh-pct-sym{font-size:22px;font-weight:600;margin-left:2px}
-.veh-hp-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.veh-hp-track{flex:1;height:10px;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:5px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.4)}
-.veh-hp-fill{height:100%;background:linear-gradient(90deg,var(--red) 0%,#f97316 50%,var(--lime) 100%);border-radius:4px;transition:width .6s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 10px rgba(200,245,66,.25)}
-.veh-hp-nums{display:flex;align-items:baseline;gap:3px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--text-primary);white-space:nowrap}
+.veh-bars{display:flex;gap:3px;height:28px;margin-bottom:6px;align-items:flex-end}
+.veh-bar{flex:1;height:100%;border-radius:2px;background:var(--bg-card-inner);border:1px solid var(--border);position:relative;overflow:hidden}
+.veh-bar::after{content:'';position:absolute;left:0;right:0;bottom:0;top:100%;background:linear-gradient(180deg,#f5f6fa,#a8aab0);border-radius:1px;box-shadow:inset 0 1px 0 rgba(255,255,255,.35);transition:top .55s cubic-bezier(.2,.8,.2,1)}
+.veh-bar.filled::after{top:0}
+[data-theme="light"] .veh-bar::after{background:linear-gradient(180deg,#3f3f46,#18181b)}
+.veh-hp-nums{display:flex;align-items:baseline;justify-content:flex-end;gap:3px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--text-dim);white-space:nowrap;margin-bottom:6px}
 .veh-hp-sep{color:var(--text-dim);font-weight:500}
 .veh-hp-label{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-left:4px;font-weight:700}
 .veh-improvement{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-dim)}
@@ -1632,10 +1648,8 @@ input[type="number"]{-moz-appearance:textfield}
             </div>
             <div class="veh-pct" id="veh-main-pct">65<span class="veh-pct-sym">%</span></div>
           </div>
-          <div class="veh-hp-row">
-            <div class="veh-hp-track"><div class="veh-hp-fill" id="veh-hp-fill" style="width:65%"></div></div>
-            <div class="veh-hp-nums"><span id="veh-hp-cur">650</span><span class="veh-hp-sep">/</span><span id="veh-hp-max">1000</span><span class="veh-hp-label">HP</span></div>
-          </div>
+          <div class="veh-bars" id="veh-bars"></div>
+          <div class="veh-hp-nums"><span id="veh-hp-cur">650</span><span class="veh-hp-sep">/</span><span id="veh-hp-max">1000</span><span class="veh-hp-label">HP</span></div>
           <div class="veh-improvement">
             <svg viewBox="0 0 24 24"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="6" x2="12" y2="18"/></svg>
             <span><b>12%</b> melhoria</span><span class="veh-sep">·</span><span class="veh-period">Últimos 30 dias</span>
@@ -4114,10 +4128,11 @@ function renderVehicleState(){
     const hasImg=!!vehicleState.image;
     host.classList.toggle('has-image',hasImg);
     const typeIcon=VEH_TYPE_ICONS[vehicleState.type]||VEH_TYPE_ICONS.carro;
+    const z=vehicleState.imgZoom||1,x=(vehicleState.imgX||0)*0.4,y=(vehicleState.imgY||0)*0.4;
     const contentHTML=hasImg
-      ?`<img src="${vehicleState.image}" alt="Veículo">`
+      ?`<img src="${vehicleState.image}" alt="Veículo" style="transform:translate(${x}px,${y}px) scale(${z});transform-origin:center">`
       :`<div class="veh-hero-placeholder"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Adicionar imagem</span></div>`;
-    const actions=`<div class="veh-hero-actions"><button class="veh-hero-act" onclick="event.stopPropagation();openVehicleDesc()" title="Editar descrição"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>${hasImg?`<button class="veh-hero-act" onclick="event.stopPropagation();removeVehicleImage()" title="Remover imagem"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:''}</div>`;
+    const actions=`<div class="veh-hero-actions">${hasImg?`<button class="veh-hero-act" onclick="event.stopPropagation();openImageCrop()" title="Ajustar imagem"><svg viewBox="0 0 24 24"><path d="M4 8V4h4"/><path d="M16 4h4v4"/><path d="M4 16v4h4"/><path d="M16 20h4v-4"/></svg></button>`:''}<button class="veh-hero-act" onclick="event.stopPropagation();openVehicleDesc()" title="Editar descrição"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>${hasImg?`<button class="veh-hero-act" onclick="event.stopPropagation();removeVehicleImage()" title="Remover imagem"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:''}</div>`;
     const badge=hasImg?`<div class="veh-hero-badge" title="${VEH_TYPE_LABELS[vehicleState.type]||'Veículo'}">${typeIcon}</div>`:'';
     host.innerHTML=`<input type="file" id="veh-img-input" accept="image/*" style="display:none" onchange="handleVehicleImage(event)">${contentHTML}${badge}${actions}`;
   }
@@ -4128,7 +4143,7 @@ function renderVehicleState(){
   const pct=Math.round(hpCur/hpMax*100);
   const pctEl=document.getElementById('veh-main-pct');
   if(pctEl)pctEl.innerHTML=`${pct}<span class="veh-pct-sym">%</span>`;
-  const hpFill=document.getElementById('veh-hp-fill');if(hpFill)hpFill.style.width=pct+'%';
+  renderVehBars(pct);
   const hpCurEl=document.getElementById('veh-hp-cur');if(hpCurEl)hpCurEl.textContent=hpCur;
   const hpMaxEl=document.getElementById('veh-hp-max');if(hpMaxEl)hpMaxEl.textContent=hpMax;
   Object.entries(vehicleState.attrs).forEach(([k,v])=>{
@@ -4137,13 +4152,82 @@ function renderVehicleState(){
   const descText=document.getElementById('veh-desc-text');
   if(descText)descText.textContent=vehicleState.desc||'Clique em editar para descrever o veículo — modelo, ano, histórico e detalhes relevantes.';
 }
+function renderVehBars(pct){
+  const host=document.getElementById('veh-bars');if(!host)return;
+  const total=28;const filled=Math.round(total*(pct/100));
+  if(host.children.length!==total){
+    host.innerHTML=Array.from({length:total},(_,i)=>`<div class="veh-bar" style="transition-delay:${i*30}ms"></div>`).join('');
+  }
+  [...host.children].forEach((el,i)=>{
+    el.style.transitionDelay=(i*30)+'ms';
+    el.classList.toggle('filled',i<filled);
+  });
+}
 function handleVehicleImage(e){
   const file=e.target.files[0];if(!file)return;
   const reader=new FileReader();
-  reader.onload=ev=>{vehicleState.image=ev.target.result;renderVehicleState();toast('Imagem adicionada')};
+  reader.onload=ev=>{vehicleState.image=ev.target.result;vehicleState.imgZoom=1;vehicleState.imgX=0;vehicleState.imgY=0;renderVehicleState();openImageCrop()};
   reader.readAsDataURL(file);
 }
-function removeVehicleImage(){vehicleState.image='';renderVehicleState();toast('Imagem removida')}
+function removeVehicleImage(){vehicleState.image='';vehicleState.imgZoom=1;vehicleState.imgX=0;vehicleState.imgY=0;renderVehicleState();toast('Imagem removida')}
+function openImageCrop(){
+  if(!vehicleState.image){document.getElementById('veh-img-input')?.click();return}
+  currentModal='imageCrop';
+  const title=document.getElementById('modal-title'),body=document.getElementById('modal-body');
+  title.textContent='Ajustar Imagem';
+  const z=vehicleState.imgZoom||1,x=vehicleState.imgX||0,y=vehicleState.imgY||0;
+  body.innerHTML=`
+    <div class="imgcrop">
+      <div class="imgcrop-stage" id="imgcrop-stage">
+        <img id="imgcrop-img" src="${vehicleState.image}" alt="" style="transform:translate(calc(-50% + ${x}px),calc(-50% + ${y}px)) scale(${z})">
+      </div>
+      <div class="imgcrop-ctrls">
+        <div class="imgcrop-row">
+          <label>Zoom</label>
+          <input type="range" min="0.5" max="3" step="0.05" value="${z}" id="imgcrop-zoom" oninput="setImgCrop('zoom',this.value)">
+          <span class="imgcrop-val" id="imgcrop-zoom-val">${z.toFixed(2)}x</span>
+        </div>
+        <div class="imgcrop-row">
+          <label>Horizontal</label>
+          <input type="range" min="-200" max="200" step="1" value="${x}" id="imgcrop-x" oninput="setImgCrop('x',this.value)">
+          <span class="imgcrop-val" id="imgcrop-x-val">${x}px</span>
+        </div>
+        <div class="imgcrop-row">
+          <label>Vertical</label>
+          <input type="range" min="-200" max="200" step="1" value="${y}" id="imgcrop-y" oninput="setImgCrop('y',this.value)">
+          <span class="imgcrop-val" id="imgcrop-y-val">${y}px</span>
+        </div>
+        <div class="imgcrop-actions">
+          <button class="modal-btn secondary" onclick="resetImgCrop()">Resetar</button>
+          <button class="modal-btn secondary" onclick="document.getElementById('veh-img-input').click()">Trocar imagem</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-btns"><button class="modal-btn primary" onclick="closeModal()" style="flex:1">Concluir</button></div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+  setupImgCropDrag();
+}
+function setImgCrop(k,v){
+  v=parseFloat(v);
+  if(k==='zoom')vehicleState.imgZoom=v;
+  else if(k==='x')vehicleState.imgX=v;
+  else if(k==='y')vehicleState.imgY=v;
+  const img=document.getElementById('imgcrop-img');
+  if(img)img.style.transform=`translate(calc(-50% + ${vehicleState.imgX||0}px),calc(-50% + ${vehicleState.imgY||0}px)) scale(${vehicleState.imgZoom||1})`;
+  const zv=document.getElementById('imgcrop-zoom-val');if(zv)zv.textContent=(vehicleState.imgZoom||1).toFixed(2)+'x';
+  const xv=document.getElementById('imgcrop-x-val');if(xv)xv.textContent=(vehicleState.imgX||0)+'px';
+  const yv=document.getElementById('imgcrop-y-val');if(yv)yv.textContent=(vehicleState.imgY||0)+'px';
+  renderVehicleState();
+}
+function resetImgCrop(){vehicleState.imgZoom=1;vehicleState.imgX=0;vehicleState.imgY=0;['zoom','x','y'].forEach(k=>{const el=document.getElementById('imgcrop-'+k);if(el)el.value=k==='zoom'?1:0});setImgCrop('zoom',1)}
+function setupImgCropDrag(){
+  const stage=document.getElementById('imgcrop-stage');if(!stage)return;
+  let dragging=false,sx=0,sy=0,bx=0,by=0;
+  stage.addEventListener('pointerdown',e=>{dragging=true;sx=e.clientX;sy=e.clientY;bx=vehicleState.imgX||0;by=vehicleState.imgY||0;stage.setPointerCapture(e.pointerId)});
+  stage.addEventListener('pointermove',e=>{if(!dragging)return;setImgCrop('x',Math.max(-200,Math.min(200,bx+e.clientX-sx)));setImgCrop('y',Math.max(-200,Math.min(200,by+e.clientY-sy)));document.getElementById('imgcrop-x').value=vehicleState.imgX;document.getElementById('imgcrop-y').value=vehicleState.imgY});
+  stage.addEventListener('pointerup',()=>dragging=false);
+  stage.addEventListener('pointercancel',()=>dragging=false);
+}
 function openVehicleDesc(){
   currentModal='vehDesc';
   const title=document.getElementById('modal-title'),body=document.getElementById('modal-body');
