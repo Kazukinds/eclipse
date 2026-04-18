@@ -623,7 +623,11 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg-body);colo
 .credit-stat .cs-val{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--yellow)}
 
 /* ═══ PROFILE ═══ */
-.profile-layout{display:grid;grid-template-columns:1fr 300px;gap:20px}
+.profile-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:start}
+.profile-main{display:flex;flex-direction:column;gap:16px;min-width:0}
+.profile-main .profile-section{margin-bottom:0}
+.profile-sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:80px;align-self:start}
+.profile-sidebar .profile-sidebar-card{margin-bottom:0}
 .profile-header-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;display:flex;gap:24px;align-items:center;margin-bottom:18px;box-shadow:var(--shadow-sm)}
 .profile-avatar{width:96px;height:96px;border-radius:var(--radius-sm);background:var(--bg-card-inner);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
 .profile-avatar svg{width:48px;height:48px;stroke:var(--text-dim);fill:none;stroke-width:1.5}
