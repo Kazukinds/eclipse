@@ -3,20 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5">
+<meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
 <meta name="theme-color" content="#0a0a0b">
 <meta name="color-scheme" content="dark light">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="description" content="Ficha de personagem RPG — sistema completo de atributos, inventário, perícias, veículos e combate.">
-<meta name="application-name" content="ficha.dexport">
-<meta name="apple-mobile-web-app-title" content="ficha.dexport">
+<meta name="application-name" content="Ficha Eclipse">
+<meta name="apple-mobile-web-app-title" content="Ficha Eclipse">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
-<title>ficha.dexport</title>
+<title>Ficha Eclipse</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
@@ -33,6 +34,7 @@
   --transition-fast:.15s ease;--transition-base:.2s ease;--transition-smooth:.3s cubic-bezier(.4,0,.2,1);
   --rarity-common:#6b7280;--rarity-uncommon:#34d399;--rarity-rare:#60a5fa;--rarity-epic:#a78bfa;--rarity-legendary:#fbbf24;
 }
+html,body{overscroll-behavior-y:contain;overscroll-behavior-x:none}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg-body);color:var(--text-primary);min-height:100vh;display:flex;user-select:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 *:focus-visible{outline:2px solid var(--lime);outline-offset:2px;border-radius:var(--radius-xs)}
 ::-webkit-scrollbar{width:6px;height:6px}
@@ -1482,9 +1484,118 @@ input[type="number"]{-moz-appearance:textfield}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* ═══════════ APP SPLASH / INTRO ═══════════ */
+.app-splash{position:fixed;inset:0;z-index:9999;background:radial-gradient(ellipse at center,#16161a 0%,#09090b 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;animation:splash-out .7s cubic-bezier(.4,0,.2,1) 1.25s forwards;pointer-events:none}
+.app-splash .splash-bolt{width:76px;height:76px;display:flex;align-items:center;justify-content:center;border-radius:20px;background:linear-gradient(145deg,rgba(200,245,66,.18),rgba(200,245,66,.04));border:1px solid rgba(200,245,66,.35);box-shadow:0 0 0 1px rgba(200,245,66,.12),0 0 40px rgba(200,245,66,.22),inset 0 1px 0 rgba(255,255,255,.05);animation:splash-bolt-in .55s cubic-bezier(.2,1.2,.3,1) both, splash-bolt-pulse 1.1s ease-in-out .55s infinite}
+.app-splash .splash-bolt svg{width:42px;height:42px;stroke:#c8f542;fill:rgba(200,245,66,.12);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 8px rgba(200,245,66,.55))}
+.app-splash .splash-name{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:6px;color:#c8f542;text-transform:uppercase;opacity:0;animation:splash-text-in .5s cubic-bezier(.2,.8,.2,1) .3s forwards}
+.app-splash .splash-dot{width:4px;height:4px;border-radius:50%;background:#c8f542;display:inline-block;margin:0 2px;box-shadow:0 0 6px rgba(200,245,66,.7)}
+.app-splash.gone{display:none}
+@keyframes splash-bolt-in{0%{opacity:0;transform:scale(.6) rotate(-12deg)}60%{opacity:1;transform:scale(1.08) rotate(3deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes splash-bolt-pulse{0%,100%{box-shadow:0 0 0 1px rgba(200,245,66,.12),0 0 40px rgba(200,245,66,.22),inset 0 1px 0 rgba(255,255,255,.05)}50%{box-shadow:0 0 0 1px rgba(200,245,66,.2),0 0 60px rgba(200,245,66,.45),inset 0 1px 0 rgba(255,255,255,.08)}}
+@keyframes splash-text-in{0%{opacity:0;letter-spacing:12px}100%{opacity:1;letter-spacing:6px}}
+@keyframes splash-out{0%{opacity:1}100%{opacity:0;visibility:hidden}}
+.app-fade-in{animation:app-fade-in .6s cubic-bezier(.4,0,.2,1) .8s both}
+@keyframes app-fade-in{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.app-splash{animation-duration:.2s;animation-delay:.3s}.app-splash .splash-bolt,.app-splash .splash-name{animation:none;opacity:1}.app-fade-in{animation:none}}
+
+/* ═══════════ MOBILE VERTICAL REFINEMENTS ═══════════ */
+@media (max-width:640px) and (orientation:portrait){
+  /* Welcome visível — pequena linha acima do nome */
+  .topbar-welcome{display:flex;flex-direction:column;align-items:center;gap:2px;padding:2px 0}
+  .topbar-welcome small{display:block;font-size:11px;letter-spacing:.4px;color:var(--text-secondary);text-transform:none}
+  .topbar-welcome h2{font-size:17px;font-weight:700;color:var(--text-primary);letter-spacing:-.2px}
+
+  /* Topbar compacta + respira o notch */
+  .topbar{padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px;gap:8px}
+  .topbar-actions{justify-content:center;margin-left:0}
+
+  /* Header XP/Estagio empilhado */
+  .xp-card{grid-template-columns:1fr!important;gap:12px!important;padding:16px!important}
+  .xp-card>div{min-width:0}
+  .xp-card .xp-top{flex-wrap:wrap;row-gap:4px}
+  .xp-level{font-size:18px}
+  .xp-numbers{font-size:12px}
+  .xp-track{height:12px}
+
+  /* Grade de info — uma coluna, espaçamento menor */
+  .dash-grid{grid-template-columns:1fr!important;gap:12px!important}
+  .card{padding:14px!important}
+
+  /* Crédito — uma coluna, valores menores, sem círculo gigante */
+  .credit-top{padding:18px 16px;border-radius:14px}
+  .credit-top::before{width:120px;height:120px;top:-60px;right:-60px;opacity:.6}
+  .credit-top-label{font-size:11px}
+  .credit-top-val{font-size:30px}
+  .credit-top-val .currency-symbol{font-size:20px}
+  .credit-top-actions{gap:6px;flex-wrap:wrap}
+  .credit-top-actions .credit-pill{flex:1;min-width:calc(50% - 3px);padding:8px 10px;font-size:11px;justify-content:center}
+  .credit-body{grid-template-columns:1fr!important;gap:12px}
+  .credit-assets{grid-template-columns:1fr 1fr}
+
+  /* Veículo — foto/integridade no retrato */
+  .veh-hero{aspect-ratio:16/9;min-height:150px}
+  .veh-title-row{flex-direction:column;align-items:stretch;gap:6px}
+  .veh-pct{font-size:34px;align-self:flex-start}
+  .veh-services-grid{grid-template-columns:1fr 1fr!important}
+  .veh-service-card{padding:12px;min-height:100px}
+  .veh-service-val{font-size:26px}
+
+  /* Summary bar — números sem parecer telefone */
+  .summary-bar [id^="sum-"]{-webkit-user-select:none;user-select:none}
+  .summary-value{white-space:nowrap}
+
+  /* Sidebar inferior respeita home indicator */
+  .sidebar{height:auto;min-height:56px;padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px)) 10px}
+  .main-wrapper{padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))}
+
+  /* Quadradinhos de status mais legíveis e uniformes */
+  .status-list{gap:8px}
+  .status-row{padding:8px;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:var(--radius-sm);gap:12px}
+  .status-row:hover{background:var(--bg-input)}
+  .status-icon{width:36px;height:36px;border-radius:10px;box-shadow:inset 0 0 0 1px color-mix(in srgb,currentColor 18%,transparent)}
+  .status-icon svg{width:18px;height:18px}
+  .status-name{font-size:10px;margin-bottom:4px}
+  .status-track{height:7px}
+  .status-val{font-size:13px;min-width:58px}
+}
+
+/* ═══════════ STATUS CARDS — DESIGN REFINADO ═══════════ */
+.status-row{border-radius:var(--radius-sm);padding:8px;transition:background .18s,border-color .18s,transform .18s}
+.status-icon{box-shadow:inset 0 0 0 1px color-mix(in srgb,currentColor 15%,transparent);transition:transform .2s,box-shadow .2s,background .2s}
+.status-row:hover .status-icon{transform:scale(1.05)}
+.status-track{box-shadow:inset 0 1px 3px rgba(0,0,0,.5),inset 0 -1px 0 rgba(255,255,255,.02)}
+.status-fill{background-image:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.02) 60%)}
+
+/* ═══════════ FULLSCREEN / IMMERSIVE MODE ═══════════ */
+/* Modo padrão já respeita safe-area. Modo imersivo estica de ponta a ponta. */
+body[data-immersive="true"]{padding:0!important}
+body[data-immersive="true"] .topbar{padding-top:max(10px,env(safe-area-inset-top,0px))}
+body[data-immersive="true"] .main-wrapper{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+@media (max-width:640px) and (orientation:portrait){
+  body[data-immersive="true"] .sidebar{padding-bottom:max(6px,env(safe-area-inset-bottom,0px))}
+  body[data-immersive="true"] .main-wrapper{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
+}
+
+/* Botão flutuante de alternar modo tela cheia (mobile) */
+.fs-toggle{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:calc(8px + env(safe-area-inset-right,0px));z-index:180;width:34px;height:34px;border-radius:50%;background:rgba(15,15,17,.72);backdrop-filter:blur(10px);border:1px solid var(--border);color:var(--text-secondary);display:none;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:all .2s;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.fs-toggle:hover{color:var(--lime);border-color:var(--lime-dim)}
+.fs-toggle svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:640px) and (orientation:portrait),(max-width:1024px) and (orientation:portrait){
+  .fs-toggle{display:flex}
+}
+body[data-immersive="true"] .fs-toggle{background:rgba(200,245,66,.12);border-color:var(--lime-dim);color:var(--lime)}
 </style>
 </head>
-<body>
+<body class="app-fade-in">
+<div class="app-splash" id="app-splash" aria-hidden="true">
+  <div class="splash-bolt"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+  <div class="splash-name">Ficha<span class="splash-dot"></span>Eclipse</div>
+</div>
+<button class="fs-toggle" id="fs-toggle" onclick="toggleImmersiveMode()" title="Alternar tela cheia" aria-label="Alternar tela cheia">
+  <svg id="fs-toggle-icon" viewBox="0 0 24 24"><path d="M4 9V5a1 1 0 0 1 1-1h4M20 9V5a1 1 0 0 0-1-1h-4M4 15v4a1 1 0 0 0 1 1h4M20 15v4a1 1 0 0 1-1 1h-4"/></svg>
+</button>
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-grip" id="sidebar-grip"></div>
   <div class="sidebar-logo"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
@@ -1643,13 +1754,13 @@ input[type="number"]{-moz-appearance:textfield}
               </div>
               <div class="veh-subtitle">Todos os sistemas operacionais</div>
             </div>
-            <div class="veh-pct" id="veh-main-pct">65<span class="veh-pct-sym">%</span></div>
+            <div class="veh-pct" id="veh-main-pct">0<span class="veh-pct-sym">%</span></div>
           </div>
           <div class="veh-bars" id="veh-bars"></div>
-          <div class="veh-hp-nums"><span id="veh-hp-cur">650</span><span class="veh-hp-sep">/</span><span id="veh-hp-max">1000</span><span class="veh-hp-label">HP</span></div>
+          <div class="veh-hp-nums"><span id="veh-hp-cur">0</span><span class="veh-hp-sep">/</span><span id="veh-hp-max">0</span><span class="veh-hp-label">HP</span></div>
           <div class="veh-improvement">
             <svg viewBox="0 0 24 24"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="6" x2="12" y2="18"/></svg>
-            <span><b>12%</b> melhoria</span><span class="veh-sep">·</span><span class="veh-period">Últimos 30 dias</span>
+            <span><b id="veh-improve-pct">0%</b> melhoria</span><span class="veh-sep">·</span><span class="veh-period">Últimos 30 dias</span>
           </div>
         </div>
         <div class="veh-hero" id="veh-hero" onclick="document.getElementById('veh-img-input').click()">
@@ -2008,15 +2119,38 @@ function renderDonut(){
 function attachDonutHover(container){
   const tip=container.querySelector('.donut-tooltip');const wrap=container.querySelector('.donut-wrap,.attr-donut-wrap');
   if(!tip||!wrap)return;
+  let hideTimer=null;
+  const showTip=(c,x,y)=>{
+    tip.innerHTML=`<div class="donut-tooltip-dot" style="background:${c.dataset.color}"></div>${c.dataset.label}<span class="donut-tooltip-val">${c.dataset.val}</span>`;
+    tip.classList.add('visible');
+    const w=tip.offsetWidth||140,h=tip.offsetHeight||30;
+    const vw=window.innerWidth,vh=window.innerHeight;
+    let left=x+14,top=y+14;
+    if(left+w>vw-8)left=x-w-14;
+    if(top+h>vh-8)top=y-h-14;
+    tip.style.left=Math.max(8,left)+'px';
+    tip.style.top=Math.max(8,top)+'px';
+    clearTimeout(hideTimer);
+  };
+  const hideTip=(delay=0)=>{
+    clearTimeout(hideTimer);
+    if(delay>0)hideTimer=setTimeout(()=>tip.classList.remove('visible'),delay);
+    else tip.classList.remove('visible');
+  };
   container.querySelectorAll('circle[data-slice]').forEach(c=>{
-    c.addEventListener('mousemove',e=>{
-      tip.innerHTML=`<div class="donut-tooltip-dot" style="background:${c.dataset.color}"></div>${c.dataset.label}<span class="donut-tooltip-val">${c.dataset.val}</span>`;
-      tip.classList.add('visible');
-      tip.style.left=(e.clientX+14)+'px';
-      tip.style.top=(e.clientY+14)+'px';
-    });
-    c.addEventListener('mouseleave',()=>tip.classList.remove('visible'));
+    c.addEventListener('mousemove',e=>showTip(c,e.clientX,e.clientY));
+    c.addEventListener('mouseleave',()=>hideTip());
+    c.addEventListener('touchstart',e=>{
+      const t=e.touches[0];if(!t)return;
+      e.stopPropagation();
+      showTip(c,t.clientX,t.clientY);
+    },{passive:true});
+    c.addEventListener('touchend',()=>hideTip(1800),{passive:true});
+    c.addEventListener('touchcancel',()=>hideTip(1200),{passive:true});
   });
+  document.addEventListener('touchstart',e=>{
+    if(!wrap.contains(e.target))hideTip();
+  },{passive:true});
 }
 
 const QA_TARGETS={
@@ -4116,7 +4250,7 @@ const VEH_DRAWINGS={
 const VEH_TYPE_LABELS={carro:'Carro',moto:'Moto',caminhao:'Caminhão',van:'Van',barco:'Barco','aero-leve':'Aeronave Leve','aero-pesada':'Aeronave Pesada'};
 const VEH_TYPE_DRAW_MAP={'carro':'carro','moto':'moto','caminhao':'caminhao','van':'van','barco':'barco','aero-leve':'aeronave','aero-pesada':'aeronave-pesada'};
 let customVehicles=[];
-let vehicleState={type:'carro',hp:650,hpMax:1000,improvement:12,desc:'',image:'',attrs:{velocidade:0,aceleracao:0,manuseio:0,frenagem:0,nitro:0,blindagem:0}};
+let vehicleState={type:'carro',hp:0,hpMax:0,improvement:0,desc:'',image:'',attrs:{velocidade:0,aceleracao:0,manuseio:0,frenagem:0,nitro:0,blindagem:0}};
 const ATTR_MAX=10;
 function attrPerfLabel(v){if(v>=9)return'Excepcional';if(v>=7)return'Alto';if(v>=5)return'Médio';if(v>=3)return'Baixo';if(v>0)return'Precário';return'Nulo'}
 function renderVehicleState(){
@@ -4134,14 +4268,16 @@ function renderVehicleState(){
   }
   const typeLabel=document.getElementById('veh-summary-type');
   if(typeLabel)typeLabel.textContent=(VEH_TYPE_LABELS[vehicleState.type]||'Carro')+' · modificações instaladas';
-  const hpMax=Math.max(1,vehicleState.hpMax);
-  const hpCur=Math.max(0,Math.min(hpMax,vehicleState.hp));
-  const pct=Math.round(hpCur/hpMax*100);
+  const hpMaxRaw=vehicleState.hpMax||0;
+  const hpMaxSafe=Math.max(1,hpMaxRaw);
+  const hpCur=Math.max(0,Math.min(hpMaxSafe,vehicleState.hp||0));
+  const pct=hpMaxRaw>0?Math.round(hpCur/hpMaxSafe*100):0;
   const pctEl=document.getElementById('veh-main-pct');
   if(pctEl)pctEl.innerHTML=`${pct}<span class="veh-pct-sym">%</span>`;
   renderVehBars(pct);
   const hpCurEl=document.getElementById('veh-hp-cur');if(hpCurEl)hpCurEl.textContent=hpCur;
-  const hpMaxEl=document.getElementById('veh-hp-max');if(hpMaxEl)hpMaxEl.textContent=hpMax;
+  const hpMaxEl=document.getElementById('veh-hp-max');if(hpMaxEl)hpMaxEl.textContent=hpMaxRaw;
+  const impEl=document.getElementById('veh-improve-pct');if(impEl)impEl.textContent=(vehicleState.improvement||0)+'%';
   Object.entries(vehicleState.attrs).forEach(([k,v])=>{
     const val=document.getElementById('veh-val-'+k);if(val)val.textContent=v;
   });
@@ -4386,6 +4522,107 @@ document.querySelectorAll('.veh-attr input').forEach(input=>{
     if(bar)bar.style.width=v+'%';
   });
 });
+// ═══ SPLASH / INTRO ═══
+window.addEventListener('load',()=>{
+  const sp=document.getElementById('app-splash');
+  if(sp)setTimeout(()=>sp.classList.add('gone'),2100);
+});
+
+// ═══ AUTOSAVE (localStorage) + CONFIRMAR RECARGA ═══
+const AUTOSAVE_KEY='ficha-eclipse-save';
+const AUTOSAVE_META='ficha-eclipse-save-meta';
+let _autosavePending=false,_autosaveTimer=null,_lastAutosaveAt=0;
+
+function autosaveNow(){
+  try{
+    if(typeof collectAllData!=='function')return false;
+    const data=collectAllData();
+    const json=JSON.stringify(data);
+    localStorage.setItem(AUTOSAVE_KEY,json);
+    localStorage.setItem(AUTOSAVE_META,JSON.stringify({at:Date.now(),size:json.length}));
+    _lastAutosaveAt=Date.now();
+    return true;
+  }catch(err){
+    // QuotaExceeded ou outro — ignora silenciosamente; reload ainda tem confirmação
+    console.warn('Autosave falhou:',err&&err.message);
+    return false;
+  }
+}
+function autosaveDebounced(ms=1200){
+  _autosavePending=true;
+  clearTimeout(_autosaveTimer);
+  _autosaveTimer=setTimeout(()=>{_autosavePending=false;autosaveNow()},ms);
+}
+function tryRestoreAutosave(){
+  try{
+    const raw=localStorage.getItem(AUTOSAVE_KEY);
+    if(!raw)return false;
+    const data=JSON.parse(raw);
+    if(!data||!data.version)return false;
+    if(typeof applyAllData!=='function')return false;
+    const ok=applyAllData(data);
+    if(ok&&typeof refreshAll==='function')refreshAll();
+    return ok;
+  }catch(err){console.warn('Restore autosave falhou:',err&&err.message);return false}
+}
+function clearAutosave(){try{localStorage.removeItem(AUTOSAVE_KEY);localStorage.removeItem(AUTOSAVE_META)}catch(_){}}
+
+// Restaura no boot
+window.addEventListener('load',()=>{
+  const restored=tryRestoreAutosave();
+  if(restored&&typeof toast==='function')setTimeout(()=>toast('Ficha restaurada automaticamente'),2400);
+});
+
+// Salva periodicamente enquanto o app está aberto
+setInterval(()=>{autosaveNow()},8000);
+
+// Salva quando o app vai pra background / o usuário minimiza
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='hidden')autosaveNow();
+});
+window.addEventListener('pagehide',autosaveNow);
+window.addEventListener('blur',()=>autosaveDebounced(300));
+
+// Confirmação de recarga / fechamento — protege contra pull-to-refresh acidental,
+// F5, gesto de fechar, etc. (em PWA instalado, salva de qualquer forma)
+window.addEventListener('beforeunload',e=>{
+  autosaveNow();
+  // Em alguns navegadores, qualquer texto ativa o prompt nativo
+  e.preventDefault();
+  e.returnValue='Sua ficha foi salva automaticamente. Sair mesmo assim?';
+  return e.returnValue;
+});
+
+// Atalho de teclado: Ctrl/Cmd + R pede confirmação extra
+window.addEventListener('keydown',e=>{
+  const isReload=(e.ctrlKey||e.metaKey)&&(e.key==='r'||e.key==='R'||e.key==='F5');
+  const isF5=e.key==='F5';
+  if(isReload||isF5){
+    autosaveNow();
+    const ok=confirm('Recarregar a Ficha Eclipse?\n\nSua ficha já foi salva automaticamente no celular, mas confirme antes de recarregar.');
+    if(!ok){e.preventDefault();e.stopPropagation();return false}
+  }
+});
+
+
+// ═══ IMMERSIVE (FULLSCREEN) MODE ═══
+function applyImmersiveMode(on){
+  document.body.dataset.immersive=on?'true':'false';
+  const icon=document.getElementById('fs-toggle-icon');
+  if(icon){
+    icon.innerHTML=on
+      ? '<path d="M9 4H5a1 1 0 0 0-1 1v4M15 4h4a1 1 0 0 1 1 1v4M9 20H5a1 1 0 0 1-1-1v-4M15 20h4a1 1 0 0 0 1-1v-4"/>'
+      : '<path d="M4 9V5a1 1 0 0 1 1-1h4M20 9V5a1 1 0 0 0-1-1h-4M4 15v4a1 1 0 0 0 1 1h4M20 15v4a1 1 0 0 1-1 1h-4"/>';
+  }
+}
+function toggleImmersiveMode(){
+  const on=document.body.dataset.immersive!=='true';
+  applyImmersiveMode(on);
+  try{localStorage.setItem('ficha-immersive',on?'1':'0')}catch(_){}
+  if(typeof toast==='function')toast(on?'Modo tela cheia ativado':'Modo seguro (respeita entalhe)');
+}
+try{applyImmersiveMode(localStorage.getItem('ficha-immersive')==='1')}catch(_){}
+
 // ═══ PWA / SERVICE WORKER ═══
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
@@ -4403,7 +4640,7 @@ window.addEventListener('appinstalled',()=>{
   deferredInstallPrompt=null;
   const btn=document.getElementById('pwa-install-btn');
   if(btn)btn.style.display='none';
-  if(typeof toast==='function')toast('ficha.dexport instalado ✓');
+  if(typeof toast==='function')toast('Ficha Eclipse instalado ✓');
 });
 function triggerPWAInstall(){
   if(!deferredInstallPrompt){if(typeof toast==='function')toast('Instalação não disponível neste navegador');return}

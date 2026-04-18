@@ -1,5 +1,5 @@
-/* ficha.dexport — service worker */
-const CACHE='ficha-dexport-v1';
+/* Ficha Eclipse — service worker */
+const CACHE='ficha-eclipse-v1';
 const ASSETS=[
   './',
   './index.html',
@@ -30,8 +30,26 @@ self.addEventListener('fetch',e=>{
   const req=e.request;
   if(req.method!=='GET')return;
   const url=new URL(req.url);
-  // Only intercept same-origin requests
   if(url.origin!==location.origin)return;
+
+  const isDoc=req.mode==='navigate'||req.destination==='document';
+  const isAsset=['script','style','worker'].includes(req.destination);
+
+  if(isDoc||isAsset){
+    // network-first: sempre tenta rede, cai pro cache só offline
+    e.respondWith(
+      fetch(req).then(resp=>{
+        if(resp&&resp.status===200&&resp.type==='basic'){
+          const clone=resp.clone();
+          caches.open(CACHE).then(c=>c.put(req,clone));
+        }
+        return resp;
+      }).catch(()=>caches.match(req).then(c=>c||caches.match('./index.html')))
+    );
+    return;
+  }
+
+  // cache-first para ícones, imagens e afins
   e.respondWith(
     caches.match(req).then(cached=>{
       if(cached)return cached;
@@ -41,7 +59,7 @@ self.addEventListener('fetch',e=>{
           caches.open(CACHE).then(c=>c.put(req,clone));
         }
         return resp;
-      }).catch(()=>caches.match('./index.html'));
+      }).catch(()=>cached);
     })
   );
 });

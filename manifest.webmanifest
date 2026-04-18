@@ -1,6 +1,6 @@
 {
-  "name": "ficha.dexport",
-  "short_name": "ficha.dexport",
+  "name": "Ficha Eclipse",
+  "short_name": "Ficha Eclipse",
   "description": "Ficha de personagem RPG — sistema completo de atributos, inventário, perícias e veículos.",
   "start_url": "./",
   "scope": "./",
