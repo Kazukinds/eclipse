@@ -1624,6 +1624,13 @@ input[type="number"]{-moz-appearance:textfield}
 /* Proficiencia — tag "Não possui" em cinza discreto (substitui travessão) */
 .prof-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:2px 8px;border-radius:10px;white-space:nowrap}
 
+/* Pills de "drena de" (status) no modal de Nova Habilidade — Córtex fica de fora */
+.skill-cost-pills{display:flex;flex-wrap:wrap;gap:4px;padding:4px 0}
+.skill-cost-pill{display:inline-flex;align-items:center;padding:5px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;background:var(--bg-input);border:1px solid var(--border);border-radius:12px;color:var(--text-dim);cursor:pointer;transition:all .15s;user-select:none}
+.skill-cost-pill input{display:none}
+.skill-cost-pill:hover{color:var(--c,var(--lime));border-color:color-mix(in srgb,var(--c,var(--lime)) 45%,var(--border))}
+.skill-cost-pill.active{color:var(--c,var(--lime));border-color:var(--c,var(--lime));background:color-mix(in srgb,var(--c,var(--lime)) 12%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c,var(--lime)) 30%,transparent)}
+
 /* Botão pequeno "+ Habilidade" no label de Passado/Caminho */
 .profile-field label{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .pf-add-skill{font-family:inherit;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:3px 8px;background:var(--lime-bg);border:1px solid var(--lime-dim);border-radius:12px;color:var(--lime);cursor:pointer;transition:all .15s;white-space:nowrap}
@@ -4454,15 +4461,26 @@ function renderProfile(){
   renderProfileLog();
 }
 
+const SKILL_COST_STATUSES=[
+  {key:'hp',label:'Vitalidade',color:'var(--red)'},
+  {key:'esforco',label:'Esforço',color:'#fb923c'},
+  {key:'foco',label:'Foco',color:'var(--blue)'},
+  {key:'determinacao',label:'Determinação',color:'var(--purple)'},
+  {key:'neural',label:'Neural',color:'var(--cyan)'}
+];
 function addSkillFromOrigin(origin){
   if(typeof currentModal!=='undefined')currentModal='skillOrigin';
   const title=document.getElementById('modal-title'),body=document.getElementById('modal-body');
   if(!title||!body)return;
   title.textContent=`Nova Habilidade · ${origin}`;
+  const statusPills=SKILL_COST_STATUSES.map((s,i)=>`<label class="skill-cost-pill${i===0?' active':''}" style="--c:${s.color}"><input type="radio" name="m-scost-status" value="${s.key}" ${i===0?'checked':''}><span>${s.label}</span></label>`).join('');
   body.innerHTML=`
     <div class="form-group"><label>Nome da habilidade</label><input type="text" id="m-sname-orig" placeholder="Ex: Técnica de sobrevivência"></div>
     <div class="form-group"><label>Descrição</label><textarea id="m-sdesc-orig" rows="3" placeholder="O que essa habilidade faz, quando pode ser usada..."></textarea></div>
-    <div class="form-group"><label>Custo (opcional)</label><input type="number" id="m-scost-orig" value="0" min="0" placeholder="0 = sem custo"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Custo (opcional)</label><input type="number" id="m-scost-orig" value="0" min="0" placeholder="0 = sem custo"></div>
+      <div class="form-group"><label>Drena de</label><div class="skill-cost-pills" id="m-scost-status-wrap">${statusPills}</div></div>
+    </div>
     <div style="font-size:11px;color:var(--text-dim);padding:8px 12px;background:var(--bg-card-inner);border:1px dashed var(--border);border-radius:8px;margin-bottom:12px">
       <b style="color:var(--lime)">Origem:</b> ${origin}. A habilidade vai aparecer na aba <b>Progresso</b>.
     </div>
@@ -4471,6 +4489,13 @@ function addSkillFromOrigin(origin){
       <button class="modal-btn primary" onclick="saveSkillFromOrigin('${origin}')">Adicionar</button>
     </div>`;
   document.getElementById('modal-overlay').classList.add('open');
+  // Sync visual estado da pill quando clica
+  document.querySelectorAll('#m-scost-status-wrap .skill-cost-pill').forEach(p=>{
+    p.addEventListener('click',()=>{
+      document.querySelectorAll('#m-scost-status-wrap .skill-cost-pill').forEach(x=>x.classList.remove('active'));
+      p.classList.add('active');
+    });
+  });
   setTimeout(()=>document.getElementById('m-sname-orig')?.focus(),200);
 }
 function saveSkillFromOrigin(origin){
@@ -4479,10 +4504,13 @@ function saveSkillFromOrigin(origin){
   if(!name){toast('Nome da habilidade é obrigatório');return}
   const desc=(document.getElementById('m-sdesc-orig')?.value||'').trim();
   const cost=parseInt(document.getElementById('m-scost-orig')?.value)||0;
+  const costStatus=document.querySelector('input[name="m-scost-status"]:checked')?.value||'hp';
   const iconKeys=Object.keys(typeof SVG!=='undefined'?SVG:{sword:1});
   const iconKey=iconKeys[Math.floor(Math.random()*iconKeys.length)]||'sword';
   const id=typeof nextSkillId!=='undefined'?nextSkillId++:Date.now();
-  skills.push({id,name,desc:desc?`[${origin}] ${desc}`:`[${origin}]`,cost,iconKey,origin});
+  const statusLabel=SKILL_COST_STATUSES.find(s=>s.key===costStatus)?.label||'Vitalidade';
+  const costTag=cost>0?` · ${cost} ${statusLabel}`:'';
+  skills.push({id,name,desc:desc?`[${origin}${costTag}] ${desc}`:`[${origin}${costTag}]`,cost,costStatus,iconKey,origin});
   renderSkills();
   if(typeof renderProfile==='function')renderProfile();
   closeModal();
