@@ -1,5 +1,5 @@
 /* Ficha Eclipse — service worker */
-const CACHE='ficha-eclipse-v29';
+const CACHE='ficha-eclipse-v30';
 const ASSETS=[
   './',
   './index.html',
