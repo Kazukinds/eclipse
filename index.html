@@ -752,7 +752,7 @@ input[type="number"]{-moz-appearance:textfield}
 .xp-track{height:16px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;overflow:hidden}
 .xp-fill{height:100%;background:var(--lime);border-radius:8px;position:relative;transition:width .3s}
 .xp-fill::after{display:none}
-.xp-gear{width:34px;height:34px;flex-shrink:0;margin-left:12px;background:var(--bg-input);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dim);transition:all .3s;transform:rotate(15deg)}
+.xp-gear{width:34px;height:34px;min-width:34px;min-height:34px;aspect-ratio:1/1;flex-shrink:0;flex-grow:0;margin-left:12px;background:var(--bg-input);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dim);transition:all .3s;transform:rotate(15deg);box-sizing:border-box;padding:0}
 .xp-gear:hover{color:var(--lime);border-color:var(--lime-dim);transform:rotate(90deg)}
 .xp-gear svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .progress-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
@@ -1441,7 +1441,13 @@ input[type="number"]{-moz-appearance:textfield}
   .peri-cat-grid{grid-template-columns:1fr}
   .pericia-list-flat{max-height:none}
   button,.sidebar-btn,.card-action-btn,.toggle-pill,.filter-pill,[onclick]{min-height:40px;touch-action:manipulation}
+  /* Botões circulares mantêm proporção 1:1 e não viram ovais */
+  .xp-gear,.attr-gear,.size-gear,.dual-gear,.veh-cfg-btn,.topbar-icon-btn,.fs-toggle,.modal-close,.register-close,.item-gear-float,.account-badge,.inv-ctrl-vbtn,.skill-use,.skill-del{min-height:auto!important;aspect-ratio:1/1}
+  .xp-gear{width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important}
   input,select,textarea{font-size:16px!important}
+}
+@media (pointer:coarse){
+  .xp-gear,.attr-gear,.size-gear,.dual-gear,.veh-cfg-btn,.fs-toggle{min-width:36px;min-height:36px;width:36px;height:36px;aspect-ratio:1/1}
 }
 /* Mobile landscape — bottom nav não conflita, aumenta densidade */
 @media (max-width:900px) and (orientation:landscape) and (max-height:500px){
@@ -1579,7 +1585,7 @@ body[data-immersive="true"] .main-wrapper{padding-left:env(safe-area-inset-left,
 }
 
 /* Botão flutuante de alternar modo tela cheia (mobile) */
-.fs-toggle{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:calc(8px + env(safe-area-inset-right,0px));z-index:180;width:34px;height:34px;border-radius:50%;background:rgba(15,15,17,.72);backdrop-filter:blur(10px);border:1px solid var(--border);color:var(--text-secondary);display:none;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:all .2s;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.fs-toggle{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:calc(8px + env(safe-area-inset-right,0px));z-index:180;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;max-width:36px!important;max-height:36px!important;aspect-ratio:1/1;flex-shrink:0;border-radius:50%;background:rgba(15,15,17,.72);backdrop-filter:blur(10px);border:1px solid var(--border);color:var(--text-secondary);display:none;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:all .2s;box-shadow:0 6px 18px rgba(0,0,0,.4);box-sizing:border-box;line-height:1}
 .fs-toggle:hover{color:var(--lime);border-color:var(--lime-dim)}
 .fs-toggle svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 @media (max-width:640px) and (orientation:portrait),(max-width:1024px) and (orientation:portrait){
