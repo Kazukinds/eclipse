@@ -1617,6 +1617,37 @@ input[type="number"]{-moz-appearance:textfield}
 /* Proficiencia — tag "Não possui" em cinza discreto (substitui travessão) */
 .prof-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:2px 8px;border-radius:10px;white-space:nowrap}
 
+/* ═══════════ MODAL DE CRÉDITO (redesenhado) ═══════════ */
+.credit-modal{display:flex;flex-direction:column;gap:16px}
+.credit-modal-head{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--radius-sm);border:1px solid var(--border)}
+.credit-modal-icon{width:44px;height:44px;min-width:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.credit-modal-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.credit-modal-head-info{flex:1;min-width:0}
+.credit-modal-sub{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;margin-bottom:2px}
+.credit-modal-balance{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--text-primary);display:flex;align-items:baseline;gap:4px;line-height:1}
+.credit-modal-balance .cmb-sym{font-size:14px;color:var(--text-dim);font-weight:600}
+
+.credit-amount-wrap{position:relative;display:flex;align-items:center;gap:8px;padding:4px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);transition:border-color .15s,box-shadow .15s}
+.credit-amount-wrap:focus-within{border-color:var(--c,var(--lime-dim));box-shadow:0 0 0 3px color-mix(in srgb,var(--c,var(--lime)) 15%,transparent)}
+.credit-amount-sign{font-size:22px;font-weight:800;font-family:'JetBrains Mono',monospace;min-width:16px;text-align:center}
+.credit-amount-sym{font-size:15px;font-weight:600;color:var(--text-dim);font-family:'JetBrains Mono',monospace}
+.credit-amount-wrap input{flex:1;padding:14px 4px!important;background:transparent!important;border:none!important;outline:none;box-shadow:none!important;font-family:'JetBrains Mono',monospace!important;font-size:22px!important;font-weight:700!important;color:var(--text-primary)!important;-moz-appearance:textfield;min-width:0}
+.credit-amount-wrap input::-webkit-outer-spin-button,.credit-amount-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+.credit-presets{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.credit-preset{flex:1;min-width:60px;padding:7px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:var(--radius-xs);color:var(--text-secondary);cursor:pointer;transition:all .15s}
+.credit-preset:hover{color:var(--c,var(--lime));border-color:color-mix(in srgb,var(--c,var(--lime)) 45%,var(--border));background:color-mix(in srgb,var(--c,var(--lime)) 8%,var(--bg-card-inner))}
+
+.credit-preview{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg-card-inner);border:1px dashed var(--border);border-radius:var(--radius-sm);transition:all .2s}
+.credit-preview.warn{border-color:var(--red);background:var(--red-dim)}
+.credit-preview.warn::before{content:'Saldo insuficiente · ';color:var(--red);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.credit-preview-label{font-size:11px;color:var(--text-dim);font-weight:600;text-transform:uppercase;letter-spacing:.6px}
+.credit-preview-val{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--text-primary)}
+
+.credit-desc-chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.credit-desc-chip{padding:5px 10px;font-size:11px;font-weight:600;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:14px;color:var(--text-dim);cursor:pointer;font-family:inherit;transition:all .15s}
+.credit-desc-chip:hover{color:var(--text-primary);border-color:var(--border-light);background:var(--bg-hover)}
+
 /* Sidebar fixa no mobile — força camada própria pra não "deslizar" */
 @media (max-width:640px) and (orientation:portrait){
   /* Credit summary — alinhamento consistente: rótulo ↔ valor + barrinha em pill */
@@ -4202,11 +4233,60 @@ function saveCurrencyName(){
 function openCreditModal(type){
   currentModal='credit';editId=type;
   const title=document.getElementById('modal-title'),body=document.getElementById('modal-body');
-  const titles={add:'Depositar '+currencyName,sub:'Retirar '+currencyName,transfer:'Transferir '+currencyName};
-  title.textContent=titles[type]||currencyName;
-  body.innerHTML=`<div class="form-group"><label>Valor</label><input type="number" id="m-credit-val" value="0" min="1" placeholder="Quantidade"></div><div class="form-group"><label>Descrição</label><input type="text" id="m-credit-desc" placeholder="Ex: Recompensa de missão"></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveCredit()">Confirmar</button></div>`;
+  const cfg={
+    add:{title:'Depositar',color:'var(--green)',bg:'var(--green-dim)',sign:'+',icon:'<polyline points="12 5 12 19"/><polyline points="5 12 12 19 19 12"/>',desc:['Recompensa de missão','Venda de item','Saque bancário','Presente']},
+    sub:{title:'Retirar',color:'var(--red)',bg:'var(--red-dim)',sign:'−',icon:'<polyline points="12 19 12 5"/><polyline points="5 12 12 5 19 12"/>',desc:['Compra','Taxa','Reparo','Aluguel']},
+    transfer:{title:'Transferir',color:'var(--blue)',bg:'var(--blue-dim)',sign:'⇄',icon:'<path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',desc:['Para aliado','Para grupo','Divisão de loot']}
+  };
+  const c=cfg[type]||cfg.add;
+  title.textContent=`${c.title} ${currencyName}`;
+  const presets=[10,50,100,500,1000];
+  const descSuggestions=c.desc.map(d=>`<button type="button" class="credit-desc-chip" onclick="document.getElementById('m-credit-desc').value='${d}';document.getElementById('m-credit-desc').focus()">${d}</button>`).join('');
+  body.innerHTML=`
+    <div class="credit-modal">
+      <div class="credit-modal-head" style="background:${c.bg};border-color:color-mix(in srgb,${c.color} 30%,transparent)">
+        <div class="credit-modal-icon" style="background:${c.color};color:#09090b"><svg viewBox="0 0 24 24">${c.icon}</svg></div>
+        <div class="credit-modal-head-info">
+          <div class="credit-modal-sub">Saldo atual</div>
+          <div class="credit-modal-balance"><span class="cmb-sym">${currencySymbol}</span><span id="cm-balance-now">${playerGold.toLocaleString()}</span></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Valor</label>
+        <div class="credit-amount-wrap" style="--c:${c.color}">
+          <span class="credit-amount-sign" style="color:${c.color}">${c.sign}</span>
+          <span class="credit-amount-sym">${currencySymbol}</span>
+          <input type="number" id="m-credit-val" value="" min="1" placeholder="0" oninput="updateCreditPreview()" onkeydown="if(event.key==='Enter')saveCredit()">
+        </div>
+        <div class="credit-presets">
+          ${presets.map(p=>`<button type="button" class="credit-preset" onclick="document.getElementById('m-credit-val').value=${p};updateCreditPreview();document.getElementById('m-credit-val').focus()">${currencySymbol}${p}</button>`).join('')}
+        </div>
+      </div>
+      <div class="credit-preview" id="cm-preview">
+        <span class="credit-preview-label">Após a operação</span>
+        <span class="credit-preview-val" id="cm-balance-after">${currencySymbol}${playerGold.toLocaleString()}</span>
+      </div>
+      <div class="form-group">
+        <label>Descrição</label>
+        <input type="text" id="m-credit-desc" placeholder="Ex: Recompensa de missão">
+        <div class="credit-desc-chips">${descSuggestions}</div>
+      </div>
+      <div class="modal-btns">
+        <button class="modal-btn secondary" onclick="closeModal()">Cancelar</button>
+        <button class="modal-btn primary" style="background:${c.color};color:#09090b" onclick="saveCredit()">Confirmar</button>
+      </div>
+    </div>`;
   document.getElementById('modal-overlay').classList.add('open');
   setTimeout(()=>document.getElementById('m-credit-val').focus(),200);
+}
+function updateCreditPreview(){
+  const v=parseInt(document.getElementById('m-credit-val').value)||0;
+  const type=editId;
+  const after=type==='add'?playerGold+v:playerGold-v;
+  const el=document.getElementById('cm-balance-after');
+  if(el)el.textContent=currencySymbol+after.toLocaleString();
+  const prev=document.getElementById('cm-preview');
+  if(prev)prev.classList.toggle('warn',type!=='add'&&v>playerGold);
 }
 
 function saveCredit(){
