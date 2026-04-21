@@ -2876,6 +2876,67 @@ body.vg-empty-mode .vg-right::before{content:"Nenhum veículo selecionado";displ
 .type-pill svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .type-pill input{display:none}
 
+/* ═══ VEHICLE COMPACT OVERRIDES — better space use ═══ */
+/* Default: tighter paddings + narrower side columns */
+.veh-layout{grid-template-columns:160px minmax(0,1fr) 280px !important;gap:8px !important}
+.vg-carousel{padding:8px 0 52px}
+.vg-car-track{gap:6px;padding:4px 6px}
+.vg-center{padding:8px;gap:6px}
+.vg-head{padding:8px 12px}
+.vg-stats{gap:6px}
+.vg-stat{padding:8px 10px}
+.vg-stat.large{padding:10px 12px}
+.vg-btns{gap:8px}
+.vg-btn{padding:10px 12px;font-size:11px;letter-spacing:1.2px}
+.vg-perf{padding:10px 12px}
+.vg-perf-row{padding:6px 2px}
+.vg-mods{padding:8px 10px}
+.vg-info{padding:10px 12px}
+.vg-info-grid{gap:6px 12px}
+.vg-plate{padding:8px 10px}
+.vg-attrs-row{gap:6px}
+.vg-attrs-row .vg-mini{padding:6px 4px;gap:4px}
+
+/* Intermediate breakpoint 1100-1400: right panel slides below as horizontal row */
+@media(min-width:1100px) and (max-width:1400px){
+  .veh-layout{grid-template-columns:150px minmax(0,1fr) !important;grid-template-rows:1fr auto !important;height:auto !important;max-height:none !important}
+  .vg-carousel{grid-row:1/3}
+  .vg-center{grid-column:2;grid-row:1}
+  .vg-right{grid-column:2;grid-row:2;flex-direction:row !important;gap:8px}
+  .vg-right > *{flex:1;min-width:0}
+  .vg-mods{max-height:220px}
+}
+
+/* <1100: single column, carousel horizontal */
+@media(max-width:1100px){
+  .veh-layout{grid-template-columns:1fr !important;height:auto !important;max-height:none !important;overflow:visible !important;gap:10px !important}
+  .vg-carousel{max-height:200px;padding:6px 0}
+  .vg-car-track{flex-direction:row;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;padding:4px 8px}
+  .vg-car-track::-webkit-scrollbar{display:none}
+  .vg-slot{flex-shrink:0;width:180px;aspect-ratio:16/11;scroll-snap-align:start}
+  .vg-car-footer{position:relative;bottom:auto;left:auto;right:auto;margin:6px 8px 0;height:auto}
+  .vg-right{flex-direction:row;flex-wrap:wrap;gap:8px}
+  .vg-right > *{flex:1 1 calc(50% - 4px);min-width:140px}
+  .vg-mods{flex:1 1 100%;min-height:260px}
+}
+
+/* <640 mobile: extra tight */
+@media(max-width:640px){
+  .veh-layout{gap:8px !important;padding-bottom:80px}
+  .vg-carousel{max-height:170px}
+  .vg-slot{width:150px}
+  .vg-stat{padding:7px 8px}
+  .vg-stat-val{font-size:16px}
+  .vg-stat.large .vg-stat-val{font-size:19px}
+  .vg-btn{padding:9px 10px;font-size:10.5px}
+  .vg-attrs-row .vg-mini{padding:5px 3px}
+  .vg-attrs-row .vg-mini-val b{font-size:20px}
+  .vg-attrs-row .vg-mini-ico{width:22px;height:22px}
+  .vg-right{flex-direction:column}
+  .vg-right > *{flex:1 1 100%}
+  .vg-plate-text{font-size:22px;letter-spacing:5px}
+}
+
 /* ═══ LIGHT THEME ═══ */
 /* ═══ PERICIAS ═══ */
 .pericias-section{margin-top:16px}
