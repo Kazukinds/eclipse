@@ -3123,6 +3123,47 @@ body.vg-empty-mode .vg-right::before{content:"Nenhum veículo selecionado";displ
 [data-theme="light"] .item-overlay{background:linear-gradient(145deg,#f8f8fa,#ededf0)}
 [data-theme="light"] .qa-field{background:var(--bg-card-inner)}
 [data-theme="light"] .modal{box-shadow:var(--shadow-lg),0 0 0 1px rgba(0,0,0,.05)}
+
+/* ═══ BOTTOM-SHEET MODALS (mobile vertical) ═══ */
+@media(max-width:640px) and (orientation:portrait){
+  .modal-overlay{align-items:flex-end !important;padding:0 !important}
+  .modal{
+    width:100% !important;max-width:100% !important;
+    max-height:92vh !important;max-height:92dvh !important;
+    border-radius:20px 20px 0 0 !important;
+    border-bottom:none !important;
+    padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px)) 18px !important;
+    transform:translateY(100%) !important;
+    transition:transform .32s cubic-bezier(.2,.8,.2,1) !important;
+    box-shadow:0 -20px 50px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.04) !important;
+    position:relative;
+  }
+  .modal::before{
+    content:"";position:sticky;top:-12px;display:block;
+    width:44px;height:4px;margin:-4px auto 12px;
+    background:var(--border-light);border-radius:2px;
+    opacity:.7;
+  }
+  .modal-overlay.open .modal{transform:translateY(0) !important}
+  .modal-header{position:sticky;top:0;background:var(--bg-card);padding:4px 0 10px;margin:-4px 0 12px;border-bottom:1px solid var(--border);z-index:2}
+  .modal-btns{position:sticky;bottom:0;background:var(--bg-card);padding:12px 0 0;margin:12px 0 0;border-top:1px solid var(--border);z-index:2}
+  [data-theme="light"] .modal-header,[data-theme="light"] .modal-btns{background:var(--bg-card)}
+  /* Register overlay também vira bottom-sheet */
+  .register-overlay{align-items:flex-end !important}
+  .register-panel{
+    border-radius:20px 20px 0 0 !important;
+    max-height:95vh !important;max-height:95dvh !important;
+    padding-bottom:env(safe-area-inset-bottom,0px) !important;
+  }
+  /* App-confirm também */
+  .app-confirm-overlay{align-items:flex-end !important;padding:0 !important}
+  .app-confirm-box{
+    width:100% !important;border-radius:18px 18px 0 0 !important;
+    padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px)) 20px !important;
+    transform:translateY(100%) !important;
+  }
+  .app-confirm-overlay.open .app-confirm-box{transform:translateY(0) !important}
+}
 [data-theme="light"] .toast{background:var(--bg-card);border-color:var(--lime-dim);color:var(--lime-dim)}
 [data-theme="light"] .sidebar-btn svg{stroke:var(--text-secondary)}
 [data-theme="light"] .sidebar-btn:hover svg{stroke:var(--text-primary)}
