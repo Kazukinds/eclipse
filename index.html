@@ -4554,20 +4554,21 @@ window.toggleSound=function(){
     src.connect(f);f.connect(g);g.connect(a.destination);
     src.start(t0);
   }
+  function buzz(pattern){if(!navigator.vibrate)return;try{navigator.vibrate(pattern)}catch(_){}}
   window.sfx={
-    coin:()=>{tone(988,.08,'triangle',.18);setTimeout(()=>tone(1318,.12,'triangle',.16),55)},
-    coinBig:()=>{tone(784,.09,'triangle',.18);setTimeout(()=>tone(1046,.09,'triangle',.17),60);setTimeout(()=>tone(1568,.16,'triangle',.14),120)},
-    spend:()=>{tone(440,.12,'sawtooth',.12,220)},
-    damage:()=>{noise(.18,.35,800);tone(120,.15,'sawtooth',.18,60)},
-    heal:()=>{tone(523,.1,'sine',.14);setTimeout(()=>tone(784,.18,'sine',.14),80)},
-    levelup:()=>{tone(523,.08,'triangle',.16);setTimeout(()=>tone(659,.08,'triangle',.16),70);setTimeout(()=>tone(784,.08,'triangle',.16),140);setTimeout(()=>tone(1046,.22,'triangle',.18),210)},
-    critical:()=>{tone(1568,.05,'square',.12);setTimeout(()=>tone(2093,.12,'square',.14),40)},
+    coin:()=>{tone(988,.08,'triangle',.18);setTimeout(()=>tone(1318,.12,'triangle',.16),55);buzz(15)},
+    coinBig:()=>{tone(784,.09,'triangle',.18);setTimeout(()=>tone(1046,.09,'triangle',.17),60);setTimeout(()=>tone(1568,.16,'triangle',.14),120);buzz([15,40,25])},
+    spend:()=>{tone(440,.12,'sawtooth',.12,220);buzz(10)},
+    damage:()=>{noise(.18,.35,800);tone(120,.15,'sawtooth',.18,60);buzz([40,20,40])},
+    heal:()=>{tone(523,.1,'sine',.14);setTimeout(()=>tone(784,.18,'sine',.14),80);buzz(20)},
+    levelup:()=>{tone(523,.08,'triangle',.16);setTimeout(()=>tone(659,.08,'triangle',.16),70);setTimeout(()=>tone(784,.08,'triangle',.16),140);setTimeout(()=>tone(1046,.22,'triangle',.18),210);buzz([20,40,20,40,50])},
+    critical:()=>{tone(1568,.05,'square',.12);setTimeout(()=>tone(2093,.12,'square',.14),40);buzz([30,20,60])},
     hover:()=>{tone(2200,.03,'sine',.04)},
     tick:()=>{tone(1800,.02,'square',.06)},
-    save:()=>{tone(660,.06,'sine',.12);setTimeout(()=>tone(880,.1,'sine',.13),50)},
-    unlock:()=>{tone(392,.06,'triangle',.12);setTimeout(()=>tone(523,.06,'triangle',.13),60);setTimeout(()=>tone(784,.14,'triangle',.14),120)},
-    error:()=>{tone(220,.12,'square',.14,110)},
-    whoosh:()=>{noise(.25,.18,1200)}
+    save:()=>{tone(660,.06,'sine',.12);setTimeout(()=>tone(880,.1,'sine',.13),50);buzz(12)},
+    unlock:()=>{tone(392,.06,'triangle',.12);setTimeout(()=>tone(523,.06,'triangle',.13),60);setTimeout(()=>tone(784,.14,'triangle',.14),120);buzz(18)},
+    error:()=>{tone(220,.12,'square',.14,110);buzz([60,30,60])},
+    whoosh:()=>{noise(.25,.18,1200);buzz(8)}
   };
 })();
 window.addEventListener('DOMContentLoaded',()=>{
@@ -9429,6 +9430,25 @@ _safe(renderGridCfgOptions,'renderGridCfgOptions');
 _safe(()=>initCustomSelects(),'initCustomSelects');
 setTimeout(()=>_safe(()=>drawChart(true),'drawChart'),100);
 window.addEventListener('resize',()=>_safe(()=>drawChart(false),'drawChartResize'));
+
+// ═══ OFFLINE INDICATOR ═══
+(function(){
+  let wasOnline=navigator.onLine;
+  function announce(){
+    const on=navigator.onLine;
+    if(on===wasOnline)return;
+    wasOnline=on;
+    if(typeof toast==='function'){
+      if(on)toast('Conectado novamente','success');
+      else toast('Você está offline — funcionando com cache','warning');
+    }
+    try{if(window.sfx){on?sfx.unlock():sfx.error()}}catch(_){}
+    document.documentElement.dataset.online=on?'1':'0';
+  }
+  window.addEventListener('online',announce);
+  window.addEventListener('offline',announce);
+  document.documentElement.dataset.online=navigator.onLine?'1':'0';
+})();
 
 // ═══ SWIPE-TO-DISMISS (bottom-sheet modals em mobile) ═══
 (function(){
