@@ -2084,6 +2084,7 @@ body.mount-mode #tab-vehicles .mount-wrap{display:flex;opacity:1;transform:trans
 .vg-car-edge::after{content:"";position:absolute;top:50%;right:3px;transform:translateY(-50%);width:3px;height:42px;border-radius:2px;background:rgba(var(--rg,203,213,225),.75);box-shadow:0 0 8px rgba(var(--rg,203,213,225),.4)}
 /* Rodapé com dois botões (novo + galeria) */
 .vg-car-footer{position:absolute;bottom:6px;left:6px;right:12px;height:42px;display:grid;grid-template-columns:1fr 1fr;gap:6px;z-index:5}
+.vg-car-footer-single{grid-template-columns:1fr}
 .vg-car-btn{border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;font-family:inherit;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase}
 .vg-car-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .vg-car-btn.primary{background:linear-gradient(135deg,var(--lime),color-mix(in srgb,var(--lime) 75%,#000));color:#0a0a0f;border:2px solid color-mix(in srgb,var(--lime) 60%,#000);box-shadow:0 4px 12px color-mix(in srgb,var(--lime) 32%,transparent)}
@@ -4135,9 +4136,8 @@ body.vg-empty-mode .vg-right::before{content:"Nenhum veículo selecionado";displ
         <!-- ════ ESQUERDA — Carrossel de veículos ════ -->
         <aside class="vg-carousel" id="vg-carousel">
           <div class="vg-car-track" id="vg-car-track"></div>
-          <div class="vg-car-footer">
+          <div class="vg-car-footer vg-car-footer-single">
             <button class="vg-car-btn primary" onclick="openNewVehicleChoice()" title="Novo veículo"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-            <button class="vg-car-btn secondary" onclick="openVehicleGalleryPanel()" title="Ver todos os veículos"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></button>
           </div>
           <div class="vg-car-edge" id="vg-car-edge" title="Arrastar ou clicar para expandir"></div>
         </aside>
