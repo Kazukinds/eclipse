@@ -7325,16 +7325,25 @@ async function vgGalBulkDelete(){
   const n=_vgGalSelected.size;
   const ok=await appConfirm(`Apagar ${n} veículo${n>1?'s':''}?`,{title:'Confirmar remoção',okLabel:'Apagar',danger:true});
   if(!ok)return;
+  const defaults=['carro','moto','caminhao','van','barco','aeronave'];
   const arr=[..._vgGalSelected];
   arr.forEach(t=>{
-    try{delete vehiclesData[t]}catch(_){}
-    try{if(typeof garageList!=='undefined')garageList=garageList.filter(x=>x!==t)}catch(_){}
+    try{userGarage=userGarage.filter(k=>k!==t)}catch(_){}
+    try{
+      const i=VEH_TYPES_ORDER.indexOf(t);
+      if(i>=0&&!defaults.includes(t))VEH_TYPES_ORDER.splice(i,1);
+    }catch(_){}
+    try{if(vehiclesData&&!defaults.includes(t))delete vehiclesData[t]}catch(_){}
   });
-  if(typeof vgPersist==='function')vgPersist();
-  if(typeof saveSheet==='function')saveSheet();
+  if(!userGarage.length&&typeof userGarage!=='undefined')userGarage.push('carro');
+  if(!userGarage.includes(currentVehicle)&&typeof switchVehicle==='function'){
+    const next=userGarage[0];if(next)switchVehicle(next);
+  }
   _vgGalSelected.clear();
   _vgGalMulti=false;
   if(typeof renderGarageList==='function')renderGarageList();
+  if(typeof renderVehPerf==='function')renderVehPerf();
+  if(typeof saveSheet==='function')saveSheet();
   if(typeof toast==='function')toast(`${n} veículo${n>1?'s':''} apagado${n>1?'s':''}`,'success');
   try{window.sfx&&sfx.whoosh()}catch(_){}
   renderVehicleGallery();
