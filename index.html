@@ -2646,6 +2646,72 @@ body.vg-empty-mode .vg-right::before{content:"Nenhum veículo selecionado";displ
 .vg-gal-grid.multi .vg-gal-card{cursor:pointer}
 .vg-gal-grid.multi .vg-gal-actions{pointer-events:none;opacity:.4}
 
+/* Detail popover — aparece ao clicar no card fora de multi-select */
+.vg-gal-detail{
+  position:fixed;z-index:720;
+  left:50%;top:50%;transform:translate(-50%,-50%) scale(.94);
+  width:min(560px,calc(100vw - 32px));max-height:min(86vh,680px);
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:16px;box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.04);
+  overflow:hidden;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transition:opacity .22s,transform .22s cubic-bezier(.2,.8,.2,1);
+}
+.vg-gal-detail.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+.vg-gal-detail-overlay{
+  position:fixed;inset:0;z-index:715;background:rgba(0,0,0,.55);
+  opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+}
+.vg-gal-detail-overlay.open{opacity:1;pointer-events:auto}
+.vg-gal-detail-head{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;
+  border-bottom:1px solid var(--border);background:var(--bg-card-inner);flex-shrink:0;
+}
+.vg-gal-detail-head h3{flex:1;font-size:14px;font-weight:800;color:var(--text-primary);letter-spacing:.3px;font-family:'Orbitron','Inter',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vg-gal-detail-close{width:28px;height:28px;border-radius:50%;background:var(--bg-input);border:1px solid var(--border);color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:all .15s}
+.vg-gal-detail-close:hover{color:var(--red);background:color-mix(in srgb,var(--red) 14%,var(--bg-input));border-color:color-mix(in srgb,var(--red) 40%,transparent);transform:rotate(90deg)}
+.vg-gal-detail-close svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+.vg-gal-detail-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.vg-gal-detail-hero{
+  position:relative;aspect-ratio:16/9;width:100%;
+  background:radial-gradient(ellipse at 50% 40%,rgba(var(--rg),.22),rgba(0,0,0,.55));
+  border-radius:12px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(var(--rg),.35);
+}
+.vg-gal-detail-hero img,.vg-gal-detail-hero video{max-width:96%;max-height:96%;object-fit:contain;filter:drop-shadow(0 14px 20px rgba(0,0,0,.5))}
+.vg-gal-detail-hero .nopic{display:flex;flex-direction:column;gap:8px;color:var(--text-dim);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;align-items:center}
+.vg-gal-detail-hero .nopic svg{width:44px;height:44px;stroke:currentColor;fill:none;stroke-width:1.4;opacity:.5}
+.vg-gal-detail-tags{position:absolute;top:10px;right:10px;display:flex;gap:6px}
+.vg-gal-detail-tags .tag{background:var(--rc);color:#0a0a0f;font-size:10px;font-weight:800;padding:3px 10px;border-radius:6px;letter-spacing:.6px;text-transform:uppercase;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.vg-gal-detail-tags .plate{background:rgba(250,250,252,.94);color:#0a0a0f;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;letter-spacing:1px}
+.vg-gal-detail-info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px;padding:12px 14px;background:var(--bg-input);border:1px solid var(--border);border-radius:10px}
+.vg-gal-detail-info-row{display:flex;flex-direction:column;gap:2px;min-width:0}
+.vg-gal-detail-info-row span{font-size:9.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.6px;font-weight:700}
+.vg-gal-detail-info-row b{font-size:13px;color:var(--text-primary);font-family:'JetBrains Mono',monospace;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vg-gal-detail-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.vg-gal-detail-stats > div{background:var(--bg-input);border:1px solid var(--border);border-radius:8px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.vg-gal-detail-stats span{font-size:9px;color:var(--text-dim);font-weight:800;letter-spacing:.7px;text-transform:uppercase}
+.vg-gal-detail-stats b{font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--text-primary);font-weight:800}
+.vg-gal-detail-hp{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg-input);border:1px solid var(--border);border-radius:10px}
+.vg-gal-detail-hp-label{font-size:10px;color:var(--text-dim);font-weight:800;letter-spacing:.8px;text-transform:uppercase}
+.vg-gal-detail-hp-bar{flex:1;height:6px;background:var(--bg-card);border-radius:3px;overflow:hidden}
+.vg-gal-detail-hp-fill{height:100%;background:linear-gradient(90deg,var(--lime),var(--cyan));border-radius:3px;transition:width .4s}
+.vg-gal-detail-hp-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:var(--lime)}
+.vg-gal-detail-actions{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--border);background:var(--bg-card-inner);flex-shrink:0}
+.vg-gal-detail-actions button{flex:1;padding:10px;font-family:inherit;font-size:12px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;border-radius:8px;cursor:pointer;transition:all .15s;border:1px solid var(--border-light);background:var(--bg-input);color:var(--text-primary);display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.vg-gal-detail-actions button:hover{border-color:var(--lime-dim);color:var(--lime)}
+.vg-gal-detail-actions button.primary{background:var(--lime);color:#09090b;border-color:var(--lime)}
+.vg-gal-detail-actions button.primary:hover{filter:brightness(1.08);color:#09090b}
+.vg-gal-detail-actions button.danger{background:var(--red-dim);color:var(--red);border-color:color-mix(in srgb,var(--red) 45%,transparent)}
+.vg-gal-detail-actions button.danger:hover{background:color-mix(in srgb,var(--red) 20%,var(--bg-input));color:var(--red)}
+.vg-gal-detail-actions button svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:480px){
+  .vg-gal-detail{width:100%;max-height:92dvh;border-radius:18px 18px 0 0;top:auto;bottom:0;left:0;transform:translateY(100%)}
+  .vg-gal-detail.open{transform:translateY(0)}
+  .vg-gal-detail-info{grid-template-columns:1fr}
+}
+
 /* Toolbar header */
 .vg-gal-tools{
   display:flex;gap:8px;align-items:center;
@@ -7269,7 +7335,7 @@ function renderVehicleGallery(){
     const cor=ident.cor||'—';
     const escAttr=s=>String(s||'').replace(/"/g,'&quot;');
     const isSel=selected.has(t);
-    return `<div class="vg-gal-card ${active}${isSel?' sel':''}" data-q="${q.k}" data-t="${t}" style="--rc:${q.color};--rg:${q.glow}"${multi?` onclick="vgGalToggleSel('${t}')"`:''}>
+    return `<div class="vg-gal-card ${active}${isSel?' sel':''}" data-q="${q.k}" data-t="${t}" style="--rc:${q.color};--rg:${q.glow}">
       <button class="vg-gal-check" aria-label="Selecionar"><svg viewBox="0 0 24 24"><polyline points="6 12 10 16 18 7"/></svg></button>
       <button class="vg-gal-del" onclick="event.stopPropagation();removeVgSlot('${t}')" title="Remover veículo" aria-label="Remover"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
       <div class="vg-gal-media" data-wm="${wm}">${img||'<div class="vg-gal-noimg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>'}
@@ -7314,6 +7380,99 @@ function vgGalToggleSel(t){
   try{window.sfx&&sfx.tick()}catch(_){}
   renderVehicleGallery();
 }
+
+// Card click handler com detecção de scroll (tap vs drag)
+(function(){
+  let startX=0,startY=0,scrolled=false;
+  function isCardBtn(el){
+    return !!(el&&el.closest&&(el.closest('.vg-gal-del')||el.closest('.vg-gal-actions')||el.closest('.vg-gal-btn')));
+  }
+  document.addEventListener('pointerdown',e=>{
+    const card=e.target.closest?.('.vg-gal-card');
+    if(!card)return;
+    startX=e.clientX;startY=e.clientY;scrolled=false;
+  },true);
+  document.addEventListener('pointermove',e=>{
+    if(!e.buttons)return;
+    if(Math.abs(e.clientY-startY)>10||Math.abs(e.clientX-startX)>10)scrolled=true;
+  },true);
+  document.addEventListener('click',e=>{
+    const card=e.target.closest?.('.vg-gal-card');
+    if(!card)return;
+    if(isCardBtn(e.target))return; // btn handles itself
+    if(scrolled)return; // foi scroll, não click
+    const t=card.dataset.t;
+    if(!t)return;
+    if(_vgGalMulti){
+      vgGalToggleSel(t);
+    } else {
+      openVgGalDetail(t);
+    }
+  },false);
+})();
+
+function openVgGalDetail(t){
+  const v=vehiclesData[t]||{};
+  const a=v.attrs||{};
+  const q=vgQualityOf(t);
+  const ident=v.ident||{};
+  const name=(v.nome&&v.nome.trim())||VEH_TYPE_LABELS[t]||t;
+  const plate=(v._plate&&v._plate.text)||'—';
+  const hp=v.hp||0,hpMax=v.hpMax||0;
+  const pct=hpMax?Math.max(0,Math.min(100,Math.round(hp/hpMax*100))):0;
+  const img=v.image?vgMediaHTML(v):`<div class="nopic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Sem imagem</span></div>`;
+  const esc=s=>String(s||'').replace(/</g,'&lt;');
+  const active=t===currentVehicle;
+  let ov=document.getElementById('vg-gal-detail-overlay');
+  let el=document.getElementById('vg-gal-detail');
+  if(!ov){ov=document.createElement('div');ov.id='vg-gal-detail-overlay';ov.className='vg-gal-detail-overlay';ov.onclick=closeVgGalDetail;document.body.appendChild(ov)}
+  if(!el){el=document.createElement('div');el.id='vg-gal-detail';el.className='vg-gal-detail';document.body.appendChild(el)}
+  el.style.setProperty('--rc',q.color);
+  el.style.setProperty('--rg',q.glow);
+  el.innerHTML=`
+    <div class="vg-gal-detail-head">
+      <h3 title="${esc(name)}">${esc(name)}</h3>
+      <button class="vg-gal-detail-close" onclick="closeVgGalDetail()" aria-label="Fechar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="vg-gal-detail-body">
+      <div class="vg-gal-detail-hero" style="--rc:${q.color};--rg:${q.glow}">
+        ${img}
+        <div class="vg-gal-detail-tags"><span class="tag">${q.name}</span>${plate&&plate!=='—'?`<span class="plate">${esc(plate)}</span>`:''}</div>
+      </div>
+      <div class="vg-gal-detail-hp">
+        <span class="vg-gal-detail-hp-label">Integridade</span>
+        <div class="vg-gal-detail-hp-bar"><div class="vg-gal-detail-hp-fill" style="width:${pct}%"></div></div>
+        <span class="vg-gal-detail-hp-val">${pct}% · ${hp}/${hpMax}</span>
+      </div>
+      <div class="vg-gal-detail-info">
+        <div class="vg-gal-detail-info-row"><span>Tipo</span><b>${esc(ident.tipo||VEH_TYPE_LABELS[t]||'—')}</b></div>
+        <div class="vg-gal-detail-info-row"><span>Modelo</span><b>${esc(ident.modelo||'—')}</b></div>
+        <div class="vg-gal-detail-info-row"><span>Ano</span><b>${esc(ident.ano||'—')}</b></div>
+        <div class="vg-gal-detail-info-row"><span>Cor</span><b>${esc(ident.cor||'—')}</b></div>
+      </div>
+      <div class="vg-gal-detail-stats">
+        <div><span>Vel</span><b>${a.velocidade||0}</b></div>
+        <div><span>Ace</span><b>${a.aceleracao||0}</b></div>
+        <div><span>Man</span><b>${a.manuseio||0}</b></div>
+        <div><span>Fre</span><b>${a.frenagem||0}</b></div>
+      </div>
+    </div>
+    <div class="vg-gal-detail-actions">
+      ${active?'<button disabled style="opacity:.6"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Atual</button>':`<button class="primary" onclick="selectGarageVehicle('${t}');closeVgGalDetail();closeVehicleGalleryPanel()"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Selecionar</button>`}
+      <button class="danger" onclick="closeVgGalDetail();removeVgSlot('${t}')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>Apagar</button>
+    </div>`;
+  requestAnimationFrame(()=>{ov.classList.add('open');el.classList.add('open')});
+  document.addEventListener('keydown',_vgGalDetailEsc);
+  try{window.sfx&&sfx.pop&&sfx.pop()}catch(_){}
+}
+function closeVgGalDetail(){
+  const ov=document.getElementById('vg-gal-detail-overlay');
+  const el=document.getElementById('vg-gal-detail');
+  if(ov)ov.classList.remove('open');
+  if(el)el.classList.remove('open');
+  document.removeEventListener('keydown',_vgGalDetailEsc);
+}
+function _vgGalDetailEsc(e){if(e.key==='Escape')closeVgGalDetail()}
 function vgGalSelectAll(){
   const list=getGarageList();
   if(_vgGalSelected.size===list.length)_vgGalSelected.clear();
