@@ -3407,6 +3407,10 @@ body.vg-empty-mode .vg-right::before{content:"Nenhum veículo selecionado";displ
 .ia-badge{position:absolute;top:4px;right:4px;min-width:14px;height:14px;padding:0 4px;border-radius:8px;background:var(--lime);color:#09090b;font-size:9px;font-weight:800;display:none;align-items:center;justify-content:center;line-height:1;font-family:'JetBrains Mono',monospace;box-shadow:0 0 0 2px var(--bg-body)}
 .ia-badge.show{display:inline-flex}
 
+/* Admin panel buttons */
+.admin-btn{justify-content:flex-start !important;gap:10px !important;padding:10px 14px !important;text-transform:none !important;letter-spacing:normal !important;font-weight:600 !important}
+.admin-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
 /* ═══ SKILL LIBRARY PICKER ═══ */
 .sklib-toolbar{display:flex;gap:8px;margin-bottom:12px}
 .sklib-toolbar input{flex:1;padding:10px 14px;background:var(--bg-input);border:1px solid var(--border);border-radius:10px;color:var(--text-primary);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
@@ -10037,6 +10041,28 @@ _safe(()=>initCustomSelects(),'initCustomSelects');
 setTimeout(()=>_safe(()=>drawChart(true),'drawChart'),100);
 window.addEventListener('resize',()=>_safe(()=>drawChart(false),'drawChartResize'));
 
+// ═══ MIGRAÇÃO v2 — reseta créditos/esforço/neural/córtex ═══
+(function(){
+  const KEY='ficha-eclipse-migration-v2';
+  if(localStorage.getItem(KEY)==='done')return;
+  try{
+    if(typeof playerGold!=='undefined')playerGold=0;
+    if(typeof creditLog!=='undefined')creditLog.length=0;
+    if(typeof creditTotalIn!=='undefined')creditTotalIn=0;
+    if(typeof creditTotalOut!=='undefined')creditTotalOut=0;
+    if(typeof playerStatus==='object'&&playerStatus){
+      ['esforco','neural','cortex'].forEach(k=>{
+        if(playerStatus[k]){playerStatus[k].val=0;playerStatus[k].max=0;playerStatus[k].bonus=0}
+      });
+    }
+    localStorage.setItem(KEY,'done');
+    if(typeof renderCredit==='function')setTimeout(renderCredit,100);
+    if(typeof renderStatus==='function')setTimeout(renderStatus,100);
+    if(typeof saveSheet==='function')setTimeout(saveSheet,200);
+    console.log('[migration v2] ficha resetada: créditos + esforço/neural/córtex');
+  }catch(e){console.warn('[migration v2]',e)}
+})();
+
 // ═══ ADMIN PANEL ═══
 (function(){
   const ADMIN_PASS_KEY='ficha-eclipse-admin-pass';
@@ -10066,11 +10092,11 @@ window.addEventListener('resize',()=>_safe(()=>drawChart(false),'drawChartResize
       </div>
       <div class="form-group"><label>Ações restritas</label>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <button class="modal-btn secondary" onclick="(function(){const p=prompt('Nova senha:');if(p&&p.length>=4){localStorage.setItem('${ADMIN_PASS_KEY}',p);toast('Senha atualizada','success')}else if(p)toast('Senha curta','error')})()" style="justify-content:flex-start">🔑 Trocar senha admin</button>
-          <button class="modal-btn secondary" onclick="if(confirm('Resetar TODAS as variáveis do personagem (HP/XP/stats/perícias/inventário)?')){['ficha-eclipse-save','ficha-eclipse-save-meta','mount-data'].forEach(k=>localStorage.removeItem(k));location.reload()}" style="justify-content:flex-start">♻ Resetar ficha (hard)</button>
-          <button class="modal-btn secondary" onclick="console.log(collectAllData?collectAllData():'no');toast('Dump no console','info')" style="justify-content:flex-start">📋 Dump de dados (console)</button>
-          <button class="modal-btn secondary" onclick="(function(){const v=prompt('Gold para setar:');if(v!==null){playerGold=parseInt(v)||0;renderCredit();toast('Gold setado: '+playerGold,'success')}})()" style="justify-content:flex-start">💰 Set gold</button>
-          <button class="modal-btn secondary" onclick="(function(){const v=prompt('Nível para setar:');if(v!==null){playerLevel=parseInt(v)||1;renderXP();renderSummary();toast('Nível: '+playerLevel,'success')}})()" style="justify-content:flex-start">⭐ Set nível</button>
+          <button class="modal-btn secondary admin-btn" onclick="(function(){const p=prompt('Nova senha:');if(p&&p.length>=4){localStorage.setItem('${ADMIN_PASS_KEY}',p);toast('Senha atualizada','success')}else if(p)toast('Senha curta','error')})()"><svg viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.78 7.78 5.5 5.5 0 0 1 7.78-7.78zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>Trocar senha admin</button>
+          <button class="modal-btn secondary admin-btn" onclick="if(confirm('Resetar TODAS as variáveis do personagem (HP/XP/stats/perícias/inventário)?')){['ficha-eclipse-save','ficha-eclipse-save-meta','mount-data'].forEach(k=>localStorage.removeItem(k));location.reload()}"><svg viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/><path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"/></svg>Resetar ficha (hard)</button>
+          <button class="modal-btn secondary admin-btn" onclick="console.log(collectAllData?collectAllData():'no');toast('Dump no console','info')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Dump de dados (console)</button>
+          <button class="modal-btn secondary admin-btn" onclick="(function(){const v=prompt('Gold para setar:');if(v!==null){playerGold=parseInt(v)||0;renderCredit();toast('Gold setado: '+playerGold,'success')}})()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 8.5c-.7-.8-1.6-1.5-3-1.5-2.2 0-4 1.8-4 4s1.8 4 4 4c1.4 0 2.3-.7 3-1.5"/></svg>Set gold</button>
+          <button class="modal-btn secondary admin-btn" onclick="(function(){const v=prompt('Nível para setar:');if(v!==null){playerLevel=parseInt(v)||1;renderXP();renderSummary();toast('Nível: '+playerLevel,'success')}})()"><svg viewBox="0 0 24 24"><polygon points="12 2 15 8.5 22 9.3 17 14 18.2 21 12 17.8 5.8 21 7 14 2 9.3 9 8.5"/></svg>Set nível</button>
         </div>
       </div>
       <div class="modal-btns">
@@ -10572,27 +10598,21 @@ document.querySelectorAll('.chart-time-pill').forEach(btn=>{
   <div class="ia-drawer-body">
     <div class="ia-section">
       <label class="ia-section-label">Pergunta</label>
-      <textarea id="ia-q" class="ia-textarea" placeholder="Ex: como funciona o sistema de perícias? qual caminho combina com meu arquétipo?"></textarea>
+      <textarea id="ia-q" class="ia-textarea" placeholder="Pergunte algo sobre o sistema, ficha, regras..."></textarea>
     </div>
-    <div class="ia-section" id="ia-topics-section">
-      <label class="ia-section-label">Sobre o quê? (clique para focar)</label>
+    <div class="ia-section" id="ia-vague-section" style="display:none">
+      <label class="ia-section-label">Pergunta vaga — adicione contexto:</label>
       <div class="ia-topics" id="ia-topics"></div>
-      <div class="ia-hint" id="ia-hint"><strong>Dica:</strong> perguntas vagas geram respostas genéricas. Clique num tópico acima ou adicione contexto específico da sua ficha.</div>
-    </div>
-    <div class="ia-section">
-      <label class="ia-section-label">Fila de perguntas</label>
-      <div id="ia-queue" class="ia-queue"></div>
     </div>
   </div>
   <div class="ia-drawer-foot">
-    <button class="ia-btn ghost" onclick="clearIaQ()" title="Limpa o formulário">Limpar</button>
-    <button class="ia-btn ghost" onclick="exportIaQ()" title="Baixa fila como markdown — cole em Claude/ChatGPT/Gemini">
-      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Exportar
+    <button class="ia-btn ghost" onclick="closeIaDrawerConfirm()" title="Fechar e limpar">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      Fechar
     </button>
     <button id="ia-save-btn" class="ia-btn primary" onclick="saveIaQ()">
       <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-      Guardar
+      Enviar
     </button>
   </div>
 </aside>
@@ -10651,23 +10671,16 @@ document.querySelectorAll('.chart-time-pill').forEach(btn=>{
 
   function updateHint(){
     const txt=qEl.value;
-    if(!hint)return;
-    if(activeTopics.size===0&&isVague(txt)){
-      hint.style.display='block';
-      hint.innerHTML='<strong>Pergunta vaga detectada.</strong> Clique num tópico acima ou adicione contexto (ex: nome do poder, nível do personagem, situação).';
-    } else if(activeTopics.size>0){
-      hint.style.display='block';
-      hint.innerHTML=`<strong>${activeTopics.size} tópico${activeTopics.size>1?'s':''} selecionado${activeTopics.size>1?'s':''}.</strong> A pergunta vai ser enriquecida com: ${[...activeTopics].map(id=>TOPICS.find(t=>t.id===id).label).join(', ')}.`;
-    } else {
-      hint.style.display='none';
-    }
-    saveBtn.disabled=!qEl.value.trim();
+    const vague=isVague(txt);
+    const sec=document.getElementById('ia-vague-section');
+    if(sec)sec.style.display=(vague&&txt.trim().length>0)?'block':'none';
+    saveBtn.disabled=!txt.trim();
   }
 
   function renderQueue(){
     const arr=loadQ();
-    badge.classList.toggle('show',arr.length>0);
-    badge.textContent=arr.length>9?'9+':String(arr.length||'');
+    if(badge){badge.classList.toggle('show',arr.length>0);badge.textContent=arr.length>9?'9+':String(arr.length||'')}
+    if(!queueEl)return;
     if(!arr.length){
       queueEl.innerHTML='<div class="ia-queue-empty">Nenhuma pergunta guardada. Escreva acima ou selecione um trecho na biblioteca/ficha e clique em "Perguntar à IA".</div>';
       return;
@@ -10698,11 +10711,20 @@ document.querySelectorAll('.chart-time-pill').forEach(btn=>{
 
   window.openIaDrawer=function(){
     drawer.classList.add('open');overlay.classList.add('open');
-    renderTopics();renderQueue();updateHint();
+    renderTopics();updateHint();
     setTimeout(()=>qEl.focus(),220);
   };
   window.closeIaDrawer=function(){
     drawer.classList.remove('open');overlay.classList.remove('open');
+  };
+  window.closeIaDrawerConfirm=async function(){
+    const hasText=qEl.value.trim().length>0;
+    if(hasText){
+      const ok=await (typeof appConfirm==='function'?appConfirm('Descartar pergunta em andamento?',{title:'Fechar IA',okLabel:'Descartar'}):Promise.resolve(confirm('Descartar pergunta?')));
+      if(!ok)return;
+    }
+    qEl.value='';activeTopics.clear();
+    closeIaDrawer();
   };
   window.clearIaQ=function(){qEl.value='';activeTopics.clear();renderTopics();updateHint();qEl.focus()};
   window.saveIaQ=function(){
