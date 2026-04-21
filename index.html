@@ -1801,10 +1801,18 @@ body.mount-mode #tab-vehicles .mount-wrap{display:flex;opacity:1;transform:trans
 /* ═══ STANCE IMAGES (fotos por atributo) ═══ */
 .stn-hint{font-size:12px;color:var(--text-dim);margin:0 0 12px;line-height:1.4}
 .stn-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stn-card{background:var(--bg-input);border:1px solid var(--border);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px}
-.stn-head{display:flex;flex-direction:column;gap:1px}
+.stn-grid-3{grid-template-columns:repeat(3,1fr)}
+.stn-card{background:var(--bg-input);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px;transition:border-color .18s,background .18s}
+.stn-card.has-img{border-color:var(--lime-dim);background:color-mix(in srgb,var(--lime) 4%,var(--bg-input))}
+.stn-card:hover{border-color:var(--border-light)}
+.stn-card.has-img:hover{border-color:var(--lime)}
+.stn-head{display:flex;align-items:center;gap:10px}
+.stn-head-ico{width:30px;height:30px;border-radius:8px;background:var(--bg-card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-secondary)}
+.stn-head-ico svg{width:16px;height:16px}
+.stn-card.has-img .stn-head-ico{color:var(--lime);border-color:var(--lime-dim)}
+.stn-head-txt{display:flex;flex-direction:column;gap:1px;min-width:0}
 .stn-head b{font-size:12px;font-weight:700;color:var(--text-primary)}
-.stn-head small{font-size:10px;color:var(--text-dim);font-weight:600;text-transform:uppercase;letter-spacing:.6px}
+.stn-head small{font-size:9.5px;color:var(--text-dim);font-weight:600;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .stn-slot{aspect-ratio:16/10;border-radius:8px;border:1px dashed var(--border);background:#05050a;overflow:hidden;position:relative;cursor:pointer;transition:border-color .18s}
 .stn-slot:hover{border-color:var(--lime-dim);border-style:solid}
 .stn-slot img,.stn-slot video{width:100%;height:100%;object-fit:cover;display:block}
@@ -1813,6 +1821,7 @@ body.mount-mode #tab-vehicles .mount-wrap{display:flex;opacity:1;transform:trans
 .stn-remove{padding:6px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--red);font-family:inherit;font-size:10px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;transition:all .15s}
 .stn-remove svg{width:11px;height:11px;stroke:currentColor;fill:none}
 .stn-remove:hover{background:var(--red-dim);border-color:var(--red)}
+@media(max-width:640px){.stn-grid-3{grid-template-columns:1fr}}
 @media(max-width:480px){.stn-grid{grid-template-columns:1fr}}
 @media(max-width:480px){.new-veh-choice{grid-template-columns:1fr}}
 
@@ -7616,13 +7625,15 @@ window.addEventListener('DOMContentLoaded',()=>{
     c.style.setProperty('--vy',((e.clientY-r.top)/r.height*100)+'%');
   },{passive:true});
   const FRAME_LABELS={velocidade:'Aerofólio · Frente',aceleracao:'Motor · Capô',manuseio:'Rodas · Suspensão',frenagem:'Freio · Disco'};
+  const ATTR_TO_VIEW={velocidade:'frontal',aceleracao:'frontal',manuseio:'lateral',frenagem:'traseira'};
   const frameHero=(k)=>{
     const h=document.getElementById('veh-hero');if(!h)return;
     h.dataset.frame=k||'';
     const lbl=document.getElementById('veh-frame-label');
     if(lbl)lbl.textContent=FRAME_LABELS[k]||'';
     const si=(typeof vehicleState!=='undefined'&&vehicleState?.stanceImages)||{};
-    const stnMedia=k&&si[k];
+    const viewKey=ATTR_TO_VIEW[k];
+    const stnMedia=viewKey&&si[viewKey];
     const mainMedia=h.querySelector('img,video');
     if(mainMedia){
       if(stnMedia){
@@ -8394,28 +8405,35 @@ function removeVehicleImage(){
   toast('Imagem removida');
 }
 const STANCE_ATTRS=[
-  {k:'velocidade',label:'Velocidade',frame:'Aerofólio · Frente'},
-  {k:'aceleracao',label:'Aceleração',frame:'Motor · Capô'},
-  {k:'manuseio',label:'Manuseio',frame:'Rodas · Suspensão'},
-  {k:'frenagem',label:'Frenagem',frame:'Freio · Disco'}
+  {k:'frontal',label:'Frontal',frame:'Capô · Grade · Faróis',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l2-5a3 3 0 0 1 2.8-2h6.4a3 3 0 0 1 2.8 2l2 5"/><rect x="3" y="12" width="18" height="6" rx="1.5"/><circle cx="7" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/><path d="M8 15h8"/></svg>'},
+  {k:'lateral',label:'Lateral',frame:'Rodas · Perfil · Silhueta',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16l1.5-5a2 2 0 0 1 1.9-1.5h11.2a2 2 0 0 1 1.9 1.5L21 16"/><path d="M3 16h18"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M8 10l2-3h4l2 3"/></svg>'},
+  {k:'traseira',label:'Traseira',frame:'Aerofólio · Escape · Ré',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l2-4.5A2.5 2.5 0 0 1 8.4 5h7.2a2.5 2.5 0 0 1 2.4 1.5L20 11"/><rect x="3" y="11" width="18" height="7" rx="1.5"/><circle cx="7.5" cy="18" r="1.5"/><circle cx="16.5" cy="18" r="1.5"/><path d="M2 8h3M19 8h3"/></svg>'}
 ];
 function openStanceImages(){
   currentModal='stanceImages';
   if(!vehicleState.stanceImages)vehicleState.stanceImages={};
   const si=vehicleState.stanceImages;
+  // Migração: chaves antigas (velocidade/aceleracao/manuseio/frenagem) → frontal/lateral/traseira
+  if(si.velocidade&&!si.frontal){si.frontal=si.velocidade;delete si.velocidade}
+  if(si.aceleracao&&!si.frontal){si.frontal=si.aceleracao;delete si.aceleracao}
+  if(si.manuseio&&!si.lateral){si.lateral=si.manuseio;delete si.manuseio}
+  if(si.frenagem&&!si.traseira){si.traseira=si.frenagem;delete si.frenagem}
   const title=document.getElementById('modal-title'),body=document.getElementById('modal-body');
-  title.textContent='Fotos por atributo';
+  title.textContent='Fotos do veículo';
   const cards=STANCE_ATTRS.map(a=>{
     const img=si[a.k];
     const isVid=img&&img.startsWith('data:video/');
-    const media=img?(isVid?`<video src="${img}" autoplay loop muted playsinline></video>`:`<img src="${img}" alt="">`):`<div class="stn-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Adicionar</span></div>`;
-    return `<div class="stn-card" data-stn="${a.k}">
-      <div class="stn-head"><b>${a.label}</b><small>${a.frame}</small></div>
+    const media=img?(isVid?`<video src="${img}" autoplay loop muted playsinline></video>`:`<img src="${img}" alt="">`):`<div class="stn-empty">${a.ico}<span>Adicionar</span></div>`;
+    return `<div class="stn-card${img?' has-img':''}" data-stn="${a.k}">
+      <div class="stn-head">
+        <div class="stn-head-ico">${a.ico}</div>
+        <div class="stn-head-txt"><b>${a.label}</b><small>${a.frame}</small></div>
+      </div>
       <div class="stn-slot" onclick="pickStanceImage('${a.k}')">${media}</div>
       ${img?`<button class="stn-remove" onclick="clearStanceImage('${a.k}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>Remover</button>`:''}
     </div>`;
   }).join('');
-  body.innerHTML=`<p class="stn-hint">Cada atributo pode ter foto própria. Aparece ao passar sobre o card do atributo.</p><div class="stn-grid">${cards}</div><div class="modal-btns"><button class="modal-btn primary" onclick="closeModal()">Concluído</button></div>`;
+  body.innerHTML=`<p class="stn-hint">3 fotos do veículo (frontal, lateral, traseira). Carrossel gira no card principal da garagem.</p><div class="stn-grid stn-grid-3">${cards}</div><div class="modal-btns"><button class="modal-btn primary" onclick="closeModal()">Concluído</button></div>`;
   document.getElementById('modal-overlay').classList.add('open');
 }
 function pickStanceImage(k){
