@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/widget_bg"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DADOS"
+            android:textColor="#A0A0B0"
+            android:textStyle="bold"
+            android:textSize="10sp"
+            android:letterSpacing="0.15"/>
+        <TextView
+            android:id="@+id/dice_meta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toque"
+            android:textColor="#5A5A6E"
+            android:textSize="10sp"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/dice_num"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="—"
+        android:textColor="#C8F542"
+        android:textSize="56sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:fontFamily="monospace"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+        <Button android:id="@+id/btn_d4"  android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="d4"  style="@style/DieBtn"/>
+        <Button android:id="@+id/btn_d6"  android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="d6"  style="@style/DieBtn"/>
+        <Button android:id="@+id/btn_d8"  android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="d8"  style="@style/DieBtn"/>
+        <Button android:id="@+id/btn_d10" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="d10" style="@style/DieBtn"/>
+        <Button android:id="@+id/btn_d12" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="d12" style="@style/DieBtn"/>
+        <Button android:id="@+id/btn_d20" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="d20" style="@style/DieBtnPrimary"/>
+    </LinearLayout>
+</LinearLayout>

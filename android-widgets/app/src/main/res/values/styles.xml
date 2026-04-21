@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="DieBtn">
+        <item name="android:background">@drawable/die_btn_bg</item>
+        <item name="android:textColor">#A0A0B0</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
+    <style name="DieBtnPrimary" parent="DieBtn">
+        <item name="android:background">@drawable/die_btn_bg_primary</item>
+        <item name="android:textColor">#C8F542</item>
+    </style>
+</resources>
