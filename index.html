@@ -9430,6 +9430,71 @@ _safe(()=>initCustomSelects(),'initCustomSelects');
 setTimeout(()=>_safe(()=>drawChart(true),'drawChart'),100);
 window.addEventListener('resize',()=>_safe(()=>drawChart(false),'drawChartResize'));
 
+// ═══ SWIPE-TO-DISMISS (bottom-sheet modals em mobile) ═══
+(function(){
+  function isBottomSheet(){
+    return window.matchMedia('(max-width:640px) and (orientation:portrait)').matches;
+  }
+  function attach(sel,closeFn){
+    document.querySelectorAll(sel).forEach(el=>{
+      if(el.dataset.swipeBound)return;
+      el.dataset.swipeBound='1';
+      let startY=0,curY=0,dragging=false,canDrag=false;
+
+      el.addEventListener('touchstart',e=>{
+        if(!isBottomSheet())return;
+        if(e.touches.length!==1)return;
+        startY=e.touches[0].clientY;
+        curY=startY;
+        canDrag=el.scrollTop<=0;
+        dragging=false;
+      },{passive:true});
+
+      el.addEventListener('touchmove',e=>{
+        if(!isBottomSheet()||!canDrag)return;
+        const y=e.touches[0].clientY;
+        const dy=y-startY;
+        if(dy<0)return;
+        if(dy>6)dragging=true;
+        if(dragging){
+          curY=y;
+          el.style.transform=`translateY(${dy}px)`;
+          el.style.transition='none';
+        }
+      },{passive:true});
+
+      el.addEventListener('touchend',()=>{
+        if(!dragging){el.style.transform='';el.style.transition='';return}
+        const dy=curY-startY;
+        el.style.transition='';
+        if(dy>100){closeFn();setTimeout(()=>{el.style.transform=''},400)}
+        else{el.style.transform=''}
+        dragging=false;
+      });
+    });
+  }
+
+  function setup(){
+    attach('#modal-overlay .modal',()=>window.closeModal&&closeModal());
+    attach('#register-overlay .register-panel',()=>window.closeRegister&&closeRegister());
+    attach('.app-confirm-box',()=>{
+      const ov=document.getElementById('app-confirm-overlay');
+      if(ov)ov.classList.remove('open');
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+  // Re-tenta depois — app-confirm-box é criado on-demand
+  setTimeout(setup,2000);
+  const origConfirm=window.appConfirm;
+  if(typeof origConfirm==='function'){
+    window.appConfirm=function(){
+      const r=origConfirm.apply(this,arguments);
+      setTimeout(setup,30);
+      return r;
+    };
+  }
+})();
+
 // ═══ GLOBAL SEARCH ═══
 (function(){
   const input=document.getElementById('global-search');
