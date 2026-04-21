@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Dúvida de uso
+    url: https://github.com/Kazukinds/ficha-rpg/discussions
+    about: Pergunte sobre como usar a ficha (não é bug).
+  - name: 🌐 Abrir app
+    url: https://kazukinds.github.io/ficha-rpg/
+    about: Experimenta a versão web (PWA) antes de reportar.

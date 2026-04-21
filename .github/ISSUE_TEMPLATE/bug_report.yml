@@ -1,0 +1,75 @@
+name: 🐛 Reportar bug
+description: Algo quebrou ou funciona diferente do esperado
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por reportar! Quanto mais detalhe, mais rápido a correção.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: O que aconteceu?
+      description: Descreve em 1-2 frases o bug.
+      placeholder: Ex. Ao clicar em "Depositar", o saldo não atualiza.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Passos para reproduzir
+      description: Liste os passos exatos.
+      placeholder: |
+        1. Abrir aba Crédito
+        2. Clicar em Depositar
+        3. Digitar 100 e confirmar
+        4. Saldo não muda
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: O que deveria acontecer?
+      placeholder: Saldo deveria aumentar para 100.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Plataforma
+      options:
+        - Chrome/Edge (desktop)
+        - Firefox (desktop)
+        - Safari (desktop)
+        - Chrome Android
+        - Safari iOS
+        - PWA instalado (Android)
+        - PWA instalado (iOS)
+        - APK widgets Android
+        - Outro
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Aparelho / versão
+      placeholder: Ex. Poco X6 Pro, Android 14, Chrome 133
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot ou vídeo (opcional)
+      description: Arraste imagens/vídeos aqui. Muito útil para bugs visuais.
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Erros no console (opcional)
+      description: Abra DevTools (F12) → aba Console e cole o erro, se houver.
+      render: text

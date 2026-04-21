@@ -1,8 +1,8 @@
-# Ficha Eclipse
+# 🌒 Ficha Eclipse
 
-Ficha de personagem RPG single-file — HTML + CSS + JS vanilla, sem dependências, sem build step. Rodável offline, instalável como PWA.
+> Ficha de personagem RPG single-file — HTML + CSS + JS vanilla. Zero dependências, zero build step. Rodável offline, instalável como PWA, com widgets Android nativos.
 
-**Live:** https://kazukinds.github.io/ficha-rpg/
+**🌐 Live:** [kazukinds.github.io/ficha-rpg](https://kazukinds.github.io/ficha-rpg/)
 
 [![Abrir PWA](https://img.shields.io/badge/abrir-PWA-22D3EE?style=for-the-badge)](https://kazukinds.github.io/ficha-rpg/)
 [![Baixar APK](https://img.shields.io/badge/baixar-APK%20Android-C8F542?style=for-the-badge&logo=android&logoColor=black)](https://github.com/Kazukinds/ficha-rpg/releases/latest/download/FichaEclipse-widgets.apk)
@@ -11,56 +11,133 @@ Ficha de personagem RPG single-file — HTML + CSS + JS vanilla, sem dependênci
 ![Stack](https://img.shields.io/badge/stack-HTML%20%7C%20CSS%20%7C%20JS-lightgrey)
 ![Deps](https://img.shields.io/badge/dependencies-zero-brightgreen)
 ![PWA](https://img.shields.io/badge/PWA-ready-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-## Download rápido
+---
+
+## 📥 Download rápido
 
 | Plataforma | Link | Como instalar |
 |---|---|---|
-| 🌐 Web / PWA | [kazukinds.github.io/ficha-rpg](https://kazukinds.github.io/ficha-rpg/) | Abre no navegador → "Instalar app" |
-| 🤖 Android (APK) | [FichaEclipse-widgets.apk](https://github.com/Kazukinds/ficha-rpg/releases/latest/download/FichaEclipse-widgets.apk) | Habilita "Fontes desconhecidas" → instala |
-| 📦 Todas as releases | [releases](https://github.com/Kazukinds/ficha-rpg/releases) | Versões anteriores + changelog |
+| 🌐 **Web / PWA** | [kazukinds.github.io/ficha-rpg](https://kazukinds.github.io/ficha-rpg/) | Abre no navegador → *Instalar app* |
+| 🤖 **Android (APK)** | [FichaEclipse-widgets.apk](https://github.com/Kazukinds/ficha-rpg/releases/latest/download/FichaEclipse-widgets.apk) | Habilita *Fontes desconhecidas* → instala |
+| 📦 **Todas as releases** | [releases](https://github.com/Kazukinds/ficha-rpg/releases) | Versões anteriores + changelog |
 
-## Como rodar
+---
+
+## ✨ Funcionalidades
+
+### Ficha do personagem
+- 📊 **Atributos** em 3 grupos (Físico, Mental, Social) com bônus
+- ❤️ **Status**: HP, estamina, sanidade, fome, sede, fadiga
+- ⚔️ **Inventário** com grid visual, tamanhos 1x1 até 3x3, raridade, durabilidade
+- 🎯 **Perícias** destreinadas/treinadas/especialistas com rolagem 1d20
+- 💰 **Crédito** (moeda customizável) com histórico, depósito/saque/transferência
+- 🚗 **Veículos** com upgrades, HP, performance (aceleração/vel. máx/manuseio)
+- 📈 **Progressão**: níveis + estágios com XP log
+- 👤 **Perfil**: linhagem, passado, arquétipo, caminho
+
+### PWA
+- 💾 **Save/load** em JSON (download + IndexedDB backup)
+- 🔄 **Banner de atualização** com barra de progresso (safe-area mobile)
+- 🌙 **Modo claro e escuro** (toggle instantâneo)
+- 🔊 **Som procedural** (WebAudio): moedas, dano, cura, crítico, level-up
+- 🎲 **5 widgets dashboard**: dados, iniciativa, nível, notas, timer
+- 📴 **Offline 100%** após primeiro load
+
+### Android nativo
+- Widgets de home screen independentes do PWA
+- APK assinado buildado via CI no push
+
+---
+
+## 🚀 Como rodar
 
 ```bash
-# abrir direto no navegador
-start index.html     # Windows
-open  index.html     # macOS
-xdg-open index.html  # Linux
+git clone https://github.com/Kazukinds/ficha-rpg.git
+cd ficha-rpg
 
-# ou servir local pra funcionalidade completa de PWA
+# abrir direto
+start index.html          # Windows
+open  index.html          # macOS
+xdg-open index.html       # Linux
+
+# ou servir local (recomendado — PWA + SW só funcionam em http://)
 python -m http.server 8000
 npx serve .
 ```
 
-## Instalação como app
+## 📱 Instalação como app
 
-- **Android (Chrome):** menu → "Instalar aplicativo"
-- **iOS (Safari):** compartilhar → "Adicionar à tela de início"
-- **Desktop (Chrome/Edge):** ícone de instalar na barra de endereço
+| Plataforma | Passos |
+|---|---|
+| Android (Chrome) | Menu ⋮ → *Instalar aplicativo* |
+| iOS (Safari) | Compartilhar ↑ → *Adicionar à tela de início* |
+| Desktop (Chrome/Edge) | Ícone ⊕ na barra de endereço |
 
-O service worker cacheia tudo no primeiro load — depois disso funciona 100% offline.
+Service worker cacheia tudo no primeiro load — depois roda 100% offline.
 
-## Estrutura
+---
+
+## 🗂️ Estrutura
 
 ```
 /
-├── index.html              # App completo (HTML + CSS + JS inline, ~420KB)
+├── index.html              # App principal (~9k linhas, tudo inline)
+├── biblioteca.html         # Compêndio de lore (standalone)
+├── sw.js                   # Service worker (network-first docs, cache-first assets)
 ├── manifest.webmanifest    # PWA manifest
-├── sw.js                   # Service worker (network-first)
-├── icons/                  # Ícones PWA (maskable, apple-touch, favicon)
+├── alert-component.html    # Componente de alerta isolado
+├── icons/                  # Ícones PWA (SVG + PNG maskable)
+├── widgets/                # Widgets HTML (dashboard interno)
+│   ├── dice.html
+│   ├── init.html
+│   ├── level.html
+│   ├── notes.html
+│   └── timer.html
+├── android-widgets/        # App Android nativo (home-screen widgets)
 ├── docs/                   # Documentação técnica
-└── LICENSE
+└── .github/                # CI + issue/PR templates
 ```
 
-## Documentação
+---
 
-- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — estrutura interna do `index.html`, estado global, ciclo de renderização
-- **[docs/FEATURES.md](docs/FEATURES.md)** — o que cada aba faz (Dashboard, Perícias, Crédito, Veículos, Perfil…)
-- **[docs/DEPLOY.md](docs/DEPLOY.md)** — deploy no GitHub Pages, PWA, invalidação de cache
-- **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** — como editar, convenções, onde achar cada seção
-- **[docs/CHANGELOG.md](docs/CHANGELOG.md)** — histórico de versões (sincronizado com o Log no perfil do app)
+## 🗺️ Roadmap
 
-## Licença
+- [x] PWA offline + instalação
+- [x] Modo claro/escuro
+- [x] Widgets Android nativos (Dados)
+- [x] Banner de atualização com barra de progresso
+- [x] Áudio procedural (coin, damage, heal, levelup…)
+- [ ] Biblioteca integrada à ficha (poderes/caminhos/arquétipos)
+- [ ] IA assistente com perguntas contextuais
+- [ ] Select-to-ask (destaque + pergunta sobre trecho)
+- [ ] Upgrade veículos compacto
+- [ ] Redesign cores unificado
+- [ ] Mais widgets Android (Iniciativa, Nível, Timer)
+
+---
+
+## 📚 Documentação
+
+- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — estrutura interna, estado global, ciclo de render
+- **[docs/FEATURES.md](docs/FEATURES.md)** — detalhe de cada aba
+- **[docs/DEPLOY.md](docs/DEPLOY.md)** — deploy GitHub Pages, PWA, cache
+- **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** — convenções, onde achar cada coisa
+- **[docs/CHANGELOG.md](docs/CHANGELOG.md)** — histórico de versões
+
+---
+
+## 🤝 Contribuir
+
+Leia **[CONTRIBUTING.md](CONTRIBUTING.md)** para convenções, fluxo de PR e como reportar bugs.
+
+- 🐛 [Reportar bug](https://github.com/Kazukinds/ficha-rpg/issues/new?template=bug_report.yml)
+- ✨ [Sugerir feature](https://github.com/Kazukinds/ficha-rpg/issues/new?template=feature_request.yml)
+- 💬 [Discussões](https://github.com/Kazukinds/ficha-rpg/discussions)
+
+---
+
+## 📄 Licença
 
 MIT — veja [LICENSE](LICENSE).

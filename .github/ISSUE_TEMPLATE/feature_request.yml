@@ -1,0 +1,54 @@
+name: ✨ Sugerir funcionalidade
+description: Ideia nova ou melhoria pro app
+title: "[feat] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Qual problema isso resolve?
+      description: Qual situação te fez querer essa feature?
+      placeholder: Ex. Ao rolar 20 natural, não tem feedback sonoro diferente.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Solução proposta
+      description: Como imagina que funcionaria?
+      placeholder: Ex. Som de "crítico" diferente, visual brilhando dourado.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas (opcional)
+      placeholder: Pensei em X, mas Y é melhor porque...
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área do app
+      multiple: true
+      options:
+        - Ficha (atributos/status)
+        - Inventário
+        - Perícias
+        - Crédito
+        - Veículos
+        - Biblioteca
+        - Widgets Android
+        - Áudio
+        - PWA/instalação
+        - Perfil
+        - Outro
+    validations:
+      required: true
+
+  - type: textarea
+    id: mockup
+    attributes:
+      label: Mockup / referência (opcional)
+      description: Arraste imagens ou cole links de referência visual.
