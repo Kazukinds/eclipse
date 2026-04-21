@@ -3016,18 +3016,20 @@ body.vg-empty-mode .vg-right::before{content:"Nenhum veículo selecionado";displ
 .interludio-bar-label{font-size:9px;color:var(--text-dim);font-weight:600}
 
 [data-theme="light"]{
-  --bg-body:#f4f4f8;--bg-sidebar:#ffffff;--bg-card:#ffffff;--bg-card-inner:#f0f0f5;
-  --bg-input:#e6e6ee;--bg-hover:#eaeaf0;--border:#d0d0da;--border-light:#b8b8c4;
-  --text-primary:#111118;--text-secondary:#3a3a4a;--text-dim:#8888a0;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 12px 40px rgba(0,0,0,.12);
-  --lime:#22c55e;--lime-dim:#16a34a;--lime-bg:rgba(34,197,94,.1);--lime-bg-strong:rgba(34,197,94,.18);
-  --green:#10b981;--green-dim:rgba(16,185,129,.12);--red:#ef4444;--red-dim:rgba(239,68,68,.12);
-  --blue:#3b82f6;--blue-dim:rgba(59,130,246,.12);--purple:#8b5cf6;--purple-dim:rgba(139,92,246,.12);
-  --yellow:#f59e0b;--yellow-dim:rgba(245,158,11,.12);--cyan:#06b6d4;--cyan-dim:rgba(6,182,212,.12);
-  --rarity-common:#6b7280;--rarity-uncommon:#10b981;--rarity-rare:#3b82f6;--rarity-epic:#8b5cf6;--rarity-legendary:#f59e0b;
+  --bg-body:#f7f7fa;--bg-sidebar:#ffffff;--bg-card:#ffffff;--bg-card-inner:#f2f2f6;
+  --bg-input:#eeeef3;--bg-hover:#e8e8ee;--border:#dcdce4;--border-light:#c4c4cf;
+  --text-primary:#0f0f14;--text-secondary:#353542;--text-dim:#6b6b7d;
+  --shadow-sm:0 1px 3px rgba(15,15,20,.06),0 1px 2px rgba(15,15,20,.04);
+  --shadow-md:0 4px 14px rgba(15,15,20,.08),0 2px 4px rgba(15,15,20,.04);
+  --shadow-lg:0 20px 50px rgba(15,15,20,.14),0 6px 16px rgba(15,15,20,.06);
+  --lime:#16a34a;--lime-dim:#15803d;--lime-bg:rgba(22,163,74,.10);--lime-bg-strong:rgba(22,163,74,.18);
+  --green:#059669;--green-dim:rgba(5,150,105,.12);--red:#dc2626;--red-dim:rgba(220,38,38,.10);
+  --blue:#2563eb;--blue-dim:rgba(37,99,235,.10);--purple:#7c3aed;--purple-dim:rgba(124,58,237,.10);
+  --yellow:#d97706;--yellow-dim:rgba(217,119,6,.12);--cyan:#0891b2;--cyan-dim:rgba(8,145,178,.10);
+  --rarity-common:#52525b;--rarity-uncommon:#059669;--rarity-rare:#2563eb;--rarity-epic:#7c3aed;--rarity-legendary:#d97706;
 }
 [data-theme="light"] .topbar{background:var(--bg-body)}
-[data-theme="light"] .sidebar{background:#fafafa;border-color:var(--border)}
+[data-theme="light"] .sidebar{background:var(--bg-sidebar);border-color:var(--border)}
 [data-theme="light"] .sidebar-btn.active{background:rgba(101,163,13,.12)}
 [data-theme="light"] .sidebar-btn.active::before{background:var(--lime)}
 [data-theme="light"] .sidebar-logo svg{stroke:var(--lime)}
@@ -6263,16 +6265,21 @@ function updateThemeIcon(){
     ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
     : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
 }
+function updateMetaTheme(){
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta)meta.setAttribute('content',currentTheme==='light'?'#f7f7fa':'#09090b');
+}
 function toggleTheme(){
   currentTheme=currentTheme==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',currentTheme);
   localStorage.setItem('rpg-theme',currentTheme);
   updateThemeIcon();
+  updateMetaTheme();
   toast(currentTheme==='light'?'Tema claro ativado':'Tema escuro ativado');
   setTimeout(()=>drawChart(false),50);
 }
 // Restore theme
-(function(){const t=localStorage.getItem('rpg-theme');if(t){currentTheme=t;document.documentElement.setAttribute('data-theme',t)}})();
+(function(){const t=localStorage.getItem('rpg-theme');if(t){currentTheme=t;document.documentElement.setAttribute('data-theme',t)}try{updateMetaTheme()}catch(_){}})();
 window.addEventListener('load',updateThemeIcon);
 
 // ═══ MOUNT MODE (long-press sidebar vehicle icon) ═══
