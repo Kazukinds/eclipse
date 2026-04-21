@@ -5278,8 +5278,8 @@ document.addEventListener('click',e=>{if(!e.target.closest('.inv-cell')&&!e.targ
 document.querySelectorAll('.filter-pill').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('.filter-pill').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFilter=b.dataset.filter;renderGrid();clearDetail()})});
 document.getElementById('inv-search')?.addEventListener('input',renderGrid);
 
-function useItem(id){const it=inventory.find(i=>i.id===id);if(!it)return;if(it.cat==='consumivel'){it.qty--;if(it.qty<=0){inventory=inventory.filter(i=>i.id!==id);toast(`Usou o ultimo ${it.name}`)}else toast(`Usou ${it.name} (${it.qty} restantes)`)}else toast(`Equipou ${it.name}`);renderGrid();renderDashLists();clearDetail()}
-function dropItem(id){const it=inventory.find(i=>i.id===id);if(!it)return;inventory=inventory.filter(i=>i.id!==id);toast(`Descartou ${it.name}`);renderGrid();renderDashLists();clearDetail()}
+function useItem(id){const it=inventory.find(i=>i.id===id);if(!it)return;if(it.cat==='consumivel'){it.qty--;try{window.sfx&&sfx.heal()}catch(_){}if(it.qty<=0){inventory=inventory.filter(i=>i.id!==id);toast(`Usou o ultimo ${it.name}`)}else toast(`Usou ${it.name} (${it.qty} restantes)`)}else{try{window.sfx&&sfx.tick()}catch(_){}toast(`Equipou ${it.name}`)}renderGrid();renderDashLists();clearDetail()}
+function dropItem(id){const it=inventory.find(i=>i.id===id);if(!it)return;inventory=inventory.filter(i=>i.id!==id);try{window.sfx&&sfx.whoosh()}catch(_){}toast(`Descartou ${it.name}`);renderGrid();renderDashLists();clearDetail()}
 
 function openEditItem(id){
   const item=inventory.find(i=>i.id===id);if(!item)return;
@@ -5369,6 +5369,7 @@ document.getElementById('register-form').addEventListener('submit',e=>{
   const rawName=document.getElementById('reg-name').value.trim();
   const ni={id:nextId++,name:rawName||'Item '+nextId,cat,rarity:document.getElementById('reg-rarity').value,qty:parseInt(document.getElementById('reg-qty').value)||1,weight:parseFloat(document.getElementById('reg-weight').value)||1,value:parseInt(document.getElementById('reg-value').value)||0,durability:parseInt(document.getElementById('reg-durability').value)||100,iconKey:iks[Math.floor(Math.random()*iks.length)],desc:document.getElementById('reg-desc').value||'Sem descricao.',gw,gh};
   inventory.push(ni);addLogRow(ni);
+  try{if(window.sfx)sfx.unlock()}catch(_){}
   toast(`${ni.name} adicionado!`);
   e.target.reset();
   document.getElementById('reg-durability').value=100;
