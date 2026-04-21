@@ -62,6 +62,14 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg-body);colo
 .sta-pending-del{background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:11px;padding:2px 6px;border-radius:4px;transition:all .15s}
 .sta-pending-del:hover{background:var(--red-dim);color:var(--red)}
 *:focus-visible{outline:2px solid var(--lime);outline-offset:2px;border-radius:var(--radius-xs)}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+}
 /* Scrollbar invisível globalmente (rolagem continua funcionando) */
 *{scrollbar-width:none;-ms-overflow-style:none}
 ::-webkit-scrollbar{width:0!important;height:0!important;display:none!important;background:transparent}
