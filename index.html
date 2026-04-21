@@ -3248,9 +3248,11 @@ body.vg-empty-mode .vg-right::before{content:"Nenhum veículo selecionado";displ
 .train-progress{display:flex;align-items:center;gap:6px;margin-top:2px}
 .train-dot{width:6px;height:6px;border-radius:50%;background:var(--border)}
 .train-dot.filled{background:var(--lime)}
-.prof-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;overflow-y:auto}
-.prof-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
-.prof-card-header h4{font-size:13px;font-weight:700}
+.prof-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;overflow-y:auto;transition:border-color .18s}
+.prof-card:hover{border-color:var(--border-light)}
+.prof-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.prof-card-header h4{font-size:13px;font-weight:700;color:var(--text-primary);letter-spacing:.2px;display:flex;align-items:center;gap:8px}
+.prof-card-header h4::before{content:"";width:3px;height:14px;background:var(--lime);border-radius:2px}
 .prof-list{display:flex;flex-direction:column;gap:2px;flex:1}
 .prof-section{margin-bottom:8px}
 .prof-section:last-child{margin-bottom:0}
@@ -3261,8 +3263,10 @@ body.vg-empty-mode .vg-right::before{content:"Nenhum veículo selecionado";displ
 .prof-row .prof-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .prof-row .prof-name{flex:1}
 .prof-row .prof-tag{font-size:9px;font-weight:600;text-transform:uppercase;padding:2px 8px;border-radius:10px;letter-spacing:.3px;transition:all .15s}
-.interludio-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
-.interludio-card h4{font-size:13px;font-weight:700;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.interludio-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:border-color .18s}
+.interludio-card:hover{border-color:var(--border-light)}
+.interludio-card h4{font-size:13px;font-weight:700;color:var(--text-primary);letter-spacing:.2px;display:flex;align-items:center;gap:8px}
+.interludio-card h4::before{content:"";width:3px;height:14px;background:var(--cyan);border-radius:2px}
 .interludio-chart{position:relative;width:100%;height:140px;padding:0}
 .week-pills{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}
 .week-pill{display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-xs);cursor:pointer;font-family:inherit;font-size:9px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;transition:all .15s;position:relative}
@@ -3407,6 +3411,57 @@ body.vg-empty-mode .vg-right::before{content:"Nenhum veículo selecionado";displ
 .ia-badge{position:absolute;top:4px;right:4px;min-width:14px;height:14px;padding:0 4px;border-radius:8px;background:var(--lime);color:#09090b;font-size:9px;font-weight:800;display:none;align-items:center;justify-content:center;line-height:1;font-family:'JetBrains Mono',monospace;box-shadow:0 0 0 2px var(--bg-body)}
 .ia-badge.show{display:inline-flex}
 
+/* Garage floating mini */
+.garage-mini{
+  position:fixed;z-index:460;bottom:90px;right:14px;
+  width:180px;min-height:140px;
+  background:var(--bg-card);border:1.5px solid var(--border-light);
+  border-radius:14px;overflow:hidden;cursor:grab;
+  box-shadow:0 14px 36px rgba(0,0,0,.52),0 0 0 1px rgba(255,255,255,.03);
+  display:none;flex-direction:column;user-select:none;
+  transition:box-shadow .2s,transform .2s,opacity .2s;
+  opacity:0;transform:translateY(12px) scale(.96);
+}
+.garage-mini.open{display:flex;opacity:1;transform:translateY(0) scale(1)}
+.garage-mini.dragging{cursor:grabbing;transition:none;box-shadow:0 22px 50px rgba(0,0,0,.6)}
+.garage-mini-head{
+  display:flex;align-items:center;gap:6px;padding:8px 10px;
+  background:var(--bg-card-inner);border-bottom:1px solid var(--border);
+  cursor:grab;flex-shrink:0;
+}
+.garage-mini.dragging .garage-mini-head{cursor:grabbing}
+.garage-mini-head-dot{width:6px;height:6px;border-radius:50%;background:var(--rc,var(--lime));box-shadow:0 0 6px var(--rc,var(--lime))}
+.garage-mini-head b{font-size:10px;font-weight:800;color:var(--text-dim);letter-spacing:1.2px;text-transform:uppercase;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.garage-mini-head-close{width:20px;height:20px;padding:0;border:none;background:transparent;color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:all .15s}
+.garage-mini-head-close:hover{color:var(--red);background:var(--red-dim)}
+.garage-mini-head-close svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round}
+.garage-mini-body{flex:1;padding:10px;display:flex;flex-direction:column;gap:8px}
+.garage-mini-image{aspect-ratio:16/10;width:100%;background:radial-gradient(ellipse at 50% 40%,rgba(var(--rg,200,245,66),.18),rgba(0,0,0,.45));border:1px solid var(--border);border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
+.garage-mini-image img{max-width:94%;max-height:94%;object-fit:contain}
+.garage-mini-image .noimg{color:var(--text-dim)}
+.garage-mini-image .noimg svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.4}
+.garage-mini-name{font-size:12px;font-weight:800;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.2px}
+.garage-mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px;font-family:'JetBrains Mono',monospace}
+.garage-mini-stats>div{background:var(--bg-input);border:1px solid var(--border);border-radius:6px;padding:4px 6px;font-size:9.5px;color:var(--text-dim);font-weight:700;display:flex;justify-content:space-between;align-items:baseline}
+.garage-mini-stats>div b{color:var(--text-primary);font-size:11px;font-weight:800}
+.garage-mini-expand{width:100%;padding:7px;background:var(--lime);color:#09090b;border:none;border-radius:8px;font-family:inherit;font-size:10.5px;font-weight:800;letter-spacing:.3px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;transition:filter .15s}
+.garage-mini-expand:hover{filter:brightness(1.08)}
+.garage-mini-expand svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+/* trigger button floating on bottom-nav (mobile only or corner desktop) */
+.garage-mini-trigger{
+  position:fixed;bottom:90px;right:14px;z-index:455;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--bg-card);border:1.5px solid var(--border-light);
+  color:var(--lime);cursor:pointer;padding:0;
+  display:inline-flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.4);
+  transition:all .18s;
+}
+.garage-mini-trigger:hover{border-color:var(--lime-dim);background:var(--lime-bg);transform:scale(1.06)}
+.garage-mini.open ~ .garage-mini-trigger{display:none}
+.garage-mini-trigger svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(min-width:641px){.garage-mini-trigger,.garage-mini{bottom:28px;right:28px}}
+
 /* Pets tab */
 .pet-wrap{display:flex;flex-direction:column;gap:16px;padding:4px 0}
 .pet-header{display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px}
@@ -3448,7 +3503,9 @@ body.vg-empty-mode .vg-right::before{content:"Nenhum veículo selecionado";displ
 .adv-card{display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--bg-input);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;font-family:inherit;text-align:left;transition:all .15s;color:var(--text-primary)}
 .adv-card:hover{border-color:var(--lime-dim);background:color-mix(in srgb,var(--lime) 4%,var(--bg-input));transform:translateY(-1px)}
 .adv-card.active{border-color:var(--lime);background:var(--lime-bg);box-shadow:0 0 0 2px color-mix(in srgb,var(--lime) 30%,transparent)}
-.adv-card-ico{font-size:24px;line-height:1;flex-shrink:0;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--bg-card);border:1px solid var(--border);border-radius:10px}
+.adv-card-ico{font-size:24px;line-height:1;flex-shrink:0;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;color:var(--text-secondary)}
+.adv-card-ico svg{width:20px;height:20px}
+.adv-card.active .adv-card-ico{color:var(--lime)}
 .adv-card.active .adv-card-ico{background:var(--bg-card);border-color:var(--lime-dim)}
 .adv-card-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
 .adv-card-name{font-size:13px;font-weight:800;color:var(--text-primary);letter-spacing:.2px}
@@ -10078,6 +10135,16 @@ document.addEventListener('click',function(e){
           fr.addEventListener('load',()=>fr.parentElement.classList.add('loaded'),{once:true});
         }
       }
+      if(sb.dataset.tab==='vehicles'){
+        try{
+          if(typeof userGarage!=='undefined'&&userGarage.length&&typeof currentVehicle!=='undefined'){
+            if(!userGarage.includes(currentVehicle)&&typeof selectGarageVehicle==='function')selectGarageVehicle(userGarage[0]);
+          }
+          if(typeof renderGarageList==='function')renderGarageList();
+          if(typeof renderVehPerf==='function')renderVehPerf();
+          if(typeof renderVehicleState==='function')renderVehicleState();
+        }catch(_){}
+      }
     }catch(_){}
   }
 });
@@ -10109,7 +10176,7 @@ window.addEventListener('resize',()=>_safe(()=>drawChart(false),'drawChartResize
     el.innerHTML=arr.map((p,i)=>`
       <div class="pet-card">
         <div class="pet-card-head">
-          <div class="pet-card-avatar">${p.img?`<img src="${esc(p.img)}" alt="">`:(p.emoji||'🐾')}</div>
+          <div class="pet-card-avatar">${p.img?`<img src="${esc(p.img)}" alt="">`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;color:var(--lime)"><circle cx="5" cy="10" r="2"/><circle cx="19" cy="10" r="2"/><circle cx="9" cy="5" r="2"/><circle cx="15" cy="5" r="2"/><path d="M12 10c-3 0-5 2-5 5 0 2 1 3 3 3h4c2 0 3-1 3-3 0-3-2-5-5-5z"/></svg>`}</div>
           <div class="pet-card-info">
             <div class="pet-card-name">${esc(p.name||'Sem nome')}</div>
             <div class="pet-card-species">${esc(p.species||'—')}${p.level?' · Lv '+p.level:''}</div>
@@ -10140,7 +10207,6 @@ window.addEventListener('resize',()=>_safe(()=>drawChart(false),'drawChartResize
         <div class="form-group"><label>DEF</label><input type="number" id="m-pet-def" value="1" min="0"></div>
       </div>
       <div class="form-group"><label>Descrição / Habilidades</label><textarea id="m-pet-desc" rows="3" placeholder="Particularidades, habilidades especiais, vínculo..."></textarea></div>
-      <div class="form-group"><label>Emoji/Ícone</label><input type="text" id="m-pet-emoji" value="🐾" maxlength="4"></div>
       <div class="modal-btns">
         <button class="modal-btn secondary" onclick="closeModal()">Cancelar</button>
         <button class="modal-btn primary" onclick="window.petSave()">Adicionar</button>
@@ -10157,7 +10223,7 @@ window.addEventListener('resize',()=>_safe(()=>drawChart(false),'drawChartResize
       name,species:g('m-pet-species').trim(),level:parseInt(g('m-pet-level'))||1,
       hp:hpMax,hpMax,
       atk:parseInt(g('m-pet-atk'))||0,def:parseInt(g('m-pet-def'))||0,
-      desc:g('m-pet-desc').trim(),emoji:g('m-pet-emoji').trim()||'🐾',
+      desc:g('m-pet-desc').trim(),
       created:new Date().toISOString()
     };
     const arr=load();arr.push(pet);save(arr);
@@ -10177,38 +10243,64 @@ window.addEventListener('resize',()=>_safe(()=>drawChart(false),'drawChartResize
 })();
 
 // ═══ ADVENTURER PICKERS (Linhagem/Passado/Arquétipo/Caminho) ═══
+const ADV_ICO={
+  human:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg>',
+  moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+  spark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>',
+  bot:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="2"/><circle cx="9" cy="13" r="1.2"/><circle cx="15" cy="13" r="1.2"/><path d="M12 3v4M8 19v2M16 19v2"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+  leaf:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3c12 0 15 6 15 12-3 0-6-1-9-3"/><path d="M3 21c3-6 9-12 15-12"/></svg>',
+  sword:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 7.5l3.5-3.5L21 8.5l-3.5 3.5"/><path d="M4 14l2-2"/></svg>',
+  orb:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18M3 12h18"/></svg>',
+  dagger:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 10h-6z"/><path d="M10 12v3h4v-3"/><path d="M12 15v7"/></svg>',
+  book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5a2.5 2.5 0 0 0-2.5 2.5V4.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20"/></svg>',
+  plus_med:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8v6h6v8h-6v6H8v-6H2V8h6z"/></svg>',
+  wrench:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a5 5 0 0 1 0 7.1l6.5 6.5-2 2-6.5-6.5a5 5 0 0 1-7.1-7.1l3 3v-3.5l2-2H14l-3 3z"/></svg>',
+  medal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="15" r="6"/><path d="M8 21v-2M16 21v-2M12 9V3M8 3l4 6 4-6"/></svg>',
+  house_broken:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-8 9 8v9H3z"/><path d="M9 21v-6h6v6"/></svg>',
+  crown:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 19h20M4 19L3 9l5 3 4-6 4 6 5-3-1 10z"/></svg>',
+  grad:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>',
+  warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  fog:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18M3 11h18M3 15h18M3 19h18" stroke-dasharray="4 3"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+  skull:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a9 9 0 0 0-9 9c0 3.5 2 6 4 7v3h10v-3c2-1 4-3.5 4-7a9 9 0 0 0-9-9z"/><circle cx="9" cy="11" r="1.5"/><circle cx="15" cy="11" r="1.5"/><path d="M10 16h4"/></svg>',
+  flame:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
+  paw:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="10" r="2"/><circle cx="19" cy="10" r="2"/><circle cx="9" cy="5" r="2"/><circle cx="15" cy="5" r="2"/><path d="M12 10c-3 0-5 2-5 5 0 2 1 3 3 3h4c2 0 3-1 3-3 0-3-2-5-5-5z"/></svg>',
+  target:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+  galaxy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3a9 9 0 0 1 9 9M12 21a9 9 0 0 1-9-9"/><path d="M21 12c0 2-2 3-5 3M3 12c0-2 2-3 5-3"/></svg>'
+};
 const ADV_CATALOG={
   linhagem:[
-    {name:'Humano',desc:'Origem versátil. +1 em qualquer atributo, 1 perícia extra treinada.',ico:'👤'},
-    {name:'Obscuro',desc:'Descendente da Eclipse. Visão noturna, +1 Foco, -1 em testes sociais diurnos.',ico:'🌙'},
-    {name:'Essência',desc:'Ligado à essência primordial. +2 Determinação, resistência a controle mental.',ico:'✨'},
-    {name:'Artificial',desc:'Construído, não nascido. +2 Córtex, imune a doenças, -1 em testes de cura.',ico:'🤖'},
-    {name:'Corrompido',desc:'Portador da marca obscura. +1 Neural, +1 dano, -2 em testes sociais.',ico:'🖤'},
-    {name:'Errante',desc:'Raça nômade. +2 Esforço, +1 em Furtividade/Perseguição.',ico:'🌿'}
+    {name:'Humano',desc:'Origem versátil. +1 em qualquer atributo, 1 perícia extra treinada.',ico:ADV_ICO.human},
+    {name:'Obscuro',desc:'Descendente da Eclipse. Visão noturna, +1 Foco, -1 em testes sociais diurnos.',ico:ADV_ICO.moon},
+    {name:'Essência',desc:'Ligado à essência primordial. +2 Determinação, resistência a controle mental.',ico:ADV_ICO.spark},
+    {name:'Artificial',desc:'Construído, não nascido. +2 Córtex, imune a doenças, -1 em testes de cura.',ico:ADV_ICO.bot},
+    {name:'Corrompido',desc:'Portador da marca obscura. +1 Neural, +1 dano, -2 em testes sociais.',ico:ADV_ICO.heart},
+    {name:'Errante',desc:'Raça nômade. +2 Esforço, +1 em Furtividade/Perseguição.',ico:ADV_ICO.leaf}
   ],
   arquetipo:[
-    {name:'Guerreiro',desc:'Combatente direto. +2 HP/nível, proficiência em armas pesadas.',ico:'⚔'},
-    {name:'Místico',desc:'Canal de poder. +2 Foco max, acesso a poderes místicos fase I.',ico:'🔮'},
-    {name:'Ladino',desc:'Especialista em infiltração. +2 em Furtividade, crítico em 19-20.',ico:'🗡'},
-    {name:'Erudito',desc:'Sábio versado. +2 em todos os testes mentais, 2 perícias extra.',ico:'📚'},
-    {name:'Médico',desc:'Cuidador. +2 em cura, recupera aliados com ação bônus.',ico:'⚕'},
-    {name:'Artífice',desc:'Constrói ferramentas. Cria itens com 1 ação + material.',ico:'🔧'}
+    {name:'Guerreiro',desc:'Combatente direto. +2 HP/nível, proficiência em armas pesadas.',ico:ADV_ICO.sword},
+    {name:'Místico',desc:'Canal de poder. +2 Foco max, acesso a poderes místicos fase I.',ico:ADV_ICO.orb},
+    {name:'Ladino',desc:'Especialista em infiltração. +2 em Furtividade, crítico em 19-20.',ico:ADV_ICO.dagger},
+    {name:'Erudito',desc:'Sábio versado. +2 em todos os testes mentais, 2 perícias extra.',ico:ADV_ICO.book},
+    {name:'Médico',desc:'Cuidador. +2 em cura, recupera aliados com ação bônus.',ico:ADV_ICO.plus_med},
+    {name:'Artífice',desc:'Constrói ferramentas. Cria itens com 1 ação + material.',ico:ADV_ICO.wrench}
   ],
   passado:[
-    {name:'Soldado',desc:'Veterano de guerra. +1 em armas, proficiência em estratégia.',ico:'🎖'},
-    {name:'Órfão',desc:'Criado na rua. +2 em Furtividade, conhece submundo.',ico:'🏚'},
-    {name:'Nobre',desc:'Nascido em berço de ouro. +5 Crédito inicial, conexões sociais.',ico:'👑'},
-    {name:'Acadêmico',desc:'Formado em universidade. +2 perícias mentais, fala 2 idiomas.',ico:'🎓'},
-    {name:'Fora da lei',desc:'Fugitivo procurado. +2 Esforço, bônus em furtividade urbana.',ico:'🚨'},
-    {name:'Exilado',desc:'Banido de terra natal. +2 Determinação, imune a medo.',ico:'🌫'}
+    {name:'Soldado',desc:'Veterano de guerra. +1 em armas, proficiência em estratégia.',ico:ADV_ICO.medal},
+    {name:'Órfão',desc:'Criado na rua. +2 em Furtividade, conhece submundo.',ico:ADV_ICO.house_broken},
+    {name:'Nobre',desc:'Nascido em berço de ouro. +5 Crédito inicial, conexões sociais.',ico:ADV_ICO.crown},
+    {name:'Acadêmico',desc:'Formado em universidade. +2 perícias mentais, fala 2 idiomas.',ico:ADV_ICO.grad},
+    {name:'Fora da lei',desc:'Fugitivo procurado. +2 Esforço, bônus em furtividade urbana.',ico:ADV_ICO.warn},
+    {name:'Exilado',desc:'Banido de terra natal. +2 Determinação, imune a medo.',ico:ADV_ICO.fog}
   ],
   caminho:[
-    {name:'Guardião',desc:'Protege aliados. Habilidades de defesa e cura leve.',ico:'🛡'},
-    {name:'Assassino',desc:'Especialista em eliminação silenciosa. Ataque furtivo +1d6.',ico:'💀'},
-    {name:'Arcanista',desc:'Mestre dos elementos. Poderes destrutivos em área.',ico:'🔥'},
-    {name:'Perseguidor',desc:'Rastreador implacável. +3 em Perseguição, ignora cansaço em rastreio.',ico:'🐾'},
-    {name:'Líder',desc:'Inspira o grupo. Aliados recuperam 1d4 Esforço por vitória.',ico:'🎯'},
-    {name:'Errante Negro',desc:'Caminha entre mundos. Teleporte curto 1x/cena.',ico:'🌌'}
+    {name:'Guardião',desc:'Protege aliados. Habilidades de defesa e cura leve.',ico:ADV_ICO.shield},
+    {name:'Assassino',desc:'Especialista em eliminação silenciosa. Ataque furtivo +1d6.',ico:ADV_ICO.skull},
+    {name:'Arcanista',desc:'Mestre dos elementos. Poderes destrutivos em área.',ico:ADV_ICO.flame},
+    {name:'Perseguidor',desc:'Rastreador implacável. +3 em Perseguição, ignora cansaço em rastreio.',ico:ADV_ICO.paw},
+    {name:'Líder',desc:'Inspira o grupo. Aliados recuperam 1d4 Esforço por vitória.',ico:ADV_ICO.target},
+    {name:'Errante Negro',desc:'Caminha entre mundos. Teleporte curto 1x/cena.',ico:ADV_ICO.galaxy}
   ]
 };
 const ADV_LABELS={linhagem:'Linhagem',arquetipo:'Arquétipo',passado:'Passado',caminho:'Caminho'};
@@ -10758,6 +10850,98 @@ document.querySelectorAll('.chart-time-pill').forEach(btn=>{
   });
 });
 
+</script>
+
+<!-- ═══ GARAGE MINI (floating movable) ═══ -->
+<button id="garage-mini-trigger" class="garage-mini-trigger" type="button" title="Abrir mini-garagem" onclick="toggleGarageMini(true)" aria-label="Mini garagem">
+  <svg viewBox="0 0 24 24"><path d="M5 17V12l2-5a2 2 0 0 1 1.9-1.4h6.2A2 2 0 0 1 17 7l2 5v5"/><path d="M3 17h18"/><circle cx="8" cy="17" r="2"/><circle cx="16" cy="17" r="2"/></svg>
+</button>
+<div id="garage-mini" class="garage-mini" role="dialog" aria-label="Mini garagem">
+  <div class="garage-mini-head" id="garage-mini-head">
+    <div class="garage-mini-head-dot"></div>
+    <b id="garage-mini-title">Garagem</b>
+    <button class="garage-mini-head-close" type="button" onclick="toggleGarageMini(false)" aria-label="Fechar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <div class="garage-mini-body" id="garage-mini-body"></div>
+</div>
+
+<script>
+(function(){
+  const el=document.getElementById('garage-mini');
+  const head=document.getElementById('garage-mini-head');
+  const trigger=document.getElementById('garage-mini-trigger');
+  if(!el||!head)return;
+  const POS_KEY='ficha-eclipse-garage-mini-pos';
+  function restorePos(){
+    try{
+      const p=JSON.parse(localStorage.getItem(POS_KEY)||'null');
+      if(p&&typeof p.x==='number'&&typeof p.y==='number'){
+        el.style.left=p.x+'px';el.style.top=p.y+'px';el.style.right='auto';el.style.bottom='auto';
+      }
+    }catch(_){}
+  }
+  restorePos();
+  function render(){
+    const body=document.getElementById('garage-mini-body');
+    const ttl=document.getElementById('garage-mini-title');
+    if(!body)return;
+    const t=typeof currentVehicle!=='undefined'?currentVehicle:null;
+    const v=(typeof vehiclesData!=='undefined'&&t)?(vehiclesData[t]||{}):{};
+    const a=v.attrs||{};
+    const q=typeof vgQualityOf==='function'&&t?vgQualityOf(t):{color:'var(--lime)',glow:'200,245,66',name:'—'};
+    const name=(v.nome&&v.nome.trim())||(typeof VEH_TYPE_LABELS!=='undefined'?VEH_TYPE_LABELS[t]:'')||t||'Sem veículo';
+    const hp=v.hp||0,hpMax=v.hpMax||0;
+    const pct=hpMax?Math.round(hp/hpMax*100):0;
+    const img=v.image?(v.image.startsWith('data:video/')?`<video src="${v.image}" autoplay loop muted playsinline></video>`:`<img src="${v.image}" alt="">`):`<div class="noimg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`;
+    el.style.setProperty('--rc',q.color);
+    el.style.setProperty('--rg',q.glow);
+    if(ttl)ttl.textContent=q.name?q.name.toUpperCase():'Garagem';
+    body.innerHTML=`
+      <div class="garage-mini-image">${img}</div>
+      <div class="garage-mini-name">${(name||'').replace(/</g,'&lt;')}</div>
+      <div class="garage-mini-stats">
+        <div>HP<b>${pct}%</b></div>
+        <div>VEL<b>${a.velocidade||0}</b></div>
+        <div>ACE<b>${a.aceleracao||0}</b></div>
+        <div>MAN<b>${a.manuseio||0}</b></div>
+      </div>
+      <button class="garage-mini-expand" onclick="toggleGarageMini(false);document.querySelector('.sidebar-btn[data-tab=\\'vehicles\\']')?.click()">
+        <svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        Abrir interface
+      </button>`;
+  }
+  window.toggleGarageMini=function(show){
+    const open=typeof show==='boolean'?show:!el.classList.contains('open');
+    if(open){render();el.classList.add('open')}else{el.classList.remove('open')}
+    if(trigger)trigger.style.display=open?'none':'';
+  };
+  window.refreshGarageMini=render;
+
+  // Drag
+  let dx=0,dy=0,dragging=false;
+  function start(e){
+    const pt=e.touches?e.touches[0]:e;
+    const r=el.getBoundingClientRect();
+    dx=pt.clientX-r.left;dy=pt.clientY-r.top;
+    el.style.left=r.left+'px';el.style.top=r.top+'px';el.style.right='auto';el.style.bottom='auto';
+    dragging=true;el.classList.add('dragging');
+    document.addEventListener('pointermove',move);
+    document.addEventListener('pointerup',stop,{once:true});
+  }
+  function move(e){
+    if(!dragging)return;
+    const pt=e;
+    const x=Math.max(4,Math.min(window.innerWidth-el.offsetWidth-4,pt.clientX-dx));
+    const y=Math.max(4,Math.min(window.innerHeight-el.offsetHeight-4,pt.clientY-dy));
+    el.style.left=x+'px';el.style.top=y+'px';
+  }
+  function stop(){
+    dragging=false;el.classList.remove('dragging');
+    document.removeEventListener('pointermove',move);
+    try{const r=el.getBoundingClientRect();localStorage.setItem(POS_KEY,JSON.stringify({x:r.left,y:r.top}))}catch(_){}
+  }
+  head.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;e.preventDefault();start(e)});
+})();
 </script>
 
 <!-- ═══ SCROLL-TO-TOP ═══ -->
