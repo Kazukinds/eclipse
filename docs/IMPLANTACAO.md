@@ -2,14 +2,14 @@
 
 ## GitHub Pages
 
-Hospedado em **https://kazukinds.github.io/ficha-rpg/** direto do branch `main`.
+Hospedado em **https://kazukinds.github.io/eclipse/** direto do branch `main`.
 
 O Pages detecta commits novos no `main` automaticamente e faz build em ~1 minuto.
 
 ### Verificar status do build
 
 ```bash
-gh api repos/Kazukinds/ficha-rpg/pages/builds/latest | jq .status
+gh api repos/Kazukinds/eclipse/pages/builds/latest | jq .status
 # "building" → "built"
 ```
 

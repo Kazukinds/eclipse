@@ -7,8 +7,8 @@ Como editar o projeto sem quebrar nada.
 Zero dependências. Só precisa de um editor e de um navegador.
 
 ```bash
-git clone https://github.com/Kazukinds/ficha-rpg.git
-cd ficha-rpg
+git clone https://github.com/Kazukinds/eclipse.git
+cd eclipse
 # opcional: servir local pra testar o PWA
 python -m http.server 8000
 ```
@@ -79,7 +79,7 @@ Seguir Conventional Commits:
 4. Testa responsive pelo DevTools (`F12 → toggle device`)
 5. Se mexeu em algo que o usuário vai ver cacheado, bump `CACHE` em `sw.js`
 6. Commit + push
-7. Espera ~1 min, testa em `https://kazukinds.github.io/ficha-rpg/`
+7. Espera ~1 min, testa em `https://kazukinds.github.io/eclipse/`
 
 ## Reset de dados no navegador
 

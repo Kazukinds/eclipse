@@ -5,8 +5,8 @@ Obrigado pelo interesse! Esse projeto é **single-file HTML/CSS/JS vanilla, sem 
 ## Como rodar localmente
 
 ```bash
-git clone https://github.com/Kazukinds/ficha-rpg.git
-cd ficha-rpg
+git clone https://github.com/Kazukinds/eclipse.git
+cd eclipse
 
 # opção 1: abrir direto
 start index.html          # Windows
@@ -90,7 +90,7 @@ Use o [template de feature](.github/ISSUE_TEMPLATE/feature_request.yml). Mockup 
 
 ## Dúvidas
 
-Abra uma [discussion](https://github.com/Kazukinds/ficha-rpg/discussions) — issues são pra bugs/features, discussions pra conversar.
+Abra uma [discussion](https://github.com/Kazukinds/eclipse/discussions) — issues são pra bugs/features, discussions pra conversar.
 
 ## Licença
 
