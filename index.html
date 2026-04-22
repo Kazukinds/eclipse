@@ -84,9 +84,32 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg-body);colo
 .sidebar::after{content:'';position:absolute;top:0;right:0;bottom:0;width:20px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.12));opacity:0;transition:opacity .4s;pointer-events:none}
 .sidebar.open::after{opacity:1}
 .sidebar-grip{position:absolute;top:0;right:-6px;bottom:0;width:14px;cursor:ew-resize;z-index:2;background:transparent}
-.sidebar-logo{width:40px;height:40px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;margin:0 0 28px 2px;cursor:pointer;transition:all var(--transition-base);flex-shrink:0}
-.sidebar-logo:hover{border-color:var(--lime-dim);background:var(--bg-hover);transform:scale(1.05)}
+.sidebar-logo{width:44px;height:44px;background:transparent;border:none;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 0 28px 0;cursor:pointer;transition:all var(--transition-base);flex-shrink:0}
+.sidebar-logo:hover{transform:scale(1.12) rotate(-8deg)}
 .sidebar-logo svg{width:22px;height:22px;stroke:var(--lime);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sidebar-logo-img{
+  width:44px;height:44px;object-fit:contain;
+  filter:brightness(0) saturate(100%) invert(91%) sepia(38%) saturate(760%) hue-rotate(19deg) brightness(103%) contrast(91%);
+  transition:filter .3s,transform .3s;
+}
+.sidebar-logo:hover .sidebar-logo-img{
+  filter:brightness(0) saturate(100%) invert(91%) sepia(38%) saturate(760%) hue-rotate(19deg) brightness(110%) contrast(91%) drop-shadow(0 0 10px color-mix(in srgb,var(--lime) 60%,transparent));
+  transform:scale(1.08);
+}
+/* Light theme — indigo escuro pra contraste */
+[data-theme="light"] .sidebar-logo-img{
+  filter:brightness(0) saturate(100%) invert(14%) sepia(88%) saturate(2800%) hue-rotate(240deg) brightness(90%) contrast(105%);
+}
+[data-theme="light"] .sidebar-logo:hover .sidebar-logo-img{
+  filter:brightness(0) saturate(100%) invert(14%) sepia(88%) saturate(2800%) hue-rotate(240deg) brightness(95%) contrast(105%) drop-shadow(0 0 8px rgba(79,70,229,.5));
+}
+.splash-logo-img{object-fit:contain}
+.splash-logo-img{object-fit:contain}
+/* Theme toggle — lua no dark, sol no light */
+.theme-ic-sun{display:none}
+.theme-ic-moon{display:inline-block}
+[data-theme="light"] .theme-ic-moon{display:none}
+[data-theme="light"] .theme-ic-sun{display:inline-block}
 .sidebar-nav{display:flex;flex-direction:column;gap:4px;flex:1;width:100%}
 .sidebar-bottom{width:100%}
 .sidebar-btn{width:44px;height:44px;background:none;border:none;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:flex-start;cursor:pointer;color:var(--text-dim);transition:width .45s cubic-bezier(.2,.8,.2,1),color .2s,background .2s;position:relative;gap:12px;padding:0;flex-shrink:0;overflow:hidden;white-space:nowrap}
@@ -96,7 +119,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg-body);colo
 .sidebar.open .sidebar-label{opacity:1;transform:translateX(0)}
 .sidebar-btn:hover{background:var(--bg-hover);color:var(--text-secondary)}
 .sidebar-btn.active{background:var(--lime-bg-strong);color:var(--lime)}
-.sidebar-btn.active::before{content:'';position:absolute;left:-14px;width:3px;height:20px;background:var(--lime);border-radius:0 3px 3px 0;transition:height var(--transition-smooth)}
+.sidebar-btn.active::before{display:none}
 .sidebar-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .sidebar-bottom{margin-top:auto;display:flex;flex-direction:column;gap:6px;align-items:center}
 .sidebar-divider{width:28px;height:1px;background:var(--border);margin:8px 0}
@@ -1133,7 +1156,7 @@ input[type="number"]{-moz-appearance:textfield}
 [data-theme="light"] .topbar{background:var(--bg-body)}
 [data-theme="light"] .sidebar{background:var(--bg-sidebar);border-color:var(--border)}
 [data-theme="light"] .sidebar-btn.active{background:rgba(101,163,13,.12)}
-[data-theme="light"] .sidebar-btn.active::before{background:var(--lime)}
+[data-theme="light"] .sidebar-btn.active::before{display:none}
 [data-theme="light"] .sidebar-logo svg{stroke:var(--lime)}
 [data-theme="light"] .inv-cell{background:var(--bg-card-inner)}
 [data-theme="light"] .inv-cell.occupied{background:linear-gradient(145deg,#f8f8fa,#ededf0)}
@@ -1275,6 +1298,17 @@ input[type="number"]{-moz-appearance:textfield}
 @media(min-width:641px){.stt-fab{bottom:28px;right:28px}}
 
 /* ═══ BIBLIOTECA TAB ═══ */
+.biblio-section-head{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border);flex-wrap:wrap;
+}
+.biblio-section-titles{display:flex;flex-direction:column;gap:2px;min-width:0}
+.biblio-section-titles .profile-section-title{margin:0;padding:0;border:none}
+.biblio-pills{flex-wrap:wrap;justify-content:flex-end;gap:6px}
+@media(max-width:640px){
+  .biblio-section-head{gap:10px}
+  .biblio-pills{width:100%;justify-content:flex-start}
+}
 .biblio-ch-body{padding:8px 0;font-size:13.5px;line-height:1.65;color:var(--text-secondary)}
 .biblio-ch-body h4{color:var(--text-primary);font-size:14px;margin:14px 0 6px;font-weight:700;letter-spacing:.2px}
 .biblio-ch-body ul{margin:0 0 10px 18px;padding:0}
@@ -1290,12 +1324,22 @@ input[type="number"]{-moz-appearance:textfield}
 [data-theme]:not([data-theme="light"]) .biblio-grid{background:#1a1825}
 .biblio-env{
   position:relative;aspect-ratio:0.82/1;cursor:pointer;
-  perspective:1400px;
   --env-c:#3a47cf;
   z-index:1;
-  transition:z-index 0s;
+  opacity:0;transform:translateY(18px) scale(.96);
+  animation:biblio-env-in .45s cubic-bezier(.2,.9,.3,1.1) forwards;
+  animation-delay:calc(var(--i,0) * 40ms);
+  will-change:transform;
 }
 .biblio-env:hover{z-index:20}
+@keyframes biblio-env-in{
+  0%{opacity:0;transform:translateY(18px) scale(.96)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+/* Filter pills hover + active smooth */
+.inv-filter-pill{transition:all .25s cubic-bezier(.2,.9,.3,1.1),transform .2s}
+.inv-filter-pill:hover{transform:translateY(-1px)}
+.inv-filter-pill.active{transform:scale(1.04)}
 .biblio-env[data-c="violet"]{--env-c:#5b3acf}
 .biblio-env[data-c="blue"]{--env-c:#3a47cf}
 .biblio-env[data-c="green"]{--env-c:#2e9c5b}
@@ -1348,17 +1392,17 @@ input[type="number"]{-moz-appearance:textfield}
 /* Hover — papel emerge da lateral mas FICA POR BAIXO da capa.
    Só a borda direita sobressai. Capa permanece em cima. */
 .biblio-env:hover .biblio-sleeve{
-  transform:translateX(32%) translateY(-4%) rotate(6deg) scale(1);
-  box-shadow:6px 14px 28px rgba(0,0,0,.22),0 3px 8px rgba(0,0,0,.08);
+  transform:translateX(18%) translateY(-3%) rotate(3deg) scale(1);
+  box-shadow:4px 10px 20px rgba(0,0,0,.18);
   z-index:2;
 }
 .biblio-env:hover .biblio-cover{
-  transform:rotate(-2deg) translateX(-2%);
-  box-shadow:0 20px 40px rgba(40,40,80,.32);
+  transform:rotate(-1deg);
+  box-shadow:0 16px 32px rgba(40,40,80,.28);
   z-index:5;
 }
-.biblio-env:active .biblio-sleeve{transform:translateX(38%) translateY(-6%) rotate(8deg) scale(1.01)}
-.biblio-env:active .biblio-cover{transform:rotate(-3deg)}
+.biblio-env:active .biblio-sleeve{transform:translateX(22%) translateY(-4%) rotate(4deg)}
+.biblio-env:active .biblio-cover{transform:rotate(-1.5deg)}
 @media(max-width:640px){
   .biblio-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:26px 20px;padding:20px 10px}
 }
@@ -1373,10 +1417,10 @@ input[type="number"]{-moz-appearance:textfield}
   padding:32px 24px;
 }
 .biblio-reader.show{display:flex}
-.biblio-reader.stage-1{background:rgba(15,15,28,.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.biblio-reader.stage-2{background:rgba(15,15,28,.62);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
-[data-theme="light"] .biblio-reader.stage-1{background:rgba(220,215,205,.6)}
-[data-theme="light"] .biblio-reader.stage-2{background:rgba(220,215,205,.8)}
+.biblio-reader.stage-1{background:rgba(10,10,18,.92)}
+.biblio-reader.stage-2{background:rgba(10,10,18,.95)}
+[data-theme="light"] .biblio-reader.stage-1{background:rgba(232,228,220,.95)}
+[data-theme="light"] .biblio-reader.stage-2{background:rgba(232,228,220,.97)}
 .biblio-reader-stage{
   position:relative;display:flex;align-items:center;justify-content:center;
   max-width:1200px;width:100%;gap:80px;
@@ -1395,23 +1439,21 @@ input[type="number"]{-moz-appearance:textfield}
 .biblio-reader.stage-2 .biblio-reader-book{transform:translateY(0) scale(.88) translateX(-40px)}
 
 .book-3d{
-  position:absolute;inset:0;transform-style:preserve-3d;
-  transform:rotateY(-18deg) rotateX(4deg);
+  position:absolute;inset:0;
   transition:transform .8s cubic-bezier(.2,.8,.2,1);
 }
-.biblio-reader.stage-2 .book-3d{transform:rotateY(-32deg) rotateX(2deg)}
+.biblio-reader.stage-2 .book-3d{transform:translateX(-6px)}
 
 /* Camadas de páginas atrás da capa — profundidade real */
 .book-pages-stack{position:absolute;inset:0;transform-style:preserve-3d}
 .book-pages-stack .layer{
   position:absolute;inset:0;border-radius:4px 12px 12px 4px;
-  background:linear-gradient(to right,#e8e4d8 0%,#f4f0e4 8%,#fff 12%,#fff 100%);
-  border:1px solid #d8d4c8;
-  box-shadow:0 1px 0 #c8c4b8;
+  background:linear-gradient(to right,#e8dfc6 0%,#f0e6d0 10%,#faf6e8 16%,#faf6e8 100%);
+  border:1px solid #d8cfb6;
 }
 .book-pages-stack .layer:nth-child(1){transform:translateZ(-2px) translateY(2px) translateX(-1px) scaleX(.99)}
 .book-pages-stack .layer:nth-child(2){transform:translateZ(-4px) translateY(3px) translateX(-2px) scaleX(.98)}
-.book-pages-stack .layer:nth-child(3){transform:translateZ(-6px) translateY(4px) translateX(-3px) scaleX(.97);background:linear-gradient(to right,#d8d2c2 0%,#e8e4d8 12%,#f0ecdc 100%)}
+.book-pages-stack .layer:nth-child(3){transform:translateZ(-6px) translateY(4px) translateX(-3px) scaleX(.97);background:linear-gradient(to right,#d8cdaa 0%,#e8ddbc 12%,#f0e6c8 100%)}
 
 /* Lombada do livro (esquerda) */
 .book-spine{
@@ -1467,10 +1509,7 @@ input[type="number"]{-moz-appearance:textfield}
 /* Página emerge da lateral POR BAIXO da capa — borda direita visível */
 .book-page-fly{
   position:absolute;inset:0;background:
-    radial-gradient(ellipse at 30% 20%,rgba(160,130,80,.08) 0,transparent 50%),
-    radial-gradient(ellipse at 70% 80%,rgba(160,130,80,.06) 0,transparent 50%),
     repeating-linear-gradient(to bottom,transparent 0,transparent 26px,rgba(80,60,30,.1) 26px,rgba(80,60,30,.1) 27px),
-    repeating-linear-gradient(45deg,rgba(140,100,50,.015) 0,rgba(140,100,50,.015) 2px,transparent 2px,transparent 6px),
     linear-gradient(135deg,#faf6e8 0%,#f0e8d2 100%);
   border-radius:6px 14px 14px 6px;
   box-shadow:6px 14px 32px rgba(0,0,0,.25),0 3px 10px rgba(0,0,0,.08);
@@ -1545,8 +1584,7 @@ input[type="number"]{-moz-appearance:textfield}
   border-radius:10px;color:#fff;cursor:pointer;
   font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
   letter-spacing:.1em;text-transform:uppercase;
-  transition:all .2s;
-  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  transition:background .2s,border-color .2s,color .2s,transform .2s;
 }
 [data-theme="light"] .biblio-nav-btn{background:rgba(26,24,37,.05);border-color:rgba(26,24,37,.14);color:#1a1825}
 .biblio-nav-btn:hover{background:var(--env-c,#3a47cf);border-color:var(--env-c,#3a47cf);color:#fff;transform:translateY(-1px)}
@@ -1592,11 +1630,9 @@ input[type="number"]{-moz-appearance:textfield}
   100%{transform:rotateY(0) rotate(-3deg) translateX(-2%)}
 }
 @keyframes book-page-detach{
-  /* fase 1: papel volta pra dentro do livro (recolhe sem sobrepor capa) */
   0%{transform:translateZ(8px) translateX(22%) translateY(-5%) rotate(6deg) scale(1);opacity:1}
   25%{transform:translateZ(0) translateX(2%) translateY(-1%) rotate(1deg) scale(.95);opacity:.7}
   40%{transform:translateZ(-4px) translateX(-2%) translateY(0) rotate(-1deg) scale(.92);opacity:0}
-  /* fase 2: nova página emerge de dentro */
   60%{transform:translateZ(-4px) translateX(-2%) translateY(0) rotate(-1deg) scale(.92);opacity:0}
   75%{transform:translateZ(0) translateX(4%) translateY(-2%) rotate(2deg) scale(.95);opacity:.7}
   100%{transform:translateZ(8px) translateX(22%) translateY(-5%) rotate(6deg) scale(1);opacity:1}
@@ -1619,12 +1655,12 @@ input[type="number"]{-moz-appearance:textfield}
 
 /* ═══ Painel leitor (sem fundo, só texto + linha decorativa) ═══ */
 .biblio-reader-panel{
-  width:540px;max-width:100%;max-height:82vh;overflow:hidden;
-  display:flex;flex-direction:column;gap:18px;
+  width:560px;max-width:100%;height:88vh;max-height:88vh;overflow:hidden;
+  display:flex;flex-direction:column;gap:10px;
   transform:translateX(50px);opacity:0;pointer-events:none;
   transition:transform .65s cubic-bezier(.2,.8,.2,1) .25s,opacity .5s .25s;
   background:transparent;border:none;box-shadow:none;
-  padding:8px 4px 8px 32px;
+  padding:4px 4px 4px 18px;
 }
 .biblio-reader.stage-2 .biblio-reader-panel{transform:translateX(0);opacity:1;pointer-events:auto}
 .biblio-reader-panel-head{
@@ -1632,7 +1668,7 @@ input[type="number"]{-moz-appearance:textfield}
   padding:0;border:none;
 }
 .biblio-reader-panel-head h2{
-  font-family:'Inter',sans-serif;font-size:28px;font-weight:800;
+  font-family:'Inter',sans-serif;font-size:22px;font-weight:800;
   color:#fff;margin:0;letter-spacing:-.025em;line-height:1.1;
 }
 [data-theme="light"] .biblio-reader-panel-head h2{color:#1a1825}
@@ -1646,7 +1682,6 @@ input[type="number"]{-moz-appearance:textfield}
   background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
   color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;
   flex-shrink:0;transition:all .2s;
-  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
 }
 [data-theme="light"] .biblio-reader-close{background:rgba(26,24,37,.06);border-color:rgba(26,24,37,.16);color:#1a1825}
 .biblio-reader-close:hover{background:rgba(255,80,100,.2);border-color:#f87171;color:#fff}
@@ -1667,8 +1702,7 @@ input[type="number"]{-moz-appearance:textfield}
   background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
   border-radius:7px;color:rgba(255,255,255,.85);cursor:pointer;
   font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
-  letter-spacing:.06em;text-transform:uppercase;transition:all .2s;
-  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  letter-spacing:.06em;text-transform:uppercase;transition:background .2s,border-color .2s,color .2s;
 }
 [data-theme="light"] .biblio-tool-btn{background:rgba(26,24,37,.05);border-color:rgba(26,24,37,.14);color:#1a1825}
 .biblio-tool-btn:hover{background:var(--env-c,#3a47cf);border-color:var(--env-c,#3a47cf);color:#fff;transform:translateY(-1px)}
@@ -1676,10 +1710,10 @@ input[type="number"]{-moz-appearance:textfield}
 
 /* Gen card — resultado gerador */
 .gen-result{
-  margin:0 0 18px;padding:18px;
+  margin:0 0 12px;padding:14px;
   background:color-mix(in srgb,var(--env-c,#3a47cf) 8%,rgba(0,0,0,.3));
   border:1px solid color-mix(in srgb,var(--env-c,#3a47cf) 30%,transparent);
-  border-radius:14px;
+  border-radius:12px;
   animation:gen-pop .4s cubic-bezier(.2,.8,.2,1);
 }
 @keyframes gen-pop{from{opacity:0;transform:translateY(-8px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -1718,9 +1752,9 @@ input[type="number"]{-moz-appearance:textfield}
 
 .biblio-reader-panel-body{
   position:relative;overflow:hidden;padding:0;
-  font-size:14px;line-height:1.78;color:rgba(255,255,255,.86);
+  font-size:14px;line-height:1.7;color:rgba(255,255,255,.86);
   letter-spacing:.005em;
-  flex:1;min-height:300px;max-height:64vh;
+  flex:1 1 auto;min-height:0;
   /* Textura papel sutil */
   background-image:
     radial-gradient(circle at 20% 10%,rgba(255,255,255,.025) 0,transparent 40%),
@@ -1741,9 +1775,10 @@ input[type="number"]{-moz-appearance:textfield}
   transition:transform .55s cubic-bezier(.4,0,.2,1);
 }
 .biblio-page-slide{
-  flex:0 0 100%;width:100%;
-  overflow-y:auto;padding:14px 14px 14px 4px;
+  flex:0 0 100%;width:100%;height:100%;
+  overflow-y:auto;overflow-x:hidden;padding:12px 28px 80px 28px;
   scroll-behavior:smooth;position:relative;
+  -webkit-overflow-scrolling:touch;
 }
 .biblio-page-slide::-webkit-scrollbar{width:4px}
 .biblio-page-slide::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px}
@@ -1755,7 +1790,6 @@ input[type="number"]{-moz-appearance:textfield}
   width:36px;height:24px;display:flex;align-items:center;justify-content:center;
   background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.15);
   border-radius:99px;cursor:pointer;color:#fff;
-  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
   opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
   z-index:5;
 }
@@ -1791,6 +1825,336 @@ input[type="number"]{-moz-appearance:textfield}
 .biblio-reader-panel-body h3{color:#fff;font-size:15px;margin:18px 0 8px;font-weight:700;letter-spacing:-.01em}
 [data-theme="light"] .biblio-reader-panel-body h3{color:#1a1825}
 .biblio-reader-panel-body br+strong,.biblio-reader-panel-body p strong:first-child{display:inline}
+/* Entries numeradas — badge moderno */
+.biblio-reader-panel-body p.biblio-entry{
+  display:flex;gap:12px;align-items:flex-start;
+  margin:0 0 8px;padding:10px 12px;border-radius:10px;
+  background:color-mix(in srgb,var(--env-c,#3a47cf) 5%,transparent);
+  border:1px solid color-mix(in srgb,var(--env-c,#3a47cf) 14%,transparent);
+  transition:background .2s,border-color .2s,transform .15s;
+}
+.biblio-reader-panel-body p.biblio-entry:hover{
+  background:color-mix(in srgb,var(--env-c,#3a47cf) 10%,transparent);
+  border-color:color-mix(in srgb,var(--env-c,#3a47cf) 28%,transparent);
+}
+.biblio-entry-num{
+  flex-shrink:0;width:32px;height:32px;border-radius:8px;
+  background:var(--env-c,#3a47cf);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
+  letter-spacing:-.02em;
+  box-shadow:0 3px 8px color-mix(in srgb,var(--env-c,#3a47cf) 40%,transparent),inset 0 1px 0 rgba(255,255,255,.15);
+}
+.biblio-entry-body{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.biblio-entry-name{
+  font-family:'Inter',sans-serif;font-size:13.5px;font-weight:700;
+  color:#fff;letter-spacing:-.005em;line-height:1.3;
+}
+[data-theme="light"] .biblio-entry-name{color:#1a1825}
+.biblio-entry-desc{
+  font-size:12.5px;line-height:1.55;color:rgba(255,255,255,.72);
+}
+[data-theme="light"] .biblio-entry-desc{color:rgba(26,24,37,.74)}
+/* rolling/rolled em .biblio-entry */
+.biblio-reader-panel-body p.biblio-entry.rolling{
+  background:color-mix(in srgb,var(--env-c,#3a47cf) 22%,transparent);
+  border-color:var(--env-c,#3a47cf);transform:scale(1.015);
+}
+.biblio-reader-panel-body p.biblio-entry.rolled{
+  background:color-mix(in srgb,var(--env-c,#3a47cf) 22%,transparent);
+  border:2px solid var(--env-c,#3a47cf);
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--env-c,#3a47cf) 18%,transparent),0 10px 28px rgba(0,0,0,.4);
+  position:relative;z-index:50;
+  margin:8px 0;padding:14px 20px;border-radius:12px;
+  scroll-margin-top:80px;scroll-margin-bottom:120px;
+}
+.biblio-entry{scroll-margin-top:40px;scroll-margin-bottom:100px;transition:opacity .35s,filter .35s,transform .35s}
+.biblio-reader-panel-body p.biblio-entry.faded{opacity:.22;filter:blur(.4px) saturate(.4);transform:scale(.97)}
+.biblio-reader-panel-body p.biblio-entry.rolled{transform:none}
+.biblio-reader-panel-body p.biblio-entry.rolled .biblio-entry-num{
+  animation:biblio-num-flash .6s ease;
+}
+@keyframes biblio-num-flash{
+  0%{transform:scale(1)}30%{transform:scale(1.2) rotate(-6deg)}60%{transform:scale(1.08) rotate(3deg)}100%{transform:scale(1) rotate(0)}
+}
+/* Popup confirmar adicionar à ficha após roll */
+.biblio-roll-confirm{
+  position:fixed;inset:0;z-index:9500;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(8,8,14,.55);
+  opacity:0;pointer-events:none;
+  transition:opacity .25s;padding:20px;
+}
+.biblio-roll-confirm.show{opacity:1;pointer-events:auto}
+[data-theme="light"] .biblio-roll-confirm{background:rgba(220,215,205,.7)}
+.brc-card{
+  width:100%;max-width:380px;
+  background:linear-gradient(160deg,#1d1d2a,#13131c);
+  border:1px solid rgba(255,255,255,.12);border-radius:16px;
+  padding:20px 20px 16px;color:#fff;
+  box-shadow:0 24px 60px rgba(0,0,0,.55);
+  transform:translateY(20px) scale(.94);opacity:0;
+  transition:transform .35s cubic-bezier(.34,1.3,.64,1),opacity .25s;
+}
+.biblio-roll-confirm.show .brc-card{transform:translateY(0) scale(1);opacity:1}
+[data-theme="light"] .brc-card{background:#fff;color:#1a1825;border-color:rgba(0,0,0,.08);box-shadow:0 20px 50px rgba(0,0,0,.18)}
+.brc-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:12px}
+.brc-num{
+  flex-shrink:0;width:42px;height:42px;border-radius:10px;
+  background:var(--env-c,#3a47cf);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;
+  box-shadow:0 4px 12px color-mix(in srgb,var(--env-c,#3a47cf) 50%,transparent);
+}
+.brc-titles{flex:1;min-width:0}
+.brc-kind{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.18em;color:rgba(255,255,255,.5);margin-bottom:3px}
+[data-theme="light"] .brc-kind{color:rgba(26,24,37,.5)}
+.brc-name{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.2}
+[data-theme="light"] .brc-name{color:#1a1825}
+.brc-desc{font-size:13px;line-height:1.55;color:rgba(255,255,255,.74);margin-bottom:14px;max-height:140px;overflow-y:auto}
+[data-theme="light"] .brc-desc{color:rgba(26,24,37,.74)}
+.brc-q{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:10px;letter-spacing:.02em}
+[data-theme="light"] .brc-q{color:rgba(26,24,37,.6)}
+.brc-actions{display:flex;gap:8px}
+.brc-btn{
+  flex:1;padding:11px 14px;border-radius:10px;
+  font-family:inherit;font-size:13px;font-weight:700;letter-spacing:.04em;
+  cursor:pointer;border:1px solid transparent;transition:filter .2s,transform .15s,background .2s,border-color .2s;
+}
+.brc-no{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:rgba(255,255,255,.78)}
+.brc-no:hover{background:rgba(255,255,255,.1);color:#fff}
+[data-theme="light"] .brc-no{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1);color:rgba(26,24,37,.78)}
+.brc-yes{background:var(--env-c,#3a47cf);color:#fff;box-shadow:0 4px 14px color-mix(in srgb,var(--env-c,#3a47cf) 40%,transparent)}
+.brc-yes:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.brc-btn:active{transform:scale(.97)}
+/* Caminho bloqueado (sem arquétipo) */
+.adv-locked{display:flex;flex-direction:column;align-items:center;text-align:center;padding:18px 12px}
+.adv-locked-ico{width:54px;height:54px;border-radius:50%;background:var(--bg-input);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-dim);margin-bottom:14px}
+.adv-locked-ico svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.adv-locked-title{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px}
+.adv-locked-desc{font-size:12.5px;color:var(--text-dim);line-height:1.5;max-width:320px;margin-bottom:18px}
+.adv-locked-desc b{color:var(--text-secondary)}
+.adv-locked .modal-btns{width:100%;justify-content:center}
+/* Profile field bloqueado visual */
+.profile-field-val.locked{opacity:.45;cursor:not-allowed;font-style:italic}
+.profile-field-val.locked::before{content:'🔒 ';font-style:normal;margin-right:4px}
+/* Adventurer picker — lista vertical limpa */
+.adv-grid{
+  display:flex;flex-direction:column;gap:6px;margin-bottom:14px;
+}
+.adv-card{
+  display:flex;align-items:center;gap:14px;width:100%;
+  padding:12px 14px;background:var(--bg-input);border:1px solid var(--border);
+  border-left:3px solid transparent;
+  border-radius:10px;cursor:pointer;text-align:left;
+  transition:border-color .18s,background .18s,padding-left .18s;
+  font-family:inherit;color:var(--text-primary);position:relative;
+}
+.adv-card:hover{
+  border-color:var(--border-light);background:var(--bg-card);
+  border-left-color:var(--lime-dim);
+}
+.adv-card.active{
+  border-color:var(--lime-dim);background:color-mix(in srgb,var(--lime) 8%,var(--bg-input));
+  border-left:3px solid var(--lime);
+}
+.adv-card-ico{
+  width:32px;height:32px;border-radius:8px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:color-mix(in srgb,var(--lime) 10%,var(--bg-card));
+  color:var(--text-secondary);
+  transition:background .18s,color .18s;
+}
+.adv-card-ico svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.adv-card:hover .adv-card-ico{color:var(--lime)}
+.adv-card.active .adv-card-ico{background:var(--lime);color:#09090b}
+.adv-card-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.adv-card-name{
+  font-size:14px;font-weight:700;color:var(--text-primary);
+  letter-spacing:-.005em;line-height:1.25;
+}
+.adv-card-desc{
+  font-size:11.5px;line-height:1.45;color:var(--text-dim);
+}
+.adv-card.active .adv-card-name{color:var(--lime)}
+.adv-card::after{
+  content:'';width:18px;height:18px;border-radius:50%;
+  border:2px solid var(--border-light);flex-shrink:0;
+  transition:border-color .18s,background .18s;
+}
+.adv-card.active::after{
+  border-color:var(--lime);background:var(--lime);
+  background-image:radial-gradient(circle,#09090b 30%,transparent 35%);
+}
+/* Status edit modal */
+.stat-edit-preview{
+  display:flex;align-items:center;gap:14px;
+  padding:14px;margin-bottom:18px;
+  background:var(--bg-input);border:1px solid var(--border);border-radius:12px;
+}
+.stat-edit-icon{
+  width:54px;height:54px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.stat-edit-icon svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.stat-edit-bar-wrap{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.stat-edit-bar-track{position:relative;height:10px;background:var(--bg-card);border-radius:99px;overflow:hidden}
+.stat-edit-bar-fill,.stat-edit-bar-bonus{position:absolute;left:0;top:0;height:100%;border-radius:99px;transition:width .25s}
+.stat-edit-bar-bonus{background:var(--cyan);opacity:.55}
+.stat-edit-bar-caption{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.02em}
+.stat-edit-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:18px}
+.stat-edit-field{display:grid;grid-template-columns:80px 1fr;align-items:center;gap:12px}
+.stat-edit-field label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);margin:0}
+.stat-stepper{display:flex;align-items:stretch;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg-input);min-width:0}
+.stat-stepper button{
+  width:36px;flex-shrink:0;background:var(--bg-card);border:none;color:var(--text-secondary);
+  font-size:16px;font-weight:700;cursor:pointer;padding:0;
+  transition:background .15s,color .15s;
+}
+.stat-stepper button:hover{background:var(--lime-bg);color:var(--lime)}
+.stat-stepper input{
+  flex:1;min-width:0;width:100%;background:transparent;border:none;
+  text-align:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;
+  color:var(--text-primary);padding:8px 4px;outline:none;
+}
+.stat-stepper input::-webkit-inner-spin-button,.stat-stepper input::-webkit-outer-spin-button{display:none}
+/* Gerar ficha automática — modal redesign */
+.gen-modal-intro{
+  font-size:12.5px;line-height:1.55;color:var(--text-secondary);
+  padding:12px 14px;margin-bottom:18px;border-radius:10px;
+  background:color-mix(in srgb,var(--lime) 5%,var(--bg-input));
+  border-left:3px solid var(--lime);
+}
+.gen-modal-section{margin-bottom:18px}
+.gen-modal-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.gen-modal-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim)}
+.gen-modal-level-val{
+  font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;
+  color:var(--lime);letter-spacing:-.02em;line-height:1;
+  text-shadow:0 0 12px color-mix(in srgb,var(--lime) 40%,transparent);
+}
+.gen-modal-slider{
+  width:100%;accent-color:var(--lime);
+  height:6px;background:var(--bg-input);border-radius:99px;
+}
+.gen-modal-slider-marks{
+  display:flex;justify-content:space-between;margin-top:8px;
+  font-size:10px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:.04em;
+}
+.gen-modal-toggle{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;
+  background:var(--bg-input);border:1px solid var(--border);border-radius:10px;
+  cursor:pointer;font-size:12.5px;color:var(--text-secondary);
+  margin-bottom:18px;transition:border-color .2s,background .2s;
+}
+.gen-modal-toggle:hover{border-color:var(--lime-dim)}
+.gen-modal-toggle b{color:var(--text-primary);font-weight:700}
+.gen-modal-toggle input{display:none}
+.gen-modal-toggle-box{
+  width:20px;height:20px;border-radius:5px;border:1.5px solid var(--border-light);
+  background:var(--bg-card);display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all .2s;
+}
+.gen-modal-toggle-box svg{width:14px;height:14px;color:#09090b;opacity:0;transition:opacity .15s}
+.gen-modal-toggle input:checked + .gen-modal-toggle-box{background:var(--lime);border-color:var(--lime)}
+.gen-modal-toggle input:checked + .gen-modal-toggle-box svg{opacity:1}
+.gen-modal-preview{
+  background:linear-gradient(160deg,color-mix(in srgb,var(--lime) 4%,var(--bg-input)),var(--bg-input));
+  border:1px solid var(--border);border-radius:12px;
+  padding:14px 16px;margin-bottom:18px;
+}
+.gen-modal-preview-title{
+  font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-primary);margin-bottom:12px;font-family:'JetBrains Mono',monospace;
+}
+.gen-prev-attrs{margin-bottom:12px}
+.gen-prev-attr-title{font-size:10px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gen-prev-attr-bonus{color:var(--lime);background:color-mix(in srgb,var(--lime) 14%,transparent);padding:2px 7px;border-radius:99px;font-size:9px;letter-spacing:.08em}
+.gen-prev-attr-row{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.gen-prev-attr-cell{
+  display:flex;flex-direction:column;align-items:center;gap:1px;
+  padding:6px 4px;background:var(--bg-card);border-radius:6px;
+}
+.gen-prev-attr-name{font-size:9px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+.gen-prev-attr-val{font-size:15px;font-weight:800;color:var(--text-primary);font-family:'JetBrains Mono',monospace;line-height:1.1}
+.gen-prev-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.gen-prev-stat{
+  display:flex;align-items:baseline;gap:6px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-secondary);
+  padding:6px 8px;background:var(--bg-card);border-radius:6px;
+}
+.gen-prev-stat b{font-weight:700;font-size:10px;letter-spacing:.06em}
+.gen-prev-stat span{margin-left:auto;font-weight:800;color:var(--text-primary);font-size:13px}
+.gen-prev-meta{
+  display:flex;justify-content:space-between;gap:8px;
+  font-size:10.5px;color:var(--text-dim);
+  padding-top:8px;border-top:1px dashed var(--border);
+  font-family:'JetBrains Mono',monospace;letter-spacing:.04em;
+  flex-wrap:wrap;
+}
+.gen-prev-meta b{color:var(--text-primary);font-weight:800;font-size:12px;margin-right:2px}
+.gen-modal-btns{margin-top:0}
+.gen-modal-btns .modal-btn.primary{display:inline-flex;align-items:center;gap:8px}
+.gen-modal-btns .modal-btn.primary svg{width:14px;height:14px}
+/* Botão Rolar aleatório + animação */
+.biblio-roll-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 14px;margin:4px 0 10px;border-radius:8px;
+  background:var(--env-c,#3a47cf);color:#fff;border:none;cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  transition:filter .2s,transform .15s,box-shadow .2s;
+  box-shadow:0 4px 12px color-mix(in srgb,var(--env-c,#3a47cf) 40%,transparent);
+}
+.biblio-roll-btn svg{width:14px;height:14px}
+.biblio-roll-btn:hover:not([disabled]){filter:brightness(1.12);transform:translateY(-1px)}
+.biblio-roll-btn[disabled]{opacity:.6;cursor:wait}
+.biblio-roll-btn[disabled] svg{animation:biblio-roll-spin .5s linear infinite}
+@keyframes biblio-roll-spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.biblio-reader-panel-body p.rolling{
+  background:color-mix(in srgb,var(--env-c,#3a47cf) 18%,transparent);
+  border-radius:6px;transform:scale(1.02);transition:transform .08s,background .08s;
+  padding:4px 8px;margin-left:-8px;margin-right:-8px;
+}
+.biblio-reader-panel-body p.rolled{
+  background:color-mix(in srgb,var(--env-c,#3a47cf) 14%,transparent);
+  border-left:3px solid var(--env-c,#3a47cf);
+  padding:8px 10px;border-radius:0 8px 8px 0;margin-left:-13px;
+  animation:biblio-rolled-pop .5s cubic-bezier(.34,1.4,.64,1);
+}
+@keyframes biblio-rolled-pop{
+  0%{transform:scale(1)}40%{transform:scale(1.05)}100%{transform:scale(1)}
+}
+/* Skill cards — padrão "Nome. Atributo" */
+.biblio-skill-card{
+  --sk-c:#888;
+  margin:10px 0;padding:12px 14px 12px 16px;border-radius:10px;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--sk-c) 8%,transparent),transparent 70%);
+  border-left:3px solid var(--sk-c);
+  position:relative;
+}
+.biblio-skill-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  margin-bottom:6px;flex-wrap:wrap;
+}
+.biblio-skill-name{
+  font-family:'Cinzel',serif;font-size:15px;font-weight:700;color:#fff;
+  letter-spacing:.01em;line-height:1.2;
+}
+[data-theme="light"] .biblio-skill-name{color:#1a1825}
+.biblio-skill-attr{
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:3px 8px;border-radius:99px;
+  color:var(--sk-c);
+  background:color-mix(in srgb,var(--sk-c) 14%,transparent);
+  border:1px solid color-mix(in srgb,var(--sk-c) 28%,transparent);
+  flex-shrink:0;
+}
+.biblio-skill-body{font-size:13px;line-height:1.6;color:rgba(255,255,255,.76)}
+[data-theme="light"] .biblio-skill-body{color:rgba(26,24,37,.78)}
+.biblio-skill-body p{margin:0 0 8px}
+.biblio-skill-body p:last-child{margin-bottom:0}
 .biblio-reader-panel-body em{color:rgba(255,255,255,.7);font-style:italic}
 [data-theme="light"] .biblio-reader-panel-body em{color:rgba(26,24,37,.7)}
 
@@ -2287,7 +2651,10 @@ input[type="number"]{-moz-appearance:textfield}
 .xp-gear:hover,.attr-gear:hover,.size-gear:hover{transform:scale(1.06)!important}
 
 /* Campos de perfil vazios — sem travessão, apenas espaço limpo */
-.profile-field-val.empty{min-height:38px}
+.profile-field-val.empty{min-height:38px;color:var(--text-dim);font-style:italic;font-weight:400;cursor:pointer}
+.profile-field-val.empty::before{content:'Toque para escolher'}
+.profile-field-val.empty.locked::before{content:'🔒 Selecione um arquétipo'}
+.profile-field-val.empty.locked{font-style:italic;opacity:.55}
 
 /* Log no perfil — mesmo estilo de blocos (estatisticas/notas), sem icone */
 .profile-log{display:flex;flex-direction:column;gap:10px;max-height:320px;overflow-y:auto;padding-right:4px}
@@ -2497,7 +2864,7 @@ input[type="number"]{-moz-appearance:textfield}
 .sidebar-btn{color:#dbdbe4}
 .sidebar-btn svg{stroke:#fff;transition:transform .28s cubic-bezier(.2,.8,.2,1),filter .28s,stroke .2s}
 .sidebar-btn:hover svg{transform:scale(1.14);filter:drop-shadow(0 0 6px rgba(255,255,255,.35))}
-.sidebar-btn.active svg{stroke:var(--lime);filter:drop-shadow(0 0 6px color-mix(in srgb,var(--lime) 45%,transparent));animation:icon-pulse 2.4s ease-in-out infinite}
+.sidebar-btn.active svg{stroke:var(--lime);filter:drop-shadow(0 0 6px color-mix(in srgb,var(--lime) 45%,transparent))}
 [data-theme="light"] .sidebar-btn svg{stroke:#111}
 [data-theme="light"] .sidebar-btn.active svg{stroke:var(--lime)}
 .topbar-btn svg,.profile-system-icon svg{transition:transform .3s cubic-bezier(.2,.8,.2,1),filter .3s}
@@ -2505,12 +2872,12 @@ input[type="number"]{-moz-appearance:textfield}
 .profile-system-link:hover .profile-system-icon svg{animation:icon-float 1.4s ease-in-out infinite}
 .tab-btn svg{transition:transform .25s,stroke .2s}
 .tab-btn:hover svg{transform:translateY(-1px) scale(1.08)}
-.tab-btn.active svg{stroke:var(--lime);animation:icon-shine 2.4s ease-in-out infinite}
+.tab-btn.active svg{stroke:var(--lime)}
 .status-icon svg,.spells-icon svg,.pet-icon svg,.imp-icon svg{transition:transform .3s,filter .3s}
 .status-card:hover .status-icon svg{animation:icon-pulse 1.6s ease-in-out infinite}
 .inv-cat-btn svg{transition:transform .2s}
 .inv-cat-btn:hover svg{transform:scale(1.12) rotate(-4deg)}
-.inv-cat-btn.active svg{animation:icon-shine 2s ease-in-out infinite}
+.inv-cat-btn.active svg{filter:drop-shadow(0 0 4px rgba(255,255,255,.25))}
 .modal-btn svg,.form-btn svg{transition:transform .2s}
 .modal-btn:hover svg,.form-btn:hover svg{transform:translateX(2px)}
 @media(prefers-reduced-motion:reduce){
@@ -2590,7 +2957,21 @@ textarea{line-height:1.5}
 .sidebar-btn{width:42px;height:42px;border-radius:calc(42px * .382)}
 .sidebar-btn svg{width:21px;height:21px}
 .modal-content{max-width:calc(100vw * .618)}
-.modal-btn{padding:10px 26px}
+.modal-btns{display:flex;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);justify-content:flex-end}
+.modal-btn{
+  padding:11px 22px;border-radius:10px;cursor:pointer;
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:.02em;
+  border:1px solid var(--border);background:var(--bg-input);color:var(--text-secondary);
+  transition:all .18s;display:inline-flex;align-items:center;gap:8px;
+  min-height:42px;
+}
+.modal-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.modal-btn.primary{background:var(--lime);border-color:var(--lime);color:#09090b}
+.modal-btn.primary:hover{filter:brightness(1.08);box-shadow:0 6px 16px color-mix(in srgb,var(--lime) 35%,transparent)}
+.modal-btn.secondary{background:transparent;border-color:var(--border-light);color:var(--text-primary)}
+.modal-btn.secondary:hover{border-color:var(--text-secondary);background:var(--bg-input)}
+[data-theme="light"] .modal-btn{background:#f4f5f8;color:#1a1825}
+[data-theme="light"] .modal-btn.primary{background:var(--lime);color:#09090b}
 .inv-cell{aspect-ratio:1/1}
 .inv-cat-btn{padding:10px 16px}
 /* Espaçamento utilitário phi */
@@ -2607,7 +2988,7 @@ textarea{line-height:1.5}
 .tab-header::before{content:"";position:absolute;inset:0;background:radial-gradient(500px 160px at 90% -30%,color-mix(in srgb,var(--lime) 15%,transparent),transparent 60%);pointer-events:none;opacity:.5}
 .tab-header > *{position:relative;z-index:1}
 .tab-header-ico{width:48px;height:48px;border-radius:14px;background:var(--lime-bg-strong);border:1px solid var(--lime-dim);display:flex;align-items:center;justify-content:center;color:var(--lime);flex-shrink:0;box-shadow:0 0 20px color-mix(in srgb,var(--lime) 15%,transparent)}
-.tab-header-ico svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;animation:icon-float 2.6s ease-in-out infinite}
+.tab-header-ico svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .tab-header-info{flex:1;min-width:0}
 .tab-header-info h1{font-family:'Cinzel',serif;font-size:22px;font-weight:600;letter-spacing:.02em;color:var(--text-primary);margin:0 0 3px;line-height:1.2}
 .tab-header-info p{font-size:12px;color:var(--text-dim);margin:0;letter-spacing:.02em;line-height:1.4}
@@ -2616,8 +2997,8 @@ textarea{line-height:1.5}
 /* Profile section polish (aplicado em todas as novas abas) */
 .profile-section{transition:border-color .2s,box-shadow .2s;position:relative}
 .profile-section:hover{border-color:var(--border-light)}
-.profile-section-title{display:flex;align-items:center;gap:10px}
-.profile-section-title::before{content:"";width:3px;height:14px;background:var(--lime);border-radius:2px;box-shadow:0 0 6px color-mix(in srgb,var(--lime) 60%,transparent)}
+.profile-section-title{display:flex;align-items:center;gap:10px;justify-content:flex-start}
+.profile-section-title::before{content:"";width:3px;height:14px;background:var(--lime);border-radius:2px;box-shadow:0 0 6px color-mix(in srgb,var(--lime) 60%,transparent);flex-shrink:0}
 
 /* Combate stats — mais destaque */
 .ficha-combat-cell{position:relative;overflow:hidden}
@@ -2653,7 +3034,7 @@ input:focus,textarea:focus,select:focus{outline:none}
 
 /* Sidebar refinements */
 .sidebar-btn{position:relative;transition:color .2s,background .2s,width .45s cubic-bezier(.2,.8,.2,1)}
-.sidebar-btn.active::after{content:"";position:absolute;left:-1px;top:50%;transform:translateY(-50%);width:3px;height:60%;background:var(--lime);border-radius:0 3px 3px 0;box-shadow:0 0 8px var(--lime)}
+.sidebar-btn.active::after{display:none}
 .sidebar-btn:active{transform:scale(.96)}
 
 /* Card headers elegância */
@@ -2769,26 +3150,22 @@ button:not(:disabled):active{transform:scale(.97)}
 .attr-d6-btn svg{width:14px;height:14px}
 .attr-legend-item{display:flex;align-items:center;gap:8px}
 
-/* Boneco gerador ficha no perfil */
+/* Botão circular gerar ficha */
 .profile-char-figure{
-  position:absolute;right:24px;top:24px;
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  background:none;border:none;cursor:pointer;padding:8px;
-  color:var(--text-secondary);transition:all .25s cubic-bezier(.2,.8,.2,1);
+  position:absolute;right:18px;top:18px;z-index:5;
+  width:48px;height:48px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg-input);border:1.5px solid var(--border);cursor:pointer;padding:0;
+  color:var(--text-secondary);transition:transform .2s,background .2s,border-color .2s,color .2s,box-shadow .2s;
 }
-.profile-char-figure svg{width:60px;height:90px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s,filter .25s}
-.profile-char-figure:hover{color:var(--lime)}
-.profile-char-figure:hover svg{transform:scale(1.1) rotate(-3deg);filter:drop-shadow(0 0 16px color-mix(in srgb,var(--lime) 50%,transparent))}
-.profile-char-figure:active svg{transform:scale(.95)}
-.char-figure-label{
-  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;opacity:.7;
-}
-.profile-char-figure:hover .char-figure-label{opacity:1}
+.profile-char-figure svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
+.profile-char-figure:hover{background:color-mix(in srgb,var(--lime) 14%,var(--bg-input));border-color:var(--lime);color:var(--lime);box-shadow:0 4px 14px color-mix(in srgb,var(--lime) 25%,transparent)}
+.profile-char-figure:hover svg{transform:rotate(-12deg) scale(1.08)}
+.profile-char-figure:active{transform:scale(.94)}
 .profile-header-card{position:relative}
 @media(max-width:640px){
-  .profile-char-figure{position:static;margin:14px auto 0}
-  .profile-char-figure svg{width:50px;height:75px}
+  .profile-char-figure{right:12px;top:12px;width:42px;height:42px}
+  .profile-char-figure svg{width:18px;height:18px}
 }
 .personality-mini .mini-block-label svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.9}
 .personality-mini textarea.mini-block-input{min-height:60px;resize:vertical;line-height:1.5;font-size:13px;font-weight:500}
@@ -2941,29 +3318,70 @@ button:not(:disabled):active{transform:scale(.97)}
 [data-theme="light"] .inv-card{background:#ffffff;border-color:#eef0f4;box-shadow:0 1px 2px rgba(0,0,0,.03)}
 [data-theme="light"] .inv-card:hover{border-color:#18181c;box-shadow:0 6px 16px rgba(0,0,0,.06)}
 [data-theme="light"] .inv-filter-pill.active{background:#18181c;border-color:#18181c;color:#ffffff;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+
+/* ═══ PERFORMANCE TUNING — PC/celular fraco ═══ */
+/* Render hints em tabs inativas — GPU economiza paint/layout off-screen */
+.tab-content:not(.active){content-visibility:auto;contain-intrinsic-size:1px 800px}
+/* Grids isolados — paint contido */
+.biblio-grid,.inv-grid,.status-grid,.stat-grid{contain:layout paint}
+/* Reduzir blurs em telas pequenas (maior custo em mobile GPU) */
+@media(max-width:900px){
+  .topbar,[data-theme] .topbar{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--bg-body)!important}
+  .toast{backdrop-filter:blur(4px)!important;-webkit-backdrop-filter:blur(4px)!important}
+  .biblio-reader.stage-2{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .imp-panel{backdrop-filter:blur(6px)!important;-webkit-backdrop-filter:blur(6px)!important}
+  .app-confirm-overlay{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(0,0,0,.8)!important}
+  /* Profile header orb radial — desliga em mobile */
+  .profile-header-card::before{display:none}
+  /* Book 3D simplifica em mobile — menos profundidade */
+  .biblio-reader-book{perspective:1400px}
+  .book-pages-stack .layer:nth-child(2),
+  .book-pages-stack .layer:nth-child(3){display:none}
+  /* Sidebar active glow desliga — render custoso em SVGs */
+  .sidebar-btn.active svg{filter:none}
+  .sidebar-btn:hover svg{filter:none}
+  /* Hover state irrelevante em touch */
+  .biblio-env:hover .biblio-sleeve,.biblio-env:hover .biblio-cover{transition-duration:.35s}
+  /* Inv cell icon drop-shadow remove */
+  .inv-cell .item-icon svg{filter:none}
+  .inv-cell .rarity-dot{filter:none}
+}
+/* Prefer-reduced-motion — desliga tudo animado */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.15s!important;scroll-behavior:auto!important}
+  .biblio-env{animation:none!important;opacity:1!important;transform:none!important}
+}
+/* Input touch — sem hover transform (evita repaint em scroll mobile) */
+@media(hover:none){
+  .biblio-env:hover .biblio-sleeve{transform:none}
+  .biblio-env:hover .biblio-cover{transform:none}
+  .profile-avatar:hover,.status-card:hover .status-icon svg,.profile-char-figure:hover svg{transform:none!important;filter:none!important;animation:none!important;box-shadow:none!important}
+}
+/* Font-display swap já aplicado via Google Fonts. Imagens: lazy fallback */
+img{content-visibility:auto}
 </style>
 </head>
 <body class="app-fade-in">
 <div class="app-splash" id="app-splash" aria-hidden="true">
-  <div class="splash-bolt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="12" r="9"/><path d="M19 7.5c.5 3 1 3.5 4 4-3 .5-3.5 1-4 4-.5-3-1-3.5-4-4 3-.5 3.5-1 4-4z" fill="currentColor" stroke-width="0.8"/></svg></div>
+  <div class="splash-bolt"><img src="icons/logo-eclipse.svg" alt="Eclipse" class="splash-logo-img" style="width:60%;height:60%;filter:drop-shadow(0 0 8px rgba(200,245,66,.55))"></div>
   <div class="splash-name">Ficha<span class="splash-dot"></span>Eclipse</div>
 </div>
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-grip" id="sidebar-grip"></div>
-  <div class="sidebar-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="12" r="9"/><path d="M19 7.5c.5 3 1 3.5 4 4-3 .5-3.5 1-4 4-.5-3-1-3.5-4-4 3-.5 3.5-1 4-4z" fill="currentColor" stroke-width="0.8"/></svg></div>
+  <div class="sidebar-logo"><img src="icons/logo-eclipse.svg" alt="Eclipse" class="sidebar-logo-img"></div>
   <nav class="sidebar-nav">
-    <button class="sidebar-btn active" data-tab="dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="sidebar-label">Dashboard</span></button>
-    <button class="sidebar-btn" data-tab="progress"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span class="sidebar-label">Progresso</span></button>
-    <button class="sidebar-btn" data-tab="credit"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 8.5c-.7-.8-1.6-1.5-3-1.5-2.2 0-4 1.8-4 4s1.8 4 4 4c1.4 0 2.3-.7 3-1.5"/><line x1="12" y1="3" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21"/></svg><span class="sidebar-label">Crédito</span></button>
-    <button class="sidebar-btn" data-tab="pericias"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span class="sidebar-label">Perícias</span></button>
-    <button class="sidebar-btn" data-tab="biblioteca" title="Biblioteca"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="sidebar-label">Biblioteca</span></button>
-    <button class="sidebar-btn" data-tab="inventory" title="Inventário"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.91 8.84 8.56 2.23a1.93 1.93 0 0 0-1.81 0L3.1 4.13a2.12 2.12 0 0 0-.05 3.69l12.22 6.93a2 2 0 0 0 1.94 0L21 12.51a2.12 2.12 0 0 0-.09-3.67z"/><path d="M3.09 8.84v12.16L12 22V15.52"/><path d="M20.91 8.84 12 15.52l8.91-6.68z"/></svg><span class="sidebar-label">Inventário</span></button>
-    <button class="sidebar-btn" data-tab="combate" title="Combate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/></svg><span class="sidebar-label">Combate</span></button>
-    <button class="sidebar-btn" data-tab="personagem" title="Personagem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/></svg><span class="sidebar-label">Personagem</span></button>
-    <button class="sidebar-btn" data-tab="feiticos" title="Feitiços"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h0"/><path d="M17.8 6.2 19 5"/><path d="M3 21l9-9"/><path d="M12.2 6.2 11 5"/></svg><span class="sidebar-label">Feitiços</span></button>
+    <button class="sidebar-btn active" data-tab="dashboard" title="Dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span class="sidebar-label">Dashboard</span></button>
+    <button class="sidebar-btn" data-tab="progress" title="Progresso"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span class="sidebar-label">Progresso</span></button>
+    <button class="sidebar-btn" data-tab="credit" title="Crédito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg><span class="sidebar-label">Crédito</span></button>
+    <button class="sidebar-btn" data-tab="pericias" title="Perícias"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span class="sidebar-label">Perícias</span></button>
+    <button class="sidebar-btn" data-tab="biblioteca" title="Biblioteca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><span class="sidebar-label">Biblioteca</span></button>
+    <button class="sidebar-btn" data-tab="inventory" title="Inventário"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M8 10h8"/><path d="M8 18v-7.5a2.5 2.5 0 0 1 5 0V18"/><path d="M14 6V4a2 2 0 0 0-4 0v2"/></svg><span class="sidebar-label">Inventário</span></button>
+    <button class="sidebar-btn" data-tab="combate" title="Combate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" y1="14" x2="9" y2="18"/><line x1="7" y1="17" x2="4" y2="20"/><line x1="3" y1="19" x2="5" y2="21"/></svg><span class="sidebar-label">Combate</span></button>
+    <button class="sidebar-btn" data-tab="personagem" title="Personagem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg><span class="sidebar-label">Personagem</span></button>
+    <button class="sidebar-btn" data-tab="feiticos" title="Feitiços"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg><span class="sidebar-label">Feitiços</span></button>
   </nav>
-  <div class="sidebar-bottom"><div class="sidebar-divider"></div>
-    <button class="sidebar-btn" onclick="toggleTheme()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg><span class="sidebar-label">Tema</span></button>
+  <div class="sidebar-bottom">
+    <button class="sidebar-btn" onclick="toggleTheme()" title="Alternar tema"><svg class="theme-ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="theme-ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><span class="sidebar-label">Tema</span></button>
   </div>
 </aside>
 
@@ -2971,21 +3389,21 @@ button:not(:disabled):active{transform:scale(.97)}
   <header class="topbar">
     <div class="topbar-welcome"><small>Bem-vindo,</small><h2 id="topbar-welcome-name">Aventureiro</h2></div>
     <div class="topbar-search">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
       <input type="text" id="global-search" placeholder="Buscar item, perícia, aba... (Ctrl+K)" autocomplete="off">
       <div id="search-results" class="search-results"></div>
     </div>
     <div class="topbar-actions">
       <div class="notif-wrap">
-        <button class="topbar-icon-btn" onclick="toggleNotif()"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="notif-badge" id="notif-badge"></span></button>
+        <button class="topbar-icon-btn" onclick="toggleNotif()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg><span class="notif-badge" id="notif-badge"></span></button>
         <div class="notif-dropdown" id="notif-dropdown">
           <div class="notif-header"><h4>Notificações</h4><span class="notif-count" id="notif-count">0 novas</span></div>
           <div class="notif-list" id="notif-list"></div>
           <div class="notif-footer"><button onclick="clearNotifs()">Limpar Tudo</button></div>
         </div>
       </div>
-      <button class="topbar-icon-btn" id="theme-toggle-btn" title="Alternar tema" onclick="toggleTheme()"><svg id="theme-toggle-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
-      <button class="topbar-icon-btn topbar-profile-btn" id="topbar-profile-btn" title="Perfil" onclick="switchToProfile()"><span id="topbar-profile-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span></button>
+      <button class="topbar-icon-btn" id="theme-toggle-btn" title="Alternar tema" onclick="toggleTheme()"><svg class="theme-ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="theme-ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></button>
+      <button class="topbar-icon-btn topbar-profile-btn" id="topbar-profile-btn" title="Perfil" onclick="switchToProfile()"><span id="topbar-profile-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></span></button>
     </div>
     <!-- Save dropdown mantido fora da topbar (chamável via profile) -->
     <div class="save-wrap" style="display:none">
@@ -3146,19 +3564,21 @@ button:not(:disabled):active{transform:scale(.97)}
         <div class="tab-header-info"><h1>Biblioteca</h1><p>Lore · sistemas · caminhos · arquétipos · poderes</p></div>
         <span class="tab-header-badge">Ficha</span>
       </div>
-      <div class="profile-section">
-        <div class="profile-section-title">Seções</div>
-        <div class="ficha-subtitle">Toque um card pra ler</div>
-        <div class="inv-filter-pills" id="biblio-filter-pills" style="margin-top:12px">
-          <button class="inv-filter-pill active" data-f="all">Todas</button>
-          <button class="inv-filter-pill" data-f="mec">Mecânica</button>
-          <button class="inv-filter-pill" data-f="pers">Personagem</button>
-          <button class="inv-filter-pill" data-f="cam">Caminhos</button>
-          <button class="inv-filter-pill" data-f="mun">Mundo</button>
+      <div class="profile-section biblio-section">
+        <div class="biblio-section-head">
+          <div class="biblio-section-titles">
+            <div class="profile-section-title">Seções</div>
+            <div class="ficha-subtitle">Toque um card pra ler</div>
+          </div>
+          <div class="inv-filter-pills biblio-pills" id="biblio-filter-pills">
+            <button class="inv-filter-pill active" data-f="all">Todas</button>
+            <button class="inv-filter-pill" data-f="mec">Mecânica</button>
+            <button class="inv-filter-pill" data-f="pers">Personagem</button>
+            <button class="inv-filter-pill" data-f="cam">Caminhos</button>
+            <button class="inv-filter-pill" data-f="mun">Mundo</button>
+          </div>
         </div>
-      </div>
-      <div class="profile-section">
-        <div class="biblio-grid" id="biblio-grid" style="margin-top:14px"></div>
+        <div class="biblio-grid" id="biblio-grid"></div>
       </div>
     </section>
 
@@ -3368,16 +3788,10 @@ button:not(:disabled):active{transform:scale(.97)}
       <div class="profile-header-card">
         <div class="profile-avatar" onclick="changeProfileAvatar()" style="cursor:pointer" title="Trocar foto"><span id="profile-avatar-content"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span></div>
         <button class="profile-char-figure" type="button" onclick="openSheetGeneratorModal()" title="Gerar ficha automática" aria-label="Gerar ficha automática">
-          <svg viewBox="0 0 64 96" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="32" cy="14" r="9"/>
-            <path d="M22 28h20l4 18-8 4v32H26V50l-8-4z"/>
-            <line x1="32" y1="50" x2="32" y2="82"/>
-            <path d="M14 36L22 30"/>
-            <path d="M50 36L42 30"/>
-            <circle cx="48" cy="22" r="4" fill="currentColor"/>
-            <path d="M48 22 L52 18 M48 22 L44 18 M48 22 L52 26 M48 22 L44 26"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>
+            <path d="M12 2l2 5 5 .5-3.5 3.5 1 5-4.5-2.5L7.5 16l1-5L5 7.5l5-.5z"/>
           </svg>
-          <span class="char-figure-label">Gerar ficha</span>
         </button>
         <div class="profile-header-info">
           <h2 id="profile-display-name">Aventureiro</h2>
@@ -3403,10 +3817,10 @@ button:not(:disabled):active{transform:scale(.97)}
           <div class="profile-section">
             <div class="profile-section-title">Detalhes do Personagem</div>
             <div class="profile-fields" id="profile-details-fields">
-              <div class="profile-field profile-field-pick"><label>Linhagem <button class="pf-pick-btn" onclick="openAdvPicker('linhagem')" title="Escolher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></label><div class="profile-field-val empty" id="pf-linhagem" onclick="openAdvPicker('linhagem')"></div></div>
-              <div class="profile-field profile-field-pick"><label>Arquétipo <button class="pf-pick-btn" onclick="openAdvPicker('arquetipo')" title="Escolher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></label><div class="profile-field-val empty" id="pf-arquetipo" onclick="openAdvPicker('arquetipo')"></div></div>
-              <div class="profile-field profile-field-pick"><label>Passado <button class="pf-pick-btn" onclick="openAdvPicker('passado')" title="Escolher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></label><div class="profile-field-val empty" id="pf-passado" onclick="openAdvPicker('passado')"></div></div>
-              <div class="profile-field profile-field-pick"><label>Caminho <button class="pf-pick-btn" onclick="openAdvPicker('caminho')" title="Escolher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></label><div class="profile-field-val empty" id="pf-caminho" onclick="openAdvPicker('caminho')"></div></div>
+              <div class="profile-field profile-field-pick"><label>Linhagem</label><div class="profile-field-val empty" id="pf-linhagem" onclick="openAdvPicker('linhagem')"></div></div>
+              <div class="profile-field profile-field-pick"><label>Arquétipo</label><div class="profile-field-val empty" id="pf-arquetipo" onclick="openAdvPicker('arquetipo')"></div></div>
+              <div class="profile-field profile-field-pick"><label>Passado</label><div class="profile-field-val empty" id="pf-passado" onclick="openAdvPicker('passado')"></div></div>
+              <div class="profile-field profile-field-pick"><label>Caminho</label><div class="profile-field-val empty" id="pf-caminho" onclick="openAdvPicker('caminho')"></div></div>
               <div class="profile-field"><label>Nível</label><div class="profile-field-val" id="pf-level">0</div></div>
               <div class="profile-field"><label>XP</label><div class="profile-field-val" id="pf-xp">0 / 5.000</div></div>
               <div class="profile-field"><label>Vida</label><div class="profile-field-val" id="pf-hp">0 / 0</div></div>
@@ -3483,6 +3897,16 @@ button:not(:disabled):active{transform:scale(.97)}
               </span>
               <svg class="profile-system-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
             </a>
+            <a class="profile-system-link" id="profile-folder-link" href="#" title="Pasta de armazenamento" onclick="event.preventDefault();openFolderManager();">
+              <span class="profile-system-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              </span>
+              <span class="profile-system-info">
+                <span class="profile-system-name">Pasta de armazenamento</span>
+                <span class="profile-system-sub" id="profile-folder-sub">Documents/FichaEclipse</span>
+              </span>
+              <svg class="profile-system-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
             <a class="profile-system-link" href="#" title="Admin + importar/limpar ficha" onclick="event.preventDefault();openAdminPanel();">
               <span class="profile-system-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -3531,10 +3955,6 @@ button:not(:disabled):active{transform:scale(.97)}
   <div class="biblio-reader-stage" onclick="event.stopPropagation()">
     <div class="biblio-reader-book" id="biblio-reader-book" onclick="biblioReaderAdvance()">
       <div class="book-3d">
-        <div class="book-pages-stack">
-          <div class="layer"></div><div class="layer"></div><div class="layer"></div>
-        </div>
-        <div class="book-spine"></div>
         <div class="book-page-fly"></div>
         <div class="book-cover-3d" id="br-cover">
           <div class="book-cover-top"><span class="book-cover-icon" id="br-icon"></span></div>
@@ -3558,7 +3978,7 @@ button:not(:disabled):active{transform:scale(.97)}
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="br-line-icon"></svg>
         <div class="line"></div>
       </div>
-      <div class="biblio-tools">
+      <div class="biblio-tools" id="br-tools" style="display:none">
         <button class="biblio-tool-btn" type="button" onclick="genRoll('ameaca')" title="Gerar ameaça"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2c1 3 7 3 8 0-1 3-3 5-4 8-1-3-3-5-4-8z"/><circle cx="12" cy="14" r="6"/></svg> Ameaça</button>
         <button class="biblio-tool-btn" type="button" onclick="genRoll('animal')" title="Gerar animal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1 8h3l.5-4h5l.5 4h3l1-8M3 11l2-4h14l2 4M7 11v-2"/></svg> Animal</button>
         <button class="biblio-tool-btn" type="button" onclick="genRoll('inimigo')" title="Gerar inimigo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/></svg> Inimigo</button>
@@ -3605,7 +4025,7 @@ window.tiks=tiks;
 let _tiksReady=false,_tiksMuted=localStorage.getItem('tiks-muted')==='1';
 function initTiks(){
   if(_tiksReady)return;_tiksReady=true;
-  try{tiks.init({theme:'soft'});tiks.setVolume(0.25);if(_tiksMuted)tiks.mute()}catch(e){console.warn('tiks init fail',e)}
+  try{tiks.init({theme:'soft'});tiks.setVolume(0.14);if(_tiksMuted)tiks.mute()}catch(e){console.warn('tiks init fail',e)}
 }
 ['pointerdown','keydown','touchstart'].forEach(ev=>window.addEventListener(ev,initTiks,{once:true,passive:true}));
 window.toggleSound=function(){
@@ -3644,19 +4064,21 @@ window.toggleSound=function(){
   }
   function buzz(pattern){if(!navigator.vibrate)return;try{navigator.vibrate(pattern)}catch(_){}}
   window.sfx={
-    coin:()=>{tone(988,.08,'triangle',.18);setTimeout(()=>tone(1318,.12,'triangle',.16),55);buzz(15)},
-    coinBig:()=>{tone(784,.09,'triangle',.18);setTimeout(()=>tone(1046,.09,'triangle',.17),60);setTimeout(()=>tone(1568,.16,'triangle',.14),120);buzz([15,40,25])},
-    spend:()=>{tone(440,.12,'sawtooth',.12,220);buzz(10)},
-    damage:()=>{noise(.18,.35,800);tone(120,.15,'sawtooth',.18,60);buzz([40,20,40])},
-    heal:()=>{tone(523,.1,'sine',.14);setTimeout(()=>tone(784,.18,'sine',.14),80);buzz(20)},
-    levelup:()=>{tone(523,.08,'triangle',.16);setTimeout(()=>tone(659,.08,'triangle',.16),70);setTimeout(()=>tone(784,.08,'triangle',.16),140);setTimeout(()=>tone(1046,.22,'triangle',.18),210);buzz([20,40,20,40,50])},
-    critical:()=>{tone(1568,.05,'square',.12);setTimeout(()=>tone(2093,.12,'square',.14),40);buzz([30,20,60])},
-    hover:()=>{tone(2200,.03,'sine',.04)},
-    tick:()=>{tone(1800,.02,'square',.06)},
-    save:()=>{tone(660,.06,'sine',.12);setTimeout(()=>tone(880,.1,'sine',.13),50);buzz(12)},
-    unlock:()=>{tone(392,.06,'triangle',.12);setTimeout(()=>tone(523,.06,'triangle',.13),60);setTimeout(()=>tone(784,.14,'triangle',.14),120);buzz(18)},
-    error:()=>{tone(220,.12,'square',.14,110);buzz([60,30,60])},
-    whoosh:()=>{noise(.25,.18,1200);buzz(8)}
+    coin:()=>{tone(523,.09,'sine',.1);setTimeout(()=>tone(784,.12,'sine',.09),55);buzz(15)},
+    coinBig:()=>{tone(440,.1,'sine',.1);setTimeout(()=>tone(587,.1,'sine',.09),60);setTimeout(()=>tone(784,.18,'sine',.08),120);buzz([15,40,25])},
+    spend:()=>{tone(330,.14,'sine',.08,180);buzz(10)},
+    damage:()=>{noise(.18,.22,500);tone(100,.15,'sine',.12,50);buzz([40,20,40])},
+    heal:()=>{tone(392,.12,'sine',.1);setTimeout(()=>tone(523,.18,'sine',.09),80);buzz(20)},
+    levelup:()=>{tone(392,.09,'sine',.11);setTimeout(()=>tone(494,.09,'sine',.1),70);setTimeout(()=>tone(587,.09,'sine',.1),140);setTimeout(()=>tone(784,.22,'sine',.1),210);buzz([20,40,20,40,50])},
+    critical:()=>{tone(784,.07,'triangle',.1);setTimeout(()=>tone(1046,.14,'triangle',.1),40);buzz([30,20,60])},
+    hover:()=>{tone(880,.03,'sine',.025)},
+    tick:()=>{tone(600,.025,'sine',.04)},
+    save:()=>{tone(494,.07,'sine',.1);setTimeout(()=>tone(659,.11,'sine',.1),50);buzz(12)},
+    unlock:()=>{tone(330,.07,'sine',.1);setTimeout(()=>tone(440,.07,'sine',.1),60);setTimeout(()=>tone(587,.14,'sine',.1),120);buzz(18)},
+    error:()=>{tone(196,.14,'triangle',.1,90);buzz([60,30,60])},
+    whoosh:()=>{noise(.25,.12,600);buzz(8)},
+    rollTick:()=>{tone(440,.03,'sine',.035)},
+    rollDone:()=>{tone(392,.08,'sine',.1);setTimeout(()=>tone(523,.12,'sine',.1),70);setTimeout(()=>tone(659,.18,'sine',.09),150);buzz([20,40,30])}
   };
 })();
 window.addEventListener('DOMContentLoaded',()=>{
@@ -6353,6 +6775,8 @@ function _biblioRenderAllSlides(){
   body.insertAdjacentHTML('afterbegin',trackHTML);
   body.querySelectorAll('table').forEach(_biblioTable2Chart);
   body.querySelectorAll('.biblio-page-slide').forEach(_biblioInjectDifficultyScale);
+  body.querySelectorAll('.biblio-page-slide').forEach(_biblioEnhanceSkills);
+  body.querySelectorAll('.biblio-page-slide').forEach(_biblioEnhanceRollLists);
   // Bind data-gen buttons embutidos no conteúdo da biblioteca
   body.querySelectorAll('[data-gen]').forEach(btn=>{
     btn.addEventListener('click',e=>{e.preventDefault();genRoll(btn.dataset.gen)});
@@ -6383,6 +6807,257 @@ window.biblioScrollHint=function(dir){
   const sl=_biblioCurrentSlide();if(!sl)return;
   sl.scrollBy({top:dir*Math.min(sl.clientHeight*.85,400),behavior:'smooth'});
 };
+const _BIBLIO_ATTRS={Motoras:'#5b8def',Psique:'#c084fc',Vigor:'#f87171',Percepção:'#34d399',Intelecto:'#60a5fa',Presença:'#fbbf24',Instinto:'#fb923c',Corpo:'#f87171',Mente:'#60a5fa',Espírito:'#c084fc',Força:'#f87171'};
+function _biblioEnhanceSkills(slide){
+  const hs=slide.querySelectorAll('h4');
+  hs.forEach(h=>{
+    const txt=h.textContent.trim();
+    const m=txt.match(/^(.+?)\.\s*(Motoras|Psique|Vigor|Percepção|Intelecto|Presença|Instinto|Corpo|Mente|Espírito|Força)\s*$/);
+    if(!m)return;
+    const name=m[1],attr=m[2],color=_BIBLIO_ATTRS[attr]||'#888';
+    // Colecta <p>/<ul> seguintes até próximo h4/h3/h2
+    const desc=[];let n=h.nextElementSibling;
+    while(n&&!/^H[234]$/i.test(n.tagName)){const nx=n.nextElementSibling;desc.push(n);n=nx}
+    const card=document.createElement('div');
+    card.className='biblio-skill-card';
+    card.style.setProperty('--sk-c',color);
+    card.innerHTML=`<div class="biblio-skill-head"><span class="biblio-skill-name">${name}</span><span class="biblio-skill-attr">${attr}</span></div><div class="biblio-skill-body"></div>`;
+    const body=card.querySelector('.biblio-skill-body');
+    desc.forEach(d=>body.appendChild(d));
+    h.replaceWith(card);
+  });
+}
+function _biblioEnhanceRollLists(slide){
+  const ps=Array.from(slide.querySelectorAll('p'));
+  const groups=[];let cur=null;
+  ps.forEach(p=>{
+    const s=p.querySelector('strong');
+    const m=s&&s.textContent.match(/^\s*(\d+)\s+(.+?):?\s*$/);
+    if(m){
+      if(!cur||p.previousElementSibling!==cur.items[cur.items.length-1]){cur={items:[],nums:[]};groups.push(cur)}
+      cur.items.push(p);cur.nums.push(parseInt(m[1]));
+    } else cur=null;
+  });
+  groups.filter(g=>g.items.length>=3).forEach(g=>{
+    g.groupClass='biblio-roll-group-'+Math.random().toString(36).slice(2,8);
+    g.items.forEach(p=>p.dataset.rg=g.groupClass);
+    // Detecta tipo (Traços/Ideais/...) via heading anterior
+    let prev=g.items[0].previousElementSibling,kind='';
+    while(prev&&!/^H[234]$/i.test(prev.tagName))prev=prev.previousElementSibling;
+    if(prev)kind=prev.textContent.trim();
+    g.kind=kind;
+    // Reestiliza cada item como entry-card com número badge
+    g.items.forEach((p,k)=>{
+      const s=p.querySelector('strong');if(!s)return;
+      const mm=s.textContent.match(/^\s*(\d+)\s+(.+?):?\s*$/);if(!mm)return;
+      const num=mm[1],name=mm[2];
+      // Texto restante após o strong (descrição)
+      let rest='';let node=s.nextSibling;
+      while(node){rest+=node.nodeType===3?node.textContent:(node.outerHTML||'');node=node.nextSibling}
+      rest=rest.replace(/^[:\s]+/,'');
+      p.classList.add('biblio-entry');
+      p.innerHTML=`<span class="biblio-entry-num">${num}</span><span class="biblio-entry-body"><span class="biblio-entry-name">${name}</span><span class="biblio-entry-desc">${rest}</span></span>`;
+    });
+    const btn=document.createElement('button');
+    btn.type='button';btn.className='biblio-roll-btn';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="16" r="1.2" fill="currentColor"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="16" r="1.2" fill="currentColor"/></svg> Rolar';
+    btn.onclick=()=>_biblioRollAnimate(g.items,btn,g.kind);
+    g.items[0].parentNode.insertBefore(btn,g.items[0]);
+  });
+}
+function _biblioRollAnimate(items,btn,kind){
+  if(btn.disabled)return;btn.disabled=true;
+  items.forEach(i=>i.classList.remove('rolled'));
+  const target=Math.floor(Math.random()*items.length);
+  let idx=0,step=60,total=18+target+items.length*2;
+  const tick=()=>{
+    items.forEach(i=>i.classList.remove('rolling'));
+    const cur=items[idx%items.length];
+    cur.classList.add('rolling');
+    if(window.sfx&&sfx.rollTick)sfx.rollTick();
+    idx++;
+    if(idx<total){step=Math.min(260,step+(idx>total-6?40:10));setTimeout(tick,step)}
+    else{
+      items.forEach(i=>i.classList.remove('rolling'));
+      const final=items[target];
+      final.classList.add('rolled');
+      // Esmaece os outros temporariamente pra destacar o sorteado
+      items.forEach(i=>{if(i!==final)i.classList.add('faded')});
+      setTimeout(()=>items.forEach(i=>i.classList.remove('faded')),3500);
+      // Scroll centralizando com offset pra não ficar atrás do nav inferior
+      const slide=final.closest('.biblio-page-slide');
+      if(slide){
+        const r=final.getBoundingClientRect(),sr=slide.getBoundingClientRect();
+        // Posiciona item a 25% do topo do slide pra ter respiro topo + base
+        const off=r.top-sr.top-(sr.height*0.22);
+        slide.scrollBy({top:off,behavior:'smooth'});
+      }else final.scrollIntoView({behavior:'smooth',block:'start'});
+      if(window.sfx&&sfx.rollDone)sfx.rollDone();
+      btn.disabled=false;
+      setTimeout(()=>_biblioRollConfirm(final,kind),700);
+    }
+  };
+  tick();
+}
+function _biblioRollKindToField(kind){
+  const k=(kind||'').toLowerCase();
+  if(/traç/.test(k))return{field:'tracos',label:'traço'};
+  if(/ideai|ideal/.test(k))return{field:'ideais',label:'ideal'};
+  if(/víncul|vincul/.test(k))return{field:'vinculos',label:'vínculo'};
+  if(/defei/.test(k))return{field:'defeitos',label:'defeito'};
+  if(/passad/.test(k))return{field:'passado',label:'passado'};
+  return{field:'tracos',label:'item'};
+}
+function _biblioGetChapterLinhagem(){
+  // Capítulo atual da biblioteca → nome da linhagem (se for capítulo de linhagem)
+  try{
+    const ch=BIBLIO_DATA[_biblioReaderIdx];if(!ch)return null;
+    const t=(ch.title||'').trim();
+    // Lista conhecida de linhagens
+    const known=['Altrus','Vashari','Vaskari','Kuôni','Gorrath'];
+    const hit=known.find(n=>new RegExp('\\b'+n+'\\b','i').test(t));
+    if(hit)return hit;
+    // Fallback: se subnav indicar linhagem
+    return null;
+  }catch(_){return null}
+}
+function _biblioAddLinhagemSkill(linhagem,name,desc){
+  try{
+    if(typeof skills==='undefined'){console.warn('skills undefined');return false}
+    const id=typeof nextSkillId!=='undefined'?nextSkillId++:Date.now();
+    const iconKeys=(typeof SVG!=='undefined'&&SVG)?Object.keys(SVG):['sword'];
+    const iconKey=iconKeys[Math.floor(Math.random()*iconKeys.length)]||'sword';
+    skills.push({id,name,desc:`[Linhagem · ${linhagem}] ${desc}`,cost:0,costStatus:'hp',iconKey,origin:'Linhagem',category:'Traço',classe:'—',fase:'—'});
+    try{if(typeof renderSkills==='function')renderSkills()}catch(e){console.warn('renderSkills:',e)}
+    try{if(typeof renderProfile==='function')renderProfile()}catch(e){console.warn('renderProfile:',e)}
+    try{if(typeof autosaveNow==='function')autosaveNow()}catch(_){}
+    return true;
+  }catch(err){console.error('addLinhagemSkill fail',err);return false}
+}
+function _biblioReplaceLinhagemSkill(linhagem,name,desc){
+  try{
+    if(typeof skills==='undefined')return false;
+    for(let i=skills.length-1;i>=0;i--)if(skills[i].origin==='Linhagem')skills.splice(i,1);
+    return _biblioAddLinhagemSkill(linhagem,name,desc);
+  }catch(err){console.error('replaceLinhagemSkill fail',err);return false}
+}
+function _biblioSetLinhagem(linhagem){
+  try{
+    if(typeof profileData==='object')profileData.linhagem=linhagem;
+    const el=document.getElementById('pf-linhagem');
+    if(el){el.textContent=linhagem;el.classList.remove('empty')}
+    if(typeof renderProfile==='function')renderProfile();
+    if(typeof autosaveNow==='function')autosaveNow();
+  }catch(err){console.error('setLinhagem fail',err)}
+}
+function _biblioRollConfirm(entry,kind){
+  const name=entry.querySelector('.biblio-entry-name')?.textContent.trim()||'';
+  const desc=entry.querySelector('.biblio-entry-desc')?.textContent.trim()||'';
+  const num=entry.querySelector('.biblio-entry-num')?.textContent.trim()||'';
+  const map=_biblioRollKindToField(kind);
+  const linhagem=_biblioGetChapterLinhagem();
+  const isTraco=/traç/i.test(kind||'');
+  const curLinhagem=(typeof profileData==='object'?profileData.linhagem:'')||'';
+  const hasLinhagemSkill=(typeof skills!=='undefined')&&skills.some(s=>s.origin==='Linhagem');
+
+  let pop=document.getElementById('biblio-roll-confirm');
+  if(!pop){
+    pop=document.createElement('div');pop.id='biblio-roll-confirm';pop.className='biblio-roll-confirm';
+    pop.innerHTML=`<div class="brc-card">
+      <div class="brc-head"><span class="brc-num"></span><div class="brc-titles"><div class="brc-kind"></div><div class="brc-name"></div></div></div>
+      <div class="brc-desc"></div>
+      <div class="brc-q"></div>
+      <div class="brc-actions"></div>
+    </div>`;
+    document.body.appendChild(pop);
+    pop.addEventListener('click',e=>{if(e.target===pop)_biblioRollConfirmClose()});
+  }
+  pop.querySelector('.brc-num').textContent=num||'?';
+  pop.querySelector('.brc-kind').textContent=(kind||'Item').toUpperCase()+(linhagem&&isTraco?' · '+linhagem.toUpperCase():'');
+  pop.querySelector('.brc-name').textContent=name;
+  pop.querySelector('.brc-desc').textContent=desc;
+  const qEl=pop.querySelector('.brc-q'),actEl=pop.querySelector('.brc-actions');
+
+  const close=_biblioRollConfirmClose;
+  const okMsg=(m)=>{if(typeof toast==='function')toast(m,'success');try{window.sfx&&sfx.save&&sfx.save()}catch(_){};close()};
+  const renderActions=(buttons)=>{
+    actEl.innerHTML='';
+    buttons.forEach(b=>{
+      const el=document.createElement('button');
+      el.type='button';el.className='brc-btn '+(b.style||'brc-no');
+      el.textContent=b.label;el.onclick=b.onClick;
+      actEl.appendChild(el);
+    });
+  };
+
+  if(isTraco&&linhagem){
+    // Fluxo Linhagem (capítulo de linhagem)
+    if(!curLinhagem){
+      qEl.textContent=`Você ainda não tem linhagem. Possuir ${linhagem} e adicionar este traço como habilidade?`;
+      const failMsg=()=>{if(typeof toast==='function')toast('Falhou ao adicionar habilidade — verifique o console','error');close()};
+      renderActions([
+        {label:'Não',style:'brc-no',onClick:close},
+        {label:`Sim, possuir ${linhagem}`,style:'brc-yes',onClick:()=>{
+          _biblioSetLinhagem(linhagem);
+          const ok=_biblioAddLinhagemSkill(linhagem,name,desc);
+          ok?okMsg(`Linhagem ${linhagem} definida + traço adicionado`):failMsg();
+        }}
+      ]);
+    }else if(curLinhagem.toLowerCase()!==linhagem.toLowerCase()){
+      const failMsg=()=>{if(typeof toast==='function')toast('Falhou ao trocar linhagem','error');close()};
+      qEl.textContent=`Sua linhagem atual é ${curLinhagem}. Trocar para ${linhagem} (substitui habilidades de linhagem)?`;
+      renderActions([
+        {label:'Manter atual',style:'brc-no',onClick:close},
+        {label:`Trocar para ${linhagem}`,style:'brc-yes',onClick:()=>{
+          _biblioSetLinhagem(linhagem);
+          const ok=_biblioReplaceLinhagemSkill(linhagem,name,desc);
+          ok?okMsg(`Linhagem trocada para ${linhagem}`):failMsg();
+        }}
+      ]);
+    }else if(hasLinhagemSkill){
+      const failMsg=()=>{if(typeof toast==='function')toast('Falhou ao trocar traço','error');close()};
+      qEl.textContent=`Já existe um traço de ${linhagem} na ficha. Trocar pelo novo ou manter o atual?`;
+      renderActions([
+        {label:'Manter',style:'brc-no',onClick:close},
+        {label:'Trocar',style:'brc-yes',onClick:()=>{
+          const ok=_biblioReplaceLinhagemSkill(linhagem,name,desc);
+          ok?okMsg(`Traço de ${linhagem} substituído`):failMsg();
+        }}
+      ]);
+    }else{
+      const failMsg=()=>{if(typeof toast==='function')toast('Falhou ao adicionar habilidade','error');close()};
+      qEl.textContent=`Adicionar este traço de ${linhagem} como habilidade?`;
+      renderActions([
+        {label:'Não',style:'brc-no',onClick:close},
+        {label:'Sim, adicionar',style:'brc-yes',onClick:()=>{
+          const ok=_biblioAddLinhagemSkill(linhagem,name,desc);
+          ok?okMsg(`Traço adicionado às habilidades`):failMsg();
+        }}
+      ]);
+    }
+  }else{
+    // Fluxo genérico (Ideais/Vínculos/Defeitos/Passados/etc) → textarea ficha
+    qEl.textContent=`Adicionar à ficha?`;
+    renderActions([
+      {label:'Não',style:'brc-no',onClick:close},
+      {label:'Sim, adicionar',style:'brc-yes',onClick:()=>{
+        const ta=document.querySelector(`textarea[data-ficha="${map.field}"]`);
+        if(ta){
+          const txt=`${name}: ${desc}`;
+          ta.value=ta.value.trim()?`${ta.value.trim()}\n${txt}`:txt;
+          ta.dispatchEvent(new Event('input',{bubbles:true}));
+          try{window.fichaData&&(fichaData[map.field]=ta.value)}catch(_){}
+          okMsg(`+1 ${map.label} adicionado à ficha`);
+        }else{if(typeof toast==='function')toast('Campo não encontrado','error');close()}
+      }}
+    ]);
+  }
+  requestAnimationFrame(()=>pop.classList.add('show'));
+}
+function _biblioRollConfirmClose(){
+  const pop=document.getElementById('biblio-roll-confirm');
+  if(pop)pop.classList.remove('show');
+}
 function _biblioInjectDifficultyScale(slide){
   const html=slide.innerHTML;
   // Detecta padrão "Dificuldade 10 ... 14 ... 18 ..." em parágrafos
@@ -6475,6 +7150,9 @@ function _biblioApplyChapter(ch){
   document.getElementById('br-counter').textContent=`${(_biblioReaderIdx+1).toString().padStart(2,'0')} / ${BIBLIO_DATA.length.toString().padStart(2,'0')}`;
   document.getElementById('br-prev').disabled=_biblioReaderIdx<=0;
   document.getElementById('br-next').disabled=_biblioReaderIdx>=BIBLIO_DATA.length-1;
+  // Tools só em capítulo "Ameaças"
+  const tools=document.getElementById('br-tools');
+  if(tools)tools.style.display=ch.id==='ame'?'flex':'none';
   _biblioRenderSubPage();
 }
 window.openBiblioChapter=function(id){
@@ -6689,7 +7367,6 @@ window.biblioReaderNav=function(dir){
 function _biblioSubAnim(applyFn){
   const book=document.getElementById('biblio-reader-book');
   book.classList.add('subflip');
-  // aplica em ~50% — papel recolhido + capa aberta
   setTimeout(applyFn,500);
   setTimeout(()=>book.classList.remove('subflip'),1020);
 }
@@ -6808,6 +7485,18 @@ function renderProfileAvatar(){
 }
 
 function renderProfile(){
+  // Purge legado (Obscuro/Erudito/Exilado/Líder etc) — antes de qualquer render
+  if(typeof ADV_CATALOG!=='undefined'){
+    ['linhagem','arquetipo','passado'].forEach(k=>{
+      const v=profileData[k];if(!v)return;
+      if(ADV_CATALOG[k]&&ADV_CATALOG[k].length&&!ADV_CATALOG[k].some(x=>x.name===v))profileData[k]='';
+    });
+    // Caminho valida contra lista dinâmica do arquétipo
+    if(profileData.caminho&&typeof ADV_CAMINHOS_BY_ARQ!=='undefined'){
+      const allowed=ADV_CAMINHOS_BY_ARQ[profileData.arquetipo]||[];
+      if(allowed.length&&!allowed.includes(profileData.caminho))profileData.caminho='';
+    }
+  }
   renderProfileAvatar();
   document.getElementById('profile-display-name').textContent=profileData.name;
   const roleEl=document.getElementById('profile-role-text');if(roleEl)roleEl.textContent=`Nível ${playerLevel}`;
@@ -6818,11 +7507,14 @@ function renderProfile(){
   document.getElementById('pf-email').textContent=profileData.email;
   document.getElementById('pf-phone').textContent=profileData.phone;
   document.getElementById('pf-tz').textContent=profileData.tz;
-  const setPf=(id,v)=>{const el=document.getElementById(id);if(!el)return;const val=(v||'').toString().trim();el.textContent=val;el.classList.toggle('empty',!val)};
+  const setPf=(id,v)=>{const el=document.getElementById(id);if(!el)return;const val=(v||'').toString().trim();el.textContent=val;el.classList.toggle('empty',!val);el.classList.remove('locked')};
   setPf('pf-linhagem',profileData.linhagem);
   setPf('pf-passado',profileData.passado);
   setPf('pf-arquetipo',profileData.arquetipo);
   setPf('pf-caminho',profileData.caminho);
+  // Marca Caminho como locked se não há arquétipo
+  const pfCam=document.getElementById('pf-caminho');
+  if(pfCam)pfCam.classList.toggle('locked',!profileData.arquetipo&&!profileData.caminho);
   document.getElementById('pf-level').textContent=playerLevel;
   document.getElementById('pf-xp').textContent=`${playerXP.toLocaleString()} / ${xpToNext.toLocaleString()}`;
   document.getElementById('pf-hp').textContent=`${playerHP} / ${playerHPMax}`;
@@ -7099,7 +7791,17 @@ function toggleProfileEdit(){
   if(profileEditing){
     btns.forEach(b=>{b.textContent='Salvar';b.style.borderColor='var(--lime)';b.style.color='var(--lime)'});
     infoFields.innerHTML=`<div class="profile-field"><label>Nome</label><input type="text" id="pf-name" value="${profileData.name}"></div><div class="profile-field"><label>Email</label><input type="text" id="pf-email" value="${profileData.email}"></div><div class="profile-field"><label>Telefone</label><input type="text" id="pf-phone" value="${profileData.phone}"></div><div class="profile-field"><label>Fuso Horário</label><select id="pf-tz">${fusosBR.map(f=>`<option${profileData.tz===f?' selected':''}>${f}</option>`).join('')}</select></div>`;
-    if(detFields)detFields.innerHTML=`<div class="profile-field pf-has-skill"><label>Linhagem</label><input type="text" id="pf-linhagem" value="${profileData.linhagem||''}" placeholder="Ex: Humano, Elfo..."><button type="button" class="pf-add-skill" onclick="addSkillFromOrigin('Linhagem')" title="Adicionar habilidade da Linhagem"></button></div><div class="profile-field pf-has-skill"><label>Arquétipo</label><input type="text" id="pf-arquetipo" value="${profileData.arquetipo||''}" placeholder="Ex: Guerreiro..."><button type="button" class="pf-add-skill" onclick="addSkillFromOrigin('Arquétipo')" title="Adicionar habilidade do Arquétipo"></button></div><div class="profile-field pf-has-skill"><label>Passado</label><input type="text" id="pf-passado" value="${profileData.passado||''}" placeholder="Ex: Mercenário..."><button type="button" class="pf-add-skill" onclick="addSkillFromOrigin('Passado')" title="Adicionar habilidade do Passado"></button></div><div class="profile-field pf-has-skill"><label>Caminho</label><input type="text" id="pf-caminho" value="${profileData.caminho||''}" placeholder="Ex: Luz, Trevas..."><button type="button" class="pf-add-skill" onclick="addSkillFromOrigin('Caminho')" title="Adicionar habilidade do Caminho"></button></div><div class="profile-field"><label>Nível</label><div class="profile-field-val" id="pf-level">${playerLevel}</div></div><div class="profile-field"><label>XP</label><div class="profile-field-val" id="pf-xp">${playerXP.toLocaleString()} / ${xpToNext.toLocaleString()}</div></div><div class="profile-field"><label>Vida</label><div class="profile-field-val" id="pf-hp">${playerHP} / ${playerHPMax}</div></div><div class="profile-field"><label>Crédito Total</label><div class="profile-field-val" id="pf-gold">${playerGold.toLocaleString()}</div></div><div class="profile-field"><label>Total de Itens</label><div class="profile-field-val" id="pf-items">${inventory.reduce((s,i)=>s+i.qty,0)}</div></div><div class="profile-field"><label>Habilidades</label><div class="profile-field-val" id="pf-skills">${skills.length}</div></div>`;
+    // Purge valores que não estão no catálogo atual (ex: Obscuro, Erudito antigos)
+    ['linhagem','arquetipo','passado','caminho'].forEach(k=>{
+      const v=profileData[k];if(!v)return;
+      if(typeof ADV_CATALOG!=='undefined'&&ADV_CATALOG[k]&&!ADV_CATALOG[k].some(x=>x.name===v))profileData[k]='';
+    });
+    const _vEmpty=v=>v?'':' empty';
+    const _vTxt=v=>v||'';
+    const camLocked=!profileData.arquetipo;
+    const camCls=camLocked?' empty locked':_vEmpty(profileData.caminho);
+    const camTxt=_vTxt(profileData.caminho);
+    if(detFields)detFields.innerHTML=`<div class="profile-field profile-field-pick"><label>Linhagem</label><div class="profile-field-val${_vEmpty(profileData.linhagem)}" id="pf-linhagem" onclick="openAdvPicker('linhagem')">${_vTxt(profileData.linhagem)}</div></div><div class="profile-field profile-field-pick"><label>Arquétipo</label><div class="profile-field-val${_vEmpty(profileData.arquetipo)}" id="pf-arquetipo" onclick="openAdvPicker('arquetipo')">${_vTxt(profileData.arquetipo)}</div></div><div class="profile-field profile-field-pick"><label>Passado</label><div class="profile-field-val${_vEmpty(profileData.passado)}" id="pf-passado" onclick="openAdvPicker('passado')">${_vTxt(profileData.passado)}</div></div><div class="profile-field profile-field-pick"><label>Caminho</label><div class="profile-field-val${camCls}" id="pf-caminho" onclick="openAdvPicker('caminho')">${camTxt}</div></div><div class="profile-field"><label>Nível</label><div class="profile-field-val" id="pf-level">${playerLevel}</div></div><div class="profile-field"><label>XP</label><div class="profile-field-val" id="pf-xp">${playerXP.toLocaleString()} / ${xpToNext.toLocaleString()}</div></div><div class="profile-field"><label>Vida</label><div class="profile-field-val" id="pf-hp">${playerHP} / ${playerHPMax}</div></div><div class="profile-field"><label>Crédito Total</label><div class="profile-field-val" id="pf-gold">${playerGold.toLocaleString()}</div></div><div class="profile-field"><label>Total de Itens</label><div class="profile-field-val" id="pf-items">${inventory.reduce((s,i)=>s+i.qty,0)}</div></div><div class="profile-field"><label>Habilidades</label><div class="profile-field-val" id="pf-skills">${skills.length}</div></div>`;
   } else {
     profileData.name=document.getElementById('pf-name').value||profileData.name;
     profileData.email=document.getElementById('pf-email').value||profileData.email;
@@ -7111,7 +7813,7 @@ function toggleProfileEdit(){
     btns.forEach(b=>{b.textContent='Editar';b.style.borderColor='';b.style.color=''});
     // Reconstrói a estrutura de display dos campos
     infoFields.innerHTML=`<div class="profile-field"><label>Nome</label><div class="profile-field-val" id="pf-name"></div></div><div class="profile-field"><label>Email</label><div class="profile-field-val" id="pf-email"></div></div><div class="profile-field"><label>Telefone</label><div class="profile-field-val" id="pf-phone"></div></div><div class="profile-field"><label>Fuso Horário</label><div class="profile-field-val" id="pf-tz"></div></div>`;
-    if(detFields)detFields.innerHTML=`<div class="profile-field"><label>Linhagem</label><div class="profile-field-val empty" id="pf-linhagem"></div></div><div class="profile-field"><label>Arquétipo</label><div class="profile-field-val empty" id="pf-arquetipo"></div></div><div class="profile-field"><label>Passado</label><div class="profile-field-val empty" id="pf-passado"></div></div><div class="profile-field"><label>Caminho</label><div class="profile-field-val empty" id="pf-caminho"></div></div><div class="profile-field"><label>Nível</label><div class="profile-field-val" id="pf-level">0</div></div><div class="profile-field"><label>XP</label><div class="profile-field-val" id="pf-xp">0 / 5.000</div></div><div class="profile-field"><label>Vida</label><div class="profile-field-val" id="pf-hp">0 / 0</div></div><div class="profile-field"><label>Crédito Total</label><div class="profile-field-val" id="pf-gold">0</div></div><div class="profile-field"><label>Total de Itens</label><div class="profile-field-val" id="pf-items">0</div></div><div class="profile-field"><label>Habilidades</label><div class="profile-field-val" id="pf-skills">0</div></div>`;
+    if(detFields)detFields.innerHTML=`<div class="profile-field profile-field-pick"><label>Linhagem</label><div class="profile-field-val empty" id="pf-linhagem" onclick="openAdvPicker('linhagem')"></div></div><div class="profile-field profile-field-pick"><label>Arquétipo</label><div class="profile-field-val empty" id="pf-arquetipo" onclick="openAdvPicker('arquetipo')"></div></div><div class="profile-field profile-field-pick"><label>Passado</label><div class="profile-field-val empty" id="pf-passado" onclick="openAdvPicker('passado')"></div></div><div class="profile-field profile-field-pick"><label>Caminho</label><div class="profile-field-val empty" id="pf-caminho" onclick="openAdvPicker('caminho')"></div></div><div class="profile-field"><label>Nível</label><div class="profile-field-val" id="pf-level">0</div></div><div class="profile-field"><label>XP</label><div class="profile-field-val" id="pf-xp">0 / 5.000</div></div><div class="profile-field"><label>Vida</label><div class="profile-field-val" id="pf-hp">0 / 0</div></div><div class="profile-field"><label>Crédito Total</label><div class="profile-field-val" id="pf-gold">0</div></div><div class="profile-field"><label>Total de Itens</label><div class="profile-field-val" id="pf-items">0</div></div><div class="profile-field"><label>Habilidades</label><div class="profile-field-val" id="pf-skills">0</div></div>`;
     renderProfile();toast('Perfil atualizado');
   }
 }
@@ -7491,57 +8193,107 @@ const ADV_ICO={
   target:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
   galaxy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3a9 9 0 0 1 9 9M12 21a9 9 0 0 1-9-9"/><path d="M21 12c0 2-2 3-5 3M3 12c0-2 2-3 5-3"/></svg>'
 };
+// Catálogo alinhado à BIBLIOTECA (biblioteca.html · capítulos LINHAGEM/PASSADO/caminhos).
+// Apenas linhagens, passados, arquétipos e caminhos definidos no sistema.
 const ADV_CATALOG={
   linhagem:[
-    {name:'Humano',desc:'Origem versátil. +1 em qualquer atributo, 1 perícia extra treinada.',ico:ADV_ICO.human},
-    {name:'Obscuro',desc:'Descendente da Eclipse. Visão noturna, +1 Foco, -1 em testes sociais diurnos.',ico:ADV_ICO.moon},
-    {name:'Essência',desc:'Ligado à essência primordial. +2 Determinação, resistência a controle mental.',ico:ADV_ICO.spark},
-    {name:'Artificial',desc:'Construído, não nascido. +2 Córtex, imune a doenças, -1 em testes de cura.',ico:ADV_ICO.bot},
-    {name:'Corrompido',desc:'Portador da marca obscura. +1 Neural, +1 dano, -2 em testes sociais.',ico:ADV_ICO.heart},
-    {name:'Errante',desc:'Raça nômade. +2 Esforço, +1 em Furtividade/Perseguição.',ico:ADV_ICO.leaf}
+    {name:'Altrus',desc:'Linhagem do equilíbrio e disciplina. Ver biblioteca → Linhagem.',ico:ADV_ICO.spark},
+    {name:'Vashari',desc:'Linhagem da elegância e precisão. Ver biblioteca → Linhagem.',ico:ADV_ICO.moon},
+    {name:'Vaskari',desc:'Linhagem da força bruta e resistência. Ver biblioteca → Linhagem.',ico:ADV_ICO.shield},
+    {name:'Kuōni',desc:'Linhagem da intuição e adaptação. Ver biblioteca → Linhagem.',ico:ADV_ICO.paw},
+    {name:'Gorrath',desc:'Linhagem da fúria primal. Ver biblioteca → Linhagem.',ico:ADV_ICO.flame}
   ],
   arquetipo:[
-    {name:'Guerreiro',desc:'Combatente direto. +2 HP/nível, proficiência em armas pesadas.',ico:ADV_ICO.sword},
-    {name:'Místico',desc:'Canal de poder. +2 Foco max, acesso a poderes místicos fase I.',ico:ADV_ICO.orb},
-    {name:'Ladino',desc:'Especialista em infiltração. +2 em Furtividade, crítico em 19-20.',ico:ADV_ICO.dagger},
-    {name:'Erudito',desc:'Sábio versado. +2 em todos os testes mentais, 2 perícias extra.',ico:ADV_ICO.book},
-    {name:'Médico',desc:'Cuidador. +2 em cura, recupera aliados com ação bônus.',ico:ADV_ICO.plus_med},
-    {name:'Artífice',desc:'Constrói ferramentas. Cria itens com 1 ação + material.',ico:ADV_ICO.wrench}
+    {name:'Vanguarda',desc:'Frontline marcial. Combate direto, defesa de aliados.',ico:ADV_ICO.sword},
+    {name:'Operante',desc:'Técnico infiltrador. Tecnologia, drones, sabotagem.',ico:ADV_ICO.target},
+    {name:'Feiticeiro',desc:'Conjurador arcano. Acessa poderes de alta magnitude.',ico:ADV_ICO.orb},
+    {name:'Aberração',desc:'Mutação caótica. Traços imprevisíveis por sessão.',ico:ADV_ICO.galaxy}
   ],
   passado:[
-    {name:'Soldado',desc:'Veterano de guerra. +1 em armas, proficiência em estratégia.',ico:ADV_ICO.medal},
-    {name:'Órfão',desc:'Criado na rua. +2 em Furtividade, conhece submundo.',ico:ADV_ICO.house_broken},
-    {name:'Nobre',desc:'Nascido em berço de ouro. +5 Crédito inicial, conexões sociais.',ico:ADV_ICO.crown},
-    {name:'Acadêmico',desc:'Formado em universidade. +2 perícias mentais, fala 2 idiomas.',ico:ADV_ICO.grad},
-    {name:'Fora da lei',desc:'Fugitivo procurado. +2 Esforço, bônus em furtividade urbana.',ico:ADV_ICO.warn},
-    {name:'Exilado',desc:'Banido de terra natal. +2 Determinação, imune a medo.',ico:ADV_ICO.fog}
+    {name:'Articulador de Favores',desc:'Rede de contatos e dívidas. Resolve por palavra antes de ação.',ico:ADV_ICO.crown},
+    {name:'Atirador Prestativo',desc:'Mão pronta para arma. Bônus em precisão e cobertura.',ico:ADV_ICO.target},
+    {name:'Artesão',desc:'Criador de ferramentas e remendos. Constrói/repara em campo.',ico:ADV_ICO.wrench},
+    {name:'Bombeiro',desc:'Resgate em situação extrema. Suporta dano físico contínuo.',ico:ADV_ICO.plus_med},
+    {name:'Detetive',desc:'Investigador metódico. Lê pistas, monta cenas, identifica mentiras.',ico:ADV_ICO.target},
+    {name:'Médico de Rua',desc:'Cura clandestina. Estabiliza fora de hospital, conhece anatomia.',ico:ADV_ICO.heart},
+    {name:'Mercenário',desc:'Soldado pago. Tática, armas pesadas, frieza em fogo cruzado.',ico:ADV_ICO.sword},
+    {name:'Erudito Marginal',desc:'Conhecimento proibido. Lê textos antigos, conecta padrões obscuros.',ico:ADV_ICO.book},
+    {name:'Sobrevivente',desc:'Veterano de catástrofes. Resiste a fome, frio, exaustão.',ico:ADV_ICO.shield},
+    {name:'Vagabundo Urbano',desc:'Conhece becos e segredos da cidade. Some na multidão.',ico:ADV_ICO.fog},
+    {name:'Investigador Paranormal',desc:'Caçador do oculto. Reconhece marcas obscuras antes de quem sente.',ico:ADV_ICO.spark},
+    {name:'Engenheiro de Implantes',desc:'Instala e regula cibernética. Mexe em córtex sem causar overload.',ico:ADV_ICO.bot}
   ],
-  caminho:[
-    {name:'Guardião',desc:'Protege aliados. Habilidades de defesa e cura leve.',ico:ADV_ICO.shield},
-    {name:'Assassino',desc:'Especialista em eliminação silenciosa. Ataque furtivo +1d6.',ico:ADV_ICO.skull},
-    {name:'Arcanista',desc:'Mestre dos elementos. Poderes destrutivos em área.',ico:ADV_ICO.flame},
-    {name:'Perseguidor',desc:'Rastreador implacável. +3 em Perseguição, ignora cansaço em rastreio.',ico:ADV_ICO.paw},
-    {name:'Líder',desc:'Inspira o grupo. Aliados recuperam 1d4 Esforço por vitória.',ico:ADV_ICO.target},
-    {name:'Errante Negro',desc:'Caminha entre mundos. Teleporte curto 1x/cena.',ico:ADV_ICO.galaxy}
-  ]
+  caminho:[]  // Preenchido dinamicamente conforme arquétipo (ver ADV_CAMINHOS_BY_ARQ)
 };
+// Caminhos (subclasses) por arquétipo — extraídos da biblioteca.html
+const ADV_CAMINHOS_BY_ARQ={
+  Vanguarda:['Arsenal Favorito','Executor','Guardião','Lutador Untado','Desolado','Inquisidor','Esbulhador'],
+  Operante:['Atirador Furtivo','Arquivista do Corpo','Culinário Dedicado'],
+  Feiticeiro:['Aniquilador','Analista do Obscuro','Conduíte','Investigação Obscure','Escrita Fragmenta','Flagelador','Intuitivo','Portador de Máscaras','Seguidor do Prazer','Velado','Xamã'],
+  Aberração:['Alma Atormentada','Amaldiçoado','Artesão de Si','Duquesa','Fera Imaculada','Monstruoso Tecnológico','Rudimento','Prisioneiro de Carne','Sangue Vinculante']
+};
+function _advBuildCaminhosFor(arq){
+  const list=ADV_CAMINHOS_BY_ARQ[arq]||[];
+  return list.map(name=>({name,desc:`Subclasse de ${arq}. Ver biblioteca → ${arq}.`,ico:ADV_ICO.sword}));
+}
 const ADV_LABELS={linhagem:'Linhagem',arquetipo:'Arquétipo',passado:'Passado',caminho:'Caminho'};
+// Limpa valores antigos (Obscuro, Erudito, Exilado, Líder etc) — caminho valida via lista dinâmica
+(function _purgeOldAdv(){
+  if(typeof profileData!=='object')return;
+  ['linhagem','arquetipo','passado'].forEach(k=>{
+    const v=profileData[k];if(!v)return;
+    const valid=ADV_CATALOG[k]&&ADV_CATALOG[k].length&&ADV_CATALOG[k].some(x=>x.name===v);
+    if(!valid)profileData[k]='';
+  });
+  if(profileData.caminho){
+    const allowed=ADV_CAMINHOS_BY_ARQ[profileData.arquetipo]||[];
+    if(!allowed.includes(profileData.caminho))profileData.caminho='';
+  }
+})();
 
 // ═══ GERADOR DE FICHA AUTOMÁTICA ═══
 const AUTO_NAMES=['Kaelen','Nyx','Vhalor','Sera','Brann','Zyn','Ilya','Tharn','Lira','Orin','Mael','Yuki','Raven','Kai','Sov','Aela','Riven','Thaia','Corvin','Nerissa','Jace','Amaryn','Dex','Lorien'];
-const AUTO_ARQUETIPO_PRIMARY={Guerreiro:'Fisico','Místico':'Psique',Ladino:'Motora',Erudito:'Intelecto','Médico':'Intelecto','Artífice':'Intelecto'};
+const AUTO_ARQUETIPO_PRIMARY={Vanguarda:'Fisico','Operante':'Motora',Feiticeiro:'Intelecto','Aberração':'Psique'};
 function _pickRandom(arr){return arr[Math.floor(Math.random()*arr.length)]}
 
+function _biblioExtractH4(chapterId){
+  if(typeof BIBLIO_DATA==='undefined')return[];
+  const ch=BIBLIO_DATA.find(c=>c.id===chapterId);
+  if(!ch||!ch.body)return[];
+  const matches=[...ch.body.matchAll(/<h4>([^<]+)<\/h4>/g)];
+  return matches.map(m=>m[1].trim()).filter(Boolean);
+}
+function _biblioPickAdvancements(){
+  const out={};
+  // Linhagens — capítulo "lin"
+  const lins=_biblioExtractH4('lin');
+  if(lins.length)out.linhagem=lins[Math.floor(Math.random()*lins.length)];
+  // Passados — capítulo "pas"
+  const pas=_biblioExtractH4('pas');
+  if(pas.length)out.passado=pas[Math.floor(Math.random()*pas.length)];
+  // Caminhos — chapters de categoria 'cam' (Vanguarda, Operador, Feiticeiro, etc) → o título do capítulo é o caminho
+  if(typeof BIBLIO_DATA!=='undefined'){
+    const cams=BIBLIO_DATA.filter(c=>c.cat==='cam').map(c=>c.title);
+    if(cams.length){
+      const pick=cams[Math.floor(Math.random()*cams.length)];
+      out.caminho=pick;
+      // Arquétipo = mesmo do caminho (sistema usa caminho como classe)
+      out.arquetipo=pick;
+    }
+  }
+  return out;
+}
 window.generateAutoSheet=function(level,opts){
   level=Math.max(1,Math.min(20,parseInt(level)||1));
   opts=opts||{};
   const keepName=!!opts.keepName;
 
-  // 1. Profile advancements (random)
-  profileData.linhagem=_pickRandom(ADV_CATALOG.linhagem).name;
-  profileData.arquetipo=_pickRandom(ADV_CATALOG.arquetipo).name;
-  profileData.passado=_pickRandom(ADV_CATALOG.passado).name;
-  profileData.caminho=_pickRandom(ADV_CATALOG.caminho).name;
+  // 1. Profile advancements — busca da biblioteca quando possível
+  const fromBib=_biblioPickAdvancements();
+  profileData.linhagem=fromBib.linhagem||_pickRandom(ADV_CATALOG.linhagem).name;
+  profileData.arquetipo=fromBib.arquetipo||_pickRandom(ADV_CATALOG.arquetipo).name;
+  profileData.passado=fromBib.passado||_pickRandom(ADV_CATALOG.passado).name;
+  profileData.caminho=fromBib.caminho||_pickRandom(ADV_CATALOG.caminho).name;
   if(!keepName||!profileData.name||profileData.name==='Aventureiro'){
     profileData.name=_pickRandom(AUTO_NAMES);
   }
@@ -7557,32 +8309,59 @@ window.generateAutoSheet=function(level,opts){
   stageToNext=st;
   stageXP=Math.round(st*(0.1+Math.random()*0.3));
 
-  // 3. HP: base 30 + 8/nv (10 se Guerreiro)
-  const isWarrior=profileData.arquetipo==='Guerreiro';
-  const hpPerLvl=isWarrior?10:8;
-  playerHPMax=30+level*hpPerLvl;
+  // 4. Atributos — começam em 0, 10 pontos distribuídos (max 5 por atributo inicial).
+  //    Bônus por nível: +1 a cada 2 níveis em todos atributos (cap 7), garantindo:
+  //    nv 5 = +2, nv 10 = +5 (primário 10), nv 20 = +7 (primário 12).
+  // Atributos: 10 pontos distribuídos, max 5 por atributo.
+  const N=attributes.length;
+  attributes.forEach(a=>{a.val=0;a.max=0});
+  let pointsLeft=10;
+  while(pointsLeft>0){
+    const i=Math.floor(Math.random()*N);
+    if(attributes[i].val<5){attributes[i].val++;pointsLeft--}
+  }
+  attributes.forEach(a=>{a.max=a.val});
+
+  // 3. Status — extraído da biblioteca (Características de cada arquétipo).
+  //    Inicial = valor lvl 1. Por nível adicional soma (per+atributo).
+  //    Foco escala com Psique. Det = +3 por nível. Neural/Córtex regra própria (Intelecto).
+  // Balanceamento completo por arquétipo — todos os status escalonam por classe.
+  // Vanguarda: tank físico (HP/Esf alto, Foco/Det baixo)
+  // Aberração: híbrido (médio em tudo)
+  // Operante: técnico (HP médio, Esf médio, Foco alto)
+  // Feiticeiro: caster (HP/Esf baixos, Foco/Det altos)
+  const ARQ_PROG={
+    Vanguarda:  {hpInit:32,hpPer:8, esfInit:7, esfPer:3, focInit:6, focPer:2, detInit:17,detPer:5},
+    Aberração:  {hpInit:28,hpPer:7, esfInit:8, esfPer:3, focInit:10,focPer:3, detInit:18,detPer:5},
+    Operante:   {hpInit:24,hpPer:6, esfInit:8, esfPer:3, focInit:12,focPer:3, detInit:18,detPer:5},
+    Feiticeiro: {hpInit:20,hpPer:5, esfInit:5, esfPer:2, focInit:16,focPer:4, detInit:20,detPer:6}
+  };
+  const prog=ARQ_PROG[profileData.arquetipo]||ARQ_PROG.Vanguarda;
+  const fisicoVal=attributes.find(a=>a.name==='Fisico')?.val||0;
+  const psiVal=attributes.find(a=>a.name==='Psique')?.val||0;
+  const intVal=attributes.find(a=>a.name==='Intelecto')?.val||0;
+  const lvlExtra=Math.max(0,level-1);
+  // Vitalidade: (init + Fis) + extras × (per + Fis)
+  playerHPMax=(prog.hpInit+fisicoVal)+lvlExtra*(prog.hpPer+fisicoVal);
   playerHP=playerHPMax;
   playerHPBonus=0;
+  // Esforço: (init + Fis) + extras × (per + Fis)
+  const esf=(prog.esfInit+fisicoVal)+lvlExtra*(prog.esfPer+fisicoVal);
+  // Foco: (init + Psi) + extras × (per + Psi) — escala com Psique
+  const foc=(prog.focInit+psiVal)+lvlExtra*(prog.focPer+psiVal);
+  // Determinação: init + extras × per
+  const det=prog.detInit+lvlExtra*prog.detPer;
+  // Neural/Córtex: Intelecto + nível
+  const neu=intVal*2+Math.floor(level/2);
+  const cor=intVal+Math.floor(level/3);
+  playerStatus.esforco={val:esf,max:esf,bonus:0};
+  playerStatus.foco={val:foc,max:foc,bonus:0};
+  playerStatus.determinacao={val:det,max:det,bonus:0};
+  playerStatus.neural={val:neu,max:neu,bonus:0};
+  playerStatus.cortex={val:cor,max:cor,bonus:0};
 
-  // 4. Atributos — primário pelo arquetipo
-  const primary=AUTO_ARQUETIPO_PRIMARY[profileData.arquetipo]||'Fisico';
-  attributes.forEach(a=>{
-    const base=(a.name===primary)?5:2;
-    const growth=(a.name===primary)?1.2:0.7;
-    a.val=Math.min(20,base+Math.floor(level*growth));
-    a.max=a.val;
-  });
-
-  // 5. Status — esforco/foco/det escalam com nv
-  playerStatus.esforco={val:10+level*3,max:10+level*3,bonus:0};
-  playerStatus.foco={val:10+level*3,max:10+level*3,bonus:0};
-  playerStatus.determinacao={val:5+level*2,max:5+level*2,bonus:0};
-  playerStatus.neural={val:Math.floor(level*1.5),max:Math.floor(level*1.5),bonus:0};
-  playerStatus.cortex={val:Math.floor(level/2),max:Math.floor(level/2),bonus:0};
-
-  // 6. Gold — 100 base + 50/nv (+500 se Nobre)
-  const isNoble=profileData.passado==='Nobre';
-  playerGold=100+level*50+(isNoble?500:0);
+  // 6. Gold — 100 base + 50/nv
+  playerGold=100+level*50;
 
   // 7. Skills — phase + classe filtradas
   const phases=level>=10?['I','II','III']:level>=4?['I','II']:['I'];
@@ -7629,52 +8408,69 @@ window.openSheetGeneratorModal=function(){
   title.textContent='Gerar ficha automática';
   const curName=(typeof profileData!=='undefined'?profileData.name:'')||'';
   body.innerHTML=`
-    <p style="font-size:13px;color:var(--text-dim);line-height:1.5;margin-bottom:16px">
-      Gera a ficha base com o nível selecionado: linhagem, arquétipo, passado, caminho, atributos, status (HP/Esforço/Foco/Det/Neural), perícias e habilidades. Feitiços, companheiros, veículos e implantes ficam nos seus sistemas próprios — não são tocados aqui. Sobrescreve apenas a ficha base.
-    </p>
-    <div class="form-group" style="margin-bottom:16px">
-      <label style="display:flex;justify-content:space-between;align-items:center">Nível <span id="gen-level-val" style="font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--lime);font-weight:800">10</span></label>
-      <input type="range" id="gen-level-input" min="1" max="20" value="10" style="width:100%;accent-color:var(--lime);margin-top:6px">
-      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;margin-top:4px;letter-spacing:.618px">
+    <div class="gen-modal-intro">
+      Gera a ficha base buscando linhagem, passado e caminho da Biblioteca. Atributos: 10 pontos distribuídos (máx 5 cada). HP derivado de Físico, status, perícias e habilidades por nível.
+    </div>
+    <div class="gen-modal-section">
+      <div class="gen-modal-section-head">
+        <span class="gen-modal-label">Nível</span>
+        <span class="gen-modal-level-val" id="gen-level-val">6</span>
+      </div>
+      <input type="range" id="gen-level-input" min="1" max="20" value="6" class="gen-modal-slider">
+      <div class="gen-modal-slider-marks">
         <span>1 · novato</span><span>10 · veterano</span><span>20 · lendário</span>
       </div>
     </div>
-    <div class="form-group" style="margin-bottom:16px">
-      <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
-        <input type="checkbox" id="gen-keep-name" ${curName&&curName!=='Aventureiro'?'checked':''} style="accent-color:var(--lime)">
-        <span style="font-size:12px;color:var(--text-secondary)">Manter nome atual${curName?` ("${curName}")`:''}</span>
-      </label>
-    </div>
-    <div id="gen-preview" style="padding:12px 16px;background:var(--bg-input);border:1px solid var(--border);border-radius:10px;margin-bottom:16px;font-size:12px;color:var(--text-secondary);line-height:1.5">
-      <div style="font-weight:700;color:var(--text-primary);margin-bottom:4px">Preview no Nv 10</div>
+    <label class="gen-modal-toggle">
+      <input type="checkbox" id="gen-keep-name" ${curName&&curName!=='Aventureiro'?'checked':''}>
+      <span class="gen-modal-toggle-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+      <span>Manter nome atual${curName?` <b>("${curName}")</b>`:''}</span>
+    </label>
+    <div id="gen-preview" class="gen-modal-preview">
+      <div class="gen-modal-preview-title" id="gen-preview-title">Preview no Nv 6</div>
       <div id="gen-preview-body"></div>
     </div>
-    <div class="modal-btns">
+    <div class="modal-btns gen-modal-btns">
       <button class="modal-btn secondary" onclick="closeModal()">Cancelar</button>
-      <button class="modal-btn primary" id="gen-sheet-go">Gerar ficha</button>
+      <button class="modal-btn primary" id="gen-sheet-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Gerar ficha</button>
     </div>`;
   overlay.classList.add('open');
   const slider=document.getElementById('gen-level-input');
   const lvlVal=document.getElementById('gen-level-val');
   const preview=document.getElementById('gen-preview-body');
-  const previewTitle=document.querySelector('#gen-preview > div');
+  const previewTitle=document.getElementById('gen-preview-title');
   function renderPrev(lv){
     lv=parseInt(lv)||1;
     let xp=5000;for(let i=1;i<lv;i++)xp=Math.round(xp*1.2);
-    const hp=30+lv*8;
+    // Atributos: simula distribuição 10 pts (3 primário + 7 demais cap 5) + bônus nv
+    const sampleAttrs=[3,2,2,2,1];
+    const sumAttrs=10;
+    const fisico=3;
+    const isWarrior=false;
+    const hp=Math.round((20+fisico*6+lv*3)*(isWarrior?1.2:1));
     const esf=10+lv*3;
     const nSk=Math.min(8,2+Math.floor(lv/3));
     const phases=lv>=10?'I, II, III':lv>=4?'I, II':'I';
     if(preview)preview.innerHTML=`
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px">
-        <div><b style="color:var(--red)">HP</b> ${hp}</div>
-        <div><b style="color:#fb923c">ESF</b> ${esf}</div>
-        <div><b style="color:var(--lime)">XP</b> ${xp.toLocaleString('pt-BR')}</div>
-        <div><b style="color:var(--blue)">Foco</b> ${esf}</div>
-        <div><b style="color:var(--purple)">Det</b> ${5+lv*2}</div>
-        <div><b style="color:var(--cyan)">Neural</b> ${Math.floor(lv*1.5)}</div>
+      <div class="gen-prev-attrs">
+        <div class="gen-prev-attr-title">Atributos · 10 pts distribuídos · máx 5 cada</div>
+        <div class="gen-prev-attr-row">
+          ${sampleAttrs.map((v,i)=>`<div class="gen-prev-attr-cell"><span class="gen-prev-attr-name">${['Fis','Psi','Mot','Per','Pre'][i]||'—'}</span><span class="gen-prev-attr-val">${v}</span></div>`).join('')}
+        </div>
       </div>
-      <div style="margin-top:8px;color:var(--text-dim)">Habilidades: ${nSk} · Fases: ${phases} · Perícias treinadas: ${4+Math.floor(lv/2)}</div>`;
+      <div class="gen-prev-stats">
+        <div class="gen-prev-stat"><b style="color:var(--red)">HP</b><span>${hp}</span></div>
+        <div class="gen-prev-stat"><b style="color:#fb923c">ESF</b><span>${esf}</span></div>
+        <div class="gen-prev-stat"><b style="color:var(--blue)">FOC</b><span>${esf}</span></div>
+        <div class="gen-prev-stat"><b style="color:var(--purple)">DET</b><span>${5+lv*2}</span></div>
+        <div class="gen-prev-stat"><b style="color:var(--cyan)">NRL</b><span>${Math.floor(lv*1.5)}</span></div>
+        <div class="gen-prev-stat"><b style="color:var(--lime)">XP</b><span>${xp.toLocaleString('pt-BR')}</span></div>
+      </div>
+      <div class="gen-prev-meta">
+        <span><b>${nSk}</b> habilidades</span>
+        <span><b>${phases}</b> fases</span>
+        <span><b>${4+Math.floor(lv/2)}</b> perícias</span>
+      </div>`;
     if(previewTitle)previewTitle.textContent=`Preview no Nv ${lv}`;
   }
   if(slider){
@@ -7696,15 +8492,34 @@ window.openSheetGeneratorModal=function(){
 };
 
 window.openAdvPicker=function(field){
-  const cat=ADV_CATALOG[field];if(!cat)return;
+  let cat=ADV_CATALOG[field];if(!cat)return;
   const title=document.getElementById('modal-title'),body=document.getElementById('modal-body');
   if(!title||!body)return;
   title.textContent=`Escolher ${ADV_LABELS[field]}`;
+  const arq=(typeof profileData!=='undefined'&&profileData.arquetipo)||'';
+  // Caminho é derivado do arquétipo
+  if(field==='caminho'){
+    if(!arq){
+      body.innerHTML=`
+        <div class="adv-locked">
+          <div class="adv-locked-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div class="adv-locked-title">Caminho bloqueado</div>
+          <div class="adv-locked-desc">Escolha um <b>Arquétipo</b> antes. Os caminhos disponíveis dependem da classe selecionada.</div>
+          <div class="modal-btns"><button type="button" class="modal-btn secondary" onclick="closeModal()">Fechar</button><button type="button" class="modal-btn primary" id="adv-go-arq">Escolher Arquétipo</button></div>
+        </div>`;
+      document.getElementById('modal-overlay').classList.add('open');
+      const goArq=document.getElementById('adv-go-arq');
+      if(goArq)goArq.addEventListener('click',()=>openAdvPicker('arquetipo'));
+      return;
+    }
+    cat=_advBuildCaminhosFor(arq);
+    title.textContent=`Caminho · ${arq}`;
+  }
   const current=(typeof profileData!=='undefined'&&profileData[field])||'';
   const esc=s=>String(s||'').replace(/</g,'&lt;').replace(/"/g,'&quot;');
   body.innerHTML=`
-    <div class="adv-grid">
-      ${cat.map(c=>`<button class="adv-card${current===c.name?' active':''}" onclick="applyAdv('${field}',${JSON.stringify(c.name).replace(/'/g,'&#39;')})">
+    <div class="adv-grid" id="adv-grid-${field}">
+      ${cat.map((c,i)=>`<button type="button" class="adv-card${current===c.name?' active':''}" data-adv-idx="${i}">
         <div class="adv-card-ico">${c.ico}</div>
         <div class="adv-card-body">
           <div class="adv-card-name">${esc(c.name)}</div>
@@ -7712,21 +8527,99 @@ window.openAdvPicker=function(field){
         </div>
       </button>`).join('')}
     </div>
-    ${current?`<div class="modal-btns"><button class="modal-btn secondary" onclick="clearAdv('${field}')">Remover seleção</button><button class="modal-btn primary" onclick="closeModal()">Fechar</button></div>`:`<div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button></div>`}`;
+    ${current?`<div class="modal-btns"><button type="button" class="modal-btn secondary" id="adv-clear-btn">Remover seleção</button><button type="button" class="modal-btn primary" onclick="closeModal()">Fechar</button></div>`:`<div class="modal-btns"><button type="button" class="modal-btn secondary" onclick="closeModal()">Cancelar</button></div>`}`;
   document.getElementById('modal-overlay').classList.add('open');
+  document.querySelectorAll(`#adv-grid-${field} .adv-card`).forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const idx=parseInt(btn.dataset.advIdx);
+      const item=cat[idx];if(!item)return;
+      applyAdv(field,item.name);
+    });
+  });
+  const clearBtn=document.getElementById('adv-clear-btn');
+  if(clearBtn)clearBtn.addEventListener('click',()=>clearAdv(field));
 };
+// Recalcula status base quando arquétipo muda fora do gerador automático
+function _recomputeStatusFromArq(){
+  const ARQ_PROG={
+    Vanguarda:  {hpInit:32,hpPer:8, esfInit:7, esfPer:3, focInit:6, focPer:2, detInit:17,detPer:5},
+    Aberração:  {hpInit:28,hpPer:7, esfInit:8, esfPer:3, focInit:10,focPer:3, detInit:18,detPer:5},
+    Operante:   {hpInit:24,hpPer:6, esfInit:8, esfPer:3, focInit:12,focPer:3, detInit:18,detPer:5},
+    Feiticeiro: {hpInit:20,hpPer:5, esfInit:5, esfPer:2, focInit:16,focPer:4, detInit:20,detPer:6}
+  };
+  const prog=ARQ_PROG[profileData.arquetipo];if(!prog)return;
+  const lv=Math.max(1,playerLevel||1);
+  const lvE=lv-1;
+  const fis=attributes.find(a=>a.name==='Fisico')?.val||0;
+  const psi=attributes.find(a=>a.name==='Psique')?.val||0;
+  const intV=attributes.find(a=>a.name==='Intelecto')?.val||0;
+  playerHPMax=(prog.hpInit+fis)+lvE*(prog.hpPer+fis);
+  playerHP=Math.min(playerHP||playerHPMax,playerHPMax);
+  const esf=(prog.esfInit+fis)+lvE*(prog.esfPer+fis);
+  const foc=(prog.focInit+psi)+lvE*(prog.focPer+psi);
+  const det=prog.detInit+lvE*prog.detPer;
+  const neu=intV*2+Math.floor(lv/2);
+  const cor=intV+Math.floor(lv/3);
+  playerStatus.esforco={val:esf,max:esf,bonus:0};
+  playerStatus.foco={val:foc,max:foc,bonus:0};
+  playerStatus.determinacao={val:det,max:det,bonus:0};
+  playerStatus.neural={val:neu,max:neu,bonus:0};
+  playerStatus.cortex={val:cor,max:cor,bonus:0};
+  if(typeof renderStatus==='function'){try{renderStatus()}catch(_){}}
+  if(typeof renderDashLists==='function'){try{renderDashLists()}catch(_){}}
+}
+function _advRemoveSkillsByOrigin(originLabel,oldName){
+  // Remove skills whose desc contém [Origem · oldName] ou skills com origin matching label
+  if(typeof skills==='undefined')return 0;
+  let removed=0;
+  for(let i=skills.length-1;i>=0;i--){
+    const s=skills[i];
+    const tagMatches=s.desc&&new RegExp(`\\[${originLabel}[^\\]]*${oldName.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}`,'i').test(s.desc);
+    const originMatches=s.origin&&s.origin.toLowerCase()===originLabel.toLowerCase();
+    if(tagMatches||(originMatches&&!oldName)){skills.splice(i,1);removed++}
+  }
+  return removed;
+}
 window.applyAdv=function(field,name){
-  if(typeof profileData==='object')profileData[field]=name;
+  if(typeof profileData==='object'){
+    const prev=profileData[field]||'';
+    profileData[field]=name;
+    // Se trocou arquétipo → limpa caminho + remove habilidades + recalcula status
+    if(field==='arquetipo'&&prev!==name){
+      profileData.caminho='';
+      if(prev){
+        _advRemoveSkillsByOrigin('Arquétipo',prev);
+        _advRemoveSkillsByOrigin('Caminho','');
+      }
+      _recomputeStatusFromArq();
+    }
+    if(field==='linhagem'&&prev&&prev!==name){
+      _advRemoveSkillsByOrigin('Linhagem',prev);
+    }
+    if(field==='passado'&&prev&&prev!==name){
+      _advRemoveSkillsByOrigin('Passado',prev);
+    }
+  }
+  if(typeof renderSkills==='function'){try{renderSkills()}catch(_){}}
   if(typeof renderProfile==='function')renderProfile();
-  if(typeof saveSheet==='function')saveSheet();
+  if(typeof autosaveNow==='function'){try{autosaveNow()}catch(_){}}
   try{window.sfx&&sfx.unlock()}catch(_){}
   if(typeof toast==='function')toast(`${ADV_LABELS[field]}: ${name}`,'success');
   closeModal();
 };
 window.clearAdv=function(field){
-  if(typeof profileData==='object')profileData[field]='';
+  if(typeof profileData==='object'){
+    const prev=profileData[field]||'';
+    if(prev){
+      const lbl={linhagem:'Linhagem',arquetipo:'Arquétipo',passado:'Passado',caminho:'Caminho'}[field];
+      _advRemoveSkillsByOrigin(lbl,prev);
+      if(field==='arquetipo'){profileData.caminho='';_advRemoveSkillsByOrigin('Caminho','')}
+    }
+    profileData[field]='';
+  }
+  if(typeof renderSkills==='function'){try{renderSkills()}catch(_){}}
   if(typeof renderProfile==='function')renderProfile();
-  if(typeof saveSheet==='function')saveSheet();
+  if(typeof autosaveNow==='function'){try{autosaveNow()}catch(_){}}
   if(typeof toast==='function')toast(`${ADV_LABELS[field]} removido`,'info');
   closeModal();
 };
@@ -8256,6 +9149,124 @@ document.querySelectorAll('.chart-time-pill').forEach(btn=>{
     drawChart();
   });
 });
+
+// ═══ STORAGE FOLDER (Capacitor Filesystem) ═══
+const FOLDER_KEY='ficha-eclipse-folder',FOLDER_DEFAULT='FichaEclipse';
+const FOLDER_DIR='EXTERNAL_STORAGE'; // External (Documents/)
+function _getCap(){return (window.Capacitor&&Capacitor.Plugins)||null}
+function _getFs(){const c=_getCap();return c&&c.Filesystem||null}
+function _isAndroid(){return window.Capacitor&&Capacitor.getPlatform&&Capacitor.getPlatform()==='android'}
+function _getFolderName(){return localStorage.getItem(FOLDER_KEY)||FOLDER_DEFAULT}
+async function _ensureFolder(name){
+  const Fs=_getFs();if(!Fs)return false;
+  try{
+    // Tenta path público /storage/emulated/0/Documents/<name> (requer MANAGE_EXTERNAL_STORAGE)
+    await Fs.mkdir({path:'Documents/'+name,directory:'EXTERNAL_STORAGE',recursive:true});
+    return true;
+  }catch(e){
+    if(e&&/exist/i.test(e.message||''))return true;
+    console.warn('mkdir fail (sem MANAGE_EXTERNAL_STORAGE?)',e);
+    return false;
+  }
+}
+function _openAllFilesAccessSettings(){
+  // Abre tela "All files access" do Android 11+
+  try{
+    const intent=`intent:#Intent;action=android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION;package=com.kazuki.fichaeclipse;end`;
+    window.location.href=intent;
+  }catch(e){console.warn('settings intent fail',e)}
+}
+async function _writeFichaToFolder(name){
+  const Fs=_getFs();if(!Fs)return false;
+  if(typeof collectAllData!=='function')return false;
+  try{
+    const data=collectAllData();
+    const json=JSON.stringify(data,null,2);
+    await Fs.writeFile({
+      path:`Documents/${name}/ficha-eclipse.json`,
+      data:json,
+      directory:'EXTERNAL_STORAGE',
+      encoding:'utf8'
+    });
+    return true;
+  }catch(e){console.warn('write fail',e);return false}
+}
+async function _moveFolder(oldName,newName){
+  const Fs=_getFs();if(!Fs)return false;
+  try{
+    // Lê arquivos da pasta antiga
+    const ls=await Fs.readdir({path:'Documents/'+oldName,directory:'EXTERNAL_STORAGE'}).catch(()=>({files:[]}));
+    await _ensureFolder(newName);
+    for(const f of (ls.files||[])){
+      const fname=typeof f==='string'?f:f.name;
+      const r=await Fs.readFile({path:`Documents/${oldName}/${fname}`,directory:'EXTERNAL_STORAGE',encoding:'utf8'}).catch(()=>null);
+      if(r){
+        await Fs.writeFile({path:`Documents/${newName}/${fname}`,data:r.data,directory:'EXTERNAL_STORAGE',encoding:'utf8'});
+        await Fs.deleteFile({path:`Documents/${oldName}/${fname}`,directory:'EXTERNAL_STORAGE'}).catch(()=>{});
+      }
+    }
+    await Fs.rmdir({path:'Documents/'+oldName,directory:'EXTERNAL_STORAGE'}).catch(()=>{});
+    return true;
+  }catch(e){console.warn('move fail',e);return false}
+}
+window.openFolderManager=async function(){
+  const cur=_getFolderName();
+  if(!_getFs()){
+    if(typeof toast==='function')toast('Disponível só no app Android instalado','info');
+    return;
+  }
+  // Testa permissão antes
+  const test=await _ensureFolder(cur);
+  if(!test){
+    if(confirm('App não tem permissão "Acesso a todos os arquivos". Abrir Configurações?')){
+      _openAllFilesAccessSettings();
+    }
+    return;
+  }
+  const next=prompt(`Pasta atual: /storage/emulated/0/Documents/${cur}\nDigite novo nome:`,cur);
+  if(!next||next.trim()===''||next.trim()===cur)return;
+  const newName=next.trim().replace(/[^A-Za-z0-9_\-]/g,'');
+  if(!newName){if(typeof toast==='function')toast('Nome inválido','error');return}
+  if(typeof toast==='function')toast('Movendo arquivos...','info');
+  const ok=await _moveFolder(cur,newName);
+  if(ok){
+    localStorage.setItem(FOLDER_KEY,newName);
+    const sub=document.getElementById('profile-folder-sub');
+    if(sub)sub.textContent='Documents/'+newName;
+    await _writeFichaToFolder(newName);
+    if(typeof toast==='function')toast('Pasta movida pra Documents/'+newName,'success');
+  }else{
+    if(typeof toast==='function')toast('Falhou ao mover. Veja console','error');
+  }
+};
+// Init: cria pasta + salva snapshot inicial
+(async function _initFolder(){
+  if(!_isAndroid())return;
+  const name=_getFolderName();
+  const ok=await _ensureFolder(name);
+  const sub=document.getElementById('profile-folder-sub');
+  if(sub)sub.textContent='Documents/'+name;
+  if(!ok&&!localStorage.getItem('ficha-eclipse-perm-asked')){
+    localStorage.setItem('ficha-eclipse-perm-asked','1');
+    setTimeout(()=>{
+      if(typeof toast==='function')toast('Conceda "Acesso a todos os arquivos" pra criar pasta no Documents','warn');
+      setTimeout(_openAllFilesAccessSettings,1500);
+    },2500);
+  }else{
+    setTimeout(()=>_writeFichaToFolder(name),3000);
+  }
+})();
+// Hook autosave → grava snapshot na pasta também
+const _origAutosave=typeof autosaveNow==='function'?autosaveNow:null;
+if(_origAutosave){
+  window.autosaveNow=function(){
+    const r=_origAutosave.apply(this,arguments);
+    if(_isAndroid()){
+      try{_writeFichaToFolder(_getFolderName())}catch(_){}
+    }
+    return r;
+  };
+}
 
 </script>
 
