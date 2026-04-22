@@ -1,0 +1,32 @@
+{
+  "name": "ficha-eclipse-app",
+  "version": "1.7.0",
+  "description": "Ficha Eclipse — wrapper Android/iOS via Capacitor",
+  "private": true,
+  "scripts": {
+    "sync-web": "node scripts/sync-web.js",
+    "init": "npm install && npm run sync-web && npx cap init \"Ficha Eclipse\" com.kazuki.fichaeclipse --web-dir=www",
+    "add:android": "npx cap add android",
+    "add:ios": "npx cap add ios",
+    "build": "npm run sync-web && npx cap sync",
+    "open:android": "npx cap open android",
+    "open:ios": "npx cap open ios",
+    "apk:debug": "cd android && ./gradlew assembleDebug && cd ..",
+    "apk:release": "cd android && ./gradlew assembleRelease && cd .."
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/app": "^6.0.1",
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/haptics": "^6.0.1",
+    "@capacitor/ios": "^6.1.2",
+    "@capacitor/splash-screen": "^6.0.2",
+    "@capacitor/status-bar": "^6.0.1",
+    "acorn": "^8.16.0",
+    "acorn-walk": "^8.3.5"
+  }
+}

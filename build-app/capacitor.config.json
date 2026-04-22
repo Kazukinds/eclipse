@@ -1,0 +1,38 @@
+{
+  "appId": "com.kazuki.fichaeclipse",
+  "appName": "Ficha Eclipse",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false,
+    "buildOptions": {
+      "minSdkVersion": 23,
+      "targetSdkVersion": 34
+    },
+    "backgroundColor": "#09090b"
+  },
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#09090b"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 600,
+      "launchAutoHide": true,
+      "backgroundColor": "#09090b",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    },
+    "StatusBar": {
+      "backgroundColor": "#00000000",
+      "style": "DARK",
+      "overlaysWebView": true
+    }
+  },
+  "server": {
+    "androidScheme": "https",
+    "cleartext": false
+  }
+}

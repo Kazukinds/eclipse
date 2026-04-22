@@ -39,5 +39,5 @@
 - [ ] Código testado manualmente
 - [ ] Sem warnings novos no console
 - [ ] Responsivo em mobile vertical
-- [ ] `docs/CHANGELOG.md` atualizado (se release)
+- [ ] `docs/HISTORICO.md` atualizado (se release)
 - [ ] Sem quebra de save antigo (localStorage `ficha-eclipse-save`)

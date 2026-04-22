@@ -38,3 +38,23 @@ $RECYCLE.BIN/
 # Save files locais do usuário (não commitar fichas pessoais)
 ficha-*.json
 *.ficha.json
+
+# Capacitor / Android build (in build-app/)
+build-app/www/
+build-app/node_modules/
+build-app/android/.gradle/
+build-app/android/build/
+build-app/android/app/build/
+build-app/android/local.properties
+build-app/ios/App/Pods/
+build-app/*.apk
+build-app/*.aab
+build-app/*.ipa
+build-app/ficha-eclipse-webroot.zip
+build-app/android/.idea/
+build-app/android/captures/
+build-app/android/.cxx/
+build-app/android/app/release/
+build-app/resources/
+*.keystore
+*.jks

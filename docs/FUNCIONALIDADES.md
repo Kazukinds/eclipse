@@ -72,7 +72,7 @@ Botão de salvar no topbar:
 - **Exportar Dados** — export em texto humano-legível (.txt)
 - **Importar Ficha** — upload de JSON, valida e aplica
 
-Autosave automático também rola em paralelo (ver [ARCHITECTURE.md](ARCHITECTURE.md)).
+Autosave automático também rola em paralelo (ver [ARQUITETURA.md](ARQUITETURA.md)).
 
 ## Tema
 

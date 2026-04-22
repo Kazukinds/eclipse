@@ -120,11 +120,12 @@ Service worker cacheia tudo no primeiro load — depois roda 100% offline.
 
 ## 📚 Documentação
 
-- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — estrutura interna, estado global, ciclo de render
-- **[docs/FEATURES.md](docs/FEATURES.md)** — detalhe de cada aba
-- **[docs/DEPLOY.md](docs/DEPLOY.md)** — deploy GitHub Pages, PWA, cache
-- **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** — convenções, onde achar cada coisa
-- **[docs/CHANGELOG.md](docs/CHANGELOG.md)** — histórico de versões
+- **[docs/ARQUITETURA.md](docs/ARQUITETURA.md)** — estrutura interna, estado global, ciclo de render
+- **[docs/FUNCIONALIDADES.md](docs/FUNCIONALIDADES.md)** — detalhe de cada aba
+- **[docs/IMPLANTACAO.md](docs/IMPLANTACAO.md)** — deploy GitHub Pages, PWA, cache
+- **[docs/DESENVOLVIMENTO.md](docs/DESENVOLVIMENTO.md)** — convenções, onde achar cada coisa
+- **[docs/HISTORICO.md](docs/HISTORICO.md)** — histórico de versões
+- **[build-app/COMPILAR.md](build-app/COMPILAR.md)** — build Android/iOS nativo via Capacitor (ou WebToApp)
 
 ---
 

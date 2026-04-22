@@ -104,7 +104,7 @@ Editar `APP_CHANGELOG` em `index.html` (perto do fim do `<script>`, procura por 
 ]},
 ```
 
-Também adicionar no `docs/CHANGELOG.md` pro histórico no repo.
+Também adicionar no `docs/HISTORICO.md` pro histórico no repo.
 
 ## Evitando escopo
 

@@ -678,7 +678,6 @@
       <span id="reader-title-text" class="reader-title"></span>
       <div class="reader-nav-btns">
         <button class="back-btn accent hidden" id="btn-send-sheet" title="Mandar este capítulo ou trecho selecionado pra ficha">✨ Pra ficha</button>
-        <button class="back-btn accent hidden" id="btn-ask-ia" title="Perguntar à IA sobre este capítulo">🤖 Perguntar à IA</button>
         <button class="back-btn accent hidden" id="btn-random">Sortear</button>
         <button class="back-btn" id="btn-prev">◀</button>
         <button class="back-btn" id="btn-next">▶</button>
@@ -948,24 +947,6 @@ function closeReader(){reader.classList.remove('open');document.body.style.overf
 
   // Botão "Voltar à ficha" — substitui comportamento padrão
   const backBtns = document.querySelectorAll('.back-btn, .header-back-btn');
-  // Botão "Perguntar à IA"
-  const askBtn = document.getElementById('btn-ask-ia');
-  if(askBtn){
-    askBtn.classList.remove('hidden');
-    askBtn.addEventListener('click', () => {
-      const ch = CHAPTERS[currentIdx];
-      if(!ch) return;
-      const plainText = (ch.html||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim().slice(0,400);
-      try{
-        window.top.postMessage({
-          source: 'ficha-eclipse-biblio',
-          type: 'ask-ia',
-          chapter: (ch.title||'').toString(),
-          snippet: plainText
-        }, '*');
-      }catch(_){}
-    });
-  }
 
   // Botão "Pra ficha" — envia capítulo ou trecho selecionado
   const sheetBtn = document.getElementById('btn-send-sheet');
