@@ -4,19 +4,17 @@
       <stop offset="0%" stop-color="#18181b"/>
       <stop offset="100%" stop-color="#09090b"/>
     </linearGradient>
-    <linearGradient id="bolt2" x1="0" y1="0" x2="0" y2="1">
+    <radialGradient id="ringG2" cx="40%" cy="50%" r="60%">
       <stop offset="0%" stop-color="#d4ff52"/>
-      <stop offset="55%" stop-color="#c8f542"/>
       <stop offset="100%" stop-color="#92c020"/>
-    </linearGradient>
+    </radialGradient>
     <filter id="glow2">
-      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feGaussianBlur stdDeviation="8" result="b"/>
       <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
   <rect width="512" height="512" fill="url(#bg2)"/>
-  <g transform="translate(128,128) scale(.5)">
-    <polygon points="288,64 128,288 224,288 192,448 384,224 288,224 320,64" fill="url(#bolt2)" filter="url(#glow2)"/>
-    <polygon points="288,64 128,288 224,288 192,448 384,224 288,224 320,64" fill="none" stroke="#c8f542" stroke-width="3" stroke-linejoin="round"/>
-  </g>
+  <!-- Safe zone center 60% — eclipse + sparkle -->
+  <circle cx="240" cy="256" r="100" fill="none" stroke="url(#ringG2)" stroke-width="14" filter="url(#glow2)"/>
+  <path d="M340 196c8 42 14 48 56 56-42 8-48 14-56 56-8-42-14-48-56-56 42-8 48-14 56-56z" fill="#c8f542" filter="url(#glow2)"/>
 </svg>

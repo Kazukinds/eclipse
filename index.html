@@ -1467,8 +1467,11 @@ input[type="number"]{-moz-appearance:textfield}
 /* Página emerge da lateral POR BAIXO da capa — borda direita visível */
 .book-page-fly{
   position:absolute;inset:0;background:
-    repeating-linear-gradient(to bottom,transparent 0,transparent 26px,rgba(60,40,20,.08) 26px,rgba(60,40,20,.08) 27px),
-    linear-gradient(135deg,#fbf7ed 0%,#f4ecd6 100%);
+    radial-gradient(ellipse at 30% 20%,rgba(160,130,80,.08) 0,transparent 50%),
+    radial-gradient(ellipse at 70% 80%,rgba(160,130,80,.06) 0,transparent 50%),
+    repeating-linear-gradient(to bottom,transparent 0,transparent 26px,rgba(80,60,30,.1) 26px,rgba(80,60,30,.1) 27px),
+    repeating-linear-gradient(45deg,rgba(140,100,50,.015) 0,rgba(140,100,50,.015) 2px,transparent 2px,transparent 6px),
+    linear-gradient(135deg,#faf6e8 0%,#f0e8d2 100%);
   border-radius:6px 14px 14px 6px;
   box-shadow:6px 14px 32px rgba(0,0,0,.25),0 3px 10px rgba(0,0,0,.08);
   transform-origin:left center;
@@ -1657,11 +1660,80 @@ input[type="number"]{-moz-appearance:textfield}
 .biblio-reader-divider svg{flex-shrink:0;color:var(--env-c,#3a47cf)}
 .biblio-reader-divider .line{flex:1;height:1px;background:currentColor}
 
+/* Tools — geradores + random */
+.biblio-tools{display:flex;flex-wrap:wrap;gap:6px;margin:-6px 0 4px}
+.biblio-tool-btn{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 11px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+  border-radius:7px;color:rgba(255,255,255,.85);cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;transition:all .2s;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+}
+[data-theme="light"] .biblio-tool-btn{background:rgba(26,24,37,.05);border-color:rgba(26,24,37,.14);color:#1a1825}
+.biblio-tool-btn:hover{background:var(--env-c,#3a47cf);border-color:var(--env-c,#3a47cf);color:#fff;transform:translateY(-1px)}
+.biblio-tool-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* Gen card — resultado gerador */
+.gen-result{
+  margin:0 0 18px;padding:18px;
+  background:color-mix(in srgb,var(--env-c,#3a47cf) 8%,rgba(0,0,0,.3));
+  border:1px solid color-mix(in srgb,var(--env-c,#3a47cf) 30%,transparent);
+  border-radius:14px;
+  animation:gen-pop .4s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes gen-pop{from{opacity:0;transform:translateY(-8px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.gen-card .gen-head{margin-bottom:10px}
+.gen-card .gen-head h3{font-size:18px;color:#fff;margin:0;letter-spacing:-.01em;font-weight:800}
+[data-theme="light"] .gen-card .gen-head h3{color:#1a1825}
+.gen-card .gen-sub{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:4px;font-family:'JetBrains Mono',monospace}
+.gen-flavor{font-size:13px;line-height:1.6;color:rgba(255,255,255,.78);margin:8px 0 12px;font-style:italic}
+[data-theme="light"] .gen-flavor{color:rgba(26,24,37,.75)}
+.gen-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.gen-tags span{padding:3px 9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:99px;font-size:10px;font-weight:700;letter-spacing:.04em;color:rgba(255,255,255,.85);text-transform:uppercase;font-family:'JetBrains Mono',monospace}
+[data-theme="light"] .gen-tags span{background:rgba(26,24,37,.05);border-color:rgba(26,24,37,.12);color:#1a1825}
+.gen-section{margin-top:14px}
+.gen-section h4{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--env-c,#3a47cf);margin:0 0 8px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.gen-section h4::before{content:none}
+.gen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px}
+.gen-stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px 10px;text-align:center}
+[data-theme="light"] .gen-stat{background:rgba(26,24,37,.04);border-color:rgba(26,24,37,.08)}
+.gen-stat-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700;font-family:'JetBrains Mono',monospace}
+[data-theme="light"] .gen-stat-label{color:rgba(26,24,37,.55)}
+.gen-stat-val{font-size:16px;font-weight:800;color:#fff;margin-top:3px;font-family:'JetBrains Mono',monospace}
+[data-theme="light"] .gen-stat-val{color:#1a1825}
+.gen-list{list-style:none;padding:0;margin:0}
+.gen-list li{font-size:12.5px;line-height:1.55;color:rgba(255,255,255,.78);margin-bottom:5px;padding-left:14px;position:relative}
+[data-theme="light"] .gen-list li{color:rgba(26,24,37,.78)}
+.gen-list li::before{content:'';position:absolute;left:0;top:.7em;width:8px;height:1px;background:var(--env-c,#3a47cf)}
+.gen-list b{color:#fff;font-weight:700}
+[data-theme="light"] .gen-list b{color:#1a1825}
+.gen-roll-again{
+  margin-top:14px;padding:10px 16px;width:100%;
+  background:var(--env-c,#3a47cf);border:none;border-radius:8px;color:#fff;cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  transition:all .2s;
+}
+.gen-roll-again:hover{filter:brightness(1.15);transform:translateY(-1px)}
+
 .biblio-reader-panel-body{
   position:relative;overflow:hidden;padding:0;
-  font-size:14px;line-height:1.85;color:rgba(255,255,255,.82);
+  font-size:14px;line-height:1.78;color:rgba(255,255,255,.86);
   letter-spacing:.005em;
-  flex:1;min-height:280px;max-height:62vh;
+  flex:1;min-height:300px;max-height:64vh;
+  /* Textura papel sutil */
+  background-image:
+    radial-gradient(circle at 20% 10%,rgba(255,255,255,.025) 0,transparent 40%),
+    radial-gradient(circle at 80% 60%,rgba(255,255,255,.02) 0,transparent 50%),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0 1px,transparent 1px 4px);
+  border-radius:8px;
+}
+[data-theme="light"] .biblio-reader-panel-body{
+  background-image:
+    radial-gradient(circle at 20% 10%,rgba(60,40,20,.04) 0,transparent 40%),
+    radial-gradient(circle at 80% 60%,rgba(60,40,20,.03) 0,transparent 50%),
+    repeating-linear-gradient(0deg,rgba(60,40,20,.02) 0 1px,transparent 1px 4px);
+  color:rgba(26,24,37,.85);
 }
 .biblio-pages-track{
   display:flex;width:100%;height:100%;
@@ -1670,12 +1742,31 @@ input[type="number"]{-moz-appearance:textfield}
 }
 .biblio-page-slide{
   flex:0 0 100%;width:100%;
-  overflow-y:auto;padding:0 12px 12px 0;
-  scroll-behavior:smooth;
+  overflow-y:auto;padding:14px 14px 14px 4px;
+  scroll-behavior:smooth;position:relative;
 }
 .biblio-page-slide::-webkit-scrollbar{width:4px}
 .biblio-page-slide::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px}
 .biblio-page-slide::-webkit-scrollbar-track{background:transparent}
+
+/* Scroll hints — setas topo/base quando há mais */
+.biblio-scroll-hint{
+  position:absolute;left:50%;transform:translateX(-50%);
+  width:36px;height:24px;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.15);
+  border-radius:99px;cursor:pointer;color:#fff;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+  z-index:5;
+}
+[data-theme="light"] .biblio-scroll-hint{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.1);color:#1a1825}
+.biblio-scroll-hint.show{opacity:.85;pointer-events:auto}
+.biblio-scroll-hint:hover{opacity:1;transform:translateX(-50%) scale(1.08)}
+.biblio-scroll-hint.top{top:6px;animation:hint-pulse-up 1.6s ease-in-out infinite}
+.biblio-scroll-hint.bottom{bottom:6px;animation:hint-pulse-down 1.6s ease-in-out infinite}
+.biblio-scroll-hint svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+@keyframes hint-pulse-up{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
+@keyframes hint-pulse-down{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(3px)}}
 [data-theme="light"] .biblio-reader-panel-body{color:rgba(26,24,37,.78)}
 .biblio-reader-panel-body h4{
   color:#fff;font-size:13px;margin:22px 0 10px;font-weight:700;
@@ -1702,6 +1793,60 @@ input[type="number"]{-moz-appearance:textfield}
 .biblio-reader-panel-body br+strong,.biblio-reader-panel-body p strong:first-child{display:inline}
 .biblio-reader-panel-body em{color:rgba(255,255,255,.7);font-style:italic}
 [data-theme="light"] .biblio-reader-panel-body em{color:rgba(26,24,37,.7)}
+
+/* Tables genéricas */
+.biblio-reader-panel-body table{
+  width:100%;border-collapse:collapse;margin:14px 0;
+  font-size:13px;background:rgba(255,255,255,.02);border-radius:10px;overflow:hidden;
+}
+.biblio-reader-panel-body th{
+  text-align:left;padding:10px 12px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--env-c,#3a47cf);font-weight:700;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.biblio-reader-panel-body td{
+  padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);
+}
+.biblio-reader-panel-body tr:last-child td{border-bottom:none}
+
+/* Gráfico minimalista — label segue o fim da barra */
+.biblio-chart{margin:18px 0;padding:0;background:none;border:none}
+.biblio-chart-title{
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);font-weight:600;margin-bottom:14px;
+}
+[data-theme="light"] .biblio-chart-title{color:rgba(26,24,37,.45)}
+.biblio-chart-row{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:10px;
+}
+.biblio-chart-row:last-child{margin-bottom:0}
+.biblio-chart-val{
+  font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;
+  color:rgba(255,255,255,.85);width:32px;text-align:right;flex-shrink:0;
+}
+[data-theme="light"] .biblio-chart-val{color:rgba(26,24,37,.85)}
+.biblio-chart-bar-wrap{
+  flex:1;display:flex;align-items:center;gap:10px;min-width:0;
+  position:relative;
+}
+.biblio-chart-bar{
+  position:relative;height:2px;background:rgba(255,255,255,.06);
+  flex-basis:var(--chart-w,50%);min-width:24px;
+}
+[data-theme="light"] .biblio-chart-bar{background:rgba(26,24,37,.08)}
+.biblio-chart-fill{
+  position:absolute;left:0;top:0;bottom:0;width:100%;
+  background:var(--env-c,#3a47cf);
+  transform:scaleX(0);transform-origin:left;
+  animation:biblio-chart-grow .65s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes biblio-chart-grow{to{transform:scaleX(1)}}
+.biblio-chart-label{
+  font-size:12px;font-weight:500;color:rgba(255,255,255,.7);
+  white-space:nowrap;
+}
+[data-theme="light"] .biblio-chart-label{color:rgba(26,24,37,.7)}
 
 @media(max-width:780px){
   .biblio-reader{padding:20px 16px}
@@ -2605,6 +2750,46 @@ button:not(:disabled):active{transform:scale(.97)}
 .trait-dice-btn:hover{background:var(--lime-bg);border-color:var(--lime);color:var(--lime);transform:rotate(15deg) scale(1.1)}
 .trait-dice-btn:active{transform:rotate(360deg) scale(.95);transition:transform .4s}
 .trait-dice-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* Dado D6 atributos — branco padrão, verde no hover */
+.attr-d6-btn{
+  margin-left:auto;width:24px;height:24px;border-radius:6px;
+  background:transparent;border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.85);cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:0;transition:all .2s;
+}
+[data-theme="light"] .attr-d6-btn{border-color:rgba(26,24,37,.22);color:rgba(26,24,37,.85)}
+.attr-d6-btn:hover{
+  background:var(--lime);border-color:var(--lime);color:#09090b;
+  transform:rotate(15deg) scale(1.12);
+  box-shadow:0 4px 12px color-mix(in srgb,var(--lime) 35%,transparent);
+}
+.attr-d6-btn:active{transform:rotate(360deg) scale(.95);transition:transform .45s}
+.attr-d6-btn svg{width:14px;height:14px}
+.attr-legend-item{display:flex;align-items:center;gap:8px}
+
+/* Boneco gerador ficha no perfil */
+.profile-char-figure{
+  position:absolute;right:24px;top:24px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  background:none;border:none;cursor:pointer;padding:8px;
+  color:var(--text-secondary);transition:all .25s cubic-bezier(.2,.8,.2,1);
+}
+.profile-char-figure svg{width:60px;height:90px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s,filter .25s}
+.profile-char-figure:hover{color:var(--lime)}
+.profile-char-figure:hover svg{transform:scale(1.1) rotate(-3deg);filter:drop-shadow(0 0 16px color-mix(in srgb,var(--lime) 50%,transparent))}
+.profile-char-figure:active svg{transform:scale(.95)}
+.char-figure-label{
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;opacity:.7;
+}
+.profile-char-figure:hover .char-figure-label{opacity:1}
+.profile-header-card{position:relative}
+@media(max-width:640px){
+  .profile-char-figure{position:static;margin:14px auto 0}
+  .profile-char-figure svg{width:50px;height:75px}
+}
 .personality-mini .mini-block-label svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.9}
 .personality-mini textarea.mini-block-input{min-height:60px;resize:vertical;line-height:1.5;font-size:13px;font-weight:500}
 
@@ -2760,12 +2945,12 @@ button:not(:disabled):active{transform:scale(.97)}
 </head>
 <body class="app-fade-in">
 <div class="app-splash" id="app-splash" aria-hidden="true">
-  <div class="splash-bolt"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+  <div class="splash-bolt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="12" r="9"/><path d="M19 7.5c.5 3 1 3.5 4 4-3 .5-3.5 1-4 4-.5-3-1-3.5-4-4 3-.5 3.5-1 4-4z" fill="currentColor" stroke-width="0.8"/></svg></div>
   <div class="splash-name">Ficha<span class="splash-dot"></span>Eclipse</div>
 </div>
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-grip" id="sidebar-grip"></div>
-  <div class="sidebar-logo"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+  <div class="sidebar-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="12" r="9"/><path d="M19 7.5c.5 3 1 3.5 4 4-3 .5-3.5 1-4 4-.5-3-1-3.5-4-4 3-.5 3.5-1 4-4z" fill="currentColor" stroke-width="0.8"/></svg></div>
   <nav class="sidebar-nav">
     <button class="sidebar-btn active" data-tab="dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="sidebar-label">Dashboard</span></button>
     <button class="sidebar-btn" data-tab="progress"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span class="sidebar-label">Progresso</span></button>
@@ -3182,6 +3367,18 @@ button:not(:disabled):active{transform:scale(.97)}
     <section class="tab-content" id="tab-profile">
       <div class="profile-header-card">
         <div class="profile-avatar" onclick="changeProfileAvatar()" style="cursor:pointer" title="Trocar foto"><span id="profile-avatar-content"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span></div>
+        <button class="profile-char-figure" type="button" onclick="openSheetGeneratorModal()" title="Gerar ficha automática" aria-label="Gerar ficha automática">
+          <svg viewBox="0 0 64 96" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="32" cy="14" r="9"/>
+            <path d="M22 28h20l4 18-8 4v32H26V50l-8-4z"/>
+            <line x1="32" y1="50" x2="32" y2="82"/>
+            <path d="M14 36L22 30"/>
+            <path d="M50 36L42 30"/>
+            <circle cx="48" cy="22" r="4" fill="currentColor"/>
+            <path d="M48 22 L52 18 M48 22 L44 18 M48 22 L52 26 M48 22 L44 26"/>
+          </svg>
+          <span class="char-figure-label">Gerar ficha</span>
+        </button>
         <div class="profile-header-info">
           <h2 id="profile-display-name">Aventureiro</h2>
           <div class="profile-role" id="profile-role-text">Nível 0</div>
@@ -3361,7 +3558,16 @@ button:not(:disabled):active{transform:scale(.97)}
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="br-line-icon"></svg>
         <div class="line"></div>
       </div>
-      <div class="biblio-reader-panel-body" id="br-panel-body"></div>
+      <div class="biblio-tools">
+        <button class="biblio-tool-btn" type="button" onclick="genRoll('ameaca')" title="Gerar ameaça"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2c1 3 7 3 8 0-1 3-3 5-4 8-1-3-3-5-4-8z"/><circle cx="12" cy="14" r="6"/></svg> Ameaça</button>
+        <button class="biblio-tool-btn" type="button" onclick="genRoll('animal')" title="Gerar animal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1 8h3l.5-4h5l.5 4h3l1-8M3 11l2-4h14l2 4M7 11v-2"/></svg> Animal</button>
+        <button class="biblio-tool-btn" type="button" onclick="genRoll('inimigo')" title="Gerar inimigo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/></svg> Inimigo</button>
+        <button class="biblio-tool-btn" type="button" onclick="biblioReaderRandom()" title="Capítulo aleatório"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg></button>
+      </div>
+      <div class="biblio-reader-panel-body" id="br-panel-body">
+        <button class="biblio-scroll-hint top" type="button" id="br-hint-top" onclick="biblioScrollHint(-1)" aria-label="Rolar pra cima"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></button>
+        <button class="biblio-scroll-hint bottom" type="button" id="br-hint-bot" onclick="biblioScrollHint(1)" aria-label="Continuar lendo"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+      </div>
       <div class="biblio-subpage-nav" id="br-subnav">
         <div class="biblio-subpage-dots" id="br-subdots"></div>
         <div class="biblio-subpage-controls">
@@ -4528,7 +4734,7 @@ function renderAttrs(){
     const c=`<circle data-slice="${a.name}" data-label="${a.name}" data-val="${a.val}" data-color="${a.color}" cx="60" cy="60" r="46" fill="none" stroke="${a.color}" stroke-width="14" stroke-dasharray="${dash.toFixed(1)} ${(circ-dash).toFixed(1)}" stroke-dashoffset="${(-offset).toFixed(1)}" transform="rotate(-90 60 60)"/>`;
     offset+=dash;return c;
   }).join('');
-  const legend=attrs.map(a=>`<div class="attr-legend-item"><div class="attr-legend-bar" style="background:${a.color}"></div>${a.name}<span style="color:${a.color}">${a.val}</span></div>`).join('');
+  const legend=attrs.map(a=>`<div class="attr-legend-item"><div class="attr-legend-bar" style="background:${a.color}"></div>${a.name}<span style="color:${a.color}">${a.val}</span><button class="attr-d6-btn" type="button" onclick="event.stopPropagation();rollAttrD6('${a.name}',${a.val})" title="Rolar 1d6 + ${a.name}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/><circle cx="9" cy="12" r="1.2" fill="currentColor"/><circle cx="15" cy="12" r="1.2" fill="currentColor"/></svg></button></div>`).join('');
   const html=`<div class="attr-donut-wrap" onclick="openModal('attribute')"><svg class="donut-svg attr-donut-svg" viewBox="0 0 120 120"><circle cx="60" cy="60" r="46" fill="none" stroke="var(--bg-input)" stroke-width="14"/>${circles}</svg><div class="donut-tooltip"></div></div><div class="attr-legend">${legend}</div>`;
   const el=document.getElementById('attr-list');if(el){el.innerHTML=html;attachDonutHover(el);}
   const dashEl=document.getElementById('dash-attr-list');if(dashEl){dashEl.innerHTML=html;attachDonutHover(dashEl);}
@@ -5815,6 +6021,26 @@ const FICHA_TRAITS={
     'Tenho uma droga que não consigo largar','Acredito em superstições absurdas','Provoco quem é mais forte que eu','Choro escondido depois de cada combate'
   ]
 };
+window.rollAttrD6=function(name,val){
+  const d6=Math.floor(Math.random()*6)+1;
+  const total=d6+val;
+  try{window.sfx&&sfx.tick&&sfx.tick()}catch(_){}
+  if(typeof toast==='function')toast(`🎲 ${name}: 1d6(${d6}) + ${val} = ${total}`,'success');
+  // Mostrar resultado em roll-result se existir
+  const rr=document.getElementById('roll-result');
+  if(rr){
+    const dEl=document.getElementById('roll-dice');
+    const dd=document.getElementById('roll-detail');
+    const dt=document.getElementById('roll-total');
+    const dv=document.getElementById('roll-verdict');
+    if(dEl)dEl.textContent=d6;
+    if(dd)dd.textContent=`${name} 1d6 + ${val}`;
+    if(dt)dt.textContent=total;
+    if(dv)dv.textContent=d6===6?'CRÍTICO':d6===1?'FALHA':'';
+    rr.classList.add('show');
+    setTimeout(()=>rr.classList.remove('show'),2400);
+  }
+};
 window.rollTraitDice=function(key){
   const list=FICHA_TRAITS[key];if(!list)return;
   const pick=list[Math.floor(Math.random()*list.length)];
@@ -6121,8 +6347,96 @@ function _biblioRenderAllSlides(){
   const pages=_biblioGetSubPages(ch);
   if(_biblioSubIdx>=pages.length)_biblioSubIdx=0;
   const body=document.getElementById('br-panel-body');
-  body.innerHTML=`<div class="biblio-pages-track" id="br-pages-track">${pages.map(p=>`<div class="biblio-page-slide">${p.html}</div>`).join('')}</div>`;
+  // Preserva botões hint
+  body.querySelectorAll('.biblio-pages-track').forEach(n=>n.remove());
+  const trackHTML=`<div class="biblio-pages-track" id="br-pages-track">${pages.map(p=>`<div class="biblio-page-slide">${p.html}</div>`).join('')}</div>`;
+  body.insertAdjacentHTML('afterbegin',trackHTML);
+  body.querySelectorAll('table').forEach(_biblioTable2Chart);
+  body.querySelectorAll('.biblio-page-slide').forEach(_biblioInjectDifficultyScale);
+  // Bind data-gen buttons embutidos no conteúdo da biblioteca
+  body.querySelectorAll('[data-gen]').forEach(btn=>{
+    btn.addEventListener('click',e=>{e.preventDefault();genRoll(btn.dataset.gen)});
+  });
   _biblioUpdateSlide();
+  setTimeout(_biblioUpdateScrollHints,80);
+}
+function _biblioCurrentSlide(){
+  const slides=document.querySelectorAll('#br-panel-body .biblio-page-slide');
+  return slides[_biblioSubIdx]||null;
+}
+function _biblioUpdateScrollHints(){
+  const sl=_biblioCurrentSlide();
+  const top=document.getElementById('br-hint-top');
+  const bot=document.getElementById('br-hint-bot');
+  if(!sl||!top||!bot){if(top)top.classList.remove('show');if(bot)bot.classList.remove('show');return}
+  const overflow=sl.scrollHeight-sl.clientHeight;
+  const st=sl.scrollTop;
+  top.classList.toggle('show',st>20);
+  bot.classList.toggle('show',overflow>10&&st<overflow-20);
+  // attach scroll listener uma vez
+  if(!sl._hintBound){
+    sl._hintBound=true;
+    sl.addEventListener('scroll',()=>requestAnimationFrame(_biblioUpdateScrollHints),{passive:true});
+  }
+}
+window.biblioScrollHint=function(dir){
+  const sl=_biblioCurrentSlide();if(!sl)return;
+  sl.scrollBy({top:dir*Math.min(sl.clientHeight*.85,400),behavior:'smooth'});
+};
+function _biblioInjectDifficultyScale(slide){
+  const html=slide.innerHTML;
+  // Detecta padrão "Dificuldade 10 ... 14 ... 18 ..." em parágrafos
+  const re=/Dificuldade\s+(\d+)[^<]{0,20}?(\d+)[^<]{0,20}?(\d+)[^<]{0,20}?(\d+)/i;
+  const m=html.match(re);
+  if(!m)return;
+  const vals=[parseInt(m[1]),parseInt(m[2]),parseInt(m[3]),parseInt(m[4])];
+  const lbls=['Simples','Comum','Difícil','Extremo'];
+  const max=Math.max(...vals,30);
+  const scale=`<div class="biblio-diff-scale">
+    <div class="biblio-chart-title">Escala de Dificuldade</div>
+    ${vals.map((v,i)=>`<div class="biblio-chart-row">
+      <div class="biblio-chart-val">${v}</div>
+      <div class="biblio-chart-bar-wrap">
+        <div class="biblio-chart-bar" style="--chart-w:${(v/max)*100}%"><div class="biblio-chart-fill"></div></div>
+        <div class="biblio-chart-label">${lbls[i]||''}</div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+  // Injeta após primeiro <p> que contém o padrão
+  slide.innerHTML=html.replace(re,m[0]+scale);
+}
+function _biblioTable2Chart(table){
+  const headers=Array.from(table.querySelectorAll('thead th, thead td')).map(t=>t.textContent.trim());
+  const rows=Array.from(table.querySelectorAll('tbody tr')).map(tr=>Array.from(tr.querySelectorAll('td,th')).map(c=>c.textContent.trim()));
+  if(rows.length<2||rows[0].length<2)return;
+  // Detecta primeira coluna numérica
+  const nums=rows.map(r=>{
+    const m=r[0].match(/(\d+(?:\.\d+)?)/);
+    return m?parseFloat(m[1]):null;
+  });
+  if(nums.filter(n=>n!==null).length<rows.length*0.6)return; // <60% numérico, ignora
+  const max=Math.max(...nums.filter(n=>n!==null));
+  const title=headers.length?headers.join(' · '):'Tabela';
+  const html=`
+    <div class="biblio-chart">
+      <div class="biblio-chart-title">${title}</div>
+      ${rows.map((r,i)=>{
+        const n=nums[i];
+        const pct=n!==null?Math.max(10,(n/max)*100):100;
+        const valDisplay=r[0];
+        const lbl=r.slice(1).join(' · ');
+        return `<div class="biblio-chart-row">
+          <div class="biblio-chart-val">${valDisplay}</div>
+          <div class="biblio-chart-bar-wrap">
+            <div class="biblio-chart-bar" style="--chart-w:${pct}%"><div class="biblio-chart-fill"></div></div>
+            <div class="biblio-chart-label">${lbl}</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  const wrap=document.createElement('div');
+  wrap.innerHTML=html;
+  table.replaceWith(wrap.firstElementChild);
 }
 function _biblioUpdateSlide(){
   const ch=BIBLIO_DATA[_biblioReaderIdx];if(!ch)return;
@@ -6132,6 +6446,7 @@ function _biblioUpdateSlide(){
   document.getElementById('br-panel-sub').textContent=ch.title;
   const track=document.getElementById('br-pages-track');
   if(track)track.style.transform=`translateX(-${_biblioSubIdx*100}%)`;
+  setTimeout(_biblioUpdateScrollHints,80);
   // Dots
   const dots=document.getElementById('br-subdots');
   dots.innerHTML=pages.map((p,i)=>{
@@ -6173,6 +6488,182 @@ window.openBiblioChapter=function(id){
   document.body.style.overflow='hidden';
   // Carrega conteúdo completo em background
   loadBiblioFull().then(d=>{if(d)_biblioRenderSubPage()});
+};
+
+// ═══ GERADORES BIBLIOTECA — integrados do biblioteca.html ═══
+const GEN_BEAST_NAMES=['Vorax','Kurrath','Esquecida','Tecelã de Cinzas','Sangueseco','Umbra','O Ausente','Rastejante','Mãe Silente','Consumidor','Pele-Trocada','Ecô','Veludo Negro','O Terceiro','Crônia','Marcador','Caçadora de Olhares','Insone','Hálito Oco','Presa da Ruptura','Arauto','O Lembrado','Fissurada','Costura','Corvo de Vidro','Reminiscência','Coroa de Sal','Desvio','Apócrifo'];
+const GEN_BEAST_CONCEPTS=[
+  {type:'Predador Territorial',behavior:'Caça em raio fixo. Defende território com paciência inumana.'},
+  {type:'Emboscador',behavior:'Opera por paciência. Escolhe instante exato entre distração e reação.'},
+  {type:'Caçador em Grupo',behavior:'Move em formação, divide papéis, testa fraquezas antes de atacar.'},
+  {type:'Guardião',behavior:'Existe pra proteger local/objeto/segredo. Nada mais importa.'},
+  {type:'Parasita',behavior:'Não mata no primeiro contato. Drena lentamente, espera vítima virar útil.'},
+  {type:'Vigia',behavior:'Observa antes de agir. Aparece em ângulos improváveis.'},
+  {type:'Devorador',behavior:'Foco único: consumir. Não negocia, não recua.'},
+  {type:'Eco',behavior:'Age como lembrança de algo que já aconteceu. Repete padrões antigos.'},
+  {type:'Portador',behavior:'Carrega algo dentro — voz, entidade, intenção. Corpo é só condutor.'},
+  {type:'Infiltrado',behavior:'Prefere passar despercebido. Coexiste por dias antes de revelar.'}
+];
+const GEN_ESSENCES=[
+  {name:'Alba',element:'simbiose e assimilação',damage:'orgânico'},
+  {name:'Carmim',element:'sacrifício da carne',damage:'brutal'},
+  {name:'Kaos',element:'explosão e instabilidade',damage:'elemental'},
+  {name:'Lúmen',element:'revelação e consumo',damage:'mental'},
+  {name:'Perene',element:'preservação absoluta',damage:'persistente'},
+  {name:'Ruína',element:'envelhecimento e decomposição',damage:'corrosivo'}
+];
+const GEN_SIZES=[
+  {name:'Pequeno',space:'1,5 m',defMod:'+2',damMod:'-2'},
+  {name:'Médio',space:'1,5 m',defMod:'0',damMod:'0'},
+  {name:'Grande',space:'3 m',defMod:'-1',damMod:'+1'},
+  {name:'Enorme',space:'4,5 m',defMod:'-2',damMod:'+2'},
+  {name:'Colossal',space:'9 m',defMod:'-10',damMod:'+10'}
+];
+const GEN_NA_TABLE=[
+  {na:2,pv:30,def:13,pericias:'+1',dt:10,dmental:'1d4',dmed:2,rd:1,diff:'Introdutório',level:'1–2'},
+  {na:4,pv:45,def:13,pericias:'+2',dt:12,dmental:'1d6',dmed:4,rd:2,diff:'Fácil',level:'3–4'},
+  {na:6,pv:65,def:14,pericias:'+4',dt:14,dmental:'2d4',dmed:5,rd:3,diff:'Moderado',level:'5–6'},
+  {na:8,pv:85,def:15,pericias:'+5',dt:16,dmental:'2d6',dmed:8,rd:3,diff:'Desafiador',level:'7–8'},
+  {na:10,pv:110,def:18,pericias:'+6',dt:18,dmental:'3d4',dmed:10,rd:4,diff:'Difícil',level:'9–10'},
+  {na:14,pv:170,def:20,pericias:'+8',dt:21,dmental:'3d6',dmed:12,rd:6,diff:'Muito Difícil',level:'11–12'}
+];
+const GEN_VARIATIONS=['Normal','Normal','Normal','Perigosa','Chefão','Enxame'];
+const GEN_APPEARANCES=['Corpo coberto por marcas em línguas que ninguém mais fala.','Movimenta-se em fragmentos, como se piscasse entre posições.','Exala cheiro de metal molhado e flores em decomposição.','Olhos dispersos pelo corpo, nenhum no lugar esperado.','Sombra não acompanha o movimento, atrasa dois segundos.','Extremidades desfiadas como tecido queimado, refazendo-se.','Silêncio absoluto ao redor — nem som, nem eco, nem ambiente.','Pele rachada revelando algo luminoso por baixo.','Múltiplas bocas sobrepostas, cada uma respirando em ritmo próprio.'];
+const GEN_ANIMAL_NAMES=['Alcateia de Lobos','Urso Pardo','Tigre Solitário','Pantera Negra','Javali Selvagem','Águia de Caça','Cobra Venenosa','Enxame de Insetos','Crocodilo de Rio','Hiena Manchada','Lince das Sombras','Bando de Corvos','Touro Enfurecido','Rato-Gigante','Escorpião do Deserto','Falcão Treinado','Morcegos Vampíricos','Aranha Gigante','Serpente Constritora','Abelhas Assassinas'];
+const GEN_ANIMAL_CONCEPTS=[
+  {type:'Predador Solitário',behavior:'Caça sozinho, confia na emboscada e na força bruta.'},
+  {type:'Caçador em Bando',behavior:'Opera em grupo coordenado, flanqueando até cansar a presa.'},
+  {type:'Territorial',behavior:'Defende área fixa com agressividade imediata.'},
+  {type:'Enxame',behavior:'Age como corpo coletivo, distribui ataques pela massa.'},
+  {type:'Carnívoro Oportunista',behavior:'Prefere presas feridas. Foge de igualdade.'},
+  {type:'Emboscador Camuflado',behavior:'Usa ambiente e paciência. Difícil detectar até saltar.'},
+  {type:'Noturno',behavior:'Ativo apenas no escuro. Enxerga e ouve melhor.'},
+  {type:'Treinado',behavior:'Obedece a dono. Ataca sob comando.'}
+];
+const GEN_ANIMAL_TRAITS=['Faro apurado: detecta a 30m, ignora disfarces.','Mordida brutal: dado extra dano + Sangramento.','Camuflagem natural: vantagem Furtividade no habitat.','Audição sensível: nunca surpreendido em silêncio.','Velocidade superior: deslocamento +1 passo.','Veneno leve: ataques aplicam Fatigado em crítico.','Visão noturna: enxerga no escuro como dia.','Pele dura: RD +2 vs físicos simples.','Reflexos de caça: ataca 2x se alvo ferido.'];
+const GEN_ANIMAL_NA=[
+  {na:2,pv:25,def:12,pericias:'+1',dt:10,dmed:2,rd:1},
+  {na:4,pv:40,def:13,pericias:'+2',dt:12,dmed:4,rd:2},
+  {na:6,pv:55,def:14,pericias:'+3',dt:14,dmed:5,rd:3},
+  {na:8,pv:75,def:15,pericias:'+4',dt:16,dmed:7,rd:3}
+];
+const GEN_ENEMY_NAMES=['Bandido de Beco','Cultista Menor','Mercenário Experiente','Soldado da Milícia','Agente Corporativo','Assassino Contratado','Caçador de Recompensas','Brutamonte','Capanga Armado','Pistoleiro','Médium Corrompido','Hacker Sombrio','Líder Sectário','Mestre de Armas','Sargento Veterano','Executor','Fanático Armado','Guarda-Costas','Traficante','Investigador Rival'];
+const GEN_ENEMY_ROLES=[
+  {type:'Agressor de Linha',role:'Avança pela frente, absorve dano, força combate próximo.'},
+  {type:'Atirador Tático',role:'Mantém distância, busca ângulos, fogo cobertor.'},
+  {type:'Líder de Grupo',role:'Coordena outros, concede bônus táticos a aliados.'},
+  {type:'Infiltrado',role:'Opera na sombra, ataques surpresa, foge se vira contra.'},
+  {type:'Fanático',role:'Luta sem autopreservação, aceita dano pesado.'},
+  {type:'Apoio',role:'Cura aliados, sabota terreno, manipula à distância.'},
+  {type:'Caçador',role:'Marca alvo específico, persegue até o fim.'},
+  {type:'Executor Frio',role:'Cumpre ordens com eficiência. Não negocia.'}
+];
+const GEN_FACTIONS=['Ordem da Cinza','Sindicato da Lâmina','Corporação Vytel','Círculo do Véu','Milícia da Fronteira','Seita do Lúmen Morto','Guilda dos Caçadores','Facção Independente','Guarda Municipal','Culto Carmim'];
+const GEN_WEAPONS_CC=['faca tática','bastão reforçado','machete','soqueira metálica','corrente pesada','espada curta','lâmina oculta','martelo de guerra'];
+const GEN_WEAPONS_DIST=['pistola semiautomática','revólver','rifle de assalto','espingarda','submetralhadora','arco composto','besta portátil','rifle de precisão'];
+const GEN_ENEMY_TRAITS=['Treinamento militar: ignora penalidades de terreno.','Frieza operacional: imune a medo leve.','Conhece o terreno: vantagem Percepção/Furtividade no posto.','Radio-comunicação: chama reforços 1x/cena.','Reflexos treinados: age primeiro no 1º turno.','Armadura pesada: RD +2 vs físicos.','Mira apurada: +2 ataques à distância.','Luta suja: críticos aplicam Desprevenido.'];
+const GEN_ENEMY_NA=[
+  {na:2,pv:28,def:13,pericias:'+1',dt:10,dmed:3,rd:1},
+  {na:4,pv:42,def:14,pericias:'+2',dt:12,dmed:5,rd:2},
+  {na:6,pv:60,def:15,pericias:'+3',dt:14,dmed:6,rd:2},
+  {na:8,pv:80,def:16,pericias:'+4',dt:16,dmed:8,rd:3},
+  {na:10,pv:105,def:18,pericias:'+5',dt:18,dmed:10,rd:3}
+];
+function _genPick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function _genAttrs(na){
+  const total=8+Math.floor(na/4),max=3+Math.floor(na/8);
+  const attrs={'Físico':0,'Motoras':0,'Intelecto':0,'Psique':0};
+  let r=total;const k=Object.keys(attrs);
+  while(r>0){const x=_genPick(k);if(attrs[x]<max){attrs[x]++;r--}}
+  return attrs;
+}
+function _genStatBlock(label,val){
+  return `<div class="gen-stat"><div class="gen-stat-label">${label}</div><div class="gen-stat-val">${val}</div></div>`;
+}
+window.generateBeast=function(){
+  const name=_genPick(GEN_BEAST_NAMES),concept=_genPick(GEN_BEAST_CONCEPTS),essence=_genPick(GEN_ESSENCES),size=_genPick(GEN_SIZES),na=_genPick(GEN_NA_TABLE),variation=_genPick(GEN_VARIATIONS),appear=_genPick(GEN_APPEARANCES),attrs=_genAttrs(na.na);
+  let pv=na.pv,notes=[];
+  if(variation==='Perigosa'){pv=Math.floor(pv*1.25);notes.push('PV +25% (Perigosa)')}
+  if(variation==='Chefão'){pv=Math.floor(pv*1.5);notes.push('PV +50% (Chefão), com capangas')}
+  if(variation==='Enxame'){pv=pv*5;notes.push('PV ×5, +5 Defesa/ataque, dano ×1.3')}
+  return `<div class="gen-card">
+    <div class="gen-head"><h3>${name}</h3><div class="gen-sub">${concept.type} · Essência ${essence.name}</div></div>
+    <div class="gen-flavor">${appear} ${concept.behavior}</div>
+    <div class="gen-tags"><span>${variation}</span><span>${essence.name}</span><span>${size.name}</span><span>${na.diff}</span></div>
+    <div class="gen-section"><h4>Estatísticas</h4><div class="gen-grid">
+      ${_genStatBlock('NA',na.na)}${_genStatBlock('Nível',na.level)}${_genStatBlock('PV',pv)}
+      ${_genStatBlock('Def',na.def)}${_genStatBlock('DT',na.dt)}${_genStatBlock('Perícias',na.pericias)}
+      ${_genStatBlock('Dano',na.dmed)}${_genStatBlock('Mental',na.dmental)}${_genStatBlock('RD',na.rd)}
+    </div></div>
+    <div class="gen-section"><h4>Atributos</h4><div class="gen-grid">
+      ${_genStatBlock('Físico','+'+attrs['Físico'])}${_genStatBlock('Motoras','+'+attrs['Motoras'])}
+      ${_genStatBlock('Intelecto','+'+attrs['Intelecto'])}${_genStatBlock('Psique','+'+attrs['Psique'])}
+    </div></div>
+    <div class="gen-section"><h4>Tamanho</h4><ul class="gen-list"><li>${size.name} · espaço ${size.space}</li><li>Mod Defesa ${size.defMod}, Mod Dano ${size.damMod}</li></ul></div>
+    <div class="gen-section"><h4>Habilidades</h4><ul class="gen-list"><li>${2+Math.floor(na.na/6)} habilidades distintas (2 base + 1/6 NA)</li><li>Pelo menos uma deve expressar essência ${essence.name} (${essence.element})</li><li>Dano característico: <b>${essence.damage}</b></li></ul></div>
+    ${notes.length?`<div class="gen-section"><h4>Variação</h4><ul class="gen-list">${notes.map(n=>'<li>'+n+'</li>').join('')}</ul></div>`:''}
+    <button class="gen-roll-again" onclick="genRoll('ameaca')">Rolar outra ameaça</button>
+  </div>`;
+};
+window.generateAnimal=function(){
+  const name=_genPick(GEN_ANIMAL_NAMES),concept=_genPick(GEN_ANIMAL_CONCEPTS),na=_genPick(GEN_ANIMAL_NA),size=_genPick(GEN_SIZES.slice(0,4));
+  let t1=_genPick(GEN_ANIMAL_TRAITS),t2=_genPick(GEN_ANIMAL_TRAITS);while(t2===t1)t2=_genPick(GEN_ANIMAL_TRAITS);
+  const attrs=_genAttrs(na.na);
+  return `<div class="gen-card">
+    <div class="gen-head"><h3>${name}</h3><div class="gen-sub">${concept.type} · Criatura Natural</div></div>
+    <div class="gen-flavor">${concept.behavior}</div>
+    <div class="gen-tags"><span>Animal</span><span>${size.name}</span><span>NA ${na.na}</span></div>
+    <div class="gen-section"><h4>Estatísticas</h4><div class="gen-grid">
+      ${_genStatBlock('NA',na.na)}${_genStatBlock('PV',na.pv)}${_genStatBlock('Def',na.def)}
+      ${_genStatBlock('DT',na.dt)}${_genStatBlock('Perícias',na.pericias)}${_genStatBlock('Dano',na.dmed)}
+      ${_genStatBlock('RD',na.rd)}${_genStatBlock('Tam',size.name)}
+    </div></div>
+    <div class="gen-section"><h4>Atributos</h4><div class="gen-grid">
+      ${_genStatBlock('Físico','+'+attrs['Físico'])}${_genStatBlock('Motoras','+'+attrs['Motoras'])}
+      ${_genStatBlock('Intelecto','+'+attrs['Intelecto'])}${_genStatBlock('Psique','+'+attrs['Psique'])}
+    </div></div>
+    <div class="gen-section"><h4>Traços</h4><ul class="gen-list"><li>${t1}</li><li>${t2}</li></ul></div>
+    <button class="gen-roll-again" onclick="genRoll('animal')">Rolar outro animal</button>
+  </div>`;
+};
+window.generateEnemy=function(){
+  const name=_genPick(GEN_ENEMY_NAMES),role=_genPick(GEN_ENEMY_ROLES),na=_genPick(GEN_ENEMY_NA),fac=_genPick(GEN_FACTIONS),wcc=_genPick(GEN_WEAPONS_CC),wd=_genPick(GEN_WEAPONS_DIST);
+  let t1=_genPick(GEN_ENEMY_TRAITS),t2=_genPick(GEN_ENEMY_TRAITS);while(t2===t1)t2=_genPick(GEN_ENEMY_TRAITS);
+  const attrs=_genAttrs(na.na);
+  return `<div class="gen-card">
+    <div class="gen-head"><h3>${name}</h3><div class="gen-sub">${role.type} · ${fac}</div></div>
+    <div class="gen-flavor">${role.role}</div>
+    <div class="gen-tags"><span>Humanoide</span><span>${fac}</span><span>NA ${na.na}</span></div>
+    <div class="gen-section"><h4>Estatísticas</h4><div class="gen-grid">
+      ${_genStatBlock('NA',na.na)}${_genStatBlock('PV',na.pv)}${_genStatBlock('Def',na.def)}
+      ${_genStatBlock('DT',na.dt)}${_genStatBlock('Perícias',na.pericias)}${_genStatBlock('Dano',na.dmed)}
+      ${_genStatBlock('RD',na.rd)}
+    </div></div>
+    <div class="gen-section"><h4>Atributos</h4><div class="gen-grid">
+      ${_genStatBlock('Físico','+'+attrs['Físico'])}${_genStatBlock('Motoras','+'+attrs['Motoras'])}
+      ${_genStatBlock('Intelecto','+'+attrs['Intelecto'])}${_genStatBlock('Psique','+'+attrs['Psique'])}
+    </div></div>
+    <div class="gen-section"><h4>Equipamento</h4><ul class="gen-list"><li><b>Corpo a corpo:</b> ${wcc}</li><li><b>Distância:</b> ${wd}</li></ul></div>
+    <div class="gen-section"><h4>Traços</h4><ul class="gen-list"><li>${t1}</li><li>${t2}</li></ul></div>
+    <button class="gen-roll-again" onclick="genRoll('inimigo')">Rolar outro inimigo</button>
+  </div>`;
+};
+window.genRoll=function(type){
+  const slide=_biblioCurrentSlide();if(!slide)return;
+  let host=slide.querySelector('.gen-result');
+  if(!host){host=document.createElement('div');host.className='gen-result';slide.insertBefore(host,slide.firstChild)}
+  let html='';
+  if(type==='animal')html=generateAnimal();
+  else if(type==='inimigo')html=generateEnemy();
+  else html=generateBeast();
+  host.innerHTML=html;
+  host.scrollIntoView({behavior:'smooth',block:'start'});
+  try{window.sfx&&sfx.unlock&&sfx.unlock()}catch(_){}
+};
+window.biblioReaderRandom=function(){
+  const idx=Math.floor(Math.random()*BIBLIO_DATA.length);
+  if(idx===_biblioReaderIdx){biblioReaderRandom();return}
+  _biblioFlipAnim(()=>{_biblioReaderIdx=idx;_biblioSubIdx=0;_biblioApplyChapter(BIBLIO_DATA[idx])});
 };
 window.biblioReaderNav=function(dir){
   const next=_biblioReaderIdx+dir;

@@ -4,18 +4,19 @@
       <stop offset="0%" stop-color="#18181b"/>
       <stop offset="100%" stop-color="#09090b"/>
     </linearGradient>
-    <linearGradient id="bolt" x1="0" y1="0" x2="0" y2="1">
+    <radialGradient id="ringG" cx="40%" cy="50%" r="60%">
       <stop offset="0%" stop-color="#d4ff52"/>
-      <stop offset="55%" stop-color="#c8f542"/>
       <stop offset="100%" stop-color="#92c020"/>
-    </linearGradient>
+    </radialGradient>
     <filter id="glow">
-      <feGaussianBlur stdDeviation="12" result="b"/>
+      <feGaussianBlur stdDeviation="10" result="b"/>
       <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
   <rect width="512" height="512" rx="96" fill="url(#bg)"/>
   <rect x="8" y="8" width="496" height="496" rx="92" fill="none" stroke="rgba(200,245,66,.2)" stroke-width="2"/>
-  <polygon points="288,64 128,288 224,288 192,448 384,224 288,224 320,64" fill="url(#bolt)" filter="url(#glow)"/>
-  <polygon points="288,64 128,288 224,288 192,448 384,224 288,224 320,64" fill="none" stroke="#c8f542" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Eclipse ring -->
+  <circle cx="220" cy="256" r="170" fill="none" stroke="url(#ringG)" stroke-width="22" filter="url(#glow)"/>
+  <!-- Sparkle 4-point star -->
+  <path d="M400 152c12 70 22 80 92 92-70 12-80 22-92 92-12-70-22-80-92-92 70-12 80-22 92-92z" fill="#c8f542" filter="url(#glow)"/>
 </svg>

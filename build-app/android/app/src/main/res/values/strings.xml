@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Ficha Eclipse</string>
+    <string name="title_activity_main">Ficha Eclipse</string>
+    <string name="package_name">com.kazuki.fichaeclipse</string>
+    <string name="custom_url_scheme">com.kazuki.fichaeclipse</string>
+</resources>
