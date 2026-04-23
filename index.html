@@ -9223,119 +9223,164 @@ document.querySelectorAll('.chart-time-pill').forEach(btn=>{
   });
 });
 
-// ═══ STORAGE FOLDER (Capacitor Filesystem) ═══
-const FOLDER_KEY='ficha-eclipse-folder',FOLDER_DEFAULT='FichaEclipse';
-const FOLDER_DIR='EXTERNAL_STORAGE'; // External (Documents/)
-function _getCap(){return (window.Capacitor&&Capacitor.Plugins)||null}
-function _getFs(){const c=_getCap();return c&&c.Filesystem||null}
-function _isAndroid(){return window.Capacitor&&Capacitor.getPlatform&&Capacitor.getPlatform()==='android'}
-function _getFolderName(){return localStorage.getItem(FOLDER_KEY)||FOLDER_DEFAULT}
-async function _ensureFolder(name){
-  const Fs=_getFs();if(!Fs)return false;
-  try{
-    // Tenta path público /storage/emulated/0/Documents/<name> (requer MANAGE_EXTERNAL_STORAGE)
-    await Fs.mkdir({path:'Documents/'+name,directory:'EXTERNAL_STORAGE',recursive:true});
-    return true;
-  }catch(e){
-    if(e&&/exist/i.test(e.message||''))return true;
-    console.warn('mkdir fail (sem MANAGE_EXTERNAL_STORAGE?)',e);
-    return false;
-  }
+// ═══ STORAGE FOLDER (SAF — Storage Access Framework via EclipseStorage bridge) ═══
+// User escolhe qualquer pasta (incluindo SD card) via picker nativo do Android.
+// Persistência via SharedPreferences no app. Sem permissão MANAGE_EXTERNAL_STORAGE.
+function _hasStorage(){return !!(window.EclipseStorage&&EclipseStorage.pickFolder)}
+function _currentFolder(){
+  if(!_hasStorage())return '';
+  try{return EclipseStorage.currentFolderName()||''}catch(_){return ''}
 }
-function _openAllFilesAccessSettings(){
-  // Abre tela "All files access" do Android 11+
-  try{
-    const intent=`intent:#Intent;action=android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION;package=com.kazuki.fichaeclipse;end`;
-    window.location.href=intent;
-  }catch(e){console.warn('settings intent fail',e)}
+function _fmtSize(b){
+  if(!b&&b!==0)return '';
+  if(b<1024)return b+' B';
+  if(b<1024*1024)return (b/1024).toFixed(1)+' KB';
+  return (b/1048576).toFixed(2)+' MB';
 }
-async function _writeFichaToFolder(name){
-  const Fs=_getFs();if(!Fs)return false;
+function _fmtDate(ms){
+  if(!ms)return '';
+  const d=new Date(ms);
+  return d.toLocaleDateString()+' '+d.toTimeString().slice(0,5);
+}
+function _updateFolderProfileLabel(){
+  const sub=document.getElementById('profile-folder-sub');
+  if(!sub)return;
+  if(!_hasStorage()){sub.textContent='Só no app Android';return}
+  const n=_currentFolder();
+  sub.textContent=n?n:'Nenhuma — toque pra escolher';
+}
+async function _pickFolder(){
+  if(!_hasStorage())return null;
+  return new Promise(res=>{
+    window.__storagePicked=name=>{
+      window.__storagePicked=null;
+      _updateFolderProfileLabel();
+      res(name);
+    };
+    try{EclipseStorage.pickFolder()}catch(e){res(null)}
+  });
+}
+function _saveCurrentFichaTo(name){
+  if(!_hasStorage())return false;
   if(typeof collectAllData!=='function')return false;
   try{
     const data=collectAllData();
     const json=JSON.stringify(data,null,2);
-    await Fs.writeFile({
-      path:`Documents/${name}/ficha-eclipse.json`,
-      data:json,
-      directory:'EXTERNAL_STORAGE',
-      encoding:'utf8'
-    });
-    return true;
+    return EclipseStorage.writeFile(name,json);
   }catch(e){console.warn('write fail',e);return false}
 }
-async function _moveFolder(oldName,newName){
-  const Fs=_getFs();if(!Fs)return false;
+function _loadFichaFrom(name){
+  if(!_hasStorage())return false;
   try{
-    // Lê arquivos da pasta antiga
-    const ls=await Fs.readdir({path:'Documents/'+oldName,directory:'EXTERNAL_STORAGE'}).catch(()=>({files:[]}));
-    await _ensureFolder(newName);
-    for(const f of (ls.files||[])){
-      const fname=typeof f==='string'?f:f.name;
-      const r=await Fs.readFile({path:`Documents/${oldName}/${fname}`,directory:'EXTERNAL_STORAGE',encoding:'utf8'}).catch(()=>null);
-      if(r){
-        await Fs.writeFile({path:`Documents/${newName}/${fname}`,data:r.data,directory:'EXTERNAL_STORAGE',encoding:'utf8'});
-        await Fs.deleteFile({path:`Documents/${oldName}/${fname}`,directory:'EXTERNAL_STORAGE'}).catch(()=>{});
-      }
-    }
-    await Fs.rmdir({path:'Documents/'+oldName,directory:'EXTERNAL_STORAGE'}).catch(()=>{});
-    return true;
-  }catch(e){console.warn('move fail',e);return false}
+    const raw=EclipseStorage.readFile(name);
+    if(!raw)return false;
+    const data=JSON.parse(raw);
+    if(!data||!data.version)return false;
+    if(typeof applyAllData!=='function')return false;
+    const ok=applyAllData(data);
+    if(ok&&typeof refreshAll==='function')refreshAll();
+    return ok;
+  }catch(e){console.warn('load fail',e);return false}
 }
-window.openFolderManager=async function(){
-  const cur=_getFolderName();
-  if(!_getFs()){
-    if(typeof toast==='function')toast('Disponível só no app Android instalado','info');
+function _listFichas(){
+  if(!_hasStorage())return [];
+  try{return JSON.parse(EclipseStorage.listFiles()||'[]')}catch(_){return []}
+}
+function _renderFolderModal(){
+  const title=document.getElementById('modal-title'),body=document.getElementById('modal-body');
+  if(!title||!body)return;
+  title.textContent='Armazenamento';
+  if(!_hasStorage()){
+    body.innerHTML=`<p style="font-size:13px;color:var(--text-secondary);line-height:1.6">Disponível apenas no app Android instalado. No navegador, a ficha fica salva localmente no site.</p>
+    <div class="modal-btns"><button class="modal-btn primary" onclick="closeModal()">OK</button></div>`;
+    document.getElementById('modal-overlay').classList.add('open');
     return;
   }
-  // Testa permissão antes
-  const test=await _ensureFolder(cur);
-  if(!test){
-    if(confirm('App não tem permissão "Acesso a todos os arquivos". Abrir Configurações?')){
-      _openAllFilesAccessSettings();
-    }
-    return;
-  }
-  const next=prompt(`Pasta atual: /storage/emulated/0/Documents/${cur}\nDigite novo nome:`,cur);
-  if(!next||next.trim()===''||next.trim()===cur)return;
-  const newName=next.trim().replace(/[^A-Za-z0-9_\-]/g,'');
-  if(!newName){if(typeof toast==='function')toast('Nome inválido','error');return}
-  if(typeof toast==='function')toast('Movendo arquivos...','info');
-  const ok=await _moveFolder(cur,newName);
-  if(ok){
-    localStorage.setItem(FOLDER_KEY,newName);
-    const sub=document.getElementById('profile-folder-sub');
-    if(sub)sub.textContent='Documents/'+newName;
-    await _writeFichaToFolder(newName);
-    if(typeof toast==='function')toast('Pasta movida pra Documents/'+newName,'success');
-  }else{
-    if(typeof toast==='function')toast('Falhou ao mover. Veja console','error');
-  }
+  const cur=_currentFolder();
+  const files=_listFichas().sort((a,b)=>(b.modified||0)-(a.modified||0));
+  const fileRows=files.map(f=>{
+    const safe=f.name.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;margin-bottom:6px">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${f.name}</div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:2px;font-family:'JetBrains Mono',monospace">${_fmtSize(f.size)} · ${_fmtDate(f.modified)}</div>
+      </div>
+      <button class="modal-btn secondary" style="padding:6px 10px;font-size:11px" onclick="loadFichaFromFolder('${safe}')" title="Carregar">▲</button>
+      <button class="modal-btn secondary" style="padding:6px 10px;font-size:11px" onclick="renameFichaInFolder('${safe}')" title="Renomear">✎</button>
+      <button class="modal-btn secondary" style="padding:6px 10px;font-size:11px;color:var(--red);border-color:var(--red-dim)" onclick="deleteFichaInFolder('${safe}')" title="Excluir">✕</button>
+    </div>`;
+  }).join('');
+  const empty=files.length?'':`<div style="text-align:center;padding:28px 16px;font-size:12px;color:var(--text-dim);background:var(--bg-input);border:1px dashed var(--border);border-radius:10px">Nenhuma ficha salva nessa pasta ainda.</div>`;
+  const header=cur
+    ? `<div style="padding:12px 14px;background:var(--bg-input);border:1px solid var(--border);border-radius:10px;margin-bottom:12px">
+         <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px">Pasta atual</div>
+         <div style="font-size:14px;font-weight:700;color:var(--lime);word-break:break-all">${cur}</div>
+       </div>`
+    : `<div style="padding:14px;background:var(--bg-input);border:1px dashed var(--border);border-radius:10px;margin-bottom:12px;font-size:12px;color:var(--text-secondary);line-height:1.5">Nenhuma pasta selecionada. Escolha uma no armazenamento interno ou no cartão SD.</div>`;
+  body.innerHTML=`${header}
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="modal-btn primary" style="flex:1;min-width:140px" onclick="pickStorageFolder()">${cur?'Trocar pasta':'Escolher pasta'}</button>
+      ${cur?`<button class="modal-btn secondary" onclick="saveFichaToFolder()">Salvar aqui</button>`:''}
+      ${cur?`<button class="modal-btn secondary" onclick="clearStorageFolder()" title="Remover vínculo com a pasta">Desvincular</button>`:''}
+    </div>
+    <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin:14px 0 6px">Fichas salvas (${files.length})</div>
+    ${empty||`<div style="max-height:45vh;overflow-y:auto">${fileRows}</div>`}
+    <div class="modal-btns" style="margin-top:14px"><button class="modal-btn secondary" onclick="closeModal()">Fechar</button></div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+window.openFolderManager=function(){_renderFolderModal()};
+window.pickStorageFolder=async function(){
+  if(typeof toast==='function')toast('Escolha a pasta no seletor do Android...','info');
+  const name=await _pickFolder();
+  _renderFolderModal();
+  if(name&&typeof toast==='function')toast('Pasta vinculada: '+name,'success');
 };
-// Init: cria pasta + salva snapshot inicial
-(async function _initFolder(){
-  if(!_isAndroid())return;
-  const name=_getFolderName();
-  const ok=await _ensureFolder(name);
-  const sub=document.getElementById('profile-folder-sub');
-  if(sub)sub.textContent='Documents/'+name;
-  if(!ok&&!localStorage.getItem('ficha-eclipse-perm-asked')){
-    localStorage.setItem('ficha-eclipse-perm-asked','1');
-    setTimeout(()=>{
-      if(typeof toast==='function')toast('Conceda "Acesso a todos os arquivos" pra criar pasta no Documents','warn');
-      setTimeout(_openAllFilesAccessSettings,1500);
-    },2500);
-  }else{
-    setTimeout(()=>_writeFichaToFolder(name),3000);
-  }
-})();
-// Hook autosave → grava snapshot na pasta também
+window.clearStorageFolder=function(){
+  if(!_hasStorage())return;
+  if(!confirm('Desvincular a pasta atual?\n\nFichas salvas permanecem no armazenamento — só o atalho dentro do app é removido.'))return;
+  try{EclipseStorage.clearFolder()}catch(_){}
+  _updateFolderProfileLabel();
+  _renderFolderModal();
+};
+window.saveFichaToFolder=function(){
+  if(!_hasStorage()||!_currentFolder())return;
+  const def=(typeof fichaData==='object'&&fichaData.nome?fichaData.nome.trim().replace(/[^\w\- ]+/g,''):'')||'ficha';
+  const name=prompt('Nome do arquivo (.json será adicionado se faltar):',def+'.json');
+  if(!name)return;
+  const fname=/\.json$/i.test(name)?name:(name+'.json');
+  const ok=_saveCurrentFichaTo(fname);
+  if(typeof toast==='function')toast(ok?'Salvo: '+fname:'Falhou ao salvar',ok?'success':'error');
+  _renderFolderModal();
+};
+window.loadFichaFromFolder=function(fname){
+  if(!confirm('Carregar "'+fname+'"?\n\nSubstitui a ficha atual. Salve antes se precisar.'))return;
+  const ok=_loadFichaFrom(fname);
+  if(typeof toast==='function')toast(ok?'Ficha carregada: '+fname:'Falhou ao carregar',ok?'success':'error');
+  if(ok)closeModal();
+};
+window.deleteFichaInFolder=function(fname){
+  if(!confirm('Excluir "'+fname+'" permanentemente?'))return;
+  let ok=false;try{ok=EclipseStorage.deleteFile(fname)}catch(_){}
+  if(typeof toast==='function')toast(ok?'Excluído: '+fname:'Falhou ao excluir',ok?'info':'error');
+  _renderFolderModal();
+};
+window.renameFichaInFolder=function(fname){
+  const next=prompt('Novo nome para "'+fname+'":',fname);
+  if(!next||next===fname)return;
+  const nn=/\.json$/i.test(next)?next:(next+'.json');
+  let ok=false;try{ok=EclipseStorage.renameFile(fname,nn)}catch(_){}
+  if(typeof toast==='function')toast(ok?'Renomeado pra '+nn:'Falhou ao renomear',ok?'success':'error');
+  _renderFolderModal();
+};
+// Init label no profile após load
+window.addEventListener('load',()=>setTimeout(_updateFolderProfileLabel,300));
+// Autosave mirror: se tem pasta vinculada, escreve autosave.json nela
 const _origAutosaveFs=typeof autosaveNow==='function'?autosaveNow:null;
 if(_origAutosaveFs){
   window.autosaveNow=function(){
     const r=_origAutosaveFs.apply(this,arguments);
-    if(_isAndroid()){
-      try{_writeFichaToFolder(_getFolderName())}catch(_){}
+    if(_hasStorage()&&_currentFolder()){
+      try{_saveCurrentFichaTo('autosave.json')}catch(_){}
     }
     return r;
   };

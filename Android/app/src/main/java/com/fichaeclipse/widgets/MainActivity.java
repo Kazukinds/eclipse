@@ -37,6 +37,14 @@ import android.webkit.WebChromeClient;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.content.SharedPreferences;
+import android.provider.DocumentsContract;
+import androidx.documentfile.provider.DocumentFile;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.ByteArrayOutputStream;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class MainActivity extends Activity {
 
@@ -107,6 +115,8 @@ public class MainActivity extends Activity {
 
         // JS ↔ Java bridge (OTA update + versão nativa)
         wv.addJavascriptInterface(new UpdateBridge(), "EclipseNative");
+        // Storage bridge — SAF folder picker + ler/escrever arquivos na pasta escolhida
+        wv.addJavascriptInterface(new StorageBridge(), "EclipseStorage");
 
         wv.setWebViewClient(new WebViewClient() {
             @Override
@@ -429,6 +439,194 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
             if (webView != null)
                 webView.evaluateJavascript("window.__otaError&&window.__otaError('install falhou')", null);
+        }
+    }
+
+    // ═══ Storage Bridge — SAF folder picker + file IO ═══
+    private static final String PREFS = "eclipse_storage";
+    private static final String KEY_FOLDER_URI = "folder_uri";
+    private static final int REQ_PICK_FOLDER = 9001;
+
+    private SharedPreferences _prefs() {
+        return getSharedPreferences(PREFS, MODE_PRIVATE);
+    }
+
+    private Uri _folderUri() {
+        String s = _prefs().getString(KEY_FOLDER_URI, null);
+        return s == null ? null : Uri.parse(s);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_PICK_FOLDER) {
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                Uri treeUri = data.getData();
+                try {
+                    final int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+                    getContentResolver().takePersistableUriPermission(treeUri, flags);
+                } catch (Exception ignored) {}
+                _prefs().edit().putString(KEY_FOLDER_URI, treeUri.toString()).apply();
+                String name = _folderDisplayName(treeUri);
+                if (webView != null) {
+                    webView.evaluateJavascript("window.__storagePicked&&window.__storagePicked(" + JSONObject.quote(name) + ")", null);
+                }
+            } else {
+                if (webView != null) {
+                    webView.evaluateJavascript("window.__storagePicked&&window.__storagePicked(null)", null);
+                }
+            }
+        }
+    }
+
+    private String _folderDisplayName(Uri treeUri) {
+        try {
+            DocumentFile df = DocumentFile.fromTreeUri(this, treeUri);
+            if (df != null && df.getName() != null) return df.getName();
+        } catch (Exception ignored) {}
+        return treeUri.getLastPathSegment() != null ? treeUri.getLastPathSegment() : "pasta";
+    }
+
+    public class StorageBridge {
+        @JavascriptInterface
+        public void pickFolder() {
+            runOnUiThread(() -> {
+                try {
+                    Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                    i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                            | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                    startActivityForResult(i, REQ_PICK_FOLDER);
+                } catch (Exception e) {
+                    if (webView != null) webView.evaluateJavascript(
+                            "window.__storagePicked&&window.__storagePicked(null)", null);
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public String currentFolderName() {
+            Uri u = _folderUri();
+            if (u == null) return "";
+            return _folderDisplayName(u);
+        }
+
+        @JavascriptInterface
+        public boolean hasFolder() {
+            return _folderUri() != null;
+        }
+
+        @JavascriptInterface
+        public void clearFolder() {
+            Uri u = _folderUri();
+            if (u != null) {
+                try {
+                    getContentResolver().releasePersistableUriPermission(u,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                } catch (Exception ignored) {}
+            }
+            _prefs().edit().remove(KEY_FOLDER_URI).apply();
+        }
+
+        @JavascriptInterface
+        public String listFiles() {
+            Uri u = _folderUri();
+            if (u == null) return "[]";
+            try {
+                DocumentFile tree = DocumentFile.fromTreeUri(MainActivity.this, u);
+                if (tree == null || !tree.isDirectory()) return "[]";
+                JSONArray arr = new JSONArray();
+                for (DocumentFile f : tree.listFiles()) {
+                    if (!f.isFile()) continue;
+                    String n = f.getName();
+                    if (n == null) continue;
+                    if (!n.toLowerCase().endsWith(".json")) continue;
+                    JSONObject o = new JSONObject();
+                    o.put("name", n);
+                    o.put("size", f.length());
+                    o.put("modified", f.lastModified());
+                    arr.put(o);
+                }
+                return arr.toString();
+            } catch (Exception e) {
+                return "[]";
+            }
+        }
+
+        @JavascriptInterface
+        public String readFile(String name) {
+            Uri u = _folderUri();
+            if (u == null || name == null) return "";
+            try {
+                DocumentFile tree = DocumentFile.fromTreeUri(MainActivity.this, u);
+                if (tree == null) return "";
+                DocumentFile f = tree.findFile(name);
+                if (f == null || !f.isFile()) return "";
+                InputStream is = getContentResolver().openInputStream(f.getUri());
+                if (is == null) return "";
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                byte[] buf = new byte[4096];
+                int r;
+                while ((r = is.read(buf)) > 0) bos.write(buf, 0, r);
+                is.close();
+                return bos.toString("UTF-8");
+            } catch (Exception e) {
+                return "";
+            }
+        }
+
+        @JavascriptInterface
+        public boolean writeFile(String name, String content) {
+            Uri u = _folderUri();
+            if (u == null || name == null) return false;
+            try {
+                DocumentFile tree = DocumentFile.fromTreeUri(MainActivity.this, u);
+                if (tree == null) return false;
+                DocumentFile existing = tree.findFile(name);
+                if (existing != null) existing.delete();
+                DocumentFile f = tree.createFile("application/json", name);
+                if (f == null) return false;
+                OutputStream os = getContentResolver().openOutputStream(f.getUri());
+                if (os == null) return false;
+                os.write(content.getBytes("UTF-8"));
+                os.flush();
+                os.close();
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        @JavascriptInterface
+        public boolean deleteFile(String name) {
+            Uri u = _folderUri();
+            if (u == null || name == null) return false;
+            try {
+                DocumentFile tree = DocumentFile.fromTreeUri(MainActivity.this, u);
+                if (tree == null) return false;
+                DocumentFile f = tree.findFile(name);
+                if (f == null) return false;
+                return f.delete();
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        @JavascriptInterface
+        public boolean renameFile(String oldName, String newName) {
+            Uri u = _folderUri();
+            if (u == null || oldName == null || newName == null) return false;
+            try {
+                DocumentFile tree = DocumentFile.fromTreeUri(MainActivity.this, u);
+                if (tree == null) return false;
+                DocumentFile f = tree.findFile(oldName);
+                if (f == null) return false;
+                return f.renameTo(newName);
+            } catch (Exception e) {
+                return false;
+            }
         }
     }
 }
