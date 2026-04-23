@@ -31,7 +31,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-    private static final String APP_URL = "https://kazukinds.github.io/eclipse/";
+    private static final String APP_URL = "file:///android_asset/www/index.html";
     private WebView webView;
     private FrameLayout splash;
     private FrameLayout offline;
@@ -63,12 +63,8 @@ public class MainActivity extends Activity {
 
         setContentView(root);
 
-        if (isOnline()) {
-            webView.loadUrl(APP_URL);
-        } else {
-            webView.loadUrl(APP_URL); // SW deve servir do cache
-            offline.setVisibility(View.VISIBLE);
-        }
+        // Carrega bundled local — funciona offline sempre
+        webView.loadUrl(APP_URL);
     }
 
     private WebView buildWebView() {
