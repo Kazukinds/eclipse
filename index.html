@@ -1401,18 +1401,21 @@ input[type="number"]{-moz-appearance:textfield}
 .biblio-cover-sub{
   font-size:10px;opacity:.78;letter-spacing:.02em;line-height:1.3;
 }
-/* Hover — papel emerge da lateral mas FICA POR BAIXO da capa.
+/* Hover / touch-revealed — papel emerge da lateral mas FICA POR BAIXO da capa.
    Só a borda direita sobressai. Capa permanece em cima. */
-.biblio-env:hover .biblio-sleeve{
+.biblio-env:hover .biblio-sleeve,
+.biblio-env.revealed .biblio-sleeve{
   transform:translateX(18%) translateY(-3%) rotate(3deg) scale(1);
   box-shadow:4px 10px 20px rgba(0,0,0,.18);
   z-index:2;
 }
-.biblio-env:hover .biblio-cover{
+.biblio-env:hover .biblio-cover,
+.biblio-env.revealed .biblio-cover{
   transform:rotate(-1deg);
   box-shadow:0 16px 32px rgba(40,40,80,.28);
   z-index:5;
 }
+.biblio-env.revealed{z-index:20}
 .biblio-env:active .biblio-sleeve{transform:translateX(22%) translateY(-4%) rotate(4deg)}
 .biblio-env:active .biblio-cover{transform:rotate(-1.5deg)}
 @media(max-width:640px){
@@ -6736,6 +6739,23 @@ function renderBiblioGrid(){
     p.onclick=()=>{_biblioFilter=p.dataset.f;document.querySelectorAll('#biblio-filter-pills .inv-filter-pill').forEach(x=>x.classList.toggle('active',x===p));renderBiblioGrid()};
   });
 }
+// Touch reveal — dedo sobre card = papel emerge (equivalente ao hover desktop)
+(function _biblioTouchReveal(){
+  if(window._biblioTouchReady)return;window._biblioTouchReady=true;
+  let _revealTimer=null;
+  const clearAll=except=>{
+    document.querySelectorAll('.biblio-env.revealed').forEach(c=>{if(c!==except)c.classList.remove('revealed')});
+  };
+  document.addEventListener('touchstart',e=>{
+    const card=e.target.closest('.biblio-env');
+    if(!card){clearAll(null);return}
+    clearAll(card);
+    card.classList.add('revealed');
+    clearTimeout(_revealTimer);
+    _revealTimer=setTimeout(()=>card.classList.remove('revealed'),3500);
+  },{passive:true});
+  document.addEventListener('scroll',()=>{clearAll(null);clearTimeout(_revealTimer)},{passive:true,capture:true});
+})();
 let _biblioReaderIdx=-1,_biblioSubIdx=0,_BIBLIO_FULL=null,_biblioLoading=false;
 const BIBLIO_ENV_COLORS={violet:'#5b3acf',blue:'#3a47cf',green:'#2e9c5b',cyan:'#1d8bb0',orange:'#d97540',red:'#c0394a',purple:'#7340c4',lime:'#7aa83a',yellow:'#c79a2a',pink:'#c14e8d'};
 
