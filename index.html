@@ -3752,32 +3752,6 @@ body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-ins
 .chl-tag.fix{background:var(--blue-dim);color:var(--blue)}
 .chl-tag.ui{background:var(--purple-dim);color:var(--purple)}
 
-/* ════════ IMPLANTES CIBERNÉTICOS ════════ */
-#tab-implants{padding:0}
-
-/* Left panel */
-
-/* Cervical zoom card */
-
-/* Position readout */
-
-/* Report bottom-right */
-
-/* Bottom-left implants list */
-
-/* Overload warning bar top-center */
-@keyframes imp-pulse{0%,100%{box-shadow:0 0 0 rgba(239,68,68,0)}50%{box-shadow:0 0 20px rgba(239,68,68,.6)}}
-
-/* Modal quality pills */
-
-@media(max-width:860px){
-  .imp-layout{min-height:auto}
-  .imp-panel{position:static;width:auto;margin:14px;backdrop-filter:none}
-  .imp-zoom,.imp-pos,.imp-report,.imp-ticks,.imp-ticks-v{display:none}
-  .imp-stage{position:relative;height:300px}
-  .imp-list-wrap{position:static;width:auto;margin:0 14px 14px;max-height:none}
-}
-
 /* ═══ ÍCONES BRANCOS + ANIMAÇÕES ═══ */
 @keyframes icon-draw{from{stroke-dashoffset:120}to{stroke-dashoffset:0}}
 @keyframes icon-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
@@ -7781,18 +7755,7 @@ function openGenericModal(title,html){
   const b=document.getElementById('modal-body');if(b)b.innerHTML=html;
   ov.classList.add('open');
 }
-// Relógio UTC no painel — pausa quando aba escondida
-setInterval(()=>{
-  if(document.visibilityState!=='visible')return;
-  const tabActive=document.getElementById('tab-implants')?.classList.contains('active');
-  if(!tabActive)return;
-  const el=document.getElementById('imp-clock');
-  if(el){const d=new Date();el.textContent=`${String(d.getUTCHours()).padStart(2,'0')}:${String(d.getUTCMinutes()).padStart(2,'0')}:${String(d.getUTCSeconds()).padStart(2,'0')} UTC`}
-  const wave=document.getElementById('imp-report-wave');
-  if(wave){
-    wave.innerHTML=Array.from({length:12},(_,i)=>`<span style="height:${4+Math.abs(Math.sin(i*.7+Date.now()/500))*10}px"></span>`).join('');
-  }
-},1000);
+// Relógio UTC removido (elementos imp-clock/imp-report-wave não existem mais no HTML)
 
 // ═══ HELPERS ═══
 let _toasting=false;
