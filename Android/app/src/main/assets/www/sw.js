@@ -1,5 +1,5 @@
 /* Ficha Eclipse — service worker */
-const VERSION = 'v64';
+const VERSION = 'v112';
 const CACHE = 'ficha-eclipse-' + VERSION;
 const ASSETS = [
   './',
@@ -34,6 +34,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('message', e => {
   if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
   if (e.data && e.data.type === 'GET_VERSION' && e.source) e.source.postMessage({type:'VERSION', version: VERSION});
+  if (e.data && e.data.type === 'GET_CURRENT_VERSION' && e.source) e.source.postMessage({type:'CURRENT_VERSION', version: VERSION});
 });
 
 self.addEventListener('fetch', e => {
