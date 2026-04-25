@@ -552,21 +552,6 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .status-val .sv-bonus{color:var(--cyan);font-size:10px;text-shadow:0 0 6px color-mix(in srgb,var(--cyan) 55%,transparent)}
 
 /* ═══ QUICK ACTION ═══ */
-.quick-action-card{display:flex;flex-direction:column}
-.qa-field{background:var(--bg-card-inner);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:6px}
-.qa-field-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;display:flex;justify-content:space-between;margin-bottom:4px}
-.qa-field-value{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;display:flex;align-items:center;justify-content:space-between}
-.qa-field-badge{display:flex;align-items:center;background:none;border:none;border-radius:50%;padding:0}
-.qa-field-badge .badge-icon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg-card);border:1px solid var(--border)}
-.qa-field-badge .badge-icon svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:2.2}
-.qa-swap-arrow{display:flex;justify-content:center;margin:-2px 0;position:relative;z-index:2}
-.qa-swap-circle{width:28px;height:28px;border-radius:50%;background:var(--bg-card);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-secondary);cursor:pointer;transition:all .2s}
-.qa-swap-circle:hover{border-color:var(--lime-dim);color:var(--lime)}
-.qa-swap-circle svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
-.qa-info{font-size:11px;color:var(--text-dim);padding:6px 0;border-top:1px solid var(--border);margin-top:6px;display:flex;justify-content:space-between}
-.qa-submit{width:100%;padding:10px;background:var(--lime);border:none;border-radius:var(--radius-sm);font-family:inherit;font-size:13px;font-weight:700;color:#09090b;cursor:pointer;margin-top:4px;transition:all var(--transition-base)}
-.qa-submit:hover{background:var(--lime-dim);box-shadow:0 0 20px rgba(200,245,66,.2);transform:translateY(-1px)}
-.qa-submit:active{transform:translateY(0);box-shadow:none}
 
 /* ═══ ACCOUNTS / GROUP ═══ */
 .accounts-card{display:flex;flex-direction:column;gap:8px}
@@ -1074,7 +1059,6 @@ input[type="number"]{-moz-appearance:textfield}
 [data-theme="light"] .inv-cell{background:var(--bg-card-inner)}
 [data-theme="light"] .inv-cell.occupied{background:linear-gradient(145deg,#f8f8fa,#ededf0)}
 [data-theme="light"] .item-overlay{background:linear-gradient(145deg,#f8f8fa,#ededf0)}
-[data-theme="light"] .qa-field{background:var(--bg-card-inner)}
 [data-theme="light"] .modal{box-shadow:var(--shadow-lg),0 0 0 1px rgba(0,0,0,.05)}
 
 /* ═══ BOTTOM-SHEET MODALS (mobile vertical) ═══ */
@@ -1127,7 +1111,6 @@ input[type="number"]{-moz-appearance:textfield}
 [data-theme="light"] .xp-fill{background:var(--lime)}
 [data-theme="light"] .toggle-pill.active{color:#fff}
 [data-theme="light"] .credit-pill.primary{color:#fff}
-[data-theme="light"] .qa-submit{color:#fff}
 [data-theme="light"] .modal-btn.primary{color:#fff}
 [data-theme="light"] .btn-register{color:#fff}
 [data-theme="light"] .chart-time-pill.active{color:#fff}
@@ -1213,10 +1196,6 @@ input[type="number"]{-moz-appearance:textfield}
 @media(max-width:640px){
   .biblio-pills{width:100%;justify-content:flex-start}
 }
-.biblio-ch-body{padding:8px 0;font-size:13.5px;line-height:1.65;color:var(--text-secondary)}
-.biblio-ch-body h4{color:var(--text-primary);font-size:14px;margin:14px 0 6px;font-weight:700;letter-spacing:.2px}
-.biblio-ch-body ul{margin:0 0 10px 18px;padding:0}
-.biblio-ch-body li{margin-bottom:4px}
 
 /* Envelope cards — capa preta + sleeve branca (leve cinza) */
 .biblio-grid{
@@ -2760,7 +2739,6 @@ input[type="number"]{-moz-appearance:textfield}
   .donut-wrap{width:120px;height:120px}
   .donut-svg{width:120px;height:120px}
   .status-list{gap:12px}
-  .qa-field-value{font-size:18px}
 }
 @media(max-width:400px){
   .content{padding:12px 10px}
@@ -3229,7 +3207,7 @@ body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-ins
 /* ═══════════ CÍRCULOS — BLINDAGEM GLOBAL (propocao 1:1) ═══════════ */
 .topbar-icon-btn,.xp-gear,.attr-gear,.size-gear,.dual-gear,.veh-cfg-btn,
 .modal-close,.register-close,.notif-icon,.credit-log-icon,
-.account-badge,.qa-swap-circle,.skill-use,.skill-del,
+.account-badge,.skill-use,.skill-del,
 .item-gear-float,.veh-hero-badge,.veh-hero-act,.sidebar-logo{
   aspect-ratio:1/1;box-sizing:border-box
 }
@@ -3439,9 +3417,6 @@ small,.profile-note-date,.profile-role,.item-row-sub,.sklib-item-meta{font-size:
 textarea{line-height:1.5}
 
 /* ═══ FICHA COMPLETA — novas seções do perfil ═══ */
-.ficha-textarea{width:100%;min-height:90px;padding:10px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:10px;color:var(--text-primary);font-family:inherit;font-size:13px;line-height:1.55;resize:vertical;outline:none;transition:border-color .2s,box-shadow .2s}
-.ficha-textarea:focus{border-color:var(--lime-dim);box-shadow:0 0 0 3px color-mix(in srgb,var(--lime) 15%,transparent)}
-.ficha-textarea.lg{min-height:140px}
 .ficha-tags{display:flex;flex-wrap:wrap;gap:6px;padding:4px 0}
 .ficha-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;background:var(--lime-bg);border:1px solid var(--lime-dim);border-radius:999px;font-size:11px;font-weight:600;color:var(--text-primary);letter-spacing:.01em}
 .ficha-tag .rm{cursor:pointer;opacity:.6;transition:opacity .15s;font-size:12px;line-height:1}
@@ -3457,7 +3432,6 @@ textarea{line-height:1.5}
 @media(max-width:640px){.personality-grid{grid-template-columns:1fr}}
 .personality-field label{display:flex;align-items:center;gap:6px;margin-bottom:4px}
 .personality-field label .lbl-ico{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2}
-[data-theme="light"] .ficha-textarea{background:#fafafa;border-color:#d4d4d8}
 [data-theme="light"] .ficha-cond.on{background:color-mix(in srgb,var(--red) 10%,#fff);color:var(--red)}
 
 /* ═══ GOLDEN RATIO — proporções harmônicas (φ=1.618) ═══ */
@@ -3537,9 +3511,6 @@ textarea{line-height:1.5}
 .personality-field{position:relative}
 .personality-field label{font-size:11px;letter-spacing:.1em;color:var(--text-secondary);margin-bottom:8px}
 .personality-field label .lbl-ico{color:var(--lime);width:13px;height:13px}
-.ficha-textarea{transition:border-color .2s,box-shadow .2s,background .2s}
-.ficha-textarea:hover{border-color:var(--border-light)}
-.ficha-textarea::placeholder{color:var(--text-dim);font-style:italic;opacity:.7}
 
 /* Condition pills — mais polimento */
 .ficha-cond{position:relative;padding:8px 12px}
@@ -3598,8 +3569,6 @@ button:not(:disabled):active{transform:scale(.97)}
 [data-theme="light"] .tab-header::before{opacity:.3}
 [data-theme="light"] .tab-header-info h1{color:#0a0a0f}
 [data-theme="light"] .profile-section-title::before{background:#18181c;box-shadow:none}
-[data-theme="light"] .ficha-textarea{background:#fafafa}
-[data-theme="light"] .ficha-textarea:focus{background:#ffffff}
 [data-theme="light"] .profile-header-card{background:linear-gradient(135deg,#ffffff 0%,#f7f7fa 100%)}
 [data-theme="light"] .profile-avatar{border-color:#d4d4d8;box-shadow:0 0 0 3px rgba(0,0,0,.04),0 6px 16px rgba(0,0,0,.08)}
 
