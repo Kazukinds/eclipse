@@ -1,5 +1,5 @@
 /* Ficha Eclipse — service worker */
-const VERSION = 'v112';
+const VERSION = 'v113';
 const CACHE = 'ficha-eclipse-' + VERSION;
 const ASSETS = [
   './',
@@ -11,6 +11,8 @@ const ASSETS = [
   './icons/brand.svg',
   './icons/brand-biblioteca.svg',
   './icons/icon-maskable.svg',
+  './icons/logo-eclipse-moon.svg',
+  './icons/logo-eclipse-star.svg',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-192.png',
