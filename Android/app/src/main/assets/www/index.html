@@ -3772,7 +3772,7 @@ body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-ins
 .tab-btn svg{transition:transform .25s,stroke .2s}
 .tab-btn:hover svg{transform:translateY(-1px) scale(1.08)}
 .tab-btn.active svg{stroke:var(--lime)}
-.status-icon svg,.spells-icon svg,.pet-icon svg,.imp-icon svg{transition:transform .3s,filter .3s}
+.status-icon svg{transition:transform .3s,filter .3s}
 .status-card:hover .status-icon svg{animation:icon-pulse 1.6s ease-in-out infinite}
 .inv-cat-btn svg{transition:transform .2s}
 .inv-cat-btn:hover svg{transform:scale(1.12) rotate(-4deg)}
@@ -3795,7 +3795,7 @@ label,.profile-field label,.form-group label{font-family:'Inter',sans-serif;font
 .profile-field-val,input,textarea,select,button{font-family:inherit}
 .profile-field-val{font-size:14px;line-height:1.5;font-weight:500}
 .mono,.summary-value,.xp-numbers,.stat-val,.vt-val{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-p,.profile-note-text,.card-desc,.spells-empty p{line-height:1.55;font-size:13px;color:var(--text-secondary)}
+p,.profile-note-text,.card-desc{line-height:1.55;font-size:13px;color:var(--text-secondary)}
 small,.profile-note-date,.profile-role,.item-row-sub,.sklib-item-meta{font-size:11px;color:var(--text-dim);letter-spacing:.02em}
 .profile-section-title{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-primary)}
 .section-head{border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:14px}
@@ -4675,7 +4675,6 @@ button:not(:disabled):active{transform:scale(.97)}
   .topbar,[data-theme] .topbar{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--bg-body)!important}
   .toast{backdrop-filter:blur(4px)!important;-webkit-backdrop-filter:blur(4px)!important}
   .biblio-reader.stage-2{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-  .imp-panel{backdrop-filter:blur(6px)!important;-webkit-backdrop-filter:blur(6px)!important}
   .app-confirm-overlay{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(0,0,0,.8)!important}
   /* Profile header orb radial — desliga em mobile */
   .profile-header-card::before{display:none}
@@ -5887,9 +5886,6 @@ document.querySelectorAll('.sidebar-btn[data-tab]').forEach(b=>{b.addEventListen
   mo.observe(document.body,{childList:true,subtree:true,characterData:true});
 })();
 
-// Stubs no-op — sistemas feitiço/pet/veículo/implante removidos
-window.switchToTab=function(){};
-window.openSistemasMenu=function(){};
 
 // ═══ DASHBOARD LISTS ═══
 function renderDashLists(){
