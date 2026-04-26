@@ -605,6 +605,9 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .inv-cell.multi-origin.selected .item-overlay{border-color:var(--lime);border-style:solid;box-shadow:0 0 12px rgba(200,245,66,.15),inset 0 0 20px rgba(200,245,66,.04)}
 .inv-cell.drag-over{border-color:var(--lime)}
 .inv-cell.dragging{opacity:.3;border-style:dashed}
+.inv-cell.locked{background:repeating-linear-gradient(45deg,rgba(0,0,0,.45) 0,rgba(0,0,0,.45) 4px,rgba(20,15,10,.6) 4px,rgba(20,15,10,.6) 8px);border-color:rgba(180,140,80,.05);cursor:not-allowed;pointer-events:none}
+.inv-cell.locked:hover{border-color:rgba(180,140,80,.05);background:repeating-linear-gradient(45deg,rgba(0,0,0,.45) 0,rgba(0,0,0,.45) 4px,rgba(20,15,10,.6) 4px,rgba(20,15,10,.6) 8px)}
+.inv-cell.locked .inv-cell-x{width:60%;height:60%;stroke:rgba(180,60,60,.55);fill:none;stroke-linecap:round;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
 .inv-cell .item-icon{transition:transform .15s}
 .inv-cell .item-icon svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
 .inv-cell:hover .item-icon svg{transform:scale(1.1)}
@@ -6031,7 +6034,7 @@ function gi(n){return SVG[n]||SVG.sword}
 
 // ═══ STATE ═══
 let inventory=[];
-let nextId=1,currentFilter='all',GRID_SIZE=70;
+let nextId=1,currentFilter='all',GRID_SIZE=140;
 let gridSlots=new Array(GRID_SIZE).fill(null);
 
 let playerLevel=0,playerXP=0,xpToNext=5000;
@@ -6805,7 +6808,11 @@ function initGridSlots(){
 function canPlace(idx,w,h){
   const col=idx%gridCols,row=Math.floor(idx/gridCols);
   if(col+w>gridCols||row+h>gridRows)return false;
-  for(let r=0;r<h;r++)for(let c=0;c<w;c++){if(gridSlots[(row+r)*gridCols+(col+c)]!==null)return false}
+  for(let r=0;r<h;r++)for(let c=0;c<w;c++){
+    const ci=(row+r)*gridCols+(col+c);
+    if(!isCellUnlocked(ci))return false;
+    if(gridSlots[ci]!==null)return false;
+  }
   return true;
 }
 function placeItem(idx,id,w,h){
@@ -6828,7 +6835,9 @@ function canPlaceIgnoring(idx,w,h,ignoreId){
   const col=idx%gridCols,row=Math.floor(idx/gridCols);
   if(col+w>gridCols||row+h>gridRows)return false;
   for(let r=0;r<h;r++)for(let c=0;c<w;c++){
-    const v=gridSlots[(row+r)*gridCols+(col+c)];
+    const ci=(row+r)*gridCols+(col+c);
+    if(!isCellUnlocked(ci))return false;
+    const v=gridSlots[ci];
     if(v===null)continue;
     if(v===ignoreId||v==='_'+ignoreId)continue;
     return false;
@@ -6877,7 +6886,13 @@ function buildCell(i){
   const isCovered=typeof slotVal==='string'&&slotVal.startsWith('_');
   const itemId=isCovered?null:slotVal;
   const item=itemId?inventory.find(x=>x.id===itemId):null;
+  const locked=!isCellUnlocked(i);
 
+  if(locked){
+    cell.classList.add('locked');
+    cell.innerHTML='<svg class="inv-cell-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
+    return cell;
+  }
   if(isCovered){
     cell.classList.add('covered');
   } else if(item){
@@ -6945,29 +6960,33 @@ function buildCell(i){
   });
   return cell;
 }
-// Grid layout presets: [cols, rows, label]
-const GRID_PRESETS=[
-  [10,7,'Small Case · 70 (10×7)'],
-  [12,8,'Medium Case · 96 (12×8)'],
-  [13,9,'Large Case · 117 (13×9)'],
-  [14,10,'Extra Large · 140 (14×10)']
+// Case progression: grid sempre 14x10, caseLevel desbloqueia area top-left
+const CASE_LEVELS=[
+  {key:'small', label:'Small',  cols:10, rows:7,  total:70},
+  {key:'medium',label:'Medium', cols:12, rows:8,  total:96},
+  {key:'large', label:'Large',  cols:13, rows:9,  total:117},
+  {key:'xl',    label:'XL',     cols:14, rows:10, total:140}
 ];
-let gridCols=10,gridRows=7;
+let caseLevel=0;
+let gridCols=14,gridRows=10;
 
-function applyGridLayout(cols,rows){
-  gridCols=cols;gridRows=rows;
-  GRID_SIZE=cols*rows;
-  renderGrid();
-  renderCaseSelector();
+function unlockArea(){return CASE_LEVELS[caseLevel]||CASE_LEVELS[0]}
+function isCellUnlocked(idx){
+  const col=idx%gridCols,row=Math.floor(idx/gridCols);
+  const a=unlockArea();
+  return col<a.cols && row<a.rows;
 }
+function setCaseLevel(lv){
+  caseLevel=Math.max(0,Math.min(CASE_LEVELS.length-1,lv|0));
+  renderGrid();renderCaseSelector();
+}
+window.setCaseLevel=setCaseLevel;
 
 function renderCaseSelector(){
   const c=document.getElementById('re4-cases');if(!c)return;
-  const labels={70:'Small',96:'Medium',117:'Large',140:'XL'};
-  c.innerHTML=GRID_PRESETS.map(([co,ro])=>{
-    const tot=co*ro,lb=labels[tot]||tot;
-    const active=co===gridCols&&ro===gridRows;
-    return `<button class="re4-case-btn${active?' active':''}" type="button" role="tab" aria-selected="${active}" onclick="applyGridLayout(${co},${ro})">${lb} <span class="re4-case-dim">${co}×${ro}</span></button>`;
+  c.innerHTML=CASE_LEVELS.map((lv,i)=>{
+    const active=i===caseLevel;
+    return `<button class="re4-case-btn${active?' active':''}" type="button" role="tab" aria-selected="${active}" onclick="setCaseLevel(${i})">${lv.label} <span class="re4-case-dim">${lv.total}</span></button>`;
   }).join('');
 }
 
@@ -6979,7 +6998,8 @@ function renderGrid(){
   g.innerHTML='';
   for(let i=0;i<GRID_SIZE;i++)g.appendChild(buildCell(i));
   const placedCount=inventory.length-overflowItems.length;
-  document.getElementById('inv-cap-label').textContent=`${placedCount} / ${GRID_SIZE} slots`;
+  const ua=unlockArea();
+  document.getElementById('inv-cap-label').textContent=`${placedCount} / ${ua.total} · ${ua.label}`;
   renderOverflow();
 }
 function renderOverflow(){
@@ -8471,7 +8491,7 @@ function collectAllData(){
     currencyName,currencySymbol,
     profile:typeof profileData!=='undefined'?profileData:null,
     profileAvatar,qaEffectTarget,qaHealAmount,qaItemId,periciasState,profState,
-    gridCols,gridRows,
+    gridCols,gridRows,caseLevel,
     playerHPBonus,
     suitcaseColor,suitcaseModel,
     trainLog,userPericias:Array.from(userPericias),
@@ -8510,8 +8530,15 @@ function applyAllData(d){
   if(d.qaItemId!==undefined)qaItemId=d.qaItemId;
   if(d.periciasState)Object.assign(periciasState,d.periciasState);
   if(d.profState)Object.assign(profState,d.profState);
-  if(d.gridCols)gridCols=d.gridCols;
-  if(d.gridRows)gridRows=d.gridRows;
+  // caseLevel: novo campo (RE4-style). Migra saves antigos com gridCols/gridRows.
+  if(typeof d.caseLevel==='number'){
+    caseLevel=Math.max(0,Math.min(CASE_LEVELS.length-1,d.caseLevel|0));
+  } else if(d.gridCols&&d.gridRows){
+    const tot=d.gridCols*d.gridRows;
+    const i=CASE_LEVELS.findIndex(l=>l.total>=tot);
+    caseLevel=i>=0?i:0;
+  }
+  gridCols=14;gridRows=10;
   if(d.nextId)nextId=d.nextId;
   if(d.nextSkillId)nextSkillId=d.nextSkillId;
   if(d.nextMemberId)nextMemberId=d.nextMemberId;
@@ -8523,7 +8550,7 @@ function applyAllData(d){
   if(Array.isArray(d.userPericias))userPericias=new Set(d.userPericias);
   if(d.ficha&&typeof d.ficha==='object')Object.assign(fichaData,d.ficha);
   try{if(typeof renderFicha==='function')renderFicha()}catch(_){}
-  GRID_SIZE=gridCols*gridRows;
+  GRID_SIZE=140;
   return true;
 }
 
