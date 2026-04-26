@@ -1000,6 +1000,13 @@ input[type="number"]{-moz-appearance:textfield}
 .modal::-webkit-scrollbar-track{background:transparent}
 .modal::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:4px}
 .modal-overlay.open .modal{transform:translateY(0) scale(1);filter:blur(0)}
+.item-tabs{display:flex;gap:4px;padding:4px;background:var(--bg-input);border-radius:10px;margin-bottom:14px}
+.item-tab{flex:1;padding:8px 12px;font-family:inherit;font-size:11px;font-weight:600;background:transparent;border:none;border-radius:7px;color:var(--text-dim);cursor:pointer;transition:all .15s;letter-spacing:.3px}
+.item-tab:hover{color:var(--text-secondary)}
+.item-tab.active{background:var(--lime);color:#000;box-shadow:0 2px 8px rgba(200,245,66,.25)}
+.item-pane{display:none;animation:itemPaneIn .25s ease}
+.item-pane.active{display:block}
+@keyframes itemPaneIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .weapon-pick-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-secondary);cursor:pointer;font-family:inherit;font-size:13px;transition:all .15s}
 .weapon-pick-trigger:hover{border-color:var(--lime-dim);color:var(--text-primary)}
 .weapon-pick-trigger svg{stroke:currentColor;flex-shrink:0}
@@ -7441,9 +7448,10 @@ function addXP(amount,desc){
   const now=new Date();
   xpLog.unshift({val:amount,desc:desc||'XP adicionado',target:'nivel',time:now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0'),day:now.getDate().toString().padStart(2,'0')+'/'+String(now.getMonth()+1).padStart(2,'0')});
   let leveled=false;
-  while(playerXP>=xpToNext){if(playerLevel>=MAX_LEVEL){playerXP=xpToNext;break}playerXP-=xpToNext;playerLevel++;xpToNext=Math.round(xpToNext*1.2);toast(`Nível ${playerLevel} alcançado!`);leveled=true}
+  while(playerXP>=xpToNext){if(playerLevel>=MAX_LEVEL){playerXP=xpToNext;break}playerXP-=xpToNext;playerLevel++;xpToNext=Math.round(xpToNext*1.2);toast(`Nível ${playerLevel} alcançado!`);leveled=true;if(playerLevel===10){setTimeout(()=>toast('🔓 Nv 10 — +2 pontos de atributo liberados (cap 6)','success'),900)}}
   try{if(window.sfx){leveled?sfx.levelup():sfx.unlock()}}catch(_){}
   if(leveled&&typeof playLottieCelebration==='function')playLottieCelebration();
+  if(leveled&&typeof renderAttrs==='function')renderAttrs();
   renderXP();renderSummary();
 }
 function addStageXP(amount,desc){
@@ -8252,7 +8260,22 @@ function openModal(type,eid){
   } else if(type==='item'){
     title.textContent='Adicionar Item';
     const wpnBtns=Object.keys(WEAPON_TYPE_LABELS).map(t=>{const subs=WEAPON_SUB_LABELS[t]||{};const subKeys=Object.keys(subs);if(!subKeys.length)return'';const tabs=subKeys.map((s,i)=>`<button type="button" class="weapon-sub-tab${i===0?' active':''}" data-sub="${t}-${s}" onclick="window._pickWpnSubItem('${t}','${s}')">${subs[s]}</button>`).join('');const panes=subKeys.map((s,i)=>{const list=Object.entries(WEAPON_SVGS).filter(([,v])=>v.type===t&&v.sub===s);const btns=list.map(([k,v])=>`<button type="button" class="weapon-pick-btn" data-wpn="${k}" title="${v.label}" onclick="window._pickWeapon('${k}')"><img src="${v.file}" alt="${v.label}" draggable="false"><span>${v.label}</span></button>`).join('')||'<div style="font-size:11px;color:var(--text-dim);padding:8px">Vazio</div>';return`<div class="weapon-sub-pane${i===0?' active':''}" data-pane="${t}-${s}"><div class="weapon-pick-grid">${btns}</div></div>`}).join('');return`<div class="weapon-pick-group-label">${WEAPON_TYPE_LABELS[t]}</div><div class="weapon-sub-tabs" data-type="${t}">${tabs}</div>${panes}`}).join('');
-    body.innerHTML=`<div class="form-group"><label>Nome</label><input type="text" id="m-iname" placeholder="Ex: Espada Curta" required></div><div class="form-row"><div class="form-group"><label>Categoria</label><select id="m-icat" onchange="window._toggleWpnPicker()"><option value="arma">Arma</option><option value="armadura">Armadura</option><option value="consumivel">Consumivel</option><option value="material">Material</option><option value="chave">Chave</option></select></div><div class="form-group"><label>Raridade</label><select id="m-irarity"><option value="common">Comum</option><option value="uncommon">Incomum</option><option value="rare">Raro</option><option value="epic">Epico</option><option value="legendary">Lendario</option></select></div></div><div class="form-group" id="m-wpn-wrap"><label>Ícone da arma <span style="color:var(--text-dim);font-weight:400">(opcional)</span></label>${wpnBtns}<input type="hidden" id="m-iwpn" value=""></div><div class="form-row"><div class="form-group"><label>Largura (slots)</label><input type="number" id="m-igw" value="1" min="1" max="4"></div><div class="form-group"><label>Altura (slots)</label><input type="number" id="m-igh" value="1" min="1" max="4"></div></div><div class="form-row"><div class="form-group"><label>Quantidade</label><input type="number" id="m-iqty" value="1" min="1"></div><div class="form-group"><label>Peso</label><input type="number" id="m-iweight" value="1" min="0" step="0.5"></div></div><div class="form-row"><div class="form-group"><label>Valor (credito)</label><input type="number" id="m-ivalue" value="0" min="0"></div><div class="form-group"><label>Durabilidade</label><input type="number" id="m-idur" value="100" min="0" max="100"></div></div><div class="form-group"><label>Descricao</label><input type="text" id="m-idesc" placeholder="Descricao..."></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveItem()">Adicionar</button></div>`;
+    body.innerHTML=`<div class="item-tabs"><button type="button" class="item-tab active" data-tab="basic" onclick="window._switchItemTab('basic')">Básico</button><button type="button" class="item-tab" data-tab="icon" onclick="window._switchItemTab('icon')">Ícone</button><button type="button" class="item-tab" data-tab="extra" onclick="window._switchItemTab('extra')">Detalhes</button></div>
+<div class="item-pane active" data-pane="basic">
+  <div class="form-group"><label>Nome</label><input type="text" id="m-iname" placeholder="Ex: Espada Curta" required></div>
+  <div class="form-row"><div class="form-group"><label>Categoria</label><select id="m-icat" onchange="window._toggleWpnPicker()"><option value="arma">Arma</option><option value="armadura">Armadura</option><option value="consumivel">Consumivel</option><option value="material">Material</option><option value="chave">Chave</option></select></div><div class="form-group"><label>Raridade</label><select id="m-irarity"><option value="common">Comum</option><option value="uncommon">Incomum</option><option value="rare">Raro</option><option value="epic">Epico</option><option value="legendary">Lendario</option></select></div></div>
+</div>
+<div class="item-pane" data-pane="icon">
+  <div class="form-group" id="m-wpn-wrap"><label>Ícone da arma <span style="color:var(--text-dim);font-weight:400">(opcional)</span></label>${wpnBtns}<input type="hidden" id="m-iwpn" value=""></div>
+</div>
+<div class="item-pane" data-pane="extra">
+  <div class="form-row"><div class="form-group"><label>Largura</label><input type="number" id="m-igw" value="1" min="1" max="4"></div><div class="form-group"><label>Altura</label><input type="number" id="m-igh" value="1" min="1" max="4"></div></div>
+  <div class="form-row"><div class="form-group"><label>Quantidade</label><input type="number" id="m-iqty" value="1" min="1"></div><div class="form-group"><label>Peso</label><input type="number" id="m-iweight" value="1" min="0" step="0.5"></div></div>
+  <div class="form-row"><div class="form-group"><label>Valor</label><input type="number" id="m-ivalue" value="0" min="0"></div><div class="form-group"><label>Durabilidade</label><input type="number" id="m-idur" value="100" min="0" max="100"></div></div>
+  <div class="form-group"><label>Descrição</label><input type="text" id="m-idesc" placeholder="Notas..."></div>
+</div>
+<div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveItem()">Adicionar</button></div>`;
+    window._switchItemTab=function(t){document.querySelectorAll('.item-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));document.querySelectorAll('.item-pane').forEach(p=>p.classList.toggle('active',p.dataset.pane===t))};
     window._pickWeapon=function(k){
       const cur=document.getElementById('m-iwpn').value;
       const next=cur===k?'':k;
@@ -12705,7 +12728,9 @@ const ARCHETYPE_PRESETS=[
   }
 ];
 function _archetypePointCap(){
-  const lv=(typeof profileData==='object'&&profileData.level)?parseInt(profileData.level)||1:1;
+  let lv=1;
+  if(typeof playerLevel==='number'&&playerLevel>0)lv=playerLevel;
+  else if(typeof profileData==='object'&&profileData&&profileData.level)lv=parseInt(profileData.level)||1;
   return {maxPerAttr:lv>=10?6:5, totalPts:lv>=10?14:12, level:lv};
 }
 window._attrPointsClick=function(){
