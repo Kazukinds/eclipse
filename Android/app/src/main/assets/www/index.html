@@ -589,7 +589,7 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .filter-pill:hover{border-color:var(--border-light);color:var(--text-secondary);background:var(--bg-hover);transform:translateY(-1px)}
 .filter-pill.active{background:var(--lime-bg-strong);border-color:var(--lime-dim);color:var(--lime);box-shadow:0 0 8px rgba(200,245,66,.08)}
 .filter-pill:active{transform:translateY(0)}
-.inv-grid{--rows:10;display:grid;grid-template-columns:repeat(var(--cols,14),1fr);gap:3px;position:relative;contain:layout style;width:100%;margin:0}
+.inv-grid{--rows:10;display:grid;grid-template-columns:repeat(var(--cols,14),1fr);gap:4px;position:relative;contain:layout style;width:100%;margin:0;box-sizing:border-box}
 .inv-grid .inv-cell{aspect-ratio:1;width:auto;height:auto;min-width:0;min-height:0}
 .inv-grid::-webkit-scrollbar{width:8px}
 .inv-grid::-webkit-scrollbar-track{background:var(--bg-input);border-radius:4px}
@@ -636,7 +636,7 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .overflow-item{user-select:none}
 .overflow-item.drag-hint{cursor:grab}
 .detail-empty{text-align:center;color:var(--text-dim);padding:20px 0;font-size:12px}
-.item-icon-svg{width:85%;height:85%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+.item-icon-svg{width:80%;height:80%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.7))}
 .weapon-pick-group-label{font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.6px;margin:10px 0 4px}
 .weapon-pick-group-label:first-child{margin-top:6px}
 .weapon-sub-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}
@@ -645,18 +645,19 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .weapon-sub-tab.active{background:var(--lime-bg-strong);border-color:var(--lime);color:var(--lime)}
 .weapon-sub-pane{display:none}
 .weapon-sub-pane.active{display:block}
-.weapon-pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-top:6px}
-.weapon-pick-btn{aspect-ratio:1;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-xs);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;gap:4px;transition:all .15s}
-.weapon-pick-btn:hover{border-color:var(--border-light);background:var(--bg-hover)}
-.weapon-pick-btn.active{border-color:var(--lime);background:var(--lime-bg-strong);box-shadow:0 0 0 1px var(--lime)}
-.weapon-pick-btn img{width:75%;height:55%;object-fit:contain}
-.weapon-pick-btn span{font-size:10px;color:var(--text-dim);font-weight:600}
+.weapon-pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:5px;margin-top:6px;max-height:320px;overflow-y:auto;padding:2px}
+.weapon-pick-btn{aspect-ratio:1;background:var(--bg-input);border:1px solid var(--border);border-radius:6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 2px;gap:2px;transition:all .15s;position:relative}
+.weapon-pick-btn:hover{border-color:var(--lime-dim);background:var(--bg-hover);transform:translateY(-1px)}
+.weapon-pick-btn.active{border-color:var(--lime);background:var(--lime-bg-strong);box-shadow:0 0 0 1px var(--lime),0 4px 10px rgba(200,245,66,.2)}
+.weapon-pick-btn img{width:78%;height:60%;object-fit:contain;filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
+.weapon-pick-btn span{font-size:8px;color:var(--text-dim);font-weight:600;text-align:center;line-height:1;letter-spacing:.1px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
 .weapon-pick-btn.active span{color:var(--lime)}
+.weapon-pick-btn[title]:hover::after{content:attr(title);position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:#0a0a0d;border:1px solid var(--border-light);padding:4px 8px;border-radius:4px;font-size:10px;color:var(--text-primary);white-space:nowrap;z-index:10;pointer-events:none}
 .weapon-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:4px;margin-top:4px}
 .weapon-card-pick{background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-xs);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 2px;gap:2px;transition:all .15s}
 .weapon-card-pick:hover{border-color:var(--border-light);background:var(--bg-hover);transform:translateY(-2px)}
 .weapon-card-pick.active{border-color:var(--lime);background:var(--lime-bg-strong);box-shadow:0 0 0 1px var(--lime),0 6px 16px color-mix(in srgb,var(--lime) 25%,transparent)}
-.wcp-img{width:100%;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);border-radius:var(--radius-xs)}
+.wcp-img{width:100%;height:42px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);border-radius:var(--radius-xs)}
 .wcp-img img{max-width:85%;max-height:85%;object-fit:contain}
 .wcp-lbl{font-size:9px;font-weight:600;color:var(--text-dim);text-align:center;line-height:1}
 .weapon-card-pick.active .wcp-lbl{color:var(--lime)}
@@ -666,7 +667,7 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .re4-shell>.re4-bar{grid-column:1/-1}
 .re4-shell>.re4-body{grid-column:1/-1;display:contents}
 .re4-shell>.re4-body>.re4-side{grid-column:1;grid-row:2}
-.re4-shell>.re4-body>.re4-case-pane{grid-column:2;grid-row:2}
+.re4-shell>.re4-body>.re4-case-pane{grid-column:1/-1;grid-row:2}
 @media(max-width:980px){.re4-shell{grid-template-columns:1fr}.re4-shell>.re4-body>.re4-case-pane,.re4-shell>.re4-body>.re4-side{grid-column:1;grid-row:auto}}
 .re4-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);flex-wrap:wrap}
 .re4-cases{display:flex;gap:6px;flex-wrap:wrap}
@@ -681,16 +682,27 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .re4-btn-primary{background:var(--lime-bg-strong);border-color:var(--lime-dim);color:var(--lime)}
 .re4-btn-primary:hover{background:var(--lime-bg);border-color:var(--lime);color:var(--lime)}
 .re4-body{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:flex-start}
-.re4-case-pane{display:flex;justify-content:stretch;width:100%;min-width:0}
-.re4-case{background:transparent;border:none;padding:0;box-shadow:none;position:relative;width:100%}
-.re4-case-nav{display:flex;align-items:center;justify-content:center;gap:12px;width:100%}
-.re4-case-nav .re4-case-frame{flex:1 1 auto;min-width:0}
+.re4-case-pane{display:block;width:50%;min-width:0;max-width:720px}
+.re4-case{background:transparent;border:none;padding:0;box-shadow:none;position:relative;width:100%;display:block}
+.re4-case-nav{position:relative;width:100%}
+.re4-case-nav .re4-case-frame{width:100%}
+.re4-case-nav .re4-nav-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5}
+.re4-case-nav .re4-nav-arrow:first-child{left:8px}
+.re4-case-nav .re4-nav-arrow:last-child{right:8px}
+.re4-case-nav .re4-nav-arrow:hover{transform:translateY(-50%) scale(1.08)}
+.re4-case-nav .re4-nav-arrow:active{transform:translateY(-50%) scale(.94)}
 .re4-nav-arrow{flex-shrink:0;width:42px;height:42px;border-radius:50%;background:var(--bg-input);border:1px solid var(--border);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
 .re4-nav-arrow:hover{border-color:var(--lime-dim);color:var(--lime);background:var(--lime-bg-strong);transform:scale(1.08)}
 .re4-nav-arrow:active{transform:scale(.94)}
 .re4-nav-arrow:disabled{opacity:.3;cursor:not-allowed;transform:none}
 .re4-nav-arrow svg{width:18px;height:18px}
-.re4-case-frame{position:relative;background:linear-gradient(160deg,#2a2a2e 0%,#1f1f23 60%,#15151a 100%);border:1px solid #3a3a40;border-radius:14px;padding:14px;box-shadow:inset 0 2px 12px rgba(0,0,0,.6),inset 0 -2px 8px rgba(255,255,255,.02),0 4px 16px rgba(0,0,0,.4);width:100%;margin:0;display:flex;align-items:stretch;justify-content:stretch}
+.re4-case-frame{position:relative;background:linear-gradient(160deg,#2a2a2e 0%,#1f1f23 60%,#15151a 100%);border:1px solid #3a3a40;border-radius:14px;padding:0;box-shadow:inset 0 2px 12px rgba(0,0,0,.6),inset 0 -2px 8px rgba(255,255,255,.02),0 4px 16px rgba(0,0,0,.4);width:100%;margin:0 0 80px 0;display:block;overflow:hidden}
+.re4-case-topbar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:transparent;border-bottom:1px solid #2e2e34}
+.re4-top-btn{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-secondary);cursor:pointer;transition:all .15s}
+.re4-top-btn:hover{border-color:var(--lime-dim);color:var(--lime);background:var(--lime-bg)}
+.re4-top-btn:active{transform:scale(.92)}
+.re4-top-btn svg{width:16px;height:16px}
+.re4-case-frame .inv-grid{padding:14px}
 .re4-case-frame::-webkit-scrollbar{width:8px;height:8px}
 .re4-case-frame::-webkit-scrollbar-track{background:transparent}
 .re4-case-frame::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--lime) 35%,var(--border));border-radius:4px}
@@ -5469,13 +5481,31 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
           <div class="re4-case-pane">
             <div class="re4-case">
               <div class="re4-case-nav">
-                <button class="re4-nav-arrow" type="button" onclick="setCaseLevel(caseLevel-1)" title="Caso anterior" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg></button>
                 <div class="re4-case-frame">
+                  <div class="re4-case-topbar">
+                    <button class="re4-top-btn" type="button" onclick="openModal('weapon')" title="Adicionar arma" aria-label="Adicionar arma">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/></svg>
+                    </button>
+                    <button class="re4-top-btn" type="button" onclick="openModal('item')" title="Adicionar item" aria-label="Adicionar item">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    </button>
+                    <button class="re4-top-btn" type="button" title="Armadura" aria-label="Armadura">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 4 9 8 10 4-1 8-5 8-10V6z"/></svg>
+                    </button>
+                    <button class="re4-top-btn" type="button" title="Consumível" aria-label="Consumível">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6v4l3 3v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9l3-3z"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+                    </button>
+                    <button class="re4-top-btn" type="button" title="Material" aria-label="Material">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/><line x1="12" y1="22" x2="12" y2="15"/></svg>
+                    </button>
+                    <button class="re4-top-btn" type="button" title="Chave" aria-label="Chave">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><line x1="11" y1="12" x2="21" y2="2"/><line x1="17" y1="6" x2="20" y2="9"/></svg>
+                    </button>
+                  </div>
                   <div class="inv-grid" id="inv-grid"></div>
                 </div>
-                <button class="re4-nav-arrow" type="button" onclick="setCaseLevel(caseLevel+1)" title="Próximo caso" aria-label="Próximo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>
               </div>
-              <div class="re4-case-foot">
+              <div class="re4-case-foot" style="display:none">
                 <span class="re4-cap-lbl" id="inv-cap-label">0 / 0 slots</span>
               </div>
             </div>
@@ -6016,53 +6046,142 @@ const SVG={
 };
 const ICON_MAP={arma:['sword','bow','dagger','axe','staff','crossbow','lightning'],armadura:['shield','helmet','shield'],consumivel:['potion','herb','food','flask','syringe'],material:['gem','ore','gem','ore'],chave:['key','scroll','key']};
 const WEAPON_SVGS={
-  pistol1:{label:'Pistola 1',file:'icons/weapons/pistol-1.svg',type:'fogo',sub:'pistola'},
-  morgenstern:{label:'Morgenstern',file:'icons/weapons/melee/morgenstern.svg',type:'branca',sub:'contundente'},
+  pistolaColtRevolver:{label:'Colt Revolver',file:'icons/weapons/firearms/pistol/colt-revolver.svg',type:'fogo',sub:'pistola'},
+  pistolaKnife:{label:'Knife',file:'icons/weapons/firearms/pistol/knife.svg',type:'fogo',sub:'pistola'},
+  pistolaM422Pistol:{label:'M4 22 Pistol',file:'icons/weapons/firearms/pistol/m4-22-pistol.svg',type:'fogo',sub:'pistola'},
+  pistolaPistol01:{label:'Pistol 01',file:'icons/weapons/firearms/pistol/pistol-01.svg',type:'fogo',sub:'pistola'},
+  pistolaPistol02:{label:'Pistol 02',file:'icons/weapons/firearms/pistol/pistol-02.svg',type:'fogo',sub:'pistola'},
+  pistolaPistol03:{label:'Pistol 03',file:'icons/weapons/firearms/pistol/pistol-03.svg',type:'fogo',sub:'pistola'},
+  pistolaPistol04:{label:'Pistol 04',file:'icons/weapons/firearms/pistol/pistol-04.svg',type:'fogo',sub:'pistola'},
+  pistolaPistol05:{label:'Pistol 05',file:'icons/weapons/firearms/pistol/pistol-05.svg',type:'fogo',sub:'pistola'},
+  pistolaPistol06:{label:'Pistol 06',file:'icons/weapons/firearms/pistol/pistol-06.svg',type:'fogo',sub:'pistola'},
+  pistolaPistol07:{label:'Pistol 07',file:'icons/weapons/firearms/pistol/pistol-07.svg',type:'fogo',sub:'pistola'},
+  pistolaPistol08:{label:'Pistol 08',file:'icons/weapons/firearms/pistol/pistol-08.svg',type:'fogo',sub:'pistola'},
+  pistolaRevolver:{label:'Revolver',file:'icons/weapons/firearms/pistol/revolver.svg',type:'fogo',sub:'pistola'},
+  heavyBenalliM4:{label:'Benalli M4',file:'icons/weapons/firearms/heavy/benalli-m4.svg',type:'fogo',sub:'heavy'},
+  heavyM240:{label:'M240',file:'icons/weapons/firearms/heavy/m240.svg',type:'fogo',sub:'heavy'},
+  heavyMachingun:{label:'Machingun',file:'icons/weapons/firearms/heavy/machingun.svg',type:'fogo',sub:'heavy'},
+  heavyRpg:{label:'RPG',file:'icons/weapons/firearms/heavy/rpg.svg',type:'fogo',sub:'heavy'},
+  heavyShotgun01:{label:'Shotgun 01',file:'icons/weapons/firearms/heavy/shotgun-01.svg',type:'fogo',sub:'heavy'},
+  heavyShotgun02:{label:'Shotgun 02',file:'icons/weapons/firearms/heavy/shotgun-02.svg',type:'fogo',sub:'heavy'},
+  heavyShotgun03:{label:'Shotgun 03',file:'icons/weapons/firearms/heavy/shotgun-03.svg',type:'fogo',sub:'heavy'},
+  sniperHunter:{label:'Hunter',file:'icons/weapons/firearms/sniper/hunter.svg',type:'fogo',sub:'sniper'},
+  sniperM82a1Sasr:{label:'M82a1 Sasr',file:'icons/weapons/firearms/sniper/m82a1-sasr.svg',type:'fogo',sub:'sniper'},
+  sniperMcv55:{label:'MCV 55',file:'icons/weapons/firearms/sniper/mcv-55.svg',type:'fogo',sub:'sniper'},
+  sniperS49:{label:'S 49',file:'icons/weapons/firearms/sniper/s-49.svg',type:'fogo',sub:'sniper'},
+  sniperSvd:{label:'SVD',file:'icons/weapons/firearms/sniper/svd.svg',type:'fogo',sub:'sniper'},
+  granadaM67:{label:'M 67',file:'icons/weapons/firearms/granada/m-67.svg',type:'fogo',sub:'granada'},
+  granadaM84Stun:{label:'M 84 Stun',file:'icons/weapons/firearms/granada/m-84-stun.svg',type:'fogo',sub:'granada'},
+  granadaMk2:{label:'MK 2',file:'icons/weapons/firearms/granada/mk-2.svg',type:'fogo',sub:'granada'},
+  granadaMk3HighExplosive:{label:'MK 3 High Explosive',file:'icons/weapons/firearms/granada/mk-3-high-explosive.svg',type:'fogo',sub:'granada'},
+  granadaPineapple:{label:'Pineapple',file:'icons/weapons/firearms/granada/pineapple.svg',type:'fogo',sub:'granada'},
+  granadaTnt:{label:'TNT',file:'icons/weapons/firearms/granada/tnt.svg',type:'fogo',sub:'granada'},
+  ammo308Caliber:{label:'308 Caliber',file:'icons/weapons/firearms/ammo/308-caliber.svg',filePlus:'icons/weapons/firearms/ammo-plus/308-caliber.svg',type:'fogo',sub:'municao'},
+  ammo32Auto:{label:'32 Auto',file:'icons/weapons/firearms/ammo/32-auto.svg',filePlus:'icons/weapons/firearms/ammo-plus/32-auto.svg',type:'fogo',sub:'municao'},
+  ammo376caliber:{label:'376caliber',file:'icons/weapons/firearms/ammo/376caliber.svg',filePlus:'icons/weapons/firearms/ammo-plus/376caliber.svg',type:'fogo',sub:'municao'},
+  ammo38x55:{label:'38x55',file:'icons/weapons/firearms/ammo/38x55.svg',filePlus:'icons/weapons/firearms/ammo-plus/38x55.svg',type:'fogo',sub:'municao'},
+  ammo404Jeffery:{label:'404 Jeffery',file:'icons/weapons/firearms/ammo/404-jeffery.svg',filePlus:'icons/weapons/firearms/ammo-plus/404-jeffery.svg',type:'fogo',sub:'municao'},
+  ammo44RemMag:{label:'44 REM MAG',file:'icons/weapons/firearms/ammo/44-rem-mag.svg',filePlus:'icons/weapons/firearms/ammo-plus/44-rem-mag.svg',type:'fogo',sub:'municao'},
+  ammo450Bushmaster:{label:'450 Bushmaster',file:'icons/weapons/firearms/ammo/450-bushmaster.svg',filePlus:'icons/weapons/firearms/ammo-plus/450-bushmaster.svg',type:'fogo',sub:'municao'},
+  ammo45gap:{label:'45gap',file:'icons/weapons/firearms/ammo/45gap.svg',filePlus:'icons/weapons/firearms/ammo-plus/45gap.svg',type:'fogo',sub:'municao'},
+  ammo4buck:{label:'4buck',file:'icons/weapons/firearms/ammo/4buck.svg',type:'fogo',sub:'municao'},
+  ammo50bmg:{label:'50bmg',file:'icons/weapons/firearms/ammo/50bmg.svg',filePlus:'icons/weapons/firearms/ammo-plus/50bmg-1.svg',type:'fogo',sub:'municao'},
+  ammo762x32:{label:'7.62x32',file:'icons/weapons/firearms/ammo/7.62x32.svg',filePlus:'icons/weapons/firearms/ammo-plus/7.62x32.svg',type:'fogo',sub:'municao'},
+  ammo762x54r:{label:'7.62x54r',file:'icons/weapons/firearms/ammo/7.62x54r.svg',filePlus:'icons/weapons/firearms/ammo-plus/7.62x54r.svg',type:'fogo',sub:'municao'},
+  ammo8MmKurt:{label:'8 MM Kurt',file:'icons/weapons/firearms/ammo/8-mm-kurt.svg',filePlus:'icons/weapons/firearms/ammo-plus/8-mm-kurt.svg',type:'fogo',sub:'municao'},
+  ammoBbShot:{label:'BB Shot',file:'icons/weapons/firearms/ammo/bb-shot.svg',filePlus:'icons/weapons/firearms/ammo-plus/bb-shot.svg',type:'fogo',sub:'municao'},
+  ammoBirdShot:{label:'Bird Shot',file:'icons/weapons/firearms/ammo/bird-shot.svg',filePlus:'icons/weapons/firearms/ammo-plus/bird-shot.svg',type:'fogo',sub:'municao'},
+  ammoM962:{label:'M962',file:'icons/weapons/firearms/ammo/m962.svg',filePlus:'icons/weapons/firearms/ammo-plus/m962.svg',type:'fogo',sub:'municao'},
+  ammoRpgRocket:{label:'RPG Rocket',file:'icons/weapons/firearms/ammo/rpg-rocket.svg',filePlus:'icons/weapons/firearms/ammo-plus/rpg-rocket.svg',type:'fogo',sub:'municao'},
+  ammoSlug:{label:'Slug',file:'icons/weapons/firearms/ammo/slug.svg',type:'fogo',sub:'municao'},
+  amazonensabel:{label:'Amazonensabel',file:'icons/weapons/melee/amazonensabel.svg',type:'branca',sub:'lamina'},
+  barong:{label:'Barong',file:'icons/weapons/melee/barong.svg',type:'branca',sub:'lamina'},
+  basiliskanzunge:{label:'Basiliskanzunge',file:'icons/weapons/melee/basiliskanzunge.svg',type:'branca',sub:'lamina'},
+  bastardschwertType01:{label:'Bastardschwert Type 01',file:'icons/weapons/melee/bastardschwert-type-01.svg',type:'branca',sub:'lamina'},
+  bastardschwertType02:{label:'Bastardschwert Type 02',file:'icons/weapons/melee/bastardschwert-type-02.svg',type:'branca',sub:'lamina'},
+  bastardschwertType03:{label:'Bastardschwert Type 03',file:'icons/weapons/melee/bastardschwert-type-03.svg',type:'branca',sub:'lamina'},
+  billhook:{label:'Billhook',file:'icons/weapons/melee/billhook.svg',type:'branca',sub:'lamina'},
+  bolo:{label:'Bolo',file:'icons/weapons/melee/bolo.svg',type:'branca',sub:'lamina'},
+  boronssichel:{label:'Boronssichel',file:'icons/weapons/melee/boronssichel.svg',type:'branca',sub:'lamina'},
+  bowie:{label:'Bowie',file:'icons/weapons/melee/bowie.svg',type:'branca',sub:'lamina'},
+  dolch:{label:'Dolch',file:'icons/weapons/melee/dolch.svg',type:'branca',sub:'lamina'},
   doppelkunchomer:{label:'Doppelkunchomer',file:'icons/weapons/melee/doppelkunchomer.svg',type:'branca',sub:'lamina'},
+  entermesser:{label:'Entermesser',file:'icons/weapons/melee/entermesser.svg',type:'branca',sub:'lamina'},
+  florettType01:{label:'Florett Type 01',file:'icons/weapons/melee/florett-type-01.svg',type:'branca',sub:'lamina'},
+  florettType02:{label:'Florett Type 02',file:'icons/weapons/melee/florett-type-02.svg',type:'branca',sub:'lamina'},
+  golok:{label:'Golok',file:'icons/weapons/melee/golok.svg',type:'branca',sub:'lamina'},
+  groberSklaventod:{label:'Grober Sklaventod',file:'icons/weapons/melee/grober-sklaventod.svg',type:'branca',sub:'lamina'},
+  hakendolch:{label:'Hakendolch',file:'icons/weapons/melee/hakendolch.svg',type:'branca',sub:'lamina'},
+  katanaType01:{label:'Katana Type 01',file:'icons/weapons/melee/katana-type-01.svg',type:'branca',sub:'lamina'},
+  katanaType02:{label:'Katana Type 02',file:'icons/weapons/melee/katana-type-02.svg',type:'branca',sub:'lamina'},
+  khunchomer:{label:'Khunchomer',file:'icons/weapons/melee/khunchomer.svg',type:'branca',sub:'lamina'},
+  kukri:{label:'Kukri',file:'icons/weapons/melee/kukri.svg',type:'branca',sub:'lamina'},
+  latin:{label:'Latin',file:'icons/weapons/melee/latin.svg',type:'branca',sub:'lamina'},
+  nachtwind:{label:'Nachtwind',file:'icons/weapons/melee/nachtwind.svg',type:'branca',sub:'lamina'},
+  panga:{label:'Panga',file:'icons/weapons/melee/panga.svg',type:'branca',sub:'lamina'},
+  parang:{label:'Parang',file:'icons/weapons/melee/parang.svg',type:'branca',sub:'lamina'},
+  richtschwert:{label:'Richtschwert',file:'icons/weapons/melee/richtschwert.svg',type:'branca',sub:'lamina'},
+  sabel:{label:'Sabel',file:'icons/weapons/melee/sabel.svg',type:'branca',sub:'lamina'},
+  schwererDolch:{label:'Schwerer Dolch',file:'icons/weapons/melee/schwerer-dolch.svg',type:'branca',sub:'lamina'},
+  sichel:{label:'Sichel',file:'icons/weapons/melee/sichel.svg',type:'branca',sub:'lamina'},
+  sword:{label:'Sword',file:'icons/weapons/melee/sword.svg',type:'branca',sub:'lamina'},
+  tapanga:{label:'Tapanga',file:'icons/weapons/melee/tapanga.svg',type:'branca',sub:'lamina'},
+  wolfsmesser:{label:'Wolfsmesser',file:'icons/weapons/melee/wolfsmesser.svg',type:'branca',sub:'lamina'},
+  zweihander:{label:'Zweihander',file:'icons/weapons/melee/zweihander.svg',type:'branca',sub:'lamina'},
+  zweililien:{label:'Zweililien',file:'icons/weapons/melee/zweililien.svg',type:'branca',sub:'lamina'},
+  barbarenAxe:{label:'Barbaren Axe',file:'icons/weapons/melee/barbaren-axe.svg',type:'branca',sub:'contundente'},
+  baseballBat:{label:'Baseball Bat',file:'icons/weapons/melee/baseball-bat.svg',type:'branca',sub:'contundente'},
+  bat:{label:'Bat',file:'icons/weapons/melee/bat.svg',type:'branca',sub:'contundente'},
+  baton:{label:'Baton',file:'icons/weapons/melee/baton.svg',type:'branca',sub:'contundente'},
+  brassKnuckles:{label:'Brass Knuckles',file:'icons/weapons/melee/brass-knuckles.svg',type:'branca',sub:'contundente'},
+  cane:{label:'Cane',file:'icons/weapons/melee/cane.svg',type:'branca',sub:'contundente'},
+  clubWeaponType01:{label:'Club Weapon Type 01',file:'icons/weapons/melee/club-weapon-type-01.svg',type:'branca',sub:'contundente'},
+  clubWeaponType02:{label:'Club Weapon Type 02',file:'icons/weapons/melee/club-weapon-type-02.svg',type:'branca',sub:'contundente'},
+  clubWeaponType03:{label:'Club Weapon Type 03',file:'icons/weapons/melee/club-weapon-type-03.svg',type:'branca',sub:'contundente'},
+  flailWeapon:{label:'Flail Weapon',file:'icons/weapons/melee/flail-weapon.svg',type:'branca',sub:'contundente'},
+  heavy:{label:'Heavy',file:'icons/weapons/melee/heavy.svg',type:'branca',sub:'contundente'},
+  keule:{label:'Keule',file:'icons/weapons/melee/keule.svg',type:'branca',sub:'contundente'},
   kriegsbeil:{label:'Kriegsbeil',file:'icons/weapons/melee/kriegsbeil.svg',type:'branca',sub:'contundente'},
-  melee1:{label:'Branca 1',file:'icons/weapons/melee/melee-1.svg',type:'branca',sub:'lanca'},
-  melee2:{label:'Branca 2',file:'icons/weapons/melee/melee-2.svg',type:'branca',sub:'lanca'},
-  melee3:{label:'Branca 3',file:'icons/weapons/melee/melee-3.svg',type:'branca',sub:'lamina'},
-  melee4:{label:'Branca 4',file:'icons/weapons/melee/melee-4.svg',type:'branca',sub:'lanca'},
-  melee5:{label:'Branca 5',file:'icons/weapons/melee/melee-5.svg',type:'branca',sub:'lamina'},
-  melee6:{label:'Branca 6',file:'icons/weapons/melee/melee-6.svg',type:'branca',sub:'lamina'},
-  melee7:{label:'Branca 7',file:'icons/weapons/melee/melee-7.svg',type:'branca',sub:'lamina'},
-  melee8:{label:'Branca 8',file:'icons/weapons/melee/melee-8.svg',type:'branca',sub:'lamina'},
-  melee9:{label:'Branca 9',file:'icons/weapons/melee/melee-9.svg',type:'branca',sub:'lamina'},
-  melee10:{label:'Branca 10',file:'icons/weapons/melee/melee-10.svg',type:'branca',sub:'lamina'},
-  melee11:{label:'Branca 11',file:'icons/weapons/melee/melee-11.svg',type:'branca',sub:'lamina'},
-  melee12:{label:'Branca 12',file:'icons/weapons/melee/melee-12.svg',type:'branca',sub:'lamina'},
-  melee13:{label:'Branca 13',file:'icons/weapons/melee/melee-13.svg',type:'branca',sub:'lamina'},
-  melee14:{label:'Branca 14',file:'icons/weapons/melee/melee-14.svg',type:'branca',sub:'lamina'},
-  melee15:{label:'Branca 15',file:'icons/weapons/melee/melee-15.svg',type:'branca',sub:'lamina'},
-  melee16:{label:'Branca 16',file:'icons/weapons/melee/melee-16.svg',type:'branca',sub:'lamina'},
-  melee17:{label:'Branca 17',file:'icons/weapons/melee/melee-17.svg',type:'branca',sub:'lamina'},
-  melee18:{label:'Branca 18',file:'icons/weapons/melee/melee-18.svg',type:'branca',sub:'contundente'},
-  melee19:{label:'Branca 19',file:'icons/weapons/melee/melee-19.svg',type:'branca',sub:'contundente'},
-  melee20:{label:'Branca 20',file:'icons/weapons/melee/melee-20.svg',type:'branca',sub:'contundente'},
-  melee21:{label:'Branca 21',file:'icons/weapons/melee/melee-21.svg',type:'branca',sub:'contundente'},
-  melee22:{label:'Branca 22',file:'icons/weapons/melee/melee-22.svg',type:'branca',sub:'contundente'},
-  melee23:{label:'Branca 23',file:'icons/weapons/melee/melee-23.svg',type:'branca',sub:'contundente'},
-  melee24:{label:'Branca 24',file:'icons/weapons/melee/melee-24.svg',type:'branca',sub:'contundente'},
-  melee25:{label:'Branca 25',file:'icons/weapons/melee/melee-25.svg',type:'branca',sub:'contundente'},
-  melee26:{label:'Branca 26',file:'icons/weapons/melee/melee-26.svg',type:'branca',sub:'contundente'},
-  melee27:{label:'Branca 27',file:'icons/weapons/melee/melee-27.svg',type:'branca',sub:'contundente'},
-  melee28:{label:'Branca 28',file:'icons/weapons/melee/melee-28.svg',type:'branca',sub:'contundente'},
-  melee29:{label:'Branca 29',file:'icons/weapons/melee/melee-29.svg',type:'branca',sub:'lamina'},
-  melee30:{label:'Branca 30',file:'icons/weapons/melee/melee-30.svg',type:'branca',sub:'lamina'},
-  melee31:{label:'Branca 31',file:'icons/weapons/melee/melee-31.svg',type:'branca',sub:'lamina'},
-  melee32:{label:'Branca 32',file:'icons/weapons/melee/melee-32.svg',type:'branca',sub:'lamina'},
-  melee33:{label:'Branca 33',file:'icons/weapons/melee/melee-33.svg',type:'branca',sub:'lamina'},
-  melee34:{label:'Branca 34',file:'icons/weapons/melee/melee-34.svg',type:'branca',sub:'lamina'},
-  melee35:{label:'Branca 35',file:'icons/weapons/melee/melee-35.svg',type:'branca',sub:'lamina'},
-  melee36:{label:'Branca 36',file:'icons/weapons/melee/melee-36.svg',type:'branca',sub:'lamina'},
-  melee37:{label:'Branca 37',file:'icons/weapons/melee/melee-37.svg',type:'branca',sub:'lamina'},
-  melee38:{label:'Branca 38',file:'icons/weapons/melee/melee-38.svg',type:'branca',sub:'lamina'},
-  melee39:{label:'Branca 39',file:'icons/weapons/melee/melee-39.svg',type:'branca',sub:'lamina'},
-  melee40:{label:'Branca 40',file:'icons/weapons/melee/melee-40.svg',type:'branca',sub:'lamina'}
+  mace:{label:'Mace',file:'icons/weapons/melee/mace.svg',type:'branca',sub:'contundente'},
+  morgenstern:{label:'Morgenstern',file:'icons/weapons/melee/morgenstern.svg',type:'branca',sub:'contundente'},
+  nagaika:{label:'Nagaika',file:'icons/weapons/melee/nagaika.svg',type:'branca',sub:'contundente'},
+  nunchaku:{label:'Nunchaku',file:'icons/weapons/melee/nunchaku.svg',type:'branca',sub:'contundente'},
+  warHammerType01:{label:'War Hammer Type 01',file:'icons/weapons/melee/war-hammer-type-01.svg',type:'branca',sub:'contundente'},
+  warHammerType02:{label:'War Hammer Type 02',file:'icons/weapons/melee/war-hammer-type-02.svg',type:'branca',sub:'contundente'},
+  warHammerType03:{label:'War Hammer Type 03',file:'icons/weapons/melee/war-hammer-type-03.svg',type:'branca',sub:'contundente'},
+  elfenbogen:{label:'Elfenbogen',file:'icons/weapons/melee/elfenbogen.svg',type:'branca',sub:'lanca'},
+  hellebarde:{label:'Hellebarde',file:'icons/weapons/melee/hellebarde.svg',type:'branca',sub:'lanca'},
+  kompositbogen:{label:'Kompositbogen',file:'icons/weapons/melee/kompositbogen.svg',type:'branca',sub:'lanca'},
+  langbogen:{label:'Langbogen',file:'icons/weapons/melee/langbogen.svg',type:'branca',sub:'lanca'},
+  speer:{label:'Speer',file:'icons/weapons/melee/speer.svg',type:'branca',sub:'lanca'}
 };
 const WEAPON_TYPE_LABELS={fogo:'Armas de Fogo',branca:'Armas Brancas'};
-const WEAPON_SUB_LABELS={fogo:{pistola:'Pistola'},branca:{lamina:'Lâmina',contundente:'Contundente',lanca:'Lança'}};
+const WEAPON_SUB_LABELS={fogo:{pistola:'Pistola',heavy:'Heavy',sniper:'Sniper',granada:'Granada',municao:'Munição'},branca:{lamina:'Lâmina',contundente:'Contundente',lanca:'Lança'}};
+const WEAPON_SIZE_PRESETS={
+  mini:{w:1,h:1,label:'Mini (1)'},
+  leve:{w:2,h:2,label:'Arma leve (4)'},
+  media:{w:2,h:3,label:'Arma média (6)'},
+  pesada:{w:2,h:4,label:'Arma pesada (8)'},
+  pesadaPlus:{w:2,h:5,label:'Arma pesada+ (10)'},
+  longa:{w:2,h:7,label:'Arma longa (14)'},
+  extraLonga:{w:2,h:8,label:'Arma extra longa (16)'}
+};
+const WEAPON_SUB_SIZE={
+  pistola:'leve',
+  heavy:'pesada',
+  sniper:'longa',
+  granada:'mini',
+  municao:'mini',
+  lamina:'media',
+  contundente:'media',
+  lanca:'pesada'
+};
+function getWeaponSize(k){
+  const w=WEAPON_SVGS[k];if(!w)return{w:2,h:2};
+  if(w.gw&&w.gh)return{w:w.gw,h:w.gh};
+  const preset=WEAPON_SIZE_PRESETS[WEAPON_SUB_SIZE[w.sub]||'leve'];
+  return{w:preset.w,h:preset.h};
+}
 const RARITY_LABELS={common:'Comum',uncommon:'Incomum',rare:'Raro',epic:'Epico',legendary:'Lendario'};
 const CATEGORY_LABELS={arma:'Arma',armadura:'Armadura',consumivel:'Consumivel',material:'Material',chave:'Chave'};
 const TYPE_LABELS={combat:'Combate',explore:'Exploracao',quest:'Quest',level:'Nivel',loot:'Loot',social:'Social'};
@@ -6946,8 +7065,9 @@ function buildCell(i){
     const gearBtn=`<button class="item-gear-float" onclick="event.stopPropagation();openItemCtxMenu(event,${item.id})"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12h1M4 12h1M12 4v1M12 19v1M17.7 6.3l-.7.7M7 17l-.7.7M17 17l.7.7M7 7l-.7-.7"/></svg></button>`;
 
     const wpnEntry=item.iconWpn&&WEAPON_SVGS[item.iconWpn];
+    const wpnSrc=wpnEntry?((item.qty>1&&wpnEntry.filePlus)?wpnEntry.filePlus:wpnEntry.file):'';
     const iconHTML=wpnEntry
-      ?`<img class="item-icon-svg" src="${wpnEntry.file}" alt="${wpnEntry.label}" draggable="false">`
+      ?`<img class="item-icon-svg" src="${wpnSrc}" alt="${wpnEntry.label}" draggable="false">`
       :`<span class="item-icon" style="color:var(--rarity-${item.rarity})">${gi(item.iconKey)}</span>`;
     if(isMulti){
       cell.classList.add('multi-origin');
@@ -7009,10 +7129,7 @@ function buildCell(i){
 }
 // Case progression: grid sempre 14x10, caseLevel desbloqueia area top-left
 const CASE_LEVELS=[
-  {key:'small', label:'Small',  cols:10, rows:7,  total:70},
-  {key:'medium',label:'Medium', cols:12, rows:8,  total:96},
-  {key:'large', label:'Large',  cols:13, rows:9,  total:117},
-  {key:'xl',    label:'XL',     cols:14, rows:10, total:140}
+  {key:'default', label:'Maleta', cols:10, rows:8, total:80}
 ];
 let caseLevel=0;
 let gridCols=14,gridRows=10;
@@ -7440,7 +7557,7 @@ function renderAttrs(){
   const flowerItems=ordered.map(a=>({name:a.name,val:a.val||0,max:cap.maxPerAttr||5,color:COLORS[a.name]||a.color}));
   const flowerHtml=renderAttrFlower(flowerItems);
   const html=`<div class="attr-stat-head">
-      <div class="attr-stat-head-l" onclick="openModal('attribute')" title="Editar atributos"><span class="attr-stat-used">${used}</span><span class="attr-stat-sep">/</span><span class="attr-stat-total">${unlocked?'∞':cap.totalPts}</span><span class="attr-stat-label">pontos</span></div>
+      <div class="attr-stat-head-l" onclick="_attrPointsClick()" title="${curArch?(cap.level>=10?'Distribuir +2 pontos (Nv 10)':'Atributos fixos — '+curArch):'Escolher arquétipo'}"><span class="attr-stat-used">${used}</span><span class="attr-stat-sep">/</span><span class="attr-stat-total">${unlocked?'∞':cap.totalPts}</span><span class="attr-stat-label">pontos</span></div>
       <div class="attr-stat-head-r"><span class="attr-stat-max">${maxLabel}</span></div>
     </div>
     ${flowerHtml}`;
@@ -7451,6 +7568,12 @@ function renderAttrs(){
 
 // Menu popup da engrenagem (ATRIBUTOS) — 4 cards arquétipo com hover preview
 window.openAttrGearMenu=function(anchor){
+  const _curArch=(typeof profileData!=='undefined'&&profileData&&profileData.arquetipoAttr)?profileData.arquetipoAttr:null;
+  const _cap=(typeof _archetypePointCap==='function')?_archetypePointCap():{level:1};
+  if(_curArch && _cap.level<10 && !_attrUnlocked){
+    if(typeof toast==='function')toast('🔒 Arquétipo fixo — '+_curArch+'. Suba pra Nv 10 pra distribuir +2.','info');
+    return;
+  }
   document.querySelectorAll('.attr-gear-menu').forEach(p=>p.remove());
   const cap=(typeof _archetypePointCap==='function')?_archetypePointCap():{maxPerAttr:5,totalPts:12,level:1};
   const presets=(typeof ARCHETYPE_PRESETS!=='undefined')?ARCHETYPE_PRESETS:[];
@@ -8128,13 +8251,21 @@ function openModal(type,eid){
     initCustomSelects(body);
   } else if(type==='item'){
     title.textContent='Adicionar Item';
-    const wpnBtns=Object.keys(WEAPON_TYPE_LABELS).map(t=>{const subs=WEAPON_SUB_LABELS[t]||{};const subKeys=Object.keys(subs);if(!subKeys.length)return'';const tabs=subKeys.map((s,i)=>`<button type="button" class="weapon-sub-tab${i===0?' active':''}" data-sub="${t}-${s}" onclick="window._pickWpnSubItem('${t}','${s}')">${subs[s]}</button>`).join('');const panes=subKeys.map((s,i)=>{const list=Object.entries(WEAPON_SVGS).filter(([,v])=>v.type===t&&v.sub===s);const btns=list.map(([k,v])=>`<button type="button" class="weapon-pick-btn" data-wpn="${k}" onclick="window._pickWeapon('${k}')"><img src="${v.file}" alt="${v.label}" draggable="false"><span>${v.label}</span></button>`).join('')||'<div style="font-size:11px;color:var(--text-dim);padding:8px">Vazio</div>';return`<div class="weapon-sub-pane${i===0?' active':''}" data-pane="${t}-${s}"><div class="weapon-pick-grid">${btns}</div></div>`}).join('');return`<div class="weapon-pick-group-label">${WEAPON_TYPE_LABELS[t]}</div><div class="weapon-sub-tabs" data-type="${t}">${tabs}</div>${panes}`}).join('');
+    const wpnBtns=Object.keys(WEAPON_TYPE_LABELS).map(t=>{const subs=WEAPON_SUB_LABELS[t]||{};const subKeys=Object.keys(subs);if(!subKeys.length)return'';const tabs=subKeys.map((s,i)=>`<button type="button" class="weapon-sub-tab${i===0?' active':''}" data-sub="${t}-${s}" onclick="window._pickWpnSubItem('${t}','${s}')">${subs[s]}</button>`).join('');const panes=subKeys.map((s,i)=>{const list=Object.entries(WEAPON_SVGS).filter(([,v])=>v.type===t&&v.sub===s);const btns=list.map(([k,v])=>`<button type="button" class="weapon-pick-btn" data-wpn="${k}" title="${v.label}" onclick="window._pickWeapon('${k}')"><img src="${v.file}" alt="${v.label}" draggable="false"><span>${v.label}</span></button>`).join('')||'<div style="font-size:11px;color:var(--text-dim);padding:8px">Vazio</div>';return`<div class="weapon-sub-pane${i===0?' active':''}" data-pane="${t}-${s}"><div class="weapon-pick-grid">${btns}</div></div>`}).join('');return`<div class="weapon-pick-group-label">${WEAPON_TYPE_LABELS[t]}</div><div class="weapon-sub-tabs" data-type="${t}">${tabs}</div>${panes}`}).join('');
     body.innerHTML=`<div class="form-group"><label>Nome</label><input type="text" id="m-iname" placeholder="Ex: Espada Curta" required></div><div class="form-row"><div class="form-group"><label>Categoria</label><select id="m-icat" onchange="window._toggleWpnPicker()"><option value="arma">Arma</option><option value="armadura">Armadura</option><option value="consumivel">Consumivel</option><option value="material">Material</option><option value="chave">Chave</option></select></div><div class="form-group"><label>Raridade</label><select id="m-irarity"><option value="common">Comum</option><option value="uncommon">Incomum</option><option value="rare">Raro</option><option value="epic">Epico</option><option value="legendary">Lendario</option></select></div></div><div class="form-group" id="m-wpn-wrap"><label>Ícone da arma <span style="color:var(--text-dim);font-weight:400">(opcional)</span></label>${wpnBtns}<input type="hidden" id="m-iwpn" value=""></div><div class="form-row"><div class="form-group"><label>Largura (slots)</label><input type="number" id="m-igw" value="1" min="1" max="4"></div><div class="form-group"><label>Altura (slots)</label><input type="number" id="m-igh" value="1" min="1" max="4"></div></div><div class="form-row"><div class="form-group"><label>Quantidade</label><input type="number" id="m-iqty" value="1" min="1"></div><div class="form-group"><label>Peso</label><input type="number" id="m-iweight" value="1" min="0" step="0.5"></div></div><div class="form-row"><div class="form-group"><label>Valor (credito)</label><input type="number" id="m-ivalue" value="0" min="0"></div><div class="form-group"><label>Durabilidade</label><input type="number" id="m-idur" value="100" min="0" max="100"></div></div><div class="form-group"><label>Descricao</label><input type="text" id="m-idesc" placeholder="Descricao..."></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveItem()">Adicionar</button></div>`;
     window._pickWeapon=function(k){
       const cur=document.getElementById('m-iwpn').value;
       const next=cur===k?'':k;
       document.getElementById('m-iwpn').value=next;
       document.querySelectorAll('.weapon-pick-btn').forEach(b=>b.classList.toggle('active',b.dataset.wpn===next));
+      if(next){
+        const w=WEAPON_SVGS[next];
+        const sz=getWeaponSize(next);
+        const gw=document.getElementById('m-igw'),gh=document.getElementById('m-igh');
+        if(gw)gw.value=sz.w;if(gh)gh.value=sz.h;
+        const nm=document.getElementById('m-iname');
+        if(nm&&w)nm.value=w.label;
+      }
     };
     window._pickWpnSubItem=function(t,s){
       document.querySelectorAll(`.weapon-sub-tabs[data-type="${t}"] .weapon-sub-tab`).forEach(b=>b.classList.toggle('active',b.dataset.sub===`${t}-${s}`));
@@ -8212,7 +8343,8 @@ window._pickWpnCard=function(k){
     const prev=document.getElementById('m-wpick-preview');
     if(prev&&w)prev.innerHTML=`<img src="${w.file}" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:8px"> ${w.label}`;
     const n=document.getElementById('m-wname');
-    if(n&&!n.value.trim()&&w)n.value=w.label;
+    if(n&&w)n.value=w.label;
+    if(w){const sz=getWeaponSize(k);const gw=document.getElementById('m-wgw'),gh=document.getElementById('m-wgh');if(gw)gw.value=sz.w;if(gh)gh.value=sz.h}
   }
   // also support item modal
   const ihid=document.getElementById('m-iwpn');
@@ -12576,6 +12708,14 @@ function _archetypePointCap(){
   const lv=(typeof profileData==='object'&&profileData.level)?parseInt(profileData.level)||1:1;
   return {maxPerAttr:lv>=10?6:5, totalPts:lv>=10?14:12, level:lv};
 }
+window._attrPointsClick=function(){
+  const curArch=(typeof profileData!=='undefined'&&profileData&&profileData.arquetipoAttr)?profileData.arquetipoAttr:null;
+  const cap=_archetypePointCap();
+  if(_attrUnlocked){openModal('attribute');return}
+  if(!curArch){if(typeof openAttrGearMenu==='function')openAttrGearMenu();else openModal('attribute');return}
+  if(cap.level>=10){openModal('attribute');return}
+  if(typeof toast==='function')toast('🔒 Atributos fixos — '+curArch+'. Suba pra Nv 10 pra distribuir +2.','info');
+};
 function _applyArchetypeAttrs(attrs){
   if(typeof attributes==='undefined')return false;
   attributes.forEach(a=>{
