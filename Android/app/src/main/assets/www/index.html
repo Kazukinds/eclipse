@@ -864,15 +864,11 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .profile-system-name{font-size:13px;font-weight:700;color:var(--text-primary)}
 .profile-system-sub{font-size:11px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .profile-system-arrow{width:14px;height:14px;stroke:var(--text-dim);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;transition:transform .2s ease,color .2s ease}
-.config-header{margin-bottom:20px;padding:18px 22px;background:linear-gradient(160deg,var(--bg-card) 0%,var(--bg-card-inner) 100%);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
-.config-header h2{font-size:22px;font-weight:700;margin:0 0 4px;letter-spacing:-.2px;display:flex;align-items:center;gap:10px}
-.config-header h2::before{content:'';width:4px;height:22px;background:var(--lime);border-radius:2px}
-.config-header .config-sub{font-size:13px;color:var(--text-dim);margin:0}
-.config-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;align-items:start}
-.config-section{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm)}
-.config-section h4{font-size:14px;font-weight:700;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:.5px}
-.config-section h4 svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;color:var(--lime)}
 .sidebar-gear.active,.sidebar-gear-desktop.active{color:var(--lime)}
+#tab-config .profile-avatar svg{stroke:var(--lime)}
+#tab-config .profile-section.profile-systems-card{padding:18px 20px}
+#tab-config .profile-section.profile-systems-card .profile-system-link{margin-bottom:8px}
+#tab-config .profile-section.profile-systems-card .profile-system-link:last-child{margin-bottom:0}
 /* ═══ REGISTER OVERLAY ═══ */
 .register-overlay{position:fixed;inset:0;background:rgba(9,9,11,.8);z-index:250;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
 .register-overlay.open{opacity:1;pointer-events:all}
@@ -5740,10 +5736,24 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
 
     <!-- ═══ CONFIG ═══ -->
     <section class="tab-content" id="tab-config">
-      <div class="config-header"><h2>Configuração</h2><p class="config-sub">Sistemas, atualizações e preferências do app.</p></div>
-      <div class="config-grid">
-        <div class="config-section profile-systems-card">
-            <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Sistemas</h4>
+      <div class="profile-header-card">
+        <div class="profile-avatar" style="cursor:default" title="Configurações" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="profile-header-info">
+          <h2>Configuração</h2>
+          <div class="profile-role">Sistemas e preferências do app</div>
+          <div class="profile-header-meta">
+            <div class="meta-row"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Versão <strong id="cfg-meta-ver">v10.0</strong></span></div>
+            <div class="meta-row"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg><span>Som <strong id="cfg-meta-sound">Ativado</strong></span></div>
+            <div class="meta-row"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Documents/FichaEclipse</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="profile-layout">
+        <div class="profile-main">
+          <div class="profile-section profile-systems-card">
+            <div class="profile-section-title">Sistemas</div>
             <a class="profile-system-link" href="#" title="Abrir biblioteca embutida" onclick="event.preventDefault();document.querySelector('.sidebar-btn[data-tab=biblioteca]')?.click();">
               <span class="profile-system-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5a2.5 2.5 0 0 0-2.5 2.5V4.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20"/></svg>
@@ -5814,6 +5824,19 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
               </span>
               <svg class="profile-system-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
             </a>
+          </div>
+        </div>
+        <div class="profile-sidebar">
+          <div class="profile-sidebar-card">
+            <h4>Sobre</h4>
+            <div class="profile-stat-row"><span class="stat-label">Versão</span><span class="stat-val" id="cfg-app-ver">v10.0</span></div>
+            <div class="profile-stat-row"><span class="stat-label">Build</span><span class="stat-val" id="cfg-app-build">80</span></div>
+            <div class="profile-stat-row"><span class="stat-label">Plataforma</span><span class="stat-val" id="cfg-app-plat">Android</span></div>
+          </div>
+          <div class="profile-sidebar-card">
+            <h4>Aparência</h4>
+            <button class="profile-edit-btn" type="button" style="width:100%;padding:10px 12px;font-size:12px" onclick="toggleTheme()">Alternar tema</button>
+          </div>
         </div>
       </div>
     </section>
@@ -11888,6 +11911,13 @@ function switchToConfig(){
   document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
   document.getElementById('tab-config').classList.add('active');
   document.querySelectorAll('.sidebar-gear,.sidebar-gear-desktop').forEach(x=>x.classList.add('active'));
+  try{
+    const muted=localStorage.getItem('tiks-muted')==='1';
+    const ms=document.getElementById('cfg-meta-sound');if(ms)ms.textContent=muted?'Desativado':'Ativado';
+    const ss=document.getElementById('profile-sound-sub');if(ss)ss.textContent=muted?'Desativado':'Ativado';
+    const isAndroid=/android/i.test(navigator.userAgent);
+    const cp=document.getElementById('cfg-app-plat');if(cp)cp.textContent=isAndroid?'Android':'Web';
+  }catch(_){}
 }
 
 function changeProfileAvatar(){
