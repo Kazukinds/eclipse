@@ -20694,7 +20694,7 @@ setTimeout(()=>{if(_hasNative())otaCheckAndInstall(false)},4000);
     function selectVariation(v){state.variation=v;syncPreview();spin360()}
     window._eoSpin=spin360;
     $('#eo-variations').addEventListener('click',e=>{const b=e.target.closest('.eo-var');if(!b)return;$$('.eo-var').forEach(c=>c.removeAttribute('data-sel'));b.setAttribute('data-sel','');selectVariation(+b.dataset.v)});
-    root.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;const n=+b.dataset.go;if(n===2&&!state.name){const nm=$('#eo-prev-name');if(nm){nm.focus();const r=document.createRange();r.selectNodeContents(nm);r.collapse(false);const s=getSelection();s.removeAllRanges();s.addRange(r);nm.classList.add('eo-shake');setTimeout(()=>nm.classList.remove('eo-shake'),500)}b.classList.remove('eo-recoil');void b.offsetWidth;b.classList.add('eo-recoil');setTimeout(()=>b.classList.remove('eo-recoil'),700);let msgEl=$('#eo-name-msg');if(!msgEl){msgEl=document.createElement('div');msgEl.id='eo-name-msg';msgEl.className='eo-name-msg';msgEl.textContent='Escreva seu nome no cartão antes de continuar';b.parentNode.insertBefore(msgEl,b);}msgEl.classList.remove('dismiss');void msgEl.offsetWidth;msgEl.classList.add('show');clearTimeout(msgEl._t);msgEl._t=setTimeout(()=>{msgEl.classList.remove('show');msgEl.classList.add('dismiss');setTimeout(()=>{},620)},3500);return}if(n>1&&!state.sig&&state.name){state.sig=autoSig(state.name);state.autoSig=true}setStep(n);syncPreview()});
+    root.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;const n=+b.dataset.go;if(n===2&&!state.name){const nm=$('#eo-prev-name');if(nm){nm.focus();const r=document.createRange();r.selectNodeContents(nm);r.collapse(false);const s=getSelection();s.removeAllRanges();s.addRange(r);nm.classList.add('eo-shake');setTimeout(()=>nm.classList.remove('eo-shake'),500)}b.classList.remove('eo-recoil');void b.offsetWidth;b.classList.add('eo-recoil');setTimeout(()=>b.classList.remove('eo-recoil'),700);let msgEl=$('#eo-name-msg');if(!msgEl){msgEl=document.createElement('div');msgEl.id='eo-name-msg';msgEl.className='eo-name-msg';msgEl.textContent='Escreva seu nome no cartão antes de continuar';b.parentNode.insertBefore(msgEl,b);}msgEl.classList.remove('dismiss');void msgEl.offsetWidth;msgEl.classList.add('show');clearTimeout(msgEl._t);msgEl._t=setTimeout(()=>{msgEl.classList.remove('show');msgEl.classList.add('dismiss');setTimeout(()=>{},620)},3500);return}/* autoSig removido — gerava data URI invalido em Android WebView. Sig vazia = img oculta */setStep(n);syncPreview()});
     /* signature wiring */
     const cv=$('#eo-sig-canvas');if(cv){
       sigCv=cv;sigCtx=cv.getContext('2d');fitSigCanvas();
@@ -20720,7 +20720,7 @@ setTimeout(()=>{if(_hasNative())otaCheckAndInstall(false)},4000);
     }
     /* dblclick texto → cycle font; click único na assinatura (img/label, não canvas) → cycle sig font */
     function cycleTextFont(){state.font=(state.font+1)%FONTS.length;syncPreview()}
-    function cycleSigFont(){state.sigFont=(state.sigFont+1)%SIG_FONTS.length;if(state.autoSig&&state.name)state.sig=autoSig(state.name);syncPreview()}
+    function cycleSigFont(){state.sigFont=(state.sigFont+1)%SIG_FONTS.length;syncPreview()}
     root.addEventListener('click',e=>{if(e.target.tagName==='CANVAS'||e.target.closest('button, [data-go]'))return;if(e.target.closest('.eo-card-sig')){e.preventDefault();e.stopPropagation();cycleSigFont()}});
     root.addEventListener('dblclick',e=>{if(e.target.closest('button, [data-go]'))return;if(e.target.closest('.eo-card-row, .eo-card-brand')){e.preventDefault();e.stopPropagation();cycleTextFont()}});
     /* card 3D drag pra rodar 360° (frente/verso) — sem tilt hover */
@@ -20900,7 +20900,6 @@ setTimeout(()=>{if(_hasNative())otaCheckAndInstall(false)},4000);
       }catch(_){}
     });
     $('#eo-finish').addEventListener('click',()=>{
-      if(!state.sig&&state.name){state.sig=autoSig(state.name);state.autoSig=true}
       try{localStorage.setItem(DATA_KEY,JSON.stringify(state));localStorage.setItem(DONE_KEY,'1')}catch(_){}
       root.removeAttribute('data-on');setTimeout(()=>root.remove(),550);
     });
