@@ -17985,7 +17985,31 @@ function switchToConfig(){
     const ss=document.getElementById('profile-sound-sub');if(ss)ss.textContent=muted?'Desativado':'Ativado';
     const isAndroid=/android/i.test(navigator.userAgent);
     const cp=document.getElementById('cfg-app-plat');if(cp)cp.textContent=isAndroid?'Android':'Web';
+    // Versão + Build dinâmicos: usa EclipseNative.appVersion() (Android) OU SW VERSION (Web)
+    const cv=document.getElementById('cfg-app-ver');
+    const cb=document.getElementById('cfg-app-build');
+    if(window.EclipseNative&&EclipseNative.appVersion){
+      try{
+        const [name,code]=EclipseNative.appVersion().split('|');
+        if(cv)cv.textContent='v'+name;
+        if(cb)cb.textContent=code;
+      }catch(_){}
+    }else if(navigator.serviceWorker){
+      // Fallback Web: pega VERSION via postMessage do SW
+      navigator.serviceWorker.ready.then(reg=>{
+        if(reg.active)reg.active.postMessage({type:'GET_CURRENT_VERSION'});
+      }).catch(()=>{});
+    }
   }catch(_){}
+}
+// Listener pra resposta do SW (web fallback)
+if(navigator.serviceWorker){
+  navigator.serviceWorker.addEventListener('message',e=>{
+    if(e.data&&e.data.type==='CURRENT_VERSION'&&e.data.version){
+      const cv=document.getElementById('cfg-app-ver');
+      if(cv)cv.textContent=e.data.version;
+    }
+  });
 }
 
 function changeProfileAvatar(){
