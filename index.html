@@ -844,6 +844,20 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .item-ammo-badge.empty .ammo-cur{color:#ff5c5c;text-shadow:0 0 4px rgba(255,92,92,.5),0 1px 2px rgba(0,0,0,.9)}
 .item-ammo-badge.empty .ammo-max{color:#c66}
 @keyframes ammo-empty-pulse{0%,100%{border-color:rgba(255,92,92,.4)}50%{border-color:rgba(255,92,92,.85)}}
+/* Cell inteira pulsa vermelho quando munição zerou */
+.inv-cell.ammo-empty,.inv-cell:has(.item-ammo-badge.empty){animation:cell-empty-pulse 1.4s ease-in-out infinite;position:relative}
+@keyframes cell-empty-pulse{
+  0%,100%{box-shadow:inset 0 0 0 1px rgba(255,92,92,.35),0 0 0 0 rgba(255,92,92,0)}
+  50%{box-shadow:inset 0 0 0 2px rgba(255,92,92,.85),0 0 14px rgba(255,92,92,.45)}
+}
+/* Shake breve quando ammo transita de >0 → 0 */
+.inv-cell.ammo-just-emptied{animation:cell-empty-shake .42s cubic-bezier(.36,.07,.19,.97),cell-empty-pulse 1.4s ease-in-out infinite .42s}
+@keyframes cell-empty-shake{
+  10%,90%{transform:translateX(-1.5px)}
+  20%,80%{transform:translateX(2.5px)}
+  30%,50%,70%{transform:translateX(-4px)}
+  40%,60%{transform:translateX(4px)}
+}
 .item-ammo-badge.low{color:#ffb84d;border-color:rgba(255,184,77,.5)}
 .item-ammo-badge.low .ammo-cur{color:#ffb84d;text-shadow:0 0 6px rgba(255,184,77,.5),0 1px 2px rgba(0,0,0,.9)}
 /* Reload progress ring no border do cell */
@@ -4493,9 +4507,21 @@ button:not(:disabled):active{transform:scale(.97)}
   padding:10px 12px;margin-bottom:10px;
   background:linear-gradient(160deg,color-mix(in srgb,var(--magenta) 6%,var(--bg-card)),var(--bg-input));
   border:1px solid var(--border);border-radius:10px;cursor:pointer;
-  transition:border-color .2s,background .2s;
+  transition:border-color .25s,background .25s,transform .25s var(--ease-spring),box-shadow .25s;
+  position:relative;overflow:hidden;
 }
-.attr-stat-head:hover{border-color:color-mix(in srgb,var(--magenta) 45%,var(--border))}
+/* Reflexo shimmer no hover/touch (aproximação) */
+.attr-stat-head::after{
+  content:'';position:absolute;top:0;left:-120%;width:60%;height:100%;
+  background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.0) 30%,rgba(255,255,255,.18) 50%,rgba(255,255,255,.0) 70%,transparent 100%);
+  pointer-events:none;transition:left .6s var(--ease-out-expo);
+}
+.attr-stat-head:hover,.attr-stat-head:active,.attr-stat-head.touched{
+  border-color:color-mix(in srgb,var(--lime) 55%,var(--border));
+  transform:scale(1.02) translateY(-1px);
+  box-shadow:0 6px 20px rgba(0,0,0,.35),0 0 0 1px color-mix(in srgb,var(--lime) 25%,transparent);
+}
+.attr-stat-head:hover::after,.attr-stat-head:active::after,.attr-stat-head.touched::after{left:160%}
 .attr-flower-wrap{display:flex;justify-content:center;align-items:center;padding:14px 0 8px;animation:afpIn .45s cubic-bezier(.2,.8,.2,1)}
 @keyframes afpIn{from{opacity:0;transform:scale(.85) rotate(-12deg)}to{opacity:1;transform:none}}
 .attr-flower-svg{width:min(280px,90%);height:auto;max-width:100%;filter:drop-shadow(0 8px 24px rgba(0,0,0,.35))}
@@ -11893,6 +11919,13 @@ function buildCell(i){
       if(cur===0)stateCls=' empty';
       else if(maxMag>0&&cur/maxMag<=0.3)stateCls=' low';
       ammoBadge=`<span class="item-ammo-badge${stateCls}" title="Munição carregada / capacidade do pente · reserva: ${reserve}"><span class="ammo-cur">${cur}</span><span class="ammo-sep">/</span><span class="ammo-max">${maxMag}</span></span>`;
+      // Detecta transição ammo>0 → ammo===0 pra disparar shake única vez
+      const _prevAmmo=item._prevAmmo;
+      if(cur===0&&_prevAmmo!=null&&_prevAmmo>0){
+        cell.classList.add('ammo-just-emptied');
+        setTimeout(()=>cell.classList.remove('ammo-just-emptied'),500);
+      }
+      item._prevAmmo=cur;
     }
     const equipMark=item.equipped?`<span class="item-equip-mark" title="Equipado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></span>`:'';
     const reloadRing=item._reloading?`<div class="item-reload-ring" data-reload-ring><svg viewBox="0 0 100 100" preserveAspectRatio="none"><rect x="2" y="2" width="96" height="96" rx="6" pathLength="100" style="--_dash:100;--_dur:${item._reloadMs||1000}ms"/></svg></div>`:'';
