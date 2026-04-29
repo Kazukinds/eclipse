@@ -135,7 +135,8 @@ body[data-perf-low] .xp-fill::before,body[data-perf-low] .save-toast-bar-fill::a
 .pwa-install-btn,.save-toast-close,.toast-close,.modal-close,
 .register-close,.biblio-reader-close,.biblio-subbtn,
 .update-banner-close,.account-badge,.account-avatar,
-.eo-color,.eo-dot,.cselect-arrow,.notif-close,.sidebar-gear-desktop{
+.eo-color,.eo-dot,.cselect-arrow,.notif-close,.sidebar-gear-desktop,
+.palette-swatch,.theme-swatch,.color-dot{
   aspect-ratio:1/1!important;
   flex-shrink:0!important;
   flex-grow:0!important;
@@ -1230,7 +1231,7 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 html.compact-mode{font-size:14px}
 html.no-radius,html.no-radius *{border-radius:0!important}
 .palette-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.palette-swatch{width:30px;height:30px;flex:0 0 30px;aspect-ratio:1;box-sizing:border-box;border-radius:50%;border:2px solid var(--border);cursor:pointer;padding:0;transition:transform .15s,border-color .15s,box-shadow .2s;outline:none}
+.palette-swatch{width:30px!important;height:30px!important;min-width:30px;min-height:30px;max-width:30px;max-height:30px;flex:0 0 30px;aspect-ratio:1/1;box-sizing:border-box;border-radius:50%;border:2px solid var(--border);cursor:pointer;padding:0;line-height:1;font-size:0;display:inline-block;align-self:center;transition:transform .15s,border-color .15s,box-shadow .2s;outline:none}
 .palette-swatch:hover{transform:scale(1.12);border-color:var(--text-secondary)}
 .palette-swatch.active{border-color:var(--text);box-shadow:0 0 0 2px var(--bg-card),0 0 0 4px currentColor;color:inherit}
 .palette-custom{position:relative;width:30px;height:30px;flex:0 0 30px;aspect-ratio:1;box-sizing:border-box;border-radius:50%;border:2px dashed var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,border-color .15s,box-shadow .2s;color:var(--text-secondary);overflow:hidden}
