@@ -1190,10 +1190,10 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 html.compact-mode{font-size:14px}
 html.no-radius,html.no-radius *{border-radius:0!important}
 .palette-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.palette-swatch{width:30px;height:30px;border-radius:50%;border:2px solid var(--border);cursor:pointer;padding:0;transition:transform .15s,border-color .15s,box-shadow .2s;outline:none}
+.palette-swatch{width:30px;height:30px;flex:0 0 30px;aspect-ratio:1;box-sizing:border-box;border-radius:50%;border:2px solid var(--border);cursor:pointer;padding:0;transition:transform .15s,border-color .15s,box-shadow .2s;outline:none}
 .palette-swatch:hover{transform:scale(1.12);border-color:var(--text-secondary)}
 .palette-swatch.active{border-color:var(--text);box-shadow:0 0 0 2px var(--bg-card),0 0 0 4px currentColor;color:inherit}
-.palette-custom{position:relative;width:30px;height:30px;border-radius:50%;border:2px dashed var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,border-color .15s,box-shadow .2s;color:var(--text-secondary);overflow:hidden}
+.palette-custom{position:relative;width:30px;height:30px;flex:0 0 30px;aspect-ratio:1;box-sizing:border-box;border-radius:50%;border:2px dashed var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,border-color .15s,box-shadow .2s;color:var(--text-secondary);overflow:hidden}
 .palette-custom:hover{transform:scale(1.12);border-color:var(--lime);color:var(--lime)}
 .palette-custom.active{border-style:solid;border-color:var(--text);box-shadow:0 0 0 2px var(--bg-card),0 0 0 4px var(--lime)}
 .palette-custom-dot{position:absolute;inset:2px;border-radius:50%;background:transparent;z-index:1}
@@ -4224,6 +4224,11 @@ textarea{line-height:1.5}
 .modal-btn.danger:hover{background:color-mix(in srgb,var(--red) 12%,transparent)}
 [data-theme="light"] .modal-btn{background:#f4f5f8;color:#1a1825}
 [data-theme="light"] .modal-btn.primary{background:var(--lime);color:#09090b}
+.ficha-row-btn{width:36px;height:36px;flex:0 0 36px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;background:transparent;border:1px solid var(--border-light);color:var(--text-primary);font-size:13px;cursor:pointer;transition:all .15s}
+.ficha-row-btn:hover{border-color:var(--text-secondary);background:var(--bg-input)}
+.ficha-row-btn-danger{color:var(--red);border-color:var(--red-dim)}
+.ficha-row-btn-danger:hover{background:color-mix(in srgb,var(--red) 12%,transparent);border-color:var(--red)}
+@media (max-width:760px){.ficha-row-btn{width:36px;height:36px;flex:0 0 36px}}
 .inv-cell{aspect-ratio:1/1}
 /* Espaçamento utilitário phi */
 
@@ -13155,22 +13160,15 @@ function renderAttrFlower(items){
       ${tanks}
     </div>
     <div class="attr-tank-cross"><div class="attr-tank-cross-pct">${totalPct}%</div><div class="attr-tank-cross-lbl">total</div></div>
-    <div class="attr-tanks-hint">arraste pra girar</div>
   </div>`;
 }
 function _initAttrTanks(root){
   (root||document).querySelectorAll('.attr-tanks-wrap').forEach(wrap=>{
     if(wrap._wired)return;wrap._wired=true;
-    const rotEl=wrap.querySelector('.attr-tanks-rot');if(!rotEl)return;
-    let rot=0,startAng=0,startRot=0,dragging=false,moved=false;
-    const center=()=>{const r=wrap.getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2}};
-    const ang=(x,y)=>{const c=center();return Math.atan2(y-c.y,x-c.x)*180/Math.PI};
-    const apply=()=>{rotEl.style.setProperty('--at-rot',rot+'deg')};
-    wrap.addEventListener('pointerdown',e=>{dragging=true;moved=false;startAng=ang(e.clientX,e.clientY);startRot=rot;wrap.classList.add('dragging');try{wrap.setPointerCapture(e.pointerId)}catch(_){}});
-    wrap.addEventListener('pointermove',e=>{if(!dragging)return;const d=ang(e.clientX,e.clientY)-startAng;if(Math.abs(d)>3)moved=true;rot=startRot+d;apply()});
-    const end=e=>{if(!dragging)return;dragging=false;wrap.classList.remove('dragging');rot=Math.round(rot/90)*90;apply();if(!moved){const t=e.target&&e.target.closest&&e.target.closest('.attr-tank');if(t&&typeof openModal==='function')openModal('attribute')}};
-    wrap.addEventListener('pointerup',end);
-    wrap.addEventListener('pointercancel',end);
+    wrap.addEventListener('click',e=>{
+      const t=e.target&&e.target.closest&&e.target.closest('.attr-tank');
+      if(t&&typeof openModal==='function')openModal('attribute');
+    });
   });
 }
 function renderAttrs(){
@@ -18401,6 +18399,12 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v2.0.2',date:'2026-04-29',title:'Fixes de UI: swatches, save list e atributos estáticos',items:[
+    {tag:'fix',text:'Color swatches da paleta voltam a ser círculos perfeitos (aspect-ratio:1 + flex:0 0 30px — antes deformavam em ovais quando o flex container apertava)'},
+    {tag:'fix',text:'Lista de fichas salvas: botões de ação (▲ ✎ ✕) viram ícones quadrados de 36px em vez de stretchar full-width pelo modal-btn em mobile'},
+    {tag:'change',text:'Atributos não giram mais com drag — agora são estáticos. Tap em cada tank ainda abre o modal'},
+    {tag:'change',text:'Removida hint "arraste pra girar" dos atributos'}
+  ]},
   {version:'v2.0.1',date:'2026-04-29',title:'Fixes de drag mobile no inventário',items:[
     {tag:'fix',text:'touch-action:none nos cells do inventário — permite drag em mobile sem o browser interceptar o gesto pra scroll'},
     {tag:'fix',text:'setPointerCapture no pointerdown — garante que pointermove continua chegando mesmo se o dedo sai da cell durante o drag'},
@@ -20180,9 +20184,9 @@ function _renderFolderModal(){
         <div style="font-size:13px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${f.name}</div>
         <div style="font-size:10px;color:var(--text-dim);margin-top:2px;font-family:'JetBrains Mono',monospace">${_fmtSize(f.size)} · ${_fmtDate(f.modified)}</div>
       </div>
-      <button class="modal-btn secondary" style="padding:6px 10px;font-size:11px" onclick="loadFichaFromFolder('${safe}')" title="Carregar">▲</button>
-      <button class="modal-btn secondary" style="padding:6px 10px;font-size:11px" onclick="renameFichaInFolder('${safe}')" title="Renomear">✎</button>
-      <button class="modal-btn secondary" style="padding:6px 10px;font-size:11px;color:var(--red);border-color:var(--red-dim)" onclick="deleteFichaInFolder('${safe}')" title="Excluir">✕</button>
+      <button class="ficha-row-btn" onclick="loadFichaFromFolder('${safe}')" title="Carregar">▲</button>
+      <button class="ficha-row-btn" onclick="renameFichaInFolder('${safe}')" title="Renomear">✎</button>
+      <button class="ficha-row-btn ficha-row-btn-danger" onclick="deleteFichaInFolder('${safe}')" title="Excluir">✕</button>
     </div>`;
   }).join('');
   const empty=files.length?'':`<div style="text-align:center;padding:28px 16px;font-size:12px;color:var(--text-dim);background:var(--bg-input);border:1px dashed var(--border);border-radius:10px">Nenhuma ficha salva nessa pasta ainda.</div>`;
