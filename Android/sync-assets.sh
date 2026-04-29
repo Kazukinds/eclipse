@@ -7,7 +7,9 @@ DST=$(dirname "$(realpath "$0")")/app/src/main/assets/www
 rm -rf "$DST"
 mkdir -p "$DST/icons"
 cp "$SRC/index.html" "$DST/"
-cp "$SRC/biblioteca.html" "$DST/"
+[ -f "$SRC/biblioteca.html" ] && cp "$SRC/biblioteca.html" "$DST/" || true
+[ -f "$SRC/calendario.html" ] && cp "$SRC/calendario.html" "$DST/" || true
+[ -f "$SRC/weapon-test.html" ] && cp "$SRC/weapon-test.html" "$DST/" || true
 cp "$SRC/manifest.webmanifest" "$DST/"
 cp "$SRC/sw.js" "$DST/"
 cp -r "$SRC/icons/." "$DST/icons/"
