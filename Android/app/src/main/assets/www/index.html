@@ -18401,6 +18401,12 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v2.0.1',date:'2026-04-29',title:'Fixes de drag mobile no inventário',items:[
+    {tag:'fix',text:'touch-action:none nos cells do inventário — permite drag em mobile sem o browser interceptar o gesto pra scroll'},
+    {tag:'fix',text:'setPointerCapture no pointerdown — garante que pointermove continua chegando mesmo se o dedo sai da cell durante o drag'},
+    {tag:'fix',text:'Botão rotate não bloqueia mais o drag de items (pointer events ajustados)'},
+    {tag:'fix',text:'sync-assets.sh tolera biblioteca.html/calendario.html ausente sem quebrar build'}
+  ]},
   {version:'v2.0',date:'2026-04-29',title:'Sistema de armas + munição + inventário polido',items:[
     {tag:'feat',text:'Catálogo completo de armas: 9 pistolas (Beretta 92, Glock 17, Sig P226, Colt 1911, HK USP, Walther PPK, CZ 75, Desert Eagle, M4-22), 2 revólveres (Colt + padrão), 1 rifle (Assault Rifle 04), 7 heavy (Benalli M4, M240, Machine Gun, RPG, Shotgun 01-03), 1 melee (Faca)'},
     {tag:'feat',text:'18 munições com SVG: 308, 32 Auto, 376, 38x55, 404 Jeffery, 44 Rem Mag, 450 Bushmaster, 45 GAP, 4 Buck, 50 BMG, 7.62×32, 7.62×54R, 8mm Kurt, BB Shot, Bird Shot, M962, RPG Rocket, Slug'},
