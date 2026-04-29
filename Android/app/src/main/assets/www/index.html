@@ -10934,9 +10934,16 @@ document.querySelectorAll('.sidebar-btn[data-tab]').forEach(b=>{b.addEventListen
       prevText.set(el,cur);
     });
   };
-  const mo=new MutationObserver(()=>{
+  const mo=new MutationObserver(muts=>{
     if(document.visibilityState!=='visible')return;
-    clearTimeout(window._popT);window._popT=setTimeout(popTick,40);
+    let relevant=false;
+    for(let i=0;i<muts.length;i++){
+      const m=muts[i],t=m.target;
+      if(t&&t.nodeType===1&&(t.matches?.(NUM_SEL)||t.closest?.(NUM_SEL))){relevant=true;break}
+      if(t&&t.parentElement?.matches?.(NUM_SEL)){relevant=true;break}
+    }
+    if(!relevant)return;
+    clearTimeout(window._popT);window._popT=setTimeout(popTick,80);
   });
   mo.observe(document.body,{childList:true,subtree:true,characterData:true});
 })();
