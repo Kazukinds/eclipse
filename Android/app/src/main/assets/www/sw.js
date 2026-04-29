@@ -1,27 +1,20 @@
 /* Ficha Eclipse — service worker */
-const VERSION = 'v113';
+const VERSION = 'v177';
 const CACHE = 'ficha-eclipse-' + VERSION;
 const ASSETS = [
   './',
   './index.html',
   './biblioteca.html',
+  './calendario.html',
   './manifest.webmanifest',
   './icons/icon.svg',
-  './icons/icon-biblioteca.svg',
-  './icons/brand.svg',
-  './icons/brand-biblioteca.svg',
   './icons/icon-maskable.svg',
+  './icons/favicon.svg',
   './icons/logo-eclipse-moon.svg',
-  './icons/logo-eclipse-star.svg',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/icon-maskable-192.png',
-  './icons/icon-maskable-512.png',
-  './icons/apple-touch-icon.png',
-  './icons/favicon-16.png',
-  './icons/favicon-32.png'
+  './icons/logo-eclipse-star.svg'
 ];
 
+// Notify clients when a new version installs
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
 });
@@ -30,6 +23,8 @@ self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
+      .then(() => self.clients.matchAll({includeUncontrolled:true}))
+      .then(cls => cls.forEach(c => { try { c.postMessage({type:'ACTIVATED', version: VERSION}); } catch(_){} }))
   );
 });
 
