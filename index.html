@@ -11937,7 +11937,7 @@ function buildCell(i){
     if(wpnEntry){
       const rBtn=cell.querySelector('[data-rotate-btn]');
       if(rBtn){
-        rBtn.addEventListener('pointerdown',ev=>{ev.stopPropagation()});
+        // Don't stop pointerdown — let cell drag detection see it. Only stop click.
         rBtn.addEventListener('click',ev=>{
           ev.stopPropagation();ev.preventDefault();
           rotateItem(item.id);
