@@ -21519,6 +21519,25 @@ document.addEventListener('visibilitychange',()=>{
 .chars-act-menu button.danger{color:#f87171}
 .chars-act-menu button.danger:hover{background:rgba(248,113,113,.1)}
 .chars-act-menu svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* Permission banner */
+.chars-perm-banner{display:none;margin:14px 20px 0;padding:18px 18px 16px;border-radius:14px;background:linear-gradient(135deg,rgba(254,20,85,.18) 0%,rgba(254,20,85,.06) 100%);border:1px solid rgba(254,20,85,.4);position:relative;overflow:hidden}
+.chars-perm-banner.show{display:block;animation:permPulse 2.4s ease-in-out infinite}
+@keyframes permPulse{0%,100%{box-shadow:0 0 0 0 rgba(254,20,85,.4)}50%{box-shadow:0 0 0 8px rgba(254,20,85,0)}}
+.chars-perm-banner::before{content:"";position:absolute;inset:-2px;border-radius:inherit;background:linear-gradient(135deg,#fe1455,transparent 60%);opacity:.15;pointer-events:none}
+.chars-perm-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;position:relative}
+.chars-perm-icon{width:42px;height:42px;border-radius:10px;background:#fe1455;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 14px rgba(254,20,85,.45)}
+.chars-perm-icon svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.chars-perm-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.2px}
+.chars-perm-sub{font-size:12px;color:#bbb;margin-top:2px;line-height:1.4}
+.chars-perm-cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#fe1455;color:#fff;border:0;border-radius:10px;padding:14px 18px;font-size:14px;font-weight:700;letter-spacing:.3px;cursor:pointer;font-family:inherit;text-transform:uppercase;box-shadow:0 6px 18px rgba(254,20,85,.4),inset 0 1px 0 rgba(255,255,255,.18);transition:transform .2s,box-shadow .25s,background .2s;position:relative}
+.chars-perm-cta:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(254,20,85,.55),inset 0 1px 0 rgba(255,255,255,.22);background:#ff2864}
+.chars-perm-cta:active{transform:translateY(0)}
+.chars-perm-cta svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.chars-perm-foot{margin-top:10px;font-size:11px;color:#888;text-align:center}
+/* Quando banner ativo, esconde stats/list pra focar */
+.chars-modal.no-perm .chars-stats,.chars-modal.no-perm .chars-list-title,.chars-modal.no-perm .chars-list-head,.chars-modal.no-perm .chars-list{display:none}
+.chars-perm-status-ok{display:flex;align-items:center;gap:6px;color:#84cc16}
+.chars-perm-status-ok::before{content:"●";font-size:8px}
 @media(max-width:600px){
   .chars-stats{grid-template-columns:1fr}
   .chars-list-head .col-tags,.chars-row-tags,.chars-list-head .col-date,.chars-row-date{display:none}
@@ -21533,6 +21552,20 @@ document.addEventListener('visibilitychange',()=>{
       </div>
       <button class="chars-import" onclick="charsImportFile()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Importar</button>
       <button class="chars-close" onclick="closeCharsManager()" aria-label="Fechar"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="chars-perm-banner" id="chars-perm-banner">
+      <div class="chars-perm-head">
+        <div class="chars-perm-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <div>
+          <div class="chars-perm-title">Liberar acesso ao armazenamento</div>
+          <div class="chars-perm-sub">Necessário pra ler/salvar fichas em <span style="color:#fff">/Documents/Eclipse/FichaEclipse/personagens/</span></div>
+        </div>
+      </div>
+      <button class="chars-perm-cta" id="chars-perm-cta">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="16" r="1"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/><rect x="3" y="11" width="18" height="11" rx="2"/></svg>
+        Conceder permissão
+      </button>
+      <div class="chars-perm-foot">Abre Configurações do Android — toque "Permitir acesso a todos os arquivos"</div>
     </div>
     <div class="chars-stats">
       <div class="chars-stat cta" onclick="charsSaveCurrent()">
@@ -21583,20 +21616,33 @@ document.addEventListener('visibilitychange',()=>{
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ov().classList.contains('open'))closeCharsManager()});
 
   function ensurePerm(){
-    if(!N){toast('Disponível apenas no app Android');return false}
+    const banner=document.getElementById('chars-perm-banner');
+    const modal=document.querySelector('.chars-modal');
+    const status=document.getElementById('chars-perm-status');
+    if(!N){
+      if(banner)banner.classList.remove('show');
+      if(modal)modal.classList.remove('no-perm');
+      status.textContent='Web — sem acesso a arquivos do dispositivo';
+      toast('Disponível apenas no app Android');return false;
+    }
     if(!N.hasPermission()){
-      document.getElementById('chars-perm-status').textContent='Permissão necessária — toque pra liberar';
-      document.getElementById('chars-perm-status').style.cursor='pointer';
-      document.getElementById('chars-perm-status').onclick=()=>{
-        window.__filesPermResult=ok=>{if(ok){toast('Permissão concedida');refresh()}else toast('Permissão negada')};
-        N.requestPermission();
-      };
+      if(banner)banner.classList.add('show');
+      if(modal)modal.classList.add('no-perm');
+      status.innerHTML='<span style="color:#fe1455">●</span> Permissão pendente';
       return false;
     }
-    document.getElementById('chars-perm-status').textContent='✓ Acesso liberado';
-    document.getElementById('chars-perm-status').style.cursor='default';
+    if(banner)banner.classList.remove('show');
+    if(modal)modal.classList.remove('no-perm');
+    status.innerHTML='<span class="chars-perm-status-ok">Acesso liberado</span>';
     return true;
   }
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#chars-perm-cta')){
+      if(!N)return;
+      window.__filesPermResult=ok=>{if(ok){toast('Permissão concedida');refresh()}else toast('Permissão negada — tente novamente')};
+      N.requestPermission();
+    }
+  });
 
   function toast(msg){
     if(window.toast)return window.toast(msg);
