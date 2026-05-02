@@ -7039,11 +7039,8 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
           </div>
           <div class="profile-sidebar-card">
             <h4>Aparência</h4>
-            <div class="aparencia-opts">
-              <label class="aparencia-row"><span>Cantos arredondados</span><span class="ap-switch"><input type="checkbox" id="opt-radius" checked onchange="setAppearanceOpt('radius',this.checked)"><span class="ap-track"></span></span></label>
-            </div>
-            <div style="margin-top:14px">
-              <div class="palette-head"><span>Paleta de destaque</span><button type="button" class="palette-gear" onclick="openPaletteAdvanced(this)" title="Ajustes finos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button></div>
+            <div style="margin-top:4px">
+              <div class="palette-head"><span>Paleta de destaque</span></div>
               <div class="palette-row" id="palette-swatches">
                 <button type="button" class="palette-swatch" data-k="lime" style="background:#c8f542" onclick="applyPalette('lime')" title="Lime"></button>
                 <button type="button" class="palette-swatch" data-k="ciano" style="background:#4dd4ff" onclick="applyPalette('ciano')" title="Ciano"></button>
@@ -15319,14 +15316,11 @@ window.openPaletteAdvanced=function(anchor){
   try{updateMetaTheme()}catch(_){}
   try{localStorage.removeItem('rpg-opt-motion')}catch(_){}
   document.documentElement.classList.remove('reduce-motion');
-  ['compact','radius'].forEach(k=>{
-    const v=localStorage.getItem('rpg-opt-'+k);
-    if(v==null)return;
-    const on=v==='1';
-    const cls={compact:'compact-mode',radius:'no-radius'}[k];
-    if(k==='radius')document.documentElement.classList.toggle(cls,!on);
-    else document.documentElement.classList.toggle(cls,on);
-  });
+  // Cantos arredondados sempre on — força remoção da classe no-radius
+  document.documentElement.classList.remove('no-radius');
+  try{localStorage.removeItem('rpg-opt-radius')}catch(_){}
+  const cv=localStorage.getItem('rpg-opt-compact');
+  if(cv!=null)document.documentElement.classList.toggle('compact-mode',cv==='1');
 })();
 window.addEventListener('load',()=>{
   try{updateThemeIcon()}catch(_){}
