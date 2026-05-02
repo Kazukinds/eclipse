@@ -7588,7 +7588,8 @@ if(typeof requestIdleCallback==='function'){
   setTimeout(()=>{Object.values(WEAPON_SVGS).forEach(e=>{try{_wpnTrimSrc(e.file)}catch(_){}})},800);
 }
 const WEAPON_TYPE_LABELS={fogo:'Armas de Fogo',branca:'Armas Brancas'};
-const WEAPON_SUB_LABELS={fogo:{pistola:'Pistola',heavy:'Heavy',sniper:'Sniper',granada:'Granada',municao:'Munição'},branca:{lamina:'Lâmina',contundente:'Contundente',lanca:'Lança',arco:'Arco'}};
+const WEAPON_SUB_LABELS={fogo:{pistola:'Pistola',heavy:'Heavy',sniper:'Sniper',granada:'Granada'},branca:{lamina:'Lâmina',contundente:'Contundente',lanca:'Lança',arco:'Arco'},municao:{padrao:'Padrão',especial:'Especial',energia:'Energia'}};
+const WEAPON_TYPE_LABELS_EXT={fogo:'Armas de Fogo',branca:'Armas Brancas',municao:'Munição'};
 const WEAPON_SUB_SIZE={
   pistola:'leve',
   heavy:'shotgunPadrao',
