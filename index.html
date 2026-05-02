@@ -906,10 +906,10 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .re4-shell>.re4-body>.equip-slots{flex:0 0 56px;align-self:flex-start;position:sticky;top:80px}
 .re4-shell>.re4-body>.re4-case-pane{flex:0 0 auto;min-width:0;align-self:flex-start}
 .re4-shell>.re4-body>.re4-item-detail{flex:0 0 280px;min-width:0;align-self:flex-start}
-.equip-slots{display:flex;flex-direction:column;gap:14px;padding:0;background:none;border:none;border-radius:0;width:56px;justify-content:center;align-items:center}
-.equip-slot{position:relative;width:42px;height:42px;border-radius:8px;background:linear-gradient(160deg,#1a1a20,#0a0a0e);border:1.5px solid #2a2a32;color:var(--text-dim);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;padding:0;flex-shrink:0;aspect-ratio:1/1}
-.equip-slot:hover{border-color:var(--magenta-dim);color:var(--magenta);background:linear-gradient(160deg,color-mix(in srgb,var(--magenta) 12%,#1a1a20),#0a0a0e)}
-.equip-slot.equipped{border-color:var(--magenta);color:var(--magenta);box-shadow:0 0 0 2px color-mix(in srgb,var(--magenta) 28%,transparent),0 0 14px color-mix(in srgb,var(--magenta) 35%,transparent);background:linear-gradient(160deg,color-mix(in srgb,var(--magenta) 25%,#1a1a20),#0a0a0e)}
+.equip-slots{display:flex;flex-direction:column;gap:5px;padding:0;background:none;border:none;border-radius:0;width:56px;justify-content:center;align-items:center}
+.equip-slot{position:relative;width:42px;height:42px;border-radius:8px;background:#1a1a1f;border:1.5px solid #2a2a32;color:var(--text-dim);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;padding:0;flex-shrink:0;aspect-ratio:1/1}
+.equip-slot:hover{border-color:var(--magenta-dim);color:var(--magenta);background:color-mix(in srgb,var(--magenta) 8%,#1a1a1f)}
+.equip-slot.equipped{border-color:var(--magenta);color:var(--magenta);box-shadow:0 0 0 2px color-mix(in srgb,var(--magenta) 28%,transparent),0 0 14px color-mix(in srgb,var(--magenta) 35%,transparent);background:color-mix(in srgb,var(--magenta) 18%,#1a1a1f)}
 .equip-slot svg{width:18px;height:18px;stroke:currentColor;fill:none}
 .equip-slot-ico{display:block;width:24px;height:24px;background:currentColor;-webkit-mask:var(--ico) center/contain no-repeat;mask:var(--ico) center/contain no-repeat;flex-shrink:0}
 .equip-slot-lbl{position:absolute;right:calc(100% + 8px);top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text-dim);background:var(--bg-card);border:1px solid var(--border);padding:3px 8px;border-radius:6px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:10}
@@ -1054,9 +1054,9 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 [data-theme="light"] .inv-cell:hover{border-color:rgba(0,0,0,.12);background:#eeeef2}
 [data-theme="light"] .inv-cell.occupied{background:linear-gradient(145deg,#fafafc 0%,#ededf2 100%)}
 [data-theme="light"] .item-overlay{background:linear-gradient(145deg,#fafafc 0%,#ededf2 100%);border-color:rgba(0,0,0,.06)}
-[data-theme="light"] .equip-slot{background:linear-gradient(160deg,#fafafc,#ededf2);border-color:#dcdce2;color:#5a5a64}
-[data-theme="light"] .equip-slot:hover{border-color:var(--magenta);color:var(--magenta);background:linear-gradient(160deg,color-mix(in srgb,var(--magenta) 14%,#fafafc),#ededf2)}
-[data-theme="light"] .equip-slot.equipped{border-color:var(--magenta);color:var(--magenta);background:linear-gradient(160deg,color-mix(in srgb,var(--magenta) 22%,#fafafc),#ededf2);box-shadow:0 0 0 2px color-mix(in srgb,var(--magenta) 30%,transparent),0 0 14px color-mix(in srgb,var(--magenta) 30%,transparent)}
+[data-theme="light"] .equip-slot{background:#ffffff;border-color:#dcdce2;color:#5a5a64}
+[data-theme="light"] .equip-slot:hover{border-color:var(--magenta);color:var(--magenta);background:color-mix(in srgb,var(--magenta) 10%,#ffffff)}
+[data-theme="light"] .equip-slot.equipped{border-color:var(--magenta);color:var(--magenta);background:color-mix(in srgb,var(--magenta) 18%,#ffffff);box-shadow:0 0 0 2px color-mix(in srgb,var(--magenta) 30%,transparent),0 0 14px color-mix(in srgb,var(--magenta) 30%,transparent)}
 [data-theme="light"] .re4-item-detail{background:linear-gradient(160deg,#fafafc 0%,#ededf2 100%);border-color:#dcdce2;color:#2a2a32}
 [data-theme="light"] .re4-item-detail .rid-name{color:#1a1a25}
 [data-theme="light"] .re4-item-detail .rid-meta{color:#6b6b76}
