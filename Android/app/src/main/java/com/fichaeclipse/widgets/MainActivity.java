@@ -443,6 +443,12 @@ public class MainActivity extends Activity {
                         });
                         if (status == DownloadManager.STATUS_SUCCESSFUL) {
                             c.close();
+                            // Garante que UI mostre 100% antes do dialog de instalação aparecer
+                            runOnUiThread(() -> {
+                                if (webView != null)
+                                    webView.evaluateJavascript("window.__otaProgress&&window.__otaProgress(100)", null);
+                            });
+                            try { Thread.sleep(900); } catch (InterruptedException ignored) {}
                             runOnUiThread(() -> _installApk(outFile));
                             return;
                         }
@@ -524,6 +530,11 @@ public class MainActivity extends Activity {
                     }
                 }
                 out.flush();
+                runOnUiThread(() -> {
+                    if (webView != null)
+                        webView.evaluateJavascript("window.__otaProgress&&window.__otaProgress(100)", null);
+                });
+                try { Thread.sleep(900); } catch (InterruptedException ignored) {}
                 runOnUiThread(() -> _installApk(outFile));
                 return;
             }

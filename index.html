@@ -20973,8 +20973,17 @@ function _otaShowPrompt(rel,apk){
       if(typeof toast==='function')toast('Falha: '+msg,'error');
     };
     window.__otaReady=()=>{
-      pop.classList.remove('show');
-      if(typeof toast==='function')toast('Abrindo instalador...','info');
+      // Garante 100% visível antes de fechar
+      pop.querySelector('.ota-progress-fill').style.width='100%';
+      pop.querySelector('.ota-pct').textContent='100%';
+      const titleEl=pop.querySelector('.ota-title');
+      if(titleEl)titleEl.textContent='Download concluído';
+      const descEl=pop.querySelector('.ota-desc');
+      if(descEl)descEl.textContent='Abrindo instalador...';
+      setTimeout(()=>{
+        pop.classList.remove('show');
+        if(typeof toast==='function')toast('Abrindo instalador...','info');
+      },700);
     };
     try{EclipseNative.downloadAndInstall(apk.browser_download_url)}catch(e){window.__otaError(e.message)}
   };
