@@ -91,8 +91,8 @@ textarea,input,[contenteditable="true"],
 .profile-note,.profile-note-text,.credit-log-info,.detail-desc,.modal-body,#modal-body,
 .skill-detail,.item-desc,.peri-desc,.spell-desc-text,
 .summary-value,.profile-field-value{user-select:text;-webkit-user-select:text}
-::selection{background:color-mix(in srgb,var(--lime) 32%,transparent);color:var(--text-primary)}
-*:focus-visible{outline:2px solid var(--lime);outline-offset:2px;border-radius:var(--radius-xs)}
+::selection{background:color-mix(in srgb,var(--magenta) 32%,transparent);color:var(--text-primary)}
+*:focus-visible{outline:2px solid var(--magenta);outline-offset:2px;border-radius:var(--radius-xs)}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{
     animation-duration:.01ms !important;
@@ -207,7 +207,7 @@ button:active:not(:disabled),.card-action-btn:active,.modal-btn:active,.credit-p
 .sidebar-grip{position:absolute;top:0;right:-6px;bottom:0;width:14px;cursor:ew-resize;z-index:2;background:transparent}
 .sidebar-logo{width:44px;height:44px;background:transparent;border:none;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 0 28px 0;cursor:pointer;transition:all var(--transition-base);flex-shrink:0}
 .sidebar-logo:hover{transform:scale(1.12) rotate(-8deg)}
-.sidebar-logo svg{width:22px;height:22px;stroke:var(--lime);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.sidebar-logo svg{width:22px;height:22px;stroke:var(--magenta);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .sidebar-logo-img{
   width:44px;height:44px;object-fit:contain;
   filter:brightness(0) saturate(100%) invert(91%) sepia(38%) saturate(760%) hue-rotate(19deg) brightness(103%) contrast(91%);
@@ -226,7 +226,7 @@ button:active:not(:disabled),.card-action-btn:active,.modal-btn:active,.credit-p
 }
 /* Eclipse logo composto — lua + estrela anima */
 .eclipse-logo{position:relative;display:inline-block;width:44px;height:44px}
-.eclipse-logo .el-moon,.eclipse-logo .el-star{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;background:var(--lime);-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;font-size:0;color:transparent;transition:background .25s,transform .3s}
+.eclipse-logo .el-moon,.eclipse-logo .el-star{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;background:var(--magenta);-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;font-size:0;color:transparent;transition:background .25s,transform .3s}
 .eclipse-logo .el-moon{-webkit-mask-image:url(icons/logo-eclipse-moon.svg);mask-image:url(icons/logo-eclipse-moon.svg)}
 .eclipse-logo .el-star{-webkit-mask-image:url(icons/logo-eclipse-star.svg);mask-image:url(icons/logo-eclipse-star.svg)}
 .sidebar-logo .eclipse-logo.sidebar-logo-img{width:44px;height:44px;filter:none}
@@ -247,7 +247,8 @@ button:active:not(:disabled),.card-action-btn:active,.modal-btn:active,.credit-p
 .sidebar-label{opacity:0;font-size:13px;font-weight:600;letter-spacing:.2px;transform:translateX(-6px);transition:opacity .3s cubic-bezier(.4,0,.2,1) .15s,transform .35s cubic-bezier(.2,.8,.2,1) .12s;pointer-events:none}
 .sidebar.open .sidebar-label{opacity:1;transform:translateX(0)}
 .sidebar-btn:hover{background:var(--bg-hover);color:var(--text-secondary)}
-.sidebar-btn.active{background:var(--lime-bg-strong);color:var(--lime)}
+.sidebar-btn.active{background:var(--magenta);color:#fff}
+.sidebar-btn.active svg{stroke:#fff}
 .sidebar-btn.active::before{display:none}
 .sidebar-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .sidebar-bottom{margin-top:auto;display:flex;flex-direction:column;gap:6px;align-items:center;padding-top:12px;position:relative}
@@ -310,7 +311,7 @@ button:active:not(:disabled),.card-action-btn:active,.modal-btn:active,.credit-p
 .search-result-kbd{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);padding:2px 6px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;flex-shrink:0}
 .search-empty{padding:28px 12px;text-align:center;color:var(--text-dim);font-size:12px}
 .search-empty strong{color:var(--text-secondary);display:block;margin-bottom:4px;font-size:13px}
-.search-highlight{color:var(--lime);font-weight:700}
+.search-highlight{color:var(--magenta);font-weight:700}
 .topbar-actions{display:flex;gap:8px;margin-left:auto}
 .topbar-icon-btn{width:38px;height:38px;background:var(--bg-card);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:border-color .15s,background .15s}
 .topbar-icon-btn:hover{border-color:var(--border-light);background:var(--bg-hover)}
@@ -4667,9 +4668,9 @@ button:not(:disabled):active{transform:scale(.97)}
   pointer-events:none;transition:left .6s var(--ease-out-expo);
 }
 .attr-stat-head:hover,.attr-stat-head:active,.attr-stat-head.touched{
-  border-color:color-mix(in srgb,var(--lime) 55%,var(--border));
+  border-color:color-mix(in srgb,var(--magenta) 55%,var(--border));
   transform:scale(1.02) translateY(-1px);
-  box-shadow:0 6px 20px rgba(0,0,0,.35),0 0 0 1px color-mix(in srgb,var(--lime) 25%,transparent);
+  box-shadow:0 6px 20px rgba(0,0,0,.35),0 0 0 1px color-mix(in srgb,var(--magenta) 25%,transparent);
 }
 .attr-stat-head:hover::after,.attr-stat-head:active::after,.attr-stat-head.touched::after{left:160%}
 .attr-flower-wrap{display:flex;justify-content:center;align-items:center;padding:14px 0 8px;animation:afpIn .45s cubic-bezier(.2,.8,.2,1)}
