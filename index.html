@@ -6518,9 +6518,6 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
     <div class="topbar-row topbar-row-1">
       <div class="topbar-welcome"><small>Bem-vindo,</small><h2 id="topbar-welcome-name">Aventureiro</h2></div>
       <div class="topbar-actions">
-        <button class="topbar-icon-btn" data-tip="Personagens" title="Gerenciar personagens" aria-label="Personagens" onclick="openCharsManager()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></button>
-        <button class="topbar-icon-btn" id="dice-launcher-btn" data-tip="Rolar dado (Ctrl+D)" title="Rolar dado (Ctrl+D)" aria-label="Rolar dado" onclick="openDicePopup()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></button>
-        <button class="topbar-icon-btn" id="global-launcher-btn" data-tip="Acesso rápido" title="Acesso rápido" aria-label="Acesso global" onclick="toggleGlobalLauncher()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
         <div class="notif-wrap">
           <button class="topbar-icon-btn" data-tip="Notificações" onclick="toggleNotif()" aria-label="Notificações"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg><span class="notif-badge" id="notif-badge"></span></button>
           <div class="notif-dropdown" id="notif-dropdown">
@@ -6530,7 +6527,7 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
           </div>
         </div>
         <div class="profile-menu-wrap">
-          <button class="topbar-icon-btn topbar-profile-btn" id="topbar-profile-btn" data-tip="Perfil" title="Perfil" aria-label="Perfil" onclick="switchToProfile()"><span id="topbar-profile-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></span></button>
+          <button class="topbar-icon-btn topbar-profile-btn" id="topbar-profile-btn" data-tip="Configurações" title="Configurações" aria-label="Configurações" onclick="switchToProfile()"><span id="topbar-profile-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span></button>
         </div>
       </div>
     </div>
@@ -15187,13 +15184,13 @@ function renderNotifs(){
   }).join('');
 }
 
+function _saveNotifs(){try{localStorage.setItem('eclipse_notifs',JSON.stringify(notifications))}catch(_){}}
 function toggleNotif(){
   const dd=document.getElementById('notif-dropdown');
   dd.classList.toggle('open');
-  if(dd.classList.contains('open'))notifications.forEach(n=>n.read=true);
   renderNotifs();
 }
-function markNotifRead(i){notifications[i].read=true;renderNotifs()}
+function markNotifRead(i){notifications.splice(i,1);_saveNotifs();renderNotifs()}
 function clearNotifs(){notifications=[];try{localStorage.removeItem('eclipse_notifs')}catch(_){}renderNotifs()}
 
 document.addEventListener('click',e=>{if(!e.target.closest('.notif-wrap'))document.getElementById('notif-dropdown')?.classList.remove('open')})
