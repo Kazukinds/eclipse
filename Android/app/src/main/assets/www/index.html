@@ -844,24 +844,9 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .item-ammo-badge .ammo-cur{color:var(--magenta);font-weight:800;text-shadow:0 0 6px color-mix(in srgb,var(--magenta) 55%,transparent),0 1px 2px rgba(0,0,0,.9)}
 .item-ammo-badge .ammo-sep{color:#666;font-weight:500;margin:0 1px;opacity:.85}
 .item-ammo-badge .ammo-max{color:#9aa0a6;font-weight:600}
-.item-ammo-badge.empty{color:#ff5c5c;border-color:rgba(255,92,92,.5);animation:ammo-empty-pulse 1.6s ease-in-out infinite}
+.item-ammo-badge.empty{color:#ff5c5c;border-color:rgba(255,92,92,.5)}
 .item-ammo-badge.empty .ammo-cur{color:#ff5c5c;text-shadow:0 0 4px rgba(255,92,92,.5),0 1px 2px rgba(0,0,0,.9)}
 .item-ammo-badge.empty .ammo-max{color:#c66}
-@keyframes ammo-empty-pulse{0%,100%{border-color:rgba(255,92,92,.4)}50%{border-color:rgba(255,92,92,.85)}}
-/* Cell inteira pulsa vermelho quando munição zerou */
-.inv-cell.ammo-empty,.inv-cell:has(.item-ammo-badge.empty){animation:cell-empty-pulse 1.4s ease-in-out infinite;position:relative}
-@keyframes cell-empty-pulse{
-  0%,100%{box-shadow:inset 0 0 0 1px rgba(255,92,92,.35),0 0 0 0 rgba(255,92,92,0)}
-  50%{box-shadow:inset 0 0 0 2px rgba(255,92,92,.85),0 0 14px rgba(255,92,92,.45)}
-}
-/* Shake breve quando ammo transita de >0 → 0 */
-.inv-cell.ammo-just-emptied{animation:cell-empty-shake .42s cubic-bezier(.36,.07,.19,.97),cell-empty-pulse 1.4s ease-in-out infinite .42s}
-@keyframes cell-empty-shake{
-  10%,90%{transform:translateX(-1.5px)}
-  20%,80%{transform:translateX(2.5px)}
-  30%,50%,70%{transform:translateX(-4px)}
-  40%,60%{transform:translateX(4px)}
-}
 .item-ammo-badge.low{color:#ffb84d;border-color:rgba(255,184,77,.5)}
 .item-ammo-badge.low .ammo-cur{color:#ffb84d;text-shadow:0 0 6px rgba(255,184,77,.5),0 1px 2px rgba(0,0,0,.9)}
 /* Reload progress ring no border do cell */
@@ -2038,6 +2023,109 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 @media(max-width:640px){
   .biblio-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:26px 20px;padding:20px 10px}
 }
+/* Grid alinhado à esquerda (não estica colunas pra preencher) */
+.biblio-grid{justify-content:start;justify-items:start}
+.biblio-grid .biblio-env{width:100%;max-width:200px}
+
+/* ═══ BIBLIOTECA — Search + Toolbar ═══ */
+.biblio-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 2px}
+.biblio-search-wrap{position:relative;flex:1;min-width:160px;max-width:320px}
+.biblio-search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:var(--text-dim);fill:none;stroke-width:2;pointer-events:none;opacity:.7}
+.biblio-search{width:100%;padding:8px 32px 8px 30px;background:var(--bg-input,#13131a);border:1px solid var(--border,#2a2a32);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;border-radius:8px;transition:border-color .2s,box-shadow .2s}
+.biblio-search:focus{outline:none;border-color:var(--magenta);box-shadow:0 0 0 2px color-mix(in srgb,var(--magenta) 25%,transparent)}
+.biblio-search-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;padding:4px;border-radius:4px;display:none}
+.biblio-search-clear.show{display:block}
+.biblio-search-clear:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.biblio-view-toggle{display:flex;gap:2px;padding:2px;background:var(--bg-input,#13131a);border:1px solid var(--border);border-radius:8px}
+.biblio-view-toggle button{background:transparent;border:none;color:var(--text-dim);padding:6px 8px;cursor:pointer;border-radius:6px;display:flex;align-items:center;gap:4px;font-size:11px;font-family:inherit}
+.biblio-view-toggle button.active{background:var(--magenta-bg-strong);color:var(--magenta)}
+.biblio-view-toggle svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ═══ BIBLIOTECA — Bookmark ribbon (protrude acima do topo do card) ═══ */
+.biblio-bookmark-btn{
+  position:absolute;top:0;right:16px;z-index:11;
+  width:20px;height:32px;padding:0;margin:0;border:none;cursor:pointer;
+  background:transparent;line-height:0;font-size:0;vertical-align:top;
+  display:block;
+  opacity:0;
+  transition:opacity .22s;
+  pointer-events:auto;
+}
+.biblio-env:hover .biblio-bookmark-btn,
+.biblio-env.revealed .biblio-bookmark-btn,
+.biblio-env.bookmarked .biblio-bookmark-btn{opacity:1}
+.biblio-bookmark-flag{
+  display:block;width:100%;height:100%;margin:0;padding:0;
+  background:rgba(120,120,128,.78);
+  clip-path:polygon(0 0,100% 0,100% 100%,50% 70%,0 100%);
+  transition:background .25s,filter .25s;
+  pointer-events:none;
+}
+.biblio-env.bookmarked .biblio-bookmark-flag{
+  background:linear-gradient(180deg,#f43f5e 0%,#be123c 100%);
+}
+.biblio-env.bookmarked .biblio-bookmark-btn{animation:biblio-bm-pop .45s cubic-bezier(.34,1.5,.6,1)}
+.biblio-bookmark-btn:hover .biblio-bookmark-flag{filter:brightness(1.15)}
+.biblio-bookmark-btn:active{transform:translateY(2px)}
+@keyframes biblio-bm-pop{
+  0%{transform:translateY(-100%);opacity:0}
+  55%{transform:translateY(3px);opacity:1}
+  100%{transform:translateY(0);opacity:1}
+}
+
+/* ═══ BIBLIOTECA — Modo lista ═══ */
+.biblio-grid.biblio-grid-list{
+  display:flex;flex-direction:column;gap:8px;padding:14px 10px;
+  background:transparent;border:none;box-shadow:none;
+}
+.biblio-grid.biblio-grid-list .biblio-env{
+  aspect-ratio:auto;width:100%;max-width:none;
+  height:64px;border-radius:8px;overflow:visible;
+  display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:14px;
+  padding:0 14px 0 0;background:var(--bg-card,#13131a);border:1px solid var(--border,#2a2a32);
+  transform:none;animation:biblio-list-in .35s cubic-bezier(.2,.9,.3,1.1) forwards;
+  animation-delay:calc(var(--i,0) * 30ms);
+}
+.biblio-grid.biblio-grid-list .biblio-env:hover{transform:translateX(4px);border-color:var(--env-c)}
+.biblio-grid.biblio-grid-list .biblio-sleeve{display:none}
+.biblio-grid.biblio-grid-list .biblio-cover{
+  position:relative;inset:auto;width:48px;height:48px;border-radius:6px;padding:8px;
+  margin:8px 0 8px 8px;box-shadow:0 4px 10px rgba(0,0,0,.18);transform:none;
+  display:flex;align-items:center;justify-content:center;
+}
+.biblio-grid.biblio-grid-list .biblio-cover-top{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.biblio-grid.biblio-grid-list .biblio-cover-icon{width:22px;height:22px}
+.biblio-grid.biblio-grid-list .biblio-cover-bottom{display:none}
+.biblio-grid.biblio-grid-list .biblio-list-title{
+  font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--text);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.biblio-grid.biblio-grid-list .biblio-list-sub{
+  font-size:11px;color:var(--text-dim);margin-top:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.biblio-grid.biblio-grid-list .biblio-bookmark-btn{
+  position:relative;top:auto;right:auto;transform:none;opacity:1;
+  width:24px;height:32px;flex-shrink:0;
+}
+.biblio-grid.biblio-grid-list .biblio-bookmark-flag{width:18px;height:30px}
+@keyframes biblio-list-in{0%{opacity:0;transform:translateX(-12px)}100%{opacity:1;transform:translateX(0)}}
+
+/* ═══ BIBLIOTECA — Empty state ═══ */
+.biblio-empty{padding:40px 20px;text-align:center;color:var(--text-dim);font-size:13px;width:100%;grid-column:1/-1}
+.biblio-empty svg{width:36px;height:36px;margin:0 auto 10px;display:block;opacity:.5}
+
+/* ═══ BIBLIOTECA — Reader close gravity fall ═══ */
+.biblio-reader.closing{pointer-events:none}
+.biblio-reader.closing .biblio-reader-book{
+  animation:biblio-reader-fall .55s cubic-bezier(.36,0,.66,-0.56) forwards;
+}
+@keyframes biblio-reader-fall{
+  0%{opacity:1;transform:translateY(0) scale(1) rotate(0)}
+  30%{transform:translateY(40px) scale(.96) rotate(-2deg)}
+  100%{opacity:0;transform:translateY(120vh) scale(.7) rotate(8deg)}
+}
 
 /* ═══ BIBLIOTECA READER (livro 3D + page flip) ═══ */
 .biblio-reader{
@@ -2344,10 +2432,11 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 [data-theme="light"] .biblio-reader-close-floating{background:rgba(26,24,37,.1);border-color:rgba(26,24,37,.2);color:#1a1825}
 [data-theme="light"] .biblio-reader-close-floating:hover{background:rgba(26,24,37,.18);color:#000}
 
-/* Livro caindo com vento sutil */
+/* Livro caindo com gravidade natural — pequeno tilt inicial, depois aceleração quadrática */
 .biblio-reader-book.book-falling{
-  animation:book-fall-wind 880ms cubic-bezier(.35,.0,.65,1) forwards;
+  animation:book-fall-wind 820ms cubic-bezier(.55,.05,.85,.6) forwards;
   pointer-events:none;
+  transform-origin:50% 30%;
 }
 .biblio-reader.closing .book-cover-3d{
   transform:rotateY(0) rotate(0) translateX(0)!important;
@@ -2359,13 +2448,12 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
   transition:all .3s ease!important;
 }
 @keyframes book-fall-wind{
-  0%{transform:translateY(0) translateX(0) rotate(0) scale(1);opacity:1;filter:blur(0)}
-  15%{transform:translateY(-8px) translateX(-4px) rotate(-1.5deg) scale(1);opacity:1}
-  28%{transform:translateY(-4px) translateX(5px) rotate(1.8deg) scale(1);opacity:1}
-  42%{transform:translateY(6px) translateX(-3px) rotate(-2.4deg) scale(.99);opacity:1}
-  60%{transform:translateY(60px) translateX(6px) rotate(6deg) scale(.96);opacity:.95;filter:blur(.4px)}
-  80%{transform:translateY(180px) translateX(-4px) rotate(-4deg) scale(.9);opacity:.6;filter:blur(1.2px)}
-  100%{transform:translateY(100vh) translateX(0) rotate(8deg) scale(.78);opacity:0;filter:blur(2.5px)}
+  0%{transform:translateY(0) rotate(0) scale(1);opacity:1;filter:blur(0)}
+  10%{transform:translateY(-3px) rotate(-2deg) scale(1);opacity:1}
+  22%{transform:translateY(2px) rotate(2deg) scale(1);opacity:1}
+  45%{transform:translateY(40px) rotate(5deg) scale(.97);opacity:.96;filter:blur(.4px)}
+  72%{transform:translateY(180px) rotate(8deg) scale(.9);opacity:.7;filter:blur(1.2px)}
+  100%{transform:translateY(110vh) rotate(11deg) scale(.78);opacity:0;filter:blur(2.5px)}
 }
 /* Stage também desvanece enquanto livro cai */
 .biblio-reader.closing{background:rgba(0,0,0,0)!important;backdrop-filter:blur(0)!important;-webkit-backdrop-filter:blur(0)!important;transition:background .7s ease,backdrop-filter .7s ease!important}
@@ -6518,13 +6606,24 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
     <!-- ═══ BIBLIOTECA (nativa — sem iframe) ═══ -->
     <section class="tab-content" id="tab-biblioteca">
       <div class="biblio-shelf">
+        <div class="biblio-toolbar">
+          <div class="biblio-search-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" id="biblio-search" class="biblio-search" placeholder="Buscar capítulo, conteúdo…" autocomplete="off">
+            <button class="biblio-search-clear" id="biblio-search-clear" type="button" aria-label="Limpar busca"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          </div>
+          <div class="biblio-view-toggle" id="biblio-view-toggle" role="group" aria-label="Modo de visualização">
+            <button type="button" data-view="grid" class="active" title="Grade"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
+            <button type="button" data-view="list" title="Lista"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+          </div>
+        </div>
         <div class="inv-filter-pills biblio-pills" id="biblio-filter-pills">
-          <button class="inv-filter-pill active" data-f="all">Todas</button>
+          <button class="inv-filter-pill" data-f="fav" title="Livros destacados"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" stroke="none" style="vertical-align:-2px;margin-right:4px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>Destaques</button>
           <button class="inv-filter-pill" data-f="mec">Mecânica</button>
           <button class="inv-filter-pill" data-f="pers">Personagem</button>
           <button class="inv-filter-pill" data-f="cam">Caminhos</button>
           <button class="inv-filter-pill" data-f="mun">Mundo</button>
-          <button class="inv-filter-pill biblio-layout-toggle" id="biblio-layout-toggle" type="button" title="Alternar visão estruturada (esquerda → direita)" onclick="toggleBiblioLayout()" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="14" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg><span>Estrutura</span></button>
+          <button class="inv-filter-pill active" data-f="all">Tudo</button>
         </div>
         <div class="biblio-grid" id="biblio-grid"></div>
       </div>
@@ -7063,7 +7162,17 @@ window.setSoundVolume=function(v){
     error:()=>{tone(175,.18,'sine',.08,85);buzz([60,30,60])},
     whoosh:()=>{noise(.28,.09,500);buzz(8)},
     rollTick:()=>{tone(330,.035,'sine',.025)},
-    rollDone:()=>{tone(330,.1,'sine',.08);setTimeout(()=>tone(440,.14,'sine',.08),80);setTimeout(()=>tone(587,.22,'sine',.07),170);buzz([20,40,30])}
+    rollDone:()=>{tone(330,.1,'sine',.08);setTimeout(()=>tone(440,.14,'sine',.08),80);setTimeout(()=>tone(587,.22,'sine',.07),170);buzz([20,40,30])},
+    reloadStart:(sub)=>{
+      if(sub==='heavy'){noise(.16,.14,260);setTimeout(()=>tone(150,.18,'sine',.07,90),120);buzz([25,40,25])}
+      else if(sub==='pistola'){tone(520,.05,'sine',.06);setTimeout(()=>noise(.07,.10,1600),50);setTimeout(()=>tone(380,.06,'sine',.05),120);buzz([12,30])}
+      else{tone(440,.05,'sine',.06);setTimeout(()=>noise(.08,.10,1100),60);buzz([15,30])}
+    },
+    reloadDone:(sub)=>{
+      if(sub==='heavy'){tone(130,.18,'sine',.08);setTimeout(()=>noise(.1,.12,360),140);buzz([40,20,40])}
+      else if(sub==='pistola'){tone(620,.07,'sine',.07);setTimeout(()=>tone(740,.10,'sine',.06),60);buzz([12,25,15])}
+      else{tone(523,.09,'sine',.07);setTimeout(()=>tone(659,.14,'sine',.07),60);buzz([15,30,20])}
+    }
   };
 })();
 window.addEventListener('DOMContentLoaded',()=>{
@@ -11711,33 +11820,42 @@ function setItemRotation(id,target){
   const swap=(oldW!==oldH)&&(oldVert!==newVert);
   const newW=swap?oldH:oldW;
   const newH=swap?oldW:oldH;
-  document.querySelectorAll(`.inv-cell[data-item-id="${id}"] img.item-icon-svg`).forEach(img=>{
-    img.style.setProperty('--_rot',target+'deg');
-    const overlay=img.closest('.item-overlay');
-    const orient=overlay?overlay.dataset.orient:null;
-    let tx;
-    if(orient==='v')tx=`translate(-50%,-50%) rotate(${target}deg)`;
-    else if(orient==='h')tx=`scale(1.18) rotate(${target}deg)`;
-    else tx=`rotate(${target}deg)`;
-    img.style.setProperty('transform',tx,'important');
-  });
-  setTimeout(()=>{
-    if(swap&&it.posIdx!=null){
-      clearItemSlots(it.posIdx,oldW,oldH);
-      let targetIdx=it.posIdx;
-      if(!canPlaceIgnoring(targetIdx,newW,newH,id)){
+  if(swap&&it.posIdx!=null){
+    clearItemSlots(it.posIdx,oldW,oldH);
+    // Rotação ao redor do centro (estilo RE4): preserva centro do item.
+    const oldCol=it.posIdx%gridCols;
+    const oldRow=Math.floor(it.posIdx/gridCols);
+    const cx=oldCol+oldW/2;
+    const cy=oldRow+oldH/2;
+    let nCol=Math.round(cx-newW/2);
+    let nRow=Math.round(cy-newH/2);
+    nCol=Math.max(0,Math.min(gridCols-newW,nCol));
+    nRow=Math.max(0,Math.min(gridRows-newH,nRow));
+    let targetIdx=nRow*gridCols+nCol;
+    if(!canPlaceIgnoring(targetIdx,newW,newH,id)){
+      // Fallback: tenta posIdx original, depois primeiro slot livre.
+      if(canPlaceIgnoring(it.posIdx,newW,newH,id))targetIdx=it.posIdx;
+      else{
         let found=-1;
         for(let i=0;i<GRID_SIZE;i++){if(canPlaceIgnoring(i,newW,newH,id)){found=i;break}}
-        if(found<0){placeItem(it.posIdx,id,oldW,oldH);renderGrid();requestAnimationFrame(()=>{document.querySelectorAll(`.inv-cell[data-item-id="${id}"]`).forEach(c=>{c.classList.add('shake-nofit');setTimeout(()=>c.classList.remove('shake-nofit'),400)})});return}
+        if(found<0){placeItem(it.posIdx,id,oldW,oldH);renderGrid();return}
         targetIdx=found;
       }
-      it.gw=newW;it.gh=newH;it.posIdx=targetIdx;
-      placeItem(targetIdx,id,newW,newH);
     }
-    it.rot=target;
-    renderGrid();
-    if(typeof saveGame==='function')try{saveGame()}catch(_){}
-  },320);
+    it.gw=newW;it.gh=newH;it.posIdx=targetIdx;
+    placeItem(targetIdx,id,newW,newH);
+  }
+  it.rot=target;
+  // Switch iconWpn to rotation variant so SVG file matches angle (no CSS distortion).
+  const _curEnt=it.iconWpn&&WEAPON_SVGS[it.iconWpn];
+  const _baseKey=_curEnt&&_curEnt.rotVariants?it.iconWpn:_findBaseRotKey(it.iconWpn);
+  if(_baseKey){
+    const _baseEnt=WEAPON_SVGS[_baseKey];
+    const _v=_baseEnt&&_baseEnt.rotVariants&&_baseEnt.rotVariants[target];
+    if(_v&&WEAPON_SVGS[_v])it.iconWpn=_v;
+  }
+  renderGrid();
+  if(typeof saveGame==='function')try{saveGame()}catch(_){}
 }
 window.setItemRotation=setItemRotation;
 function closeRotateMenu(){document.getElementById('rotate-menu')?.remove()}
@@ -11957,17 +12075,11 @@ function buildCell(i){
       if(cur===0)stateCls=' empty';
       else if(maxMag>0&&cur/maxMag<=0.3)stateCls=' low';
       ammoBadge=`<span class="item-ammo-badge${stateCls}" title="Munição carregada / capacidade do pente · reserva: ${reserve}"><span class="ammo-cur">${cur}</span><span class="ammo-sep">/</span><span class="ammo-max">${maxMag}</span></span>`;
-      // Detecta transição ammo>0 → ammo===0 pra disparar shake única vez
-      const _prevAmmo=item._prevAmmo;
-      if(cur===0&&_prevAmmo!=null&&_prevAmmo>0){
-        cell.classList.add('ammo-just-emptied');
-        setTimeout(()=>cell.classList.remove('ammo-just-emptied'),500);
-      }
       item._prevAmmo=cur;
     }
     const equipMark=item.equipped?`<span class="item-equip-mark" title="Equipado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></span>`:'';
     const reloadRing=item._reloading?`<div class="item-reload-ring" data-reload-ring><svg viewBox="0 0 100 100" preserveAspectRatio="none"><rect x="2" y="2" width="96" height="96" rx="6" pathLength="100" style="--_dash:100;--_dur:${item._reloadMs||1000}ms"/></svg></div>`:'';
-    const rotateBtn=wpnEntry?`<button class="item-rotate-btn" data-rotate-btn aria-label="Rotacionar"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><polyline points="21 3 21 8 16 8"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><polyline points="3 21 3 16 8 16"/></svg></button>`:'';
+    const rotateBtn='';
     if(isMulti){
       cell.classList.add('multi-origin');
       const overlay=document.createElement('div');
@@ -12028,38 +12140,39 @@ function buildCell(i){
         });
       }
     }
-    if(wpnEntry){
-      const rBtn=cell.querySelector('[data-rotate-btn]');
-      if(rBtn){
-        // Don't stop pointerdown — let cell drag detection see it. Only stop click.
-        rBtn.addEventListener('click',ev=>{
-          ev.stopPropagation();ev.preventDefault();
-          rotateItem(item.id);
-        });
-      }
-    }
     cell.draggable=false;
     cell.addEventListener('pointerdown',e=>{
       if(e.button!==0&&e.pointerType==='mouse')return;
-      // Capture pointer so subsequent move/up events fire on this element regardless of cursor target.
       try{e.currentTarget.setPointerCapture(e.pointerId)}catch(_){}
       const startX=e.clientX,startY=e.clientY;
-      let started=false,longPressed=false;
-      // Long-press → abre rotate menu (somente armas com wpnEntry)
-      const longPressTimer=wpnEntry?setTimeout(()=>{
-        if(started||longPressed)return;
-        longPressed=true;
-        document.removeEventListener('pointermove',onMove);
-        document.removeEventListener('pointerup',onUp);
-        try{e.currentTarget.releasePointerCapture(e.pointerId)}catch(_){}
+      let started=false,cycling=false;
+      // Auto-rotate seq: 0 → 90 → 180 → -90 → 0 …
+      const ROT_SEQ=[0,90,180,-90];
+      let rotIdx=ROT_SEQ.indexOf(item.rot||0);if(rotIdx<0)rotIdx=0;
+      let cycleTimer=null;
+      const tickRot=()=>{
+        rotIdx=(rotIdx+1)%ROT_SEQ.length;
+        if(typeof setItemRotation==='function')setItemRotation(item.id,ROT_SEQ[rotIdx]);
+        cycleTimer=setTimeout(tickRot,750);
+      };
+      const startCycleTimer=wpnEntry?setTimeout(()=>{
+        if(started)return;
+        cycling=true;
         if(navigator.vibrate)try{navigator.vibrate(15)}catch(_){}
-        if(typeof openRotateMenu==='function')openRotateMenu(item.id,{x:startX,y:startY});
+        cycleTimer=setTimeout(tickRot,250);
       },500):null;
+      const stopCycle=()=>{if(cycleTimer){clearTimeout(cycleTimer);cycleTimer=null}};
       const onMove=ev=>{
         if(started)return;
         if(Math.abs(ev.clientX-startX)+Math.abs(ev.clientY-startY)>5){
-          if(longPressTimer)clearTimeout(longPressTimer);
-          if(longPressed)return;
+          if(startCycleTimer)clearTimeout(startCycleTimer);
+          stopCycle();
+          // Se já estava ciclando, finaliza só (sem virar drag — DOM da cell foi recriado).
+          if(cycling){
+            document.removeEventListener('pointermove',onMove);
+            document.removeEventListener('pointerup',onUp);
+            return;
+          }
           started=true;
           document.removeEventListener('pointermove',onMove);
           document.removeEventListener('pointerup',onUp);
@@ -12068,16 +12181,17 @@ function buildCell(i){
         }
       };
       const onUp=()=>{
-        if(longPressTimer)clearTimeout(longPressTimer);
+        if(startCycleTimer)clearTimeout(startCycleTimer);
+        stopCycle();
         document.removeEventListener('pointermove',onMove);
         document.removeEventListener('pointerup',onUp);
-        if(!started&&!longPressed){
-          // Click puro → mostra info do item
+        if(!started&&!cycling){
           selectInvItem(item.id);
         }
       };
       document.addEventListener('pointermove',onMove);
       document.addEventListener('pointerup',onUp,{once:true});
+      document.addEventListener('pointercancel',onUp,{once:true});
     });
   } else {
     cell.addEventListener('click',e=>{e.stopPropagation();clearDetail()});
@@ -12287,10 +12401,10 @@ document.addEventListener('keydown',e=>{
 });
 // Case progression: grid sempre 14x10, caseLevel desbloqueia area top-left
 const CASE_LEVELS=[
-  {key:'default', label:'Maleta', cols:10, rows:7, total:70}
+  {key:'default', label:'Maleta', cols:10, rows:10, total:100}
 ];
 let caseLevel=0;
-let gridCols=10,gridRows=7;
+let gridCols=10,gridRows=10;
 
 function unlockArea(){return CASE_LEVELS[caseLevel]||CASE_LEVELS[0]}
 function isCellUnlocked(idx){
@@ -12373,7 +12487,7 @@ function renderGrid(){
   if(selectedItemId)_renderSelectedPreview(selectedItemId);
   const placedCount=inventory.length-overflowItems.length;
   const ua=unlockArea();
-  const btn=document.querySelector('.re4-expand-btn');if(btn)btn.classList.toggle('open',gridRows>7);
+  const btn=document.querySelector('.re4-expand-btn');if(btn)btn.classList.toggle('open',gridRows>10);
   const lbl=document.getElementById('inv-cap-label');if(lbl)lbl.textContent=`${placedCount} / ${ua.total} · ${ua.label}`;
   renderOverflow();
 }
@@ -12933,12 +13047,12 @@ function _reloadWeapon(id){
   const dur=900+Math.min(1100,take*40);
   it._reloading=true;it._reloadMs=dur;
   renderGrid();renderItemDetail();
-  try{window.sfx&&sfx.tick()}catch(_){}
+  try{window.sfx&&(sfx.reloadStart?sfx.reloadStart(w.sub):sfx.tick())}catch(_){}
   setTimeout(()=>{
     const taken=_consumeAmmoFrom(it,take);
     it.ammo=cur+taken;
     delete it._reloading;delete it._reloadMs;
-    try{window.sfx&&sfx.heal()}catch(_){}
+    try{window.sfx&&(sfx.reloadDone?sfx.reloadDone(w.sub):sfx.heal())}catch(_){}
     renderGrid();renderItemDetail();renderDashLists();
     if(typeof saveGame==='function')try{saveGame()}catch(_){}
     toast(`Recarregou +${taken}`,'success');
@@ -13103,7 +13217,13 @@ function addXP(amount,desc){
   while(playerXP>=xpToNext){if(playerLevel>=MAX_LEVEL){playerXP=xpToNext;break}playerXP-=xpToNext;playerLevel++;xpToNext=Math.round(xpToNext*1.2);toast(`Nível ${playerLevel} alcançado!`);leveled=true;if(playerLevel===10){setTimeout(()=>toast('🔓 Nv 10 — +2 pontos de atributo liberados (cap 6)','success'),900)}}
   try{if(window.sfx){leveled?sfx.levelup():sfx.unlock()}}catch(_){}
   if(leveled&&typeof playLottieCelebration==='function')playLottieCelebration();
-  if(leveled&&typeof renderAttrs==='function')renderAttrs();
+  if(leveled){
+    if(typeof _recomputeStatusFromArq==='function')try{_recomputeStatusFromArq()}catch(_){}
+    if(typeof playerHPMax==='number')playerHP=playerHPMax;
+    if(typeof renderAttrs==='function')renderAttrs();
+    if(typeof renderStatus==='function')try{renderStatus()}catch(_){}
+    if(typeof renderDashLists==='function')try{renderDashLists()}catch(_){}
+  }
   renderXP();renderSummary();
 }
 function addStageXP(amount,desc){
@@ -16492,10 +16612,11 @@ const BIBLIO_DATA=[
   {id:'van',cat:'cam',title:'Vanguarda',sub:'Frontline combativo',c:'orange',ico:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',body:'<p>Caminho marcial puro. Especialista em combate corpo-a-corpo e proteção de aliados. Escala <b>FOR + CON</b>.</p><h4>Traços por Nível</h4><ul><li><b>Nv 1</b> — Estilo de Combate (defensor, duas-armas, arqueiro, pesado)</li><li><b>Nv 2</b> — Surto (1× descanso curto: ação extra)</li><li><b>Nv 3</b> — Especialização (Berserker, Guardião, Mestre-de-Armas)</li><li><b>Nv 5</b> — Ataque Extra (2 ataques por ação)</li><li><b>Nv 7</b> — Reação fortificada (escudo de aliado adjacente)</li><li><b>Nv 9</b> — Indomável (re-rola 1 teste resistido falho)</li><li><b>Nv 11</b> — Ataque Extra (3 ataques)</li><li><b>Nv 14</b> — Imune a medo</li><li><b>Nv 17</b> — 2 surtos por descanso</li><li><b>Nv 20</b> — Capstone: Sobrevivente — recupera todo HP ao chegar a 0 (1× por descanso longo)</li></ul><h4>Equipamento Comum</h4><p>Armadura pesada, escudo, arma marcial pesada, granadas.</p>'},
   {id:'ope',cat:'cam',title:'Operador',sub:'Técnico infiltrador',c:'cyan',ico:'<rect x="3" y="5" width="18" height="11" rx="1.5"/><line x1="2" y1="20" x2="22" y2="20"/><path d="M8 9h8M8 12h5"/>',body:'<p>Hacker, drone-master, infiltrador. Combina tecnologia e furtividade. Escala <b>INT + DES</b>.</p><h4>Traços por Nível</h4><ul><li><b>Nv 1</b> — Toolkit Especialista (escolha 2 perícias técnicas com expertise)</li><li><b>Nv 2</b> — Drone Companheiro (CR 1/4, controlado como ação bônus)</li><li><b>Nv 3</b> — Especialização (Hacker, Drone-Pilot, Saboteur)</li><li><b>Nv 5</b> — Bypass Eletrônico (passa fechaduras eletrônicas automaticamente em 1 ação)</li><li><b>Nv 7</b> — Drone aprimorado (CR 1)</li><li><b>Nv 9</b> — Modo Fantasma (invisível por 1 min, 1× descanso)</li><li><b>Nv 11</b> — Hack Mortal (sobrecarrega implante de inimigo: 6d10 dano elétrico)</li><li><b>Nv 14</b> — Múltiplos drones (até 3)</li><li><b>Nv 17</b> — Imune a vigilância eletrônica</li><li><b>Nv 20</b> — Capstone: Onipresença — controla qualquer dispositivo eletrônico em 1km por 1h</li></ul>'},
   {id:'fei',cat:'cam',title:'Feiticeiro',sub:'Arcano puro',c:'violet',ico:'<path d="M3 21l11-11"/><path d="m14 10 5-5"/><path d="M16 4l1.2 2.5L20 7.5l-2.8 1.2L16 12l-1.2-2.8L11.5 7.5l2.8-1.2z"/>',body:'<p>Conjurador de rituais arcanos. Acessa rituais do 1º ao 4º grau (Aprimoramento p/ alto nível). Escala <b>CAR + INT</b>.</p><h4>Sistema de Rituais</h4><ul><li><b>1º Grau</b>: 1 PE · ritual fácil de resistir (DT 14)</li><li><b>2º Grau</b>: 3 PE · DT 14</li><li><b>3º Grau</b>: 6 PE · DT 11 (Aprimoramento mesma DT)</li><li><b>4º Grau</b>: 10 PE · DT 8 — ritual poderoso, difícil resistir</li><li>Limite de pontos por ritual: <b>3 + nível</b></li><li>Construção via Forja: 30 pts base por grau (27 Aprimoramento)</li></ul><h4>Traços por Nível</h4><ul><li><b>Nv 1</b> — Origem Arcana (Sangue Drácono, Caos Selvagem, Pacto Antigo)</li><li><b>Nv 2</b> — Pontos de Esforço (regenera com descanso curto)</li><li><b>Nv 3</b> — Metamagia (Distante, Cuidadoso, Gêmeo, Estendido)</li><li><b>Nv 6</b> — Traço de Origem ativo</li><li><b>Nv 14</b> — Restauração arcana (recupera PE no descanso curto)</li><li><b>Nv 18</b> — Maestria: 1 ritual de 1º grau grátis por turno</li><li><b>Nv 20</b> — Capstone: 4 PE extras + 1 metamagia bônus</li></ul>'},
-  {id:'rit',cat:'cam',title:'Rituais',sub:'Essências, graus, anatomia',c:'lime',ico:'<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/><circle cx="12" cy="12" r="3"/>',body:'<h2>O que são Rituais</h2><p>Fragmentos de vontade transformados em forma — cortes precisos no tecido do real. Cada ritual exige preparo, foco e custo.</p><h3>Aprendidos vs. Adquiridos</h3><p><b>Aprendidos</b> — estudados ativamente, ocupam slots limitados pelo nível.</p><p><b>Adquiridos</b> — vêm de classe, poder, linhagem ou item; não consomem o limite.</p><h2>Essências e Graus</h2><p><b>Alba</b> — vida, regeneração, vínculos.</p><p><b>Carmin</b> — sacrifício, violência ritualizada.</p><p><b>Kaos</b> — distorção, possibilidade, troca.</p><p><b>Lumen</b> — verdade, percepção.</p><p><b>Perene</b> — ciclos, equilíbrio, continuidade.</p><p><b>Ruina</b> — dissolução, fim, silêncio.</p><h3>Graus</h3><p><b>1º — Iniciante</b>: efeitos breves.</p><p><b>2º — Intermediário</b>: sustentação, múltiplos alvos.</p><p><b>3º — Avançado</b>: ruptura localizada.</p><p><b>4º — Mestre</b>: reescreve cenas.</p><h2>Anatomia de um Ritual</h2><p><b>Execução</b> — Livre, Movimento, Reação ou Decisiva.</p><p><b>Alcance</b> — toque, pessoal, curto, médio, longo.</p><p><b>Duração</b> — instantânea, cena, sustentada, permanente.</p><p><b>Alvo</b> — você, único, múltiplos, cubo/esfera, padrão.</p><p><b>Custo</b> — Foco geralmente; Esforço/Vit/Det em rituais maiores.</p><p><b>Movimentos</b> — gestos/verbos componentes; bloqueáveis se contido.</p>'},
-  {id:'obs',cat:'cam',title:'Obscure',sub:'Sombra & aflição',c:'purple',ico:'<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z"/>',body:'<p>Caminho umbra. Manipula sombra, dano psíquico e teletransporte curto. Escala <b>CAR + DES</b>.</p><h4>Traços por Nível</h4><ul><li><b>Nv 1</b> — Caminhar nas Sombras (teletransporte 9m entre 2 áreas escuras)</li><li><b>Nv 2</b> — Toque Marciante (1d8 psíquico extra em ataque desarmado)</li><li><b>Nv 3</b> — Manto da Penumbra (vantagem em Furtividade em luz fraca/escuro)</li><li><b>Nv 5</b> — Aflição (alvo deve teste SAB ou ganha desvantagem por 1 min)</li><li><b>Nv 7</b> — Forma de Sombra (10 min: incorpóreo, 1× descanso longo)</li><li><b>Nv 9</b> — Eco — duplo de sombra ataca junto (1×/turno)</li><li><b>Nv 11</b> — Resistência completa a necrótico/psíquico</li><li><b>Nv 14</b> — Visão da Verdade — vê através de invisibilidade 18m</li><li><b>Nv 20</b> — Capstone: Coroa de Sombras — todos inimigos em 9m têm desvantagem em vc</li></ul>'},
+  {id:'obs',cat:'cam',title:'Obscure',sub:'Sombra, aflição & rituais',c:'purple',ico:'<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z"/>',body:'<p>Caminho umbra. Manipula sombra, dano psíquico e teletransporte curto. Escala <b>CAR + DES</b>.</p><h4>Traços por Nível</h4><ul><li><b>Nv 1</b> — Caminhar nas Sombras (teletransporte 9m entre 2 áreas escuras)</li><li><b>Nv 2</b> — Toque Marciante (1d8 psíquico extra em ataque desarmado)</li><li><b>Nv 3</b> — Manto da Penumbra (vantagem em Furtividade em luz fraca/escuro)</li><li><b>Nv 5</b> — Aflição (alvo deve teste SAB ou ganha desvantagem por 1 min)</li><li><b>Nv 7</b> — Forma de Sombra (10 min: incorpóreo, 1× descanso longo)</li><li><b>Nv 9</b> — Eco — duplo de sombra ataca junto (1×/turno)</li><li><b>Nv 11</b> — Resistência completa a necrótico/psíquico</li><li><b>Nv 14</b> — Visão da Verdade — vê através de invisibilidade 18m</li><li><b>Nv 20</b> — Capstone: Coroa de Sombras — todos inimigos em 9m têm desvantagem em vc</li></ul><h2>O que são Rituais</h2><p>Fragmentos de vontade transformados em forma — cortes precisos no tecido do real. Cada ritual exige preparo, foco e custo.</p><h3>Aprendidos vs. Adquiridos</h3><p><b>Aprendidos</b> — estudados ativamente, ocupam slots limitados pelo nível.</p><p><b>Adquiridos</b> — vêm de classe, poder, linhagem ou item; não consomem o limite.</p><h2>Essências e Graus</h2><p><b>Alba</b> — vida, regeneração, vínculos.</p><p><b>Carmin</b> — sacrifício, violência ritualizada.</p><p><b>Kaos</b> — distorção, possibilidade, troca.</p><p><b>Lumen</b> — verdade, percepção.</p><p><b>Perene</b> — ciclos, equilíbrio, continuidade.</p><p><b>Ruina</b> — dissolução, fim, silêncio.</p><h3>Graus</h3><p><b>1º — Iniciante</b>: efeitos breves.</p><p><b>2º — Intermediário</b>: sustentação, múltiplos alvos.</p><p><b>3º — Avançado</b>: ruptura localizada.</p><p><b>4º — Mestre</b>: reescreve cenas.</p><h2>Anatomia de um Ritual</h2><p><b>Execução</b> — Livre, Movimento, Reação ou Decisiva.</p><p><b>Alcance</b> — toque, pessoal, curto, médio, longo.</p><p><b>Duração</b> — instantânea, cena, sustentada, permanente.</p><p><b>Alvo</b> — você, único, múltiplos, cubo/esfera, padrão.</p><p><b>Custo</b> — Foco geralmente; Esforço/Vit/Det em rituais maiores.</p><p><b>Movimentos</b> — gestos/verbos componentes; bloqueáveis se contido.</p>'},
   {id:'asc',cat:'cam',title:'Ascendido',sub:'Iluminação divina',c:'yellow',ico:'<ellipse cx="12" cy="3.5" rx="5" ry="1.4"/><circle cx="12" cy="9" r="2.5"/><path d="M12 11.5v9"/><path d="M3 14c2-3 5-3 9-3s7 0 9 3"/><path d="M3 14c2 1 5 2 9 2s7-1 9-2"/>',body:'<p>Ex-humano iluminado por entidade superior. Cura, proteção e dano radiante. Escala <b>SAB + CAR</b>.</p><h4>Traços por Nível</h4><ul><li><b>Nv 1</b> — Toque que Cura (mod SAB × nv HP por descanso longo, distribuído)</li><li><b>Nv 2</b> — Aura Sagrada (aliados em 3m: +1 testes resistidos)</li><li><b>Nv 3</b> — Domínio (Vida, Luz, Justiça, Tempestade)</li><li><b>Nv 5</b> — Repreensão Divina — quando atacado: 2d6 radiante no atacante</li><li><b>Nv 7</b> — Imune a medo + doença</li><li><b>Nv 9</b> — Ressuscitar (1× por semana: revive aliado morto há &lt; 1 min)</li><li><b>Nv 11</b> — Aura ampliada (9m, +2 testes resistidos)</li><li><b>Nv 14</b> — Visão de almas (vê alinhamento e estado vital)</li><li><b>Nv 20</b> — Capstone: Avatar — 1 min: dano radiante dobrado, voa, regenera 30 HP/turno</li></ul>'},
   {id:'abr',cat:'cam',title:'Aberração',sub:'Mutação caótica',c:'pink',ico:'<path d="M4 6c4 0 8 4 8 8M20 6c-4 0-8 4-8 8"/><path d="M4 18c4 0 8-4 8-8M20 18c-4 0-8-4-8-8"/><circle cx="12" cy="12" r="1.4"/><path d="M5 4h2M14 4h2M5 20h2M14 20h2"/>',body:'<p>Corpo instável, poderes em fluxo. Recebe traços aleatórios por sessão. Escala <b>CON + atributo aleatório</b>.</p><h4>Tabela de Mutação</h4><p>Toda manhã, role d20 na tabela. Resultado vale por 24h.</p><ul><li>1-3 — Pele Quitinosa (+2 CA)</li><li>4-6 — Tentáculo extra (+1 ataque/turno)</li><li>7-9 — Olho Suplementar (+5 Percepção)</li><li>10-12 — Pulmões Aprimorados (não precisa respirar)</li><li>13-15 — Glândula Veneno (1d6 ácido em ataques desarmados)</li><li>16-18 — Membros Elásticos (+3m alcance)</li><li>19-20 — Forma Plástica (escapa de qualquer agarrão automaticamente)</li></ul><h4>Outros Traços</h4><ul><li><b>Nv 1</b> — Anatomia Imprevisível (resistência aleatória diária)</li><li><b>Nv 5</b> — Mutação Voluntária (escolhe 1 da tabela 1× por descanso longo)</li><li><b>Nv 11</b> — Hospedeiro (consome corpo morto para roubar 1 traço por 24h)</li><li><b>Nv 20</b> — Capstone: Forma Verdadeira — escolhe 3 mutações simultaneamente</li></ul>'},
+  {id:'vers',cat:'cam',title:'Caminhos Versáteis',sub:'Mistos & adaptativos',c:'purple',ico:'<circle cx="12" cy="18" r="2.5"/><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M18 8.5V10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8.5"/><path d="M12 12v3.5"/>',body:'<p>Mescla 2 caminhos em níveis ímpares. Perde capstone do principal mas ganha flexibilidade massiva.</p><h4>Regras</h4><ul><li>Pré-requisito: 13 no atributo principal de cada caminho</li><li>HP: usa dado de vida do principal</li><li>Bônus de proficiência: único (não dobra)</li><li>Slots de feitiço: combina (regra multiclasse)</li></ul><h4>Combos Comuns</h4><ul><li><b>Vanguarda × Operador</b> — soldado-hacker, infiltrador armado</li><li><b>Feiticeiro × Ascendido</b> — mago-curador, controle + suporte</li><li><b>Obscure × Operador</b> — assassino digital, sombra cibernética</li><li><b>Aberração × Vanguarda</b> — frontline mutante, imprevisível</li></ul><h4>Restrição</h4><p>Não pode acessar capstone (nv 20) de nenhum dos 2. Em troca: ganha 1 talento extra no nv 20.</p><h4>Recomendação</h4><p>Ideal pra jogadores experientes que querem builds não-óbvias.</p>'},
+  {id:'pvs',cat:'cam',title:'Poderes Versáteis',sub:'Talentos compartilhados',c:'lime',ico:'<path d="M12 3l1.5 5 5 1.5-5 1.5L12 16l-1.5-5-5-1.5 5-1.5z"/><path d="M19 14l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/><path d="M5 16l.6 1.4L7 18l-1.4.6L5 20l-.6-1.4L3 18l1.4-.6z"/>',body:'<p>Lista de talentos universais, escolhidos no lugar de aprimoramento de atributo.</p><h4>Combate</h4><ul><li><b>Disparar-e-Avançar</b> — atacar à distância sem provocar oportunidade</li><li><b>Bloqueio Perfeito</b> — reação: anula 1 acerto, gasta dado de vida</li><li><b>Investida</b> — corre + ataque com bônus +2 dano</li><li><b>Atirador Mortal</b> — ignora cobertura média</li><li><b>Mestre de Armas</b> — proficiente em todas armas</li></ul><h4>Magia</h4><ul><li><b>Palavra de Poder</b> — feitiço como ação bônus 1×/turno</li><li><b>Mente Disciplinada</b> — vantagem em testes vs encantamento</li><li><b>Iniciado</b> — aprende 2 cantrips de qualquer escola</li></ul><h4>Utilidade</h4><ul><li><b>Observador</b> — Percepção passiva +5</li><li><b>Resistente</b> — +1 atributo + vantagem em 1 teste resistido</li><li><b>Linguista</b> — +3 idiomas, decodificação rápida</li><li><b>Atlético</b> — escala/nada/salta como movimento normal</li><li><b>Sortudo</b> — 3 pontos sorte/dia (re-rola d20)</li></ul><h4>Sociais</h4><ul><li><b>Carismático</b> — +1 CAR + vantagem em 1 teste social/cena</li><li><b>Persuasor Implacável</b> — converte falha em sucesso parcial 1×/descanso</li></ul>'},
   {id:'mon',cat:'mun',title:'Montarias',sub:'Companheiros de viagem',c:'green',ico:'<path d="M5 12c0-3.9 3.1-7 7-7s7 3.1 7 7c0 2.5-1 4.6-2.5 5.7-.7.5-1.5 0-1.5-.8V12a3 3 0 0 0-6 0v4.9c0 .8-.8 1.3-1.5.8C6 16.6 5 14.5 5 12z"/><circle cx="9" cy="9" r=".7"/><circle cx="15" cy="9" r=".7"/>',body:'<p>Montarias dão deslocamento extra, transporte de carga e às vezes ataque próprio.</p><h4>Tipos</h4><ul><li><b>Animal terrestre</b> — cavalo, lobo gigante, lagarto-corrida</li><li><b>Construto</b> — mech leve, cyber-cão, drone-cavalo</li><li><b>Bio-mech</b> — híbrido orgânico-mecânico (regenera mas precisa combustível raro)</li><li><b>Voadora</b> — grifo, hover-disco, asa-aberta</li></ul><h4>Atributos</h4><ul><li><b>HP</b> — 4× nível do dono base</li><li><b>Velocidade</b> — 12-20m</li><li><b>Carga</b> — capacidade adicional 200-800kg</li><li><b>Lealdade</b> — testes Animal Handling pra obedecer</li></ul><h4>Combate</h4><p>Compartilha turno com dono. Pode atacar uma vez se treinada. Se HP chega 0 fora de combate, pode ser recuperada com cuidado veterinário.</p><h4>Vínculo</h4><p>Após 1 mês: ganha +2 CA enquanto pilotada. Após 1 ano: comunicação telepática limitada.</p>'},
   {id:'aer',cat:'mun',title:'Aeronaves',sub:'Combate aéreo',c:'blue',ico:'<path d="M22 16L14 11V4l-1-1-1 1v7L4 16v2l8-2v6l-2 1v1l3-1 3 1v-1l-2-1v-6l8 2z"/>',body:'<h4>Categorias</h4><ul><li><b>Caça</b> — manobrável, frágil, dogfight</li><li><b>Bombardeiro</b> — pesado, lento, devastador</li><li><b>Cruzador</b> — médio, multipropósito</li><li><b>Civil</b> — transporte, sem armamento</li><li><b>Mech-aéreo</b> — anti-grav humanoide</li></ul><h4>Combate Aéreo</h4><p>Manobras táticas: barril, queda controlada, tail-chase, immelmann. Cada uma é teste Pilotagem (DES) DT 12-18.</p><h4>Altitude</h4><ul><li>Solo — 0m, vulnerável a tudo</li><li>Baixa — 0-100m, alvejável por arma comum</li><li>Média — 100-1000m, requer arma anti-aérea</li><li>Alta — 1km+, requer míssil ou caça interceptador</li></ul><h4>Reentrada Forçada</h4><p>Casco 0: rola d20. 1-5 explosão (todos dentro: 8d6 fogo). 6-15 queda controlada. 16-20 pouso de emergência.</p>'},
   {id:'mal',cat:'mun',title:'Maldições',sub:'Afetações permanentes',c:'red',ico:'<path d="M12 2a8 8 0 0 0-8 8v3.5a2.5 2.5 0 0 0 1 2v3a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-3a2.5 2.5 0 0 0 1-2V10a8 8 0 0 0-8-8z"/><line x1="9" y1="9.5" x2="11" y2="11.5"/><line x1="11" y1="9.5" x2="9" y2="11.5"/><line x1="13" y1="9.5" x2="15" y2="11.5"/><line x1="15" y1="9.5" x2="13" y2="11.5"/><path d="M10 17h4"/>',body:'<p>Condições narrativas e mecânicas que retornam em arcos específicos. Não removidas por descanso normal.</p><h4>Tipos</h4><ul><li><b>Sangue Maldito</b> — toda lua cheia: -2 todos atributos, sede insaciável</li><li><b>Marca do Vazio</b> — sonhos com entidade, INT teste DT 14 ou ação aleatória 1×/dia</li><li><b>Carne Quebrada</b> — HP máx reduzido em 1d6 por noite, restaura com ritual</li><li><b>Voz dos Mortos</b> — escuta sussurros constantes, desvantagem em sono normal</li><li><b>Olho Aberto</b> — vê coisas invisíveis, mas elas o veem também</li><li><b>Tempo Furtado</b> — envelhece 1d4 anos por mês ativo</li></ul><h4>Remoção</h4><p>Cada maldição tem ritual único: combinação de ingredientes raros, locais de poder e geralmente uma escolha pesada (sacrifício, esquecimento, transformação).</p><h4>Embraçar</h4><p>Personagem pode aceitar a maldição como parte de si: ganha 1 traço único poderoso mas a maldição se intensifica.</p>'},
@@ -16505,10 +16626,40 @@ const BIBLIO_DATA=[
   {id:'fur',cat:'mec',title:'Furtividade',sub:'Silenciar rastros',c:'green',ico:'<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/>',body:'<p>Sistema avançado além de simples teste de Furtividade. Útil em fases extensas.</p><h4>Estado de Alerta</h4><ul><li><b>Inconsciente</b> — guardas relaxados, vc tem vantagem</li><li><b>Atento</b> — testes ativos a cada minuto</li><li><b>Suspeito</b> — investigação em curso</li><li><b>Alerta</b> — busca ativa</li><li><b>Combate</b> — falhou</li></ul><h4>Técnicas Avançadas</h4><ul><li><b>Distração</b> — pedra, falso barulho — rebaixa alerta 1 nível</li><li><b>Cegamento</b> — fumaça, granada flash — todos guardas em 6m: -5 Percepção 2 turnos</li><li><b>Despiste</b> — falsifica rastros (Sobrevivência DT 16)</li><li><b>Pegadas Falsas</b> — leva perseguidor pra direção errada</li><li><b>Camuflagem Adaptativa</b> — implante/feitiço, vantagem total</li></ul><h4>Eliminação Silenciosa</h4><p>Furtividade contestada vs Percepção do alvo. Sucesso: alvo abatido sem som. Falha crítica: alarme.</p>'},
   {id:'psc',cat:'mec',title:'Pescaria',sub:'Mini-game de lazer',c:'cyan',ico:'<path d="M4 4l8 9"/><path d="M12 13c2 1 3 3 3 5 0 2-2 3-4 3s-4-2-4-4"/><circle cx="4" cy="4" r="1"/><path d="M14 11c-1 0 0-3-3-2"/>',body:'<p>Atividade de interlúdio. Recuperação parcial de Foco e oportunidade de descobrir tesouros submersos.</p><h4>Mecânica</h4><ul><li>1 sessão = 1d4 horas in-game</li><li>Teste Sobrevivência DT 12 cada hora</li><li>Cada sucesso: pega 1 peixe, +1d4 Foco</li><li>Sucesso crítico: peixe raro (vendável 50-500C)</li><li>Falha crítica: equipamento quebra ou puxa coisa estranha</li></ul><h4>Tabela de Capturas</h4><ul><li>1-10 — peixe comum</li><li>11-15 — peixe grande (jantar pro grupo)</li><li>16-18 — peixe raro/mutante</li><li>19 — artefato perdido</li><li>20 — encontro narrativo (criatura aquática inteligente)</li></ul><h4>Recompensas Sociais</h4><p>Compartilhar peixe pesado com NPCs aumenta lealdade. Cozinhar +1 cura no descanso.</p>'},
   {id:'cpl',cat:'mec',title:'Complicações',sub:'Dramas procedurais',c:'red',ico:'<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17" r=".7" fill="currentColor"/>',body:'<p>Eventos narrativos que mudam o status do personagem. Geram plot-hooks e reforçam continuidade.</p><h4>Tipos</h4><ul><li><b>Dívida</b> — agiota cobra com juros, 30 dias para pagar ou consequência</li><li><b>Inimigo Mortal</b> — alguém quer você morto, ataca em momento ruim</li><li><b>Rumor Ruim</b> — reputação manchada, NPCs reagem com -2 social</li><li><b>Equipamento Sabotado</b> — item importante falha em momento crítico</li><li><b>Doença</b> — perde HP máx até cura</li><li><b>Vínculo Cobrado</b> — ente querido em perigo, força escolha moral</li><li><b>Erro Passado</b> — vítima antiga ressurge buscando vingança</li></ul><h4>Quando Acontecem</h4><ul><li>Falha crítica em rolagem importante</li><li>Após interlúdio (rolagem na tabela)</li><li>Decisão moral pesada do personagem</li><li>Como custo de poder excessivo (pacto, magia proibida)</li></ul><h4>Resolução</h4><p>Cada complicação tem múltiplos caminhos: combate, social, sacrifício, fuga. Recompensa narrativa aumenta com risco aceito.</p>'},
-  {id:'vers',cat:'cam',title:'Caminhos Versáteis',sub:'Mistos & adaptativos',c:'purple',ico:'<circle cx="12" cy="18" r="2.5"/><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M18 8.5V10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8.5"/><path d="M12 12v3.5"/>',body:'<p>Mescla 2 caminhos em níveis ímpares. Perde capstone do principal mas ganha flexibilidade massiva.</p><h4>Regras</h4><ul><li>Pré-requisito: 13 no atributo principal de cada caminho</li><li>HP: usa dado de vida do principal</li><li>Bônus de proficiência: único (não dobra)</li><li>Slots de feitiço: combina (regra multiclasse)</li></ul><h4>Combos Comuns</h4><ul><li><b>Vanguarda × Operador</b> — soldado-hacker, infiltrador armado</li><li><b>Feiticeiro × Ascendido</b> — mago-curador, controle + suporte</li><li><b>Obscure × Operador</b> — assassino digital, sombra cibernética</li><li><b>Aberração × Vanguarda</b> — frontline mutante, imprevisível</li></ul><h4>Restrição</h4><p>Não pode acessar capstone (nv 20) de nenhum dos 2. Em troca: ganha 1 talento extra no nv 20.</p><h4>Recomendação</h4><p>Ideal pra jogadores experientes que querem builds não-óbvias.</p>'},
-  {id:'pvs',cat:'cam',title:'Poderes Versáteis',sub:'Talentos compartilhados',c:'lime',ico:'<path d="M12 3l1.5 5 5 1.5-5 1.5L12 16l-1.5-5-5-1.5 5-1.5z"/><path d="M19 14l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/><path d="M5 16l.6 1.4L7 18l-1.4.6L5 20l-.6-1.4L3 18l1.4-.6z"/>',body:'<p>Lista de talentos universais, escolhidos no lugar de aprimoramento de atributo.</p><h4>Combate</h4><ul><li><b>Disparar-e-Avançar</b> — atacar à distância sem provocar oportunidade</li><li><b>Bloqueio Perfeito</b> — reação: anula 1 acerto, gasta dado de vida</li><li><b>Investida</b> — corre + ataque com bônus +2 dano</li><li><b>Atirador Mortal</b> — ignora cobertura média</li><li><b>Mestre de Armas</b> — proficiente em todas armas</li></ul><h4>Magia</h4><ul><li><b>Palavra de Poder</b> — feitiço como ação bônus 1×/turno</li><li><b>Mente Disciplinada</b> — vantagem em testes vs encantamento</li><li><b>Iniciado</b> — aprende 2 cantrips de qualquer escola</li></ul><h4>Utilidade</h4><ul><li><b>Observador</b> — Percepção passiva +5</li><li><b>Resistente</b> — +1 atributo + vantagem em 1 teste resistido</li><li><b>Linguista</b> — +3 idiomas, decodificação rápida</li><li><b>Atlético</b> — escala/nada/salta como movimento normal</li><li><b>Sortudo</b> — 3 pontos sorte/dia (re-rola d20)</li></ul><h4>Sociais</h4><ul><li><b>Carismático</b> — +1 CAR + vantagem em 1 teste social/cena</li><li><b>Persuasor Implacável</b> — converte falha em sucesso parcial 1×/descanso</li></ul>'}
 ];
 let _biblioFilter='all';
+let _biblioSearch='';
+let _biblioBookmarks=(()=>{try{return new Set(JSON.parse(localStorage.getItem('biblio-bookmarks')||'[]'))}catch(_){return new Set()}})();
+function _biblioPersistBookmarks(){try{localStorage.setItem('biblio-bookmarks',JSON.stringify([..._biblioBookmarks]))}catch(_){}}
+window.toggleBiblioBookmark=function(id,ev){
+  if(ev){ev.stopPropagation();ev.preventDefault()}
+  if(_biblioBookmarks.has(id))_biblioBookmarks.delete(id);else _biblioBookmarks.add(id);
+  _biblioPersistBookmarks();
+  // Atualiza só o card afetado pra preservar animação
+  document.querySelectorAll(`.biblio-env[data-bid="${id}"]`).forEach(c=>{
+    c.classList.toggle('bookmarked',_biblioBookmarks.has(id));
+  });
+  try{window.sfx&&sfx.tick&&sfx.tick()}catch(_){}
+  // Se filtro Destaques ativo, re-render pra remover/inserir cards
+  if(_biblioFilter==='fav')renderBiblioGrid();
+};
+// Fuzzy match: lowercase substring + tolerância simples (caractere ausente)
+function _biblioFuzzyMatch(needle,haystack){
+  if(!needle)return true;
+  const n=needle.toLowerCase().trim();
+  const h=(haystack||'').toLowerCase();
+  if(!n)return true;
+  if(h.includes(n))return true;
+  // Tolerância: permite ate 1 char extra entre cada letra (busca por iniciais ou similaridade)
+  let pos=0;
+  for(let i=0;i<n.length;i++){
+    const idx=h.indexOf(n[i],pos);
+    if(idx<0)return false;
+    if(idx-pos>2)return false;
+    pos=idx+1;
+  }
+  return true;
+}
 // Helper: monta SVG do ícone — aceita path (wrapa em 24x24 stroke) ou <svg> completo (usa as-is, troca fill hex → currentColor)
 function _biblioIcoWrap(ico,opts){
   opts=opts||{};
@@ -16526,40 +16677,102 @@ function _biblioIcoWrap(ico,opts){
   const sz=opts.w&&opts.h?` width="${opts.w}" height="${opts.h}"`:'';
   return `<svg${sz} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${ico}</svg>`;
 }
-let _biblioLayout=localStorage.getItem('biblio-layout')||'grid';
-function toggleBiblioLayout(){
-  _biblioLayout=_biblioLayout==='grid'?'flow':'grid';
-  try{localStorage.setItem('biblio-layout',_biblioLayout)}catch(_){}
-  const btn=document.getElementById('biblio-layout-toggle');
-  if(btn){btn.classList.toggle('active',_biblioLayout==='flow');btn.setAttribute('aria-pressed',_biblioLayout==='flow'?'true':'false')}
+let _biblioLayout=(()=>{const v=localStorage.getItem('biblio-layout');return (v==='list'||v==='grid')?v:'grid'})();
+function setBiblioLayout(v){
+  if(v!=='list'&&v!=='grid')return;
+  _biblioLayout=v;
+  try{localStorage.setItem('biblio-layout',v)}catch(_){}
+  document.querySelectorAll('#biblio-view-toggle button').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
   renderBiblioGrid();
 }
+window.setBiblioLayout=setBiblioLayout;
+function toggleBiblioLayout(){setBiblioLayout(_biblioLayout==='grid'?'list':'grid')}
 function renderBiblioGrid(){
   const el=document.getElementById('biblio-grid');if(!el)return;
-  el.classList.remove('stat-blocks','tight');el.classList.add('biblio-grid');
-  el.classList.toggle('biblio-grid-flow',_biblioLayout==='flow');
-  const btn=document.getElementById('biblio-layout-toggle');
-  if(btn){btn.classList.toggle('active',_biblioLayout==='flow');btn.setAttribute('aria-pressed',_biblioLayout==='flow'?'true':'false')}
+  el.classList.remove('stat-blocks','tight','biblio-grid-flow');
+  el.classList.add('biblio-grid');
+  el.classList.toggle('biblio-grid-list',_biblioLayout==='list');
   const f=_biblioFilter;
-  const items=BIBLIO_DATA.filter(x=>f==='all'||x.cat===f);
-  const sideTxt={mec:'CLASSIFIED',pers:'RESTRICTED',cam:'EYES ONLY',mun:'DO NOT OPEN'};
-  el.innerHTML=items.map(x=>`
-    <div class="biblio-env" data-c="${x.c}" data-bid="${x.id}" onclick="openBiblioChapter('${x.id}')">
-      <div class="biblio-sleeve"><span class="biblio-sleeve-side">${sideTxt[x.cat]||'CLASSIFIED'}</span></div>
-      <div class="biblio-cover">
-        <div class="biblio-cover-top">
-          <span class="biblio-cover-icon">${_biblioIcoWrap(x.ico,{sw:'2.2'})}</span>
-        </div>
-        <div class="biblio-cover-bottom">
-          <div class="biblio-cover-title">${x.title}</div>
-          <div class="biblio-cover-sub">${x.sub}</div>
-        </div>
-      </div>
-    </div>`).join('');
-  document.querySelectorAll('#biblio-filter-pills .inv-filter-pill').forEach(p=>{
-    p.onclick=()=>{_biblioFilter=p.dataset.f;document.querySelectorAll('#biblio-filter-pills .inv-filter-pill').forEach(x=>x.classList.toggle('active',x===p));renderBiblioGrid()};
+  const q=_biblioSearch.trim();
+  let items=BIBLIO_DATA.filter(x=>{
+    if(f==='fav')return _biblioBookmarks.has(x.id);
+    if(f!=='all'&&x.cat!==f)return false;
+    return true;
   });
+  if(q){
+    items=items.filter(x=>{
+      // Strip HTML do body pra busca
+      const plain=(x.body||'').replace(/<[^>]+>/g,' ');
+      return _biblioFuzzyMatch(q,x.title)||_biblioFuzzyMatch(q,x.sub)||plain.toLowerCase().includes(q.toLowerCase());
+    });
+  }
+  if(!items.length){
+    el.innerHTML=`<div class="biblio-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>${q?'Nenhum capítulo encontrado para "'+q.replace(/[<>]/g,'')+'"':f==='fav'?'Sem destaques. Toque na bandeira de um livro para adicionar.':'Sem itens'}</div>`;
+    return;
+  }
+  const sideTxt={mec:'CLASSIFIED',pers:'RESTRICTED',cam:'EYES ONLY',mun:'DO NOT OPEN'};
+  if(_biblioLayout==='list'){
+    el.innerHTML=items.map((x,i)=>{
+      const isBm=_biblioBookmarks.has(x.id)?' bookmarked':'';
+      return `<div class="biblio-env${isBm}" data-c="${x.c}" data-bid="${x.id}" style="--i:${i};--env-c:${BIBLIO_ENV_COLORS[x.c]||'#3a47cf'}" onclick="openBiblioChapter('${x.id}')">
+        <div class="biblio-cover">
+          <div class="biblio-cover-top"><span class="biblio-cover-icon">${_biblioIcoWrap(x.ico,{sw:'2.2'})}</span></div>
+        </div>
+        <div>
+          <div class="biblio-list-title">${x.title}</div>
+          <div class="biblio-list-sub">${x.sub}</div>
+        </div>
+        <button class="biblio-bookmark-btn" type="button" aria-label="Destacar" onclick="toggleBiblioBookmark('${x.id}',event)"><span class="biblio-bookmark-flag"></span></button>
+      </div>`;
+    }).join('');
+  }else{
+    el.innerHTML=items.map((x,i)=>{
+      const isBm=_biblioBookmarks.has(x.id)?' bookmarked':'';
+      return `<div class="biblio-env${isBm}" data-c="${x.c}" data-bid="${x.id}" style="--i:${i}" onclick="openBiblioChapter('${x.id}')">
+        <div class="biblio-sleeve"><span class="biblio-sleeve-side">${sideTxt[x.cat]||'CLASSIFIED'}</span></div>
+        <div class="biblio-cover">
+          <div class="biblio-cover-top">
+            <span class="biblio-cover-icon">${_biblioIcoWrap(x.ico,{sw:'2.2'})}</span>
+          </div>
+          <div class="biblio-cover-bottom">
+            <div class="biblio-cover-title">${x.title}</div>
+            <div class="biblio-cover-sub">${x.sub}</div>
+          </div>
+          <button class="biblio-bookmark-btn" type="button" aria-label="Destacar" onclick="toggleBiblioBookmark('${x.id}',event)"><span class="biblio-bookmark-flag"></span></button>
+        </div>
+      </div>`;
+    }).join('');
+  }
 }
+// Wire pills, search, view toggle (idempotent)
+(function _biblioWire(){
+  if(window._biblioWired)return;window._biblioWired=true;
+  document.addEventListener('click',e=>{
+    const p=e.target.closest('#biblio-filter-pills .inv-filter-pill');
+    if(p){
+      _biblioFilter=p.dataset.f;
+      document.querySelectorAll('#biblio-filter-pills .inv-filter-pill').forEach(x=>x.classList.toggle('active',x===p));
+      renderBiblioGrid();
+      return;
+    }
+    const v=e.target.closest('#biblio-view-toggle button');
+    if(v){setBiblioLayout(v.dataset.view);return}
+  });
+  document.addEventListener('input',e=>{
+    if(e.target&&e.target.id==='biblio-search'){
+      _biblioSearch=e.target.value;
+      const cl=document.getElementById('biblio-search-clear');
+      if(cl)cl.classList.toggle('show',!!_biblioSearch);
+      renderBiblioGrid();
+    }
+  });
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#biblio-search-clear')){
+      const inp=document.getElementById('biblio-search');
+      if(inp){inp.value='';_biblioSearch='';inp.focus();document.getElementById('biblio-search-clear').classList.remove('show');renderBiblioGrid()}
+    }
+  });
+})();
 // Touch reveal — dedo sobre card = papel emerge e PERSISTE enquanto pressionado
 (function _biblioTouchReveal(){
   if(window._biblioTouchReady)return;window._biblioTouchReady=true;
@@ -16600,7 +16813,7 @@ const BIBLIO_TITLE_MAP={
   equ:'EQUIPAMENTOS',ars:'ARSENAL',lar:'LISTA DE ARMAS',dur:'DURABILIDADE',
   ame:'AMEAÇAS',vei:'VEÍCULOS',mon:'MONTARIAS',obs:'OBSCURE',asc:'ASCENDIDO',mal:'MALDIÇÕES',
   aer:'AERONAVES',van:'VANGUARDA',ope:'OPERADOR',fei:'FEITICEIRO',abr:'ABERRAÇÃO',
-  vers:'CAMINHOS VERSÁTIL',pvs:'PODERES VERSÁTIL',rit:'RITUAIS'
+  vers:'CAMINHOS VERSÁTIL',pvs:'PODERES VERSÁTIL'
 };
 
 function _biblioLoadViaXHR(){
@@ -19033,10 +19246,10 @@ window.generateAutoSheet=function(level,opts){
   // Operador: técnico (HP médio, Esf médio, Foco alto)
   // Feiticeiro: caster (HP/Esf baixos, Foco/Det altos)
   const ARQ_PROG={
-    Vanguarda:  {hpInit:32,hpPer:8, esfInit:7, esfPer:3, focInit:6, focPer:2, detInit:17,detPer:5},
-    Aberração:  {hpInit:28,hpPer:7, esfInit:8, esfPer:3, focInit:10,focPer:3, detInit:18,detPer:5},
-    Operador:   {hpInit:24,hpPer:6, esfInit:8, esfPer:3, focInit:12,focPer:3, detInit:18,detPer:5},
-    Feiticeiro: {hpInit:20,hpPer:5, esfInit:5, esfPer:2, focInit:16,focPer:4, detInit:20,detPer:6}
+    Vanguarda:  {hpInit:28,hpPer:7, esfInit:6, esfPer:2, focInit:6, focPer:2, detInit:14,detPer:4},
+    Aberração:  {hpInit:26,hpPer:7, esfInit:7, esfPer:2, focInit:7, focPer:2, detInit:12,detPer:4},
+    Operador:   {hpInit:22,hpPer:6, esfInit:9, esfPer:3, focInit:11,focPer:3, detInit:14,detPer:4},
+    Feiticeiro: {hpInit:18,hpPer:5, esfInit:6, esfPer:2, focInit:16,focPer:4, detInit:20,detPer:6}
   };
   const prog=ARQ_PROG[profileData.arquetipo]||ARQ_PROG.Vanguarda;
   const fisicoVal=attributes.find(a=>a.name==='Fisico')?.val||0;
@@ -19053,9 +19266,9 @@ window.generateAutoSheet=function(level,opts){
   const foc=(prog.focInit+psiVal)+lvlExtra*(prog.focPer+psiVal);
   // Determinação: init + extras × per
   const det=prog.detInit+lvlExtra*prog.detPer;
-  // Neural/Córtex: Intelecto + nível
-  const neu=intVal*2+Math.floor(level/2);
-  const cor=intVal+Math.floor(level/3);
+  // Neural = 8 + Intelecto + Nível ; Córtex = 10 + Nível + ((Psique+Físico)÷2). Sem Arquétipo.
+  const neu=8+intVal+level;
+  const cor=10+level+Math.floor((psiVal+fisicoVal)/2);
   playerStatus.esforco={val:esf,max:esf,bonus:0};
   playerStatus.foco={val:foc,max:foc,bonus:0};
   playerStatus.determinacao={val:det,max:det,bonus:0};
@@ -19170,8 +19383,10 @@ function _applyArchetypeAttrs(attrs){
       if(a.max<a.val)a.max=a.val;
     }
   });
+  try{if(typeof _recomputeStatusFromArq==='function')_recomputeStatusFromArq()}catch(_){}
   try{if(typeof renderProfile==='function')renderProfile()}catch(_){}
   try{if(typeof renderAttributes==='function')renderAttributes()}catch(_){}
+  try{if(typeof renderAttrs==='function')renderAttrs()}catch(_){}
   try{if(typeof refreshAll==='function')refreshAll()}catch(_){}
   try{if(typeof autosaveNow==='function')autosaveNow()}catch(_){}
   return true;
@@ -19580,24 +19795,25 @@ window.openAdvPicker=function(field){
 // Recalcula status base quando arquétipo muda fora do gerador automático
 function _recomputeStatusFromArq(){
   const ARQ_PROG={
-    Vanguarda:  {hpInit:32,hpPer:8, esfInit:7, esfPer:3, focInit:6, focPer:2, detInit:17,detPer:5},
-    Aberração:  {hpInit:28,hpPer:7, esfInit:8, esfPer:3, focInit:10,focPer:3, detInit:18,detPer:5},
-    Operador:   {hpInit:24,hpPer:6, esfInit:8, esfPer:3, focInit:12,focPer:3, detInit:18,detPer:5},
-    Feiticeiro: {hpInit:20,hpPer:5, esfInit:5, esfPer:2, focInit:16,focPer:4, detInit:20,detPer:6}
+    Vanguarda:  {hpInit:28,hpPer:7, esfInit:6, esfPer:2, focInit:6, focPer:2, detInit:14,detPer:4},
+    Aberração:  {hpInit:26,hpPer:7, esfInit:7, esfPer:2, focInit:7, focPer:2, detInit:12,detPer:4},
+    Operador:   {hpInit:22,hpPer:6, esfInit:9, esfPer:3, focInit:11,focPer:3, detInit:14,detPer:4},
+    Feiticeiro: {hpInit:18,hpPer:5, esfInit:6, esfPer:2, focInit:16,focPer:4, detInit:20,detPer:6}
   };
-  const prog=ARQ_PROG[profileData.arquetipo];if(!prog)return;
   const lv=Math.max(1,playerLevel||1);
   const lvE=lv-1;
   const fis=attributes.find(a=>a.name==='Fisico')?.val||0;
   const psi=attributes.find(a=>a.name==='Psique')?.val||0;
   const intV=attributes.find(a=>a.name==='Intelecto')?.val||0;
+  const prog=ARQ_PROG[profileData.arquetipo]||ARQ_PROG.Vanguarda;
   playerHPMax=(prog.hpInit+fis)+lvE*(prog.hpPer+fis);
   playerHP=Math.min(playerHP||playerHPMax,playerHPMax);
   const esf=(prog.esfInit+fis)+lvE*(prog.esfPer+fis);
   const foc=(prog.focInit+psi)+lvE*(prog.focPer+psi);
   const det=prog.detInit+lvE*prog.detPer;
-  const neu=intV*2+Math.floor(lv/2);
-  const cor=intV+Math.floor(lv/3);
+  // Neural = 8 + Intelecto + Nível ; Córtex = 10 + Nível + ((Psique+Físico)÷2). Sem Arquétipo.
+  const neu=8+intV+lv;
+  const cor=10+lv+Math.floor((psi+fis)/2);
   playerStatus.esforco={val:esf,max:esf,bonus:0};
   playerStatus.foco={val:foc,max:foc,bonus:0};
   playerStatus.determinacao={val:det,max:det,bonus:0};
@@ -20484,26 +20700,6 @@ window.otaCheckAndInstall=async function(manual){
   setName('Atualizar app');setSub('Nova versão '+rel.tag_name+' disponível');
   _otaShowPrompt(rel,apk);
 };
-// Banner persistente na main screen (até user fechar ou atualizar)
-function _otaShowBanner(rel,cur,apk){
-  const banner=document.getElementById('update-banner');
-  if(!banner)return;
-  const curEl=document.getElementById('ub-cur-ver');
-  const newEl=document.getElementById('ub-new-ver');
-  if(curEl)curEl.textContent='v'+(cur&&cur.name||'—');
-  if(newEl)newEl.textContent=rel.tag_name;
-  // Override botão Atualizar pra rodar OTA Android (não SW reload)
-  const btn=document.getElementById('ub-update');
-  if(btn){
-    const newBtn=btn.cloneNode(true);btn.parentNode.replaceChild(newBtn,btn);
-    newBtn.addEventListener('click',()=>{
-      banner.classList.remove('show');
-      _otaShowPrompt(rel,apk);
-    });
-  }
-  banner.classList.add('show');
-}
-window._otaShowBanner=_otaShowBanner;
 function _otaShowPrompt(rel,apk){
   let pop=document.getElementById('ota-modal');
   if(!pop){
@@ -20528,7 +20724,12 @@ function _otaShowPrompt(rel,apk){
   pop.querySelector('.ota-pct').textContent='0%';
   pop.classList.add('show');
   const no=pop.querySelector('.ota-btn-no'),yes=pop.querySelector('.ota-btn-yes');
-  no.onclick=()=>pop.classList.remove('show');
+  const dismiss=()=>{pop.classList.remove('show');document.removeEventListener('keydown',escHandler)};
+  const escHandler=e=>{if(e.key==='Escape')dismiss()};
+  no.onclick=dismiss;
+  // Backdrop click = dismiss (não fecha durante download)
+  pop.onclick=e=>{if(e.target===pop&&!pop.classList.contains('downloading'))dismiss()};
+  document.addEventListener('keydown',escHandler);
   yes.onclick=()=>{
     pop.classList.add('downloading');
     window.__otaProgress=pct=>{
@@ -20548,6 +20749,15 @@ function _otaShowPrompt(rel,apk){
 }
 // Auto-check ao iniciar (silencioso)
 setTimeout(()=>{if(_hasNative())otaCheckAndInstall(false)},4000);
+// Re-check periódico cada 30min (cache 5min limita tráfego real)
+setInterval(()=>{if(_hasNative()&&document.visibilityState==='visible')otaCheckAndInstall(false)},30*60*1000);
+// Re-check quando user volta do background (visibilitychange)
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible'&&_hasNative()){
+    // Bypass cache se >5min sem checar
+    setTimeout(()=>otaCheckAndInstall(false),1500);
+  }
+});
 
 // ═══ ROTATION — preserva scroll + tab ativa ═══
 (function(){
