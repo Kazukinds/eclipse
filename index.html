@@ -20643,7 +20643,10 @@ function _renderFolderModal(){
     <div class="modal-btns" style="margin-top:14px"><button class="modal-btn secondary" onclick="closeModal()">Fechar</button></div>`;
   document.getElementById('modal-overlay').classList.add('open');
 }
-window.openFolderManager=function(){_renderFolderModal()};
+window.openFolderManager=function(){
+  if(typeof window.openCharsManager==='function')return window.openCharsManager();
+  _renderFolderModal();
+};
 window.pickStorageFolder=async function(){
   if(typeof toast==='function')toast('Escolha a pasta no seletor do Android...','info');
   const name=await _pickFolder();
