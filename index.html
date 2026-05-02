@@ -986,9 +986,27 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .re4-item-detail .rid-name{font-size:13px;font-weight:800;color:var(--text-primary);letter-spacing:.2px;line-height:1.1}
 .re4-item-detail .rid-rarity-tag{font-size:9px;font-weight:800;letter-spacing:1px;color:var(--magenta)}
 .re4-item-detail .rid-subtitle{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
-.re4-item-detail .rid-stat-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background .15s,padding-left .15s;border-radius:4px}
-.re4-item-detail .rid-stat-row:hover{background:rgba(255,255,255,.05);padding-left:4px}
-.re4-item-detail .rid-stat-row:hover .rid-stat-icon{color:var(--magenta)}
+.re4-item-detail .rid-stat-row{display:flex;align-items:center;gap:10px;padding:8px 8px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background .18s,transform .15s;border-radius:6px;margin:0 -8px}
+.re4-item-detail .rid-stat-row:hover{background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.01));transform:translateX(2px)}
+.re4-item-detail .rid-stat-row:hover .rid-stat-icon{color:var(--magenta);transform:scale(1.15)}
+.re4-item-detail .rid-stat-icon{transition:color .15s,transform .15s}
+.re4-item-detail .rid-stat-bar{height:4px!important;border-radius:3px}
+.re4-item-detail .rid-stat-bar::after{box-shadow:0 0 8px color-mix(in srgb,var(--magenta) 50%,transparent)}
+.re4-item-detail .rid-tabs{padding:4px 6px!important;gap:2px!important;background:rgba(255,255,255,.02)!important}
+.re4-item-detail .rid-tab{position:relative;padding:8px 10px!important;flex:1;background:transparent;border:0;border-radius:8px;color:#666;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s,color .18s}
+.re4-item-detail .rid-tab svg{width:16px;height:16px}
+.re4-item-detail .rid-tab:hover{background:rgba(255,255,255,.04);color:#aaa}
+.re4-item-detail .rid-tab.active{background:rgba(var(--magenta-rgb),.14);color:var(--magenta);box-shadow:inset 0 0 0 1px rgba(var(--magenta-rgb),.3)}
+.re4-item-detail .modal-btn{width:100%;margin-top:10px;padding:11px!important;font-size:12px!important;font-weight:700;letter-spacing:.4px;text-transform:uppercase;border-radius:9px!important;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;cursor:pointer;transition:transform .15s,background .18s,box-shadow .25s;font-family:inherit}
+.re4-item-detail .modal-btn:hover{transform:translateY(-1px)}
+.re4-item-detail .modal-btn.primary{background:linear-gradient(135deg,#84cc16,#65a30d);color:#0a0a0c;border-color:#84cc16;box-shadow:0 4px 14px rgba(132,204,22,.25)}
+.re4-item-detail .modal-btn.primary:hover{box-shadow:0 6px 20px rgba(132,204,22,.4)}
+.re4-item-detail .modal-btn.danger{background:transparent;color:#f87171;border-color:rgba(248,113,113,.3)}
+.re4-item-detail .modal-btn.danger:hover{background:rgba(248,113,113,.08);border-color:#f87171;box-shadow:0 4px 14px rgba(248,113,113,.2)}
+.re4-item-detail .rid-name{font-size:14px!important;background:linear-gradient(180deg,#fff,#aaa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.re4-item-detail .rid-rarity-tag{padding:3px 7px;background:color-mix(in srgb,currentColor 12%,transparent);border:1px solid color-mix(in srgb,currentColor 30%,transparent);border-radius:4px;font-size:8px!important}
+.re4-item-detail .rid-stat-num{transition:color .15s}
+.re4-item-detail .rid-stat-row:hover .rid-stat-num{color:#fff;text-shadow:0 0 8px rgba(255,255,255,.3)}
 .stat-edit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:99999;display:flex;align-items:center;justify-content:center;animation:stEdFade .15s ease-out}
 .stat-edit-box{background:var(--bg-card,#1a1a1f);border:1px solid var(--border,rgba(255,255,255,.1));border-radius:12px;padding:18px;min-width:260px;max-width:340px;box-shadow:0 12px 40px rgba(0,0,0,.7);animation:stEdSlide .2s cubic-bezier(.34,1.4,.6,1)}
 .stat-edit-title{font-size:13px;font-weight:700;color:var(--text-primary,#fff);margin-bottom:12px;letter-spacing:.4px}
