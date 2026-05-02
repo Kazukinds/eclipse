@@ -6663,11 +6663,6 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
                   </div>
                   <script>document.getElementById('btn-add-item').addEventListener('click',()=>{try{openModal('item')}catch(e){console.error(e);alert('Erro: '+e.message)}});document.getElementById('btn-clear-inv').addEventListener('click',()=>{try{clearInventory()}catch(e){console.error(e);alert('Erro: '+e.message)}});</script>
                   <div class="inv-grid" id="inv-grid"></div>
-                  <div class="re4-case-bottom">
-                    <button class="re4-expand-btn" type="button" onclick="window._expandCase&&window._expandCase()" title="Adicionar espaço extra" aria-label="Expandir inventário">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -12418,7 +12413,8 @@ function setCaseLevel(lv){
   renderGrid();renderCaseSelector();
 }
 window.setCaseLevel=setCaseLevel;
-window._expandCase=function(){
+window._expandCase=function(){return}; // removido — grid fixo 10x10
+window._expandCaseDeprecated=function(){
   const a=unlockArea();
   if(a._baseRows==null)a._baseRows=a.rows;
   const STEP=3,MAX_ROWS=a._baseRows+STEP;
