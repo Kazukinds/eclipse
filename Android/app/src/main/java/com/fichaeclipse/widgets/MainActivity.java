@@ -151,6 +151,8 @@ public class MainActivity extends Activity {
         wv.addJavascriptInterface(new UpdateBridge(), "EclipseNative");
         // Storage bridge — SAF folder picker + ler/escrever arquivos na pasta escolhida
         wv.addJavascriptInterface(new StorageBridge(), "EclipseStorage");
+        // Files bridge — IO direto em /storage/emulated/0/Documents/Eclipse/FichaEclipse/personagens/
+        wv.addJavascriptInterface(new FilesBridge(), "EclipseFiles");
 
         wv.setWebViewClient(new WebViewClient() {
             @Override
@@ -581,6 +583,15 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_MANAGE_STORAGE) {
+            boolean ok = false;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ok = Environment.isExternalStorageManager();
+            final boolean granted = ok;
+            if (webView != null) {
+                webView.evaluateJavascript("window.__filesPermResult&&window.__filesPermResult(" + granted + ")", null);
+            }
+            return;
+        }
         if (requestCode == REQ_PICK_FOLDER) {
             if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                 Uri treeUri = data.getData();
@@ -746,6 +757,140 @@ public class MainActivity extends Activity {
                 DocumentFile f = tree.findFile(oldName);
                 if (f == null) return false;
                 return f.renameTo(newName);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+    }
+
+    // ═══ Files Bridge — IO direto via java.io.File em pasta pública ═══
+    private static final String FIXED_PATH = "Documents/Eclipse/FichaEclipse/personagens";
+    private static final int REQ_MANAGE_STORAGE = 9201;
+
+    private File _fixedDir() {
+        File base = Environment.getExternalStorageDirectory();
+        File dir = new File(base, FIXED_PATH);
+        if (!dir.exists()) dir.mkdirs();
+        return dir;
+    }
+
+    private boolean _hasManageStorage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return Environment.isExternalStorageManager();
+        }
+        return checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public class FilesBridge {
+        @JavascriptInterface
+        public String fixedPath() {
+            return "/storage/emulated/0/" + FIXED_PATH + "/";
+        }
+
+        @JavascriptInterface
+        public boolean hasPermission() {
+            return _hasManageStorage();
+        }
+
+        @JavascriptInterface
+        public void requestPermission() {
+            runOnUiThread(() -> {
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        Intent i = new Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                        i.setData(Uri.parse("package:" + getPackageName()));
+                        startActivityForResult(i, REQ_MANAGE_STORAGE);
+                    } else {
+                        ActivityCompat.requestPermissions(MainActivity.this,
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                        Manifest.permission.READ_EXTERNAL_STORAGE},
+                                REQ_MANAGE_STORAGE);
+                    }
+                } catch (Exception e) {
+                    try {
+                        Intent i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        i.setData(Uri.parse("package:" + getPackageName()));
+                        startActivity(i);
+                    } catch (Exception ignored) {}
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public String list() {
+            if (!_hasManageStorage()) return "[]";
+            try {
+                File dir = _fixedDir();
+                File[] files = dir.listFiles((f, name) -> name.toLowerCase().endsWith(".json"));
+                if (files == null) return "[]";
+                JSONArray arr = new JSONArray();
+                for (File f : files) {
+                    JSONObject o = new JSONObject();
+                    o.put("name", f.getName());
+                    o.put("size", f.length());
+                    o.put("modified", f.lastModified());
+                    arr.put(o);
+                }
+                return arr.toString();
+            } catch (Exception e) {
+                return "[]";
+            }
+        }
+
+        @JavascriptInterface
+        public String read(String name) {
+            if (!_hasManageStorage() || name == null) return "";
+            try {
+                File f = new File(_fixedDir(), name);
+                if (!f.isFile()) return "";
+                java.io.FileInputStream fis = new java.io.FileInputStream(f);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                byte[] buf = new byte[4096];
+                int r;
+                while ((r = fis.read(buf)) > 0) bos.write(buf, 0, r);
+                fis.close();
+                return bos.toString("UTF-8");
+            } catch (Exception e) {
+                return "";
+            }
+        }
+
+        @JavascriptInterface
+        public boolean write(String name, String content) {
+            if (!_hasManageStorage() || name == null) return false;
+            try {
+                File dir = _fixedDir();
+                File f = new File(dir, name);
+                java.io.FileOutputStream fos = new java.io.FileOutputStream(f, false);
+                fos.write(content.getBytes("UTF-8"));
+                fos.flush();
+                fos.close();
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        @JavascriptInterface
+        public boolean delete(String name) {
+            if (!_hasManageStorage() || name == null) return false;
+            try {
+                File f = new File(_fixedDir(), name);
+                return f.exists() && f.delete();
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        @JavascriptInterface
+        public boolean rename(String oldName, String newName) {
+            if (!_hasManageStorage() || oldName == null || newName == null) return false;
+            try {
+                File dir = _fixedDir();
+                File a = new File(dir, oldName);
+                File b = new File(dir, newName);
+                return a.exists() && a.renameTo(b);
             } catch (Exception e) {
                 return false;
             }

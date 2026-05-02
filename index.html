@@ -6478,6 +6478,7 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
       <div class="save-dropdown" id="save-dropdown">
         <button class="save-opt" onclick="saveToFile()"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Salvar Ficha</button>
         <button class="save-opt" onclick="importFromFile()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Importar Ficha</button>
+        <button class="save-opt" onclick="openCharsManager()"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Personagens</button>
         <button class="save-opt save-opt-danger" onclick="clearSheet()"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>Limpar Ficha</button>
       </div>
     </div>
@@ -21357,6 +21358,255 @@ document.addEventListener('visibilitychange',()=>{
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initOS);
   else initOS();
+})();
+</script>
+
+<!-- ═══ MODAL: GERENCIADOR DE PERSONAGENS ═══ -->
+<style>
+.chars-overlay{position:fixed;inset:0;background:rgba(5,5,7,.7);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);z-index:9000;display:none;align-items:center;justify-content:center;padding:24px;opacity:0;transition:opacity .25s ease}
+.chars-overlay.open{display:flex;opacity:1}
+.chars-modal{width:100%;max-width:980px;max-height:90vh;background:linear-gradient(180deg,#15151a 0%,#0e0e12 100%);border:1px solid rgba(255,255,255,.06);border-radius:18px;box-shadow:0 24px 64px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.04);display:flex;flex-direction:column;overflow:hidden;transform:translateY(8px) scale(.98);transition:transform .35s cubic-bezier(.2,.9,.2,1.05)}
+.chars-overlay.open .chars-modal{transform:none}
+.chars-head{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.05)}
+.chars-search{flex:1;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:9px 12px}
+.chars-search svg{width:16px;height:16px;stroke:#777;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.chars-search input{flex:1;background:transparent;border:0;outline:0;color:#e8e8ec;font-size:13px;font-family:inherit}
+.chars-import,.chars-close{background:#c8f542;color:#0a0a0c;border:0;border-radius:10px;padding:9px 14px;font-weight:700;font-size:12px;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:transform .2s,box-shadow .2s}
+.chars-import:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(200,245,66,.3)}
+.chars-import svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.chars-close{background:rgba(255,255,255,.06);color:#e8e8ec;padding:9px 12px}
+.chars-close:hover{background:rgba(255,255,255,.1)}
+.chars-stats{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px;padding:16px 20px}
+.chars-stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:14px;padding:16px}
+.chars-stat.cta{background:linear-gradient(135deg,rgba(200,245,66,.18),rgba(200,245,66,.06));border-color:rgba(200,245,66,.35);cursor:pointer;transition:transform .2s,box-shadow .25s}
+.chars-stat.cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,245,66,.18)}
+.chars-stat-ico{display:flex;align-items:center;gap:10px;color:#c8f542;margin-bottom:6px}
+.chars-stat-ico svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.chars-stat-num{font-size:24px;font-weight:700;color:#fff;letter-spacing:-.5px}
+.chars-stat-num small{font-size:12px;font-weight:500;color:#888;margin-left:6px}
+.chars-stat-lbl{font-size:13px;font-weight:600;color:#fff}
+.chars-stat-sub{font-size:11px;color:#888;margin-top:2px}
+.chars-list-head{display:flex;align-items:center;gap:12px;padding:8px 20px 6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#666;border-bottom:1px solid rgba(255,255,255,.04)}
+.chars-list-head .col-name{flex:1}
+.chars-list-head .col-tags{width:120px}
+.chars-list-head .col-date{width:120px}
+.chars-list-head .col-actions{width:60px;text-align:right}
+.chars-list-title{padding:14px 20px 6px;font-size:14px;font-weight:600;color:#e8e8ec}
+.chars-list{flex:1;overflow-y:auto;padding:0 8px 12px}
+.chars-row{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;cursor:pointer;transition:background .15s}
+.chars-row:hover{background:rgba(255,255,255,.03)}
+.chars-row+.chars-row{border-top:1px solid rgba(255,255,255,.03)}
+.chars-row-ico{width:36px;height:36px;border-radius:8px;background:rgba(200,245,66,.1);color:#c8f542;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;font-weight:800;letter-spacing:.5px}
+.chars-row-info{flex:1;min-width:0}
+.chars-row-name{font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chars-row-meta{font-size:11px;color:#888;margin-top:2px}
+.chars-row-tags{width:120px;font-size:11px;color:#888}
+.chars-row-date{width:120px;font-size:12px;color:#aaa}
+.chars-row-actions{width:60px;display:flex;justify-content:flex-end}
+.chars-act-btn{background:transparent;border:0;color:#888;cursor:pointer;padding:6px 8px;border-radius:6px;transition:background .15s,color .15s}
+.chars-act-btn:hover{background:rgba(255,255,255,.06);color:#fff}
+.chars-act-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.chars-empty{padding:48px 20px;text-align:center;color:#666;font-size:13px}
+.chars-foot{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid rgba(255,255,255,.05);font-size:11px;color:#666}
+.chars-path{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#555;word-break:break-all;max-width:60%}
+.chars-act-menu{position:fixed;background:#1a1a20;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:4px;z-index:9100;box-shadow:0 12px 32px rgba(0,0,0,.5);min-width:160px}
+.chars-act-menu button{display:flex;align-items:center;gap:8px;width:100%;background:transparent;border:0;color:#ccc;padding:9px 12px;font-size:12px;font-weight:600;cursor:pointer;border-radius:6px;text-align:left;font-family:inherit}
+.chars-act-menu button:hover{background:rgba(255,255,255,.06);color:#fff}
+.chars-act-menu button.danger{color:#f87171}
+.chars-act-menu button.danger:hover{background:rgba(248,113,113,.1)}
+.chars-act-menu svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:600px){
+  .chars-stats{grid-template-columns:1fr}
+  .chars-list-head .col-tags,.chars-row-tags,.chars-list-head .col-date,.chars-row-date{display:none}
+}
+</style>
+<div class="chars-overlay" id="chars-overlay">
+  <div class="chars-modal">
+    <div class="chars-head">
+      <div class="chars-search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="chars-search-inp" placeholder="Buscar personagem...">
+      </div>
+      <button class="chars-import" onclick="charsImportFile()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Importar</button>
+      <button class="chars-close" onclick="closeCharsManager()" aria-label="Fechar"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="chars-stats">
+      <div class="chars-stat cta" onclick="charsSaveCurrent()">
+        <div class="chars-stat-ico"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="chars-stat-lbl">Salvar ficha atual</div>
+        <div class="chars-stat-sub">Cria/atualiza arquivo .json</div>
+      </div>
+      <div class="chars-stat">
+        <div class="chars-stat-num"><span id="chars-count">0</span><small>personagens</small></div>
+      </div>
+      <div class="chars-stat">
+        <div class="chars-stat-num"><span id="chars-size">0 B</span><small>total</small></div>
+      </div>
+    </div>
+    <div class="chars-list-title">Últimos personagens</div>
+    <div class="chars-list-head">
+      <div class="col-name">Arquivo</div>
+      <div class="col-tags">Tags</div>
+      <div class="col-date">Modificado</div>
+      <div class="col-actions">Ações</div>
+    </div>
+    <div class="chars-list" id="chars-list"></div>
+    <div class="chars-foot">
+      <span class="chars-path" id="chars-path">/storage/emulated/0/Documents/Eclipse/FichaEclipse/personagens/</span>
+      <span id="chars-perm-status">—</span>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const N=window.EclipseFiles;
+  const ov=()=>document.getElementById('chars-overlay');
+  const list=()=>document.getElementById('chars-list');
+  let cache=[];
+
+  function fmtSize(b){if(b<1024)return b+' B';if(b<1048576)return (b/1024).toFixed(2)+' KB';return (b/1048576).toFixed(2)+' MB'}
+  function fmtDate(t){const d=new Date(t),now=Date.now(),diff=(now-t)/1000;if(diff<60)return 'agora';if(diff<3600)return Math.floor(diff/60)+' min atrás';if(diff<86400)return Math.floor(diff/3600)+' h atrás';return d.toLocaleDateString('pt-BR')}
+  function safeName(s){return (s||'personagem').replace(/[^\w\-À-ſ]+/g,'_').slice(0,60)}
+
+  window.openCharsManager=function(){
+    if(document.getElementById('save-dropdown'))document.getElementById('save-dropdown').classList.remove('open');
+    ov().classList.add('open');
+    document.getElementById('chars-path').textContent=N?N.fixedPath():'(fora do app Android)';
+    refresh();
+  };
+  window.closeCharsManager=function(){ov().classList.remove('open')};
+  ov().addEventListener('click',e=>{if(e.target===ov())closeCharsManager()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ov().classList.contains('open'))closeCharsManager()});
+
+  function ensurePerm(){
+    if(!N){toast('Disponível apenas no app Android');return false}
+    if(!N.hasPermission()){
+      document.getElementById('chars-perm-status').textContent='Permissão necessária — toque pra liberar';
+      document.getElementById('chars-perm-status').style.cursor='pointer';
+      document.getElementById('chars-perm-status').onclick=()=>{
+        window.__filesPermResult=ok=>{if(ok){toast('Permissão concedida');refresh()}else toast('Permissão negada')};
+        N.requestPermission();
+      };
+      return false;
+    }
+    document.getElementById('chars-perm-status').textContent='✓ Acesso liberado';
+    document.getElementById('chars-perm-status').style.cursor='default';
+    return true;
+  }
+
+  function toast(msg){
+    if(window.toast)return window.toast(msg);
+    const t=document.createElement('div');t.textContent=msg;t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a20;color:#fff;padding:10px 16px;border-radius:10px;border:1px solid #333;z-index:9999;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.4)';document.body.appendChild(t);setTimeout(()=>t.remove(),2400);
+  }
+
+  function refresh(){
+    if(!ensurePerm()){list().innerHTML='<div class="chars-empty">Aguardando permissão de acesso à pasta…</div>';document.getElementById('chars-count').textContent='0';document.getElementById('chars-size').textContent='0 B';return}
+    try{cache=JSON.parse(N.list()||'[]')}catch(_){cache=[]}
+    cache.sort((a,b)=>b.modified-a.modified);
+    render('');
+  }
+
+  function render(filter){
+    const f=(filter||'').toLowerCase();
+    const arr=cache.filter(x=>x.name.toLowerCase().includes(f));
+    document.getElementById('chars-count').textContent=cache.length;
+    const total=cache.reduce((s,x)=>s+x.size,0);
+    document.getElementById('chars-size').textContent=fmtSize(total);
+    if(!arr.length){list().innerHTML='<div class="chars-empty">Nenhum personagem salvo. Use "Salvar ficha atual" pra criar.</div>';return}
+    list().innerHTML=arr.map(x=>{
+      const display=x.name.replace(/\.json$/i,'');
+      return `<div class="chars-row" data-name="${x.name.replace(/"/g,'&quot;')}">
+        <div class="chars-row-ico">JSON</div>
+        <div class="chars-row-info">
+          <div class="chars-row-name">${display}</div>
+          <div class="chars-row-meta">${fmtSize(x.size)} · JSON · ${fmtDate(x.modified)}</div>
+        </div>
+        <div class="chars-row-tags"></div>
+        <div class="chars-row-date">${fmtDate(x.modified)}</div>
+        <div class="chars-row-actions"><button class="chars-act-btn" onclick="event.stopPropagation();charsRowMenu(event,'${x.name.replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="18" r="1"/></svg></button></div>
+      </div>`;
+    }).join('');
+    list().querySelectorAll('.chars-row').forEach(r=>r.addEventListener('click',()=>charsLoad(r.dataset.name)));
+  }
+
+  document.getElementById('chars-search-inp').addEventListener('input',e=>render(e.target.value));
+
+  window.charsSaveCurrent=async function(){
+    if(!ensurePerm())return;
+    const cur=(window.gameData&&gameData.charname)||document.querySelector('[data-key="charname"]')?.textContent||'personagem';
+    const def=safeName(cur)+'.json';
+    let name=def;
+    try{const p=await (window.appPrompt?appPrompt('Nome do arquivo',{defaultValue:def,okLabel:'Salvar'}):Promise.resolve(prompt('Nome do arquivo',def)));if(!p)return;name=p}catch(_){}
+    if(!name.toLowerCase().endsWith('.json'))name+='.json';
+    const data=window.gameData||window._fichaSnapshot?.()||{};
+    const json=JSON.stringify(data,null,2);
+    if(N.write(name,json)){toast('Salvo: '+name);refresh()}else toast('Falha ao salvar');
+  };
+
+  window.charsLoad=async function(name){
+    if(!ensurePerm())return;
+    const ok=window.appConfirm?await appConfirm('Carregar "'+name.replace(/\.json$/,'')+'" substitui ficha atual.',{title:'Carregar personagem',okLabel:'Carregar',cancelLabel:'Cancelar'}):confirm('Carregar '+name+'?');
+    if(!ok)return;
+    const txt=N.read(name);
+    if(!txt){toast('Arquivo vazio');return}
+    try{
+      const data=JSON.parse(txt);
+      if(window.applyFichaJson)window.applyFichaJson(data);
+      else if(window.gameData){Object.assign(window.gameData,data);if(window.renderAll)renderAll()}
+      else{localStorage.setItem('fichaEclipse',JSON.stringify(data));location.reload()}
+      toast('Carregado: '+name);closeCharsManager();
+    }catch(e){toast('JSON inválido')}
+  };
+
+  window.charsRowMenu=function(e,name){
+    document.querySelectorAll('.chars-act-menu').forEach(m=>m.remove());
+    const m=document.createElement('div');m.className='chars-act-menu';
+    m.innerHTML=`
+      <button data-act="load"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Carregar</button>
+      <button data-act="rename"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Renomear</button>
+      <button data-act="export"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Exportar</button>
+      <button data-act="delete" class="danger"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>Apagar</button>`;
+    document.body.appendChild(m);
+    const r=e.target.closest('button').getBoundingClientRect();
+    m.style.top=Math.min(window.innerHeight-200,r.bottom+4)+'px';
+    m.style.left=Math.max(8,r.right-160)+'px';
+    setTimeout(()=>document.addEventListener('pointerdown',function out(ev){if(!ev.target.closest('.chars-act-menu')){m.remove();document.removeEventListener('pointerdown',out)}},{capture:true}),20);
+    m.querySelectorAll('button').forEach(b=>b.addEventListener('click',async ()=>{
+      const a=b.dataset.act;m.remove();
+      if(a==='load')charsLoad(name);
+      else if(a==='delete'){
+        const ok=window.appConfirm?await appConfirm('Apagar "'+name+'"?',{title:'Apagar',okLabel:'Apagar',danger:true}):confirm('Apagar?');
+        if(ok){if(N.delete(name)){toast('Apagado');refresh()}else toast('Falha')}
+      }else if(a==='rename'){
+        const cur=name.replace(/\.json$/,'');
+        const nv=window.appPrompt?await appPrompt('Novo nome',{defaultValue:cur}):prompt('Novo nome',cur);
+        if(!nv)return;
+        const nn=safeName(nv)+'.json';
+        if(N.rename(name,nn)){toast('Renomeado');refresh()}else toast('Falha');
+      }else if(a==='export'){
+        const txt=N.read(name);
+        const blob=new Blob([txt],{type:'application/json'});
+        const url=URL.createObjectURL(blob);
+        const a2=document.createElement('a');a2.href=url;a2.download=name;a2.click();
+        setTimeout(()=>URL.revokeObjectURL(url),1000);
+      }
+    }));
+  };
+
+  window.charsImportFile=function(){
+    const inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';
+    inp.onchange=e=>{
+      const f=e.target.files[0];if(!f)return;
+      const r=new FileReader();
+      r.onload=()=>{
+        if(!ensurePerm())return;
+        const name=safeName(f.name.replace(/\.json$/i,''))+'.json';
+        if(N.write(name,r.result)){toast('Importado: '+name);refresh()}else toast('Falha');
+      };
+      r.readAsText(f);
+    };
+    inp.click();
+  };
 })();
 </script>
 
