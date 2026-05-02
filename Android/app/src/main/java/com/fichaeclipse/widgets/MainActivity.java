@@ -413,6 +413,10 @@ public class MainActivity extends Activity {
             req.setMimeType("application/vnd.android.package-archive");
             req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             req.setDestinationUri(Uri.fromFile(outFile));
+            req.setAllowedOverMetered(true);
+            req.setAllowedOverRoaming(true);
+            req.addRequestHeader("User-Agent", "Eclipse-OTA/1.0");
+            req.addRequestHeader("Accept", "application/octet-stream,application/vnd.android.package-archive,*/*");
 
             final DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
             if (dm == null) return;
@@ -441,11 +445,11 @@ public class MainActivity extends Activity {
                             return;
                         }
                         if (status == DownloadManager.STATUS_FAILED) {
+                            int reasonIdx = c.getColumnIndex(DownloadManager.COLUMN_REASON);
+                            final int reason = reasonIdx >= 0 ? c.getInt(reasonIdx) : -1;
                             c.close();
-                            runOnUiThread(() -> {
-                                if (webView != null)
-                                    webView.evaluateJavascript("window.__otaError&&window.__otaError('download falhou')", null);
-                            });
+                            // Fallback: tenta download manual via HttpURLConnection (segue redirects HTTPS↔HTTP)
+                            new Thread(() -> _httpDownloadFallback(url, outFile, reason)).start();
                             return;
                         }
                     }
@@ -456,6 +460,85 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
             if (webView != null)
                 webView.evaluateJavascript("window.__otaError&&window.__otaError('" + e.getMessage().replace("'", "") + "')", null);
+        }
+    }
+
+    private void _httpDownloadFallback(String startUrl, File outFile, int dmReason) {
+        java.net.HttpURLConnection conn = null;
+        java.io.InputStream in = null;
+        java.io.FileOutputStream out = null;
+        String currentUrl = startUrl;
+        try {
+            // Manual redirect (até 5 saltos)
+            for (int hop = 0; hop < 5; hop++) {
+                java.net.URL u = new java.net.URL(currentUrl);
+                conn = (java.net.HttpURLConnection) u.openConnection();
+                conn.setInstanceFollowRedirects(false);
+                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(60000);
+                conn.setRequestProperty("User-Agent", "Eclipse-OTA/1.0");
+                conn.setRequestProperty("Accept", "application/octet-stream,application/vnd.android.package-archive,*/*");
+                int code = conn.getResponseCode();
+                if (code == 301 || code == 302 || code == 303 || code == 307 || code == 308) {
+                    String loc = conn.getHeaderField("Location");
+                    conn.disconnect();
+                    if (loc == null) break;
+                    if (loc.startsWith("/")) {
+                        java.net.URL base = new java.net.URL(currentUrl);
+                        loc = base.getProtocol() + "://" + base.getHost() + loc;
+                    }
+                    currentUrl = loc;
+                    continue;
+                }
+                if (code != 200) {
+                    final int finalCode = code;
+                    runOnUiThread(() -> {
+                        if (webView != null)
+                            webView.evaluateJavascript("window.__otaError&&window.__otaError('HTTP " + finalCode + " (DM reason " + dmReason + ")')", null);
+                    });
+                    conn.disconnect();
+                    return;
+                }
+                long total = conn.getContentLengthLong();
+                in = conn.getInputStream();
+                out = new java.io.FileOutputStream(outFile);
+                byte[] buf = new byte[8192];
+                long soFar = 0;
+                int lastPct = 0;
+                int n;
+                while ((n = in.read(buf)) > 0) {
+                    out.write(buf, 0, n);
+                    soFar += n;
+                    if (total > 0) {
+                        int pct = (int) (soFar * 100 / total);
+                        if (pct != lastPct) {
+                            lastPct = pct;
+                            final int p = pct;
+                            runOnUiThread(() -> {
+                                if (webView != null)
+                                    webView.evaluateJavascript("window.__otaProgress&&window.__otaProgress(" + p + ")", null);
+                            });
+                        }
+                    }
+                }
+                out.flush();
+                runOnUiThread(() -> _installApk(outFile));
+                return;
+            }
+            runOnUiThread(() -> {
+                if (webView != null)
+                    webView.evaluateJavascript("window.__otaError&&window.__otaError('redirect loop')", null);
+            });
+        } catch (Exception e) {
+            final String msg = (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()).replace("'", "");
+            runOnUiThread(() -> {
+                if (webView != null)
+                    webView.evaluateJavascript("window.__otaError&&window.__otaError('" + msg + "')", null);
+            });
+        } finally {
+            try { if (in != null) in.close(); } catch (Exception ignored) {}
+            try { if (out != null) out.close(); } catch (Exception ignored) {}
+            try { if (conn != null) conn.disconnect(); } catch (Exception ignored) {}
         }
     }
 
