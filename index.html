@@ -6603,6 +6603,7 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
     pressed=false;
     pressTm=setTimeout(()=>{
       pressed=true;
+      window._chartLongPressed=true;
       window.chartMode=window.chartMode==='estagio'?'xp':'estagio';
       // Garante pill XP ativo
       const card=document.getElementById('evolucao-card');
@@ -20734,7 +20735,11 @@ function updateSliderPos(container){
   const slider=container.querySelector('.toggle-slider');
   if(!active||!slider)return;
   const mode=active.dataset.mode||'xp';
-  const colors=TOGGLE_COLORS[mode]||TOGGLE_COLORS.xp;
+  let colors=TOGGLE_COLORS[mode]||TOGGLE_COLORS.xp;
+  // Override pra estagio quando chartMode=='estagio' e pill xp ativo
+  if(mode==='xp'&&window.chartMode==='estagio'){
+    colors={bg:'#a78bfa',shadow:'rgba(167,139,250,.4)'};
+  }
   slider.style.left=active.offsetLeft+'px';
   slider.style.width=active.offsetWidth+'px';
   slider.style.background=colors.bg;
@@ -20745,16 +20750,17 @@ document.querySelectorAll('.toggle-pills').forEach(container=>{
   initToggleSlider(container);
   container.querySelectorAll('.toggle-pill').forEach(btn=>{
     btn.addEventListener('click',()=>{
+      // Skip click se acabou de fazer long-press (evita reset do estagio)
+      if(window._chartLongPressed){window._chartLongPressed=false;return}
       container.querySelectorAll('.toggle-pill').forEach(x=>x.classList.remove('active'));
       btn.classList.add('active');
       const mode=btn.dataset.mode;
-      // Reset chartMode pra 'xp' (Nivel) sempre que clicar — long-press é o único path pro estagio
-      if(mode==='xp'){chartMode='xp'}
       // Limpa inline overrides do long-press
       const slider=container.querySelector('.toggle-slider');
       if(slider){slider.style.background='';slider.style.boxShadow=''}
       updateSliderPos(container);
-      if(mode==='xp'||mode==='credito'){chartMode=mode;drawChart(true)}
+      if(mode==='xp'){chartMode='xp';drawChart(true)}
+      else if(mode==='credito'){chartMode='credito';drawChart(true)}
       else if(mode==='tipo'||mode==='raridade'){donutMode=mode;renderDonut()}
     });
   });
