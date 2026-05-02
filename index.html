@@ -140,7 +140,7 @@ body[data-perf-low] .save-toast-icon .sti-badge{animation:none!important}
 .register-close,.biblio-reader-close,.biblio-subbtn,
 .update-banner-close,.account-badge,.account-avatar,
 .eo-color,.eo-dot,.cselect-arrow,.notif-close,.sidebar-gear-desktop,
-.palette-swatch,.theme-swatch,.color-dot{
+.palette-swatch,.palette-custom,.theme-swatch,.color-dot{
   aspect-ratio:1/1!important;
   flex-shrink:0!important;
   flex-grow:0!important;
@@ -1238,7 +1238,7 @@ html.no-radius,html.no-radius *{border-radius:0!important}
 .palette-swatch{width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;max-width:24px!important;max-height:24px!important;flex:0 0 24px!important;flex-shrink:0!important;flex-grow:0!important;aspect-ratio:1/1!important;box-sizing:border-box!important;border-radius:50%!important;border:2px solid var(--border)!important;cursor:pointer;padding:0!important;line-height:0!important;font-size:0!important;display:inline-block!important;align-self:center!important;vertical-align:middle;transition:transform .15s,border-color .15s,box-shadow .2s;outline:none;overflow:hidden}
 .palette-swatch:hover{transform:scale(1.12);border-color:var(--text-secondary)}
 .palette-swatch.active{border-color:var(--text);box-shadow:0 0 0 2px var(--bg-card),0 0 0 4px currentColor;color:inherit}
-.palette-custom{position:relative;width:30px;height:30px;flex:0 0 30px;aspect-ratio:1;box-sizing:border-box;border-radius:50%;border:2px dashed var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,border-color .15s,box-shadow .2s;color:var(--text-secondary);overflow:hidden}
+.palette-custom{position:relative;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;max-width:30px!important;max-height:30px!important;flex:0 0 30px!important;flex-shrink:0!important;flex-grow:0!important;aspect-ratio:1/1!important;box-sizing:border-box!important;border-radius:50%!important;border:2px dashed var(--border);cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;transition:transform .15s,border-color .15s,box-shadow .2s;color:var(--text-secondary);overflow:hidden;padding:0!important;line-height:0!important;font-size:0!important;vertical-align:middle}
 .palette-custom:hover{transform:scale(1.12);border-color:var(--magenta);color:var(--magenta)}
 .palette-custom.active{border-style:solid;border-color:var(--text);box-shadow:0 0 0 2px var(--bg-card),0 0 0 4px var(--magenta)}
 .palette-custom-dot{position:absolute;inset:2px;border-radius:50%;background:transparent;z-index:1}
@@ -6119,6 +6119,8 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
 .eo-card-sig img[hidden]{display:none!important}
 /* Defensivo: img sem src OU src vazio nunca mostra broken-img placeholder */
 .eo-card-sig img:not([src]),.eo-card-sig img[src=""]{display:none!important;visibility:hidden!important}
+.eo-prev-sig-text{display:block;margin-top:6px;font-size:32px;line-height:1;color:var(--eo-card-fg,#fff);min-height:40px;letter-spacing:.5px;transform:rotate(-2deg);transform-origin:left center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90%}
+.eo-card.eo-vertical .eo-prev-sig-text{font-size:26px;margin-top:4px}
 .eo-sig-canvas{background:transparent}
 .eo-card[data-signing] .eo-sig-canvas{position:absolute;left:0;right:0;top:22px;bottom:2px;touch-action:none;cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M3 21l3-1 13-13-2-2L4 18l-1 3z'/><path d='M14 6l4 4'/><path d='M3 21l2-2'/></svg>") 2 20,crosshair;width:auto;height:auto;display:block;background:transparent;z-index:50;pointer-events:auto}
 .eo-sig-hint{display:none}
@@ -6337,13 +6339,13 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
     <section class="eo-step" data-step="1" data-active>
       <h1 class="eo-title">Bem-vindo, Aventureiro</h1>
       <p class="eo-sub">Escreva seu nome e assine direto no cartão.</p>
-      <div class="eo-card" id="eo-card-prev" data-pattern="random" data-signing style="--eo-card-c:#1f1f23">
+      <div class="eo-card" id="eo-card-prev" data-pattern="random" style="--eo-card-c:#1f1f23">
         <div class="eo-card-l">
           <div class="eo-card-brand">Eclipse</div>
           <div class="eo-card-row">NOME: <span id="eo-prev-name" contenteditable="true" data-ph="seu nome" spellcheck="false"></span></div>
           <div class="eo-card-row">ID: <span id="eo-prev-id">000000</span></div>
           <div class="eo-card-row">EMITIDO EM: <span id="eo-prev-date">—</span></div>
-          <div class="eo-card-sig">ASSINATURA:<canvas id="eo-sig-canvas" class="eo-sig-canvas" width="1" height="1"></canvas><span class="eo-sig-hint" id="eo-sig-hint">assine aqui</span><img class="eo-prev-sig-m" alt="" hidden></div>
+          <div class="eo-card-sig">ASSINATURA:<span class="eo-prev-sig-text" id="eo-prev-sig-text"></span><img class="eo-prev-sig-m" alt="" hidden></div>
         </div>
         <div class="eo-card-r"></div>
       </div>
@@ -6358,7 +6360,7 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
           <div class="eo-card-row">NOME: <span class="eo-prev-name-m">—</span></div>
           <div class="eo-card-row">ID: <span class="eo-prev-id-m">000000</span></div>
           <div class="eo-card-row">EMITIDO EM: <span class="eo-prev-date-m">—</span></div>
-          <div class="eo-card-sig">ASSINATURA:<img class="eo-prev-sig-m" alt="" hidden></div>
+          <div class="eo-card-sig">ASSINATURA:<span class="eo-prev-sig-text eo-prev-sig-m-text"></span><img class="eo-prev-sig-m" alt="" hidden></div>
         </div>
         <div class="eo-card-r"></div>
       </div>
@@ -6416,7 +6418,7 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
           <div class="eo-card-row">NOME: <span class="eo-prev-name-m">—</span></div>
           <div class="eo-card-row">ID: <span class="eo-prev-id-m">000000</span></div>
           <div class="eo-card-row">EMITIDO EM: <span class="eo-prev-date-m">—</span></div>
-          <div class="eo-card-sig">ASSINATURA:<img class="eo-prev-sig-m" alt="" hidden></div>
+          <div class="eo-card-sig">ASSINATURA:<span class="eo-prev-sig-text eo-prev-sig-m-text"></span><img class="eo-prev-sig-m" alt="" hidden></div>
         </div>
         <div class="eo-card-r"></div>
       </div>
@@ -21090,11 +21092,17 @@ document.addEventListener('visibilitychange',()=>{
       $$('.eo-prev-name-m').forEach(e=>e.textContent=nDisplay);$$('.eo-prev-id-m').forEach(e=>e.textContent=id);$$('.eo-prev-date-m').forEach(e=>e.textContent=d);
       const fgDark=lum(state.color)>.62,fg=fgDark?'#0a0c12':'#ffffff';
       $$('.eo-card').forEach(c=>{c.style.setProperty('--eo-card-c',state.color);c.style.setProperty('--eo-card-fg',fg);c.style.setProperty('--eo-card-font',FONTS[state.font]);c.dataset.pattern=state.pattern;c.dataset.fg=fgDark?'dark':'light';c.dataset.variation=state.variation});
-      // Assinatura via fonte (auto-render do nome) — sem broken-img
+      // Assinatura como texto cursivo direto (sem canvas/broken-img)
+      const sigText=state.name||'';
+      const _sf=SIG_FONTS[state.sigFont]||'';
+      const sigFont=(_sf.split(/px\s+/)[1]||'cursive').trim();
+      $$('.eo-prev-sig-text,.eo-prev-sig-m-text').forEach(el=>{
+        el.textContent=sigText;
+        el.style.fontFamily=sigFont||'cursive';
+        el.style.fontStyle='italic';
+        el.style.fontWeight='600';
+      });
       let sig=state.sig;
-      if((!sig||!sig.startsWith('data:image/'))&&state.name){
-        sig=autoSig(state.name);state.autoSig=true;
-      }
       $$('.eo-prev-sig-m').forEach(img=>{
         const ok=typeof sig==='string'&&sig.startsWith('data:image/')&&sig.length>100;
         if(!ok){img.removeAttribute('src');img.hidden=true;img.dataset._sigCache='';return}
