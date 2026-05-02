@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp" android:height="108dp"
     android:viewportWidth="4096" android:viewportHeight="4096">
-    <path android:pathData="M0,0h4096v4096h-4096z"
-        android:fillColor="#fe1455"/>
+    <path android:pathData="M0,0h4096v4096h-4096z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="1400" android:centerY="1100"
+                android:gradientRadius="3600">
+                <item android:offset="0.0" android:color="#ff5a8e"/>
+                <item android:offset="0.45" android:color="#fe1455"/>
+                <item android:offset="1.0" android:color="#a00832"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M0,0h4096v4096h-4096z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="0" android:startY="4096"
+                android:endX="4096" android:endY="0">
+                <item android:offset="0.0" android:color="#33000000"/>
+                <item android:offset="0.55" android:color="#00000000"/>
+                <item android:offset="1.0" android:color="#22ffffff"/>
+            </gradient>
+        </aapt:attr>
+    </path>
     <path
         android:fillColor="#FFFFFF"
         android:fillType="evenOdd"
