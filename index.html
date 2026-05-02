@@ -12849,15 +12849,31 @@ function _positionItemDetail(id){
   let pick=null;
   for(const c of cands){if(c.l>=bL&&c.l+dW<=bR&&c.t>=bT&&c.t+dH<=bB&&!overlaps(c.t,c.l)){pick=c;break}}
   if(!pick){for(const c of cands){if(!overlaps(c.t,c.l)){pick=c;break}}}
-  if(!pick)pick=cands[0];
+  // FALLBACK: nenhum dos lados cabe sem overlap → renderiza FORA da grid (abaixo, full-width)
+  if(!pick){
+    const fullW=Math.min(pR.width-8,Math.max(dW,260));
+    detail.style.width=fullW+'px';
+    const newDH=detail.offsetHeight||dH;
+    detail.style.left='4px';
+    if(bB+gap+newDH<=pR.height){
+      // Espaço abaixo do grid
+      detail.style.top=(bB+gap)+'px';
+    }else if(bT-gap-newDH>=0){
+      // Espaço acima do grid
+      detail.style.top=(bT-gap-newDH)+'px';
+    }else{
+      // Último recurso: pane bottom
+      detail.style.top=Math.max(0,pR.height-newDH-4)+'px';
+    }
+    return;
+  }
   let left=pick.l,top=pick.t;
   left=Math.max(bL,Math.min(left,bR-dW));
   top=Math.max(bT,Math.min(top,bB-dH));
+  // Verificação final: se ainda overlap após clamp, joga abaixo do grid
   if(overlaps(top,left)){
-    if(itemB+gap+dH<=bB)top=itemB+gap;
-    else if(itemT-gap-dH>=bT)top=itemT-dH-gap;
-    else if(itemR+gap+dW<=bR){left=itemR+gap;top=Math.max(bT,Math.min(itemT,bB-dH))}
-    else if(itemL-gap-dW>=bL){left=itemL-dW-gap;top=Math.max(bT,Math.min(itemT,bB-dH))}
+    if(bB+gap+dH<=pR.height){left=bL;top=bB+gap;detail.style.width=(bR-bL)+'px'}
+    else{left=bL;top=Math.max(0,pR.height-dH-4);detail.style.width=(bR-bL)+'px'}
   }
   detail.style.left=left+'px';
   detail.style.top=top+'px';
