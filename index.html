@@ -5279,11 +5279,18 @@ button:not(:disabled):active{transform:scale(.97)}
   transition:transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .2s,border-color .2s,background .2s;
   position:relative;overflow:hidden;
 }
-.stat-block:hover{
-  transform:translateY(-3px);
-  box-shadow:0 12px 28px color-mix(in srgb,var(--sb-c,var(--magenta)) 25%,rgba(0,0,0,.12)),0 2px 6px rgba(0,0,0,.06);
+.stat-block::before{
+  content:"";position:absolute;top:0;left:-60%;width:50%;height:100%;
+  background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.08) 50%,transparent 100%);
+  transform:skewX(-20deg);transition:left .55s cubic-bezier(.2,.9,.2,1);pointer-events:none;z-index:1
+}
+.stat-block:hover,.stat-block:active,.stat-block.touched{
+  transform:translateY(-4px) scale(1.04);
+  box-shadow:0 16px 36px color-mix(in srgb,var(--sb-c,var(--magenta)) 32%,rgba(0,0,0,.18)),0 4px 10px rgba(0,0,0,.08);
   border-color:var(--sb-c,var(--magenta));
 }
+.stat-block:hover::before,.stat-block.touched::before{left:130%}
+body[data-perf-low] .stat-block::before{display:none}
 .stat-block:focus-within{border-color:var(--sb-c,var(--magenta));box-shadow:0 0 0 3px color-mix(in srgb,var(--sb-c,var(--magenta)) 20%,transparent),0 6px 20px rgba(0,0,0,.1)}
 .stat-block-head{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:24px}
 .stat-block-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--sb-c,var(--magenta)) 22%,transparent);color:var(--sb-c,var(--magenta));flex-shrink:0;transition:transform .25s}
@@ -12523,10 +12530,12 @@ document.addEventListener('keydown',e=>{
 });
 // Case progression: grid sempre 14x10, caseLevel desbloqueia area top-left
 const CASE_LEVELS=[
-  {key:'default', label:'Maleta', cols:10, rows:10, total:100}
+  {key:'maleta',    label:'Maleta',    cols:5,  rows:5,  total:25},
+  {key:'mochila',   label:'Mochila',   cols:7,  rows:7,  total:49},
+  {key:'container', label:'Container', cols:10, rows:10, total:100}
 ];
 let caseLevel=0;
-let gridCols=10,gridRows=10;
+let gridCols=5,gridRows=5;
 
 function unlockArea(){return CASE_LEVELS[caseLevel]||CASE_LEVELS[0]}
 function isCellUnlocked(idx){
@@ -13030,9 +13039,10 @@ function renderItemDetail(){
   const memories=it.memories||[];
   el.innerHTML=`
     <div class="rid-tabs">
-      <button class="rid-tab active" data-tab="info" onclick="_switchDetailTab(this,'info')">Info</button>
-      <button class="rid-tab" data-tab="mods" onclick="_switchDetailTab(this,'mods')">Acessórios</button>
-      <button class="rid-tab" data-tab="skins" onclick="_switchDetailTab(this,'skins')">Descrição</button>
+      <button class="rid-tab active" data-tab="info" title="Info" onclick="_switchDetailTab(this,'info')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+      <button class="rid-tab" data-tab="mods" title="Acessórios" onclick="_switchDetailTab(this,'mods')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+      <button class="rid-tab" data-tab="skins" title="Descrição" onclick="_switchDetailTab(this,'skins')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/></svg></button>
+      <button class="rid-tab" data-tab="passos" title="Passos" onclick="_switchDetailTab(this,'passos')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l5 16 4-7 7-3z"/></svg></button>
     </div>
     <div class="rid-tab-content active" data-tab="info">
       <div class="rid-title-row">
@@ -13052,27 +13062,36 @@ function renderItemDetail(){
       <button class="modal-btn danger" style="width:100%;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px" onclick="_confirmDropItem(${it.id})"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Excluir</button>
     </div>
     <div class="rid-tab-content" data-tab="mods">
-      <div class="rid-subtitle" style="margin-bottom:6px">Acessórios</div>
-      <div class="rid-mod-slots">
-        ${['cano','mira','coronha','carregador','silenciador','laser'].map(slot=>{
+      ${(()=>{
+        const _w=it.iconWpn&&_wpnBaseEntry(it.iconWpn);
+        const isMelee=_w&&_w.type==='branca';
+        const slots=isMelee?['lamina','gume','cabo','empunhadura','guarda','contrapeso']:['cano','bocal','mira','empunhadura','carregador','trilho'];
+        window._curModSet=isMelee?MOD_SLOT_OPTIONS_MELEE:MOD_SLOT_OPTIONS_FIRE;
+        const labelMap={cano:'Cano',bocal:'Bocal',mira:'Mira',empunhadura:'Empunhadura',carregador:'Carregador',trilho:'Trilho',lamina:'Lâmina',gume:'Gume',cabo:'Cabo',guarda:'Guarda',contrapeso:'Contrapeso'};
+        return `<div class="rid-subtitle" style="margin-bottom:6px">${isMelee?'Modificações (branca)':'Acessórios (fogo)'}</div>
+        <div class="rid-mod-slots">${slots.map(slot=>{
           const m=(it.mods||{})[slot];
-          const icoMap={cano:'⚙',mira:'◎',coronha:'▭',carregador:'▤',silenciador:'⌬',laser:'✦'};
           const xBtn=m?`<div class="rid-mod-slot-x" onclick="event.stopPropagation();_modSlotRemove(${it.id},&quot;${slot}&quot;)">×</div>`:'';
           return `<div class="rid-mod-slot${m?' filled':''}" onclick="_modSlotClick(${it.id},'${slot}')">
-            <div class="rid-mod-slot-icon">${icoMap[slot]}</div>
+            <div class="rid-mod-slot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
             <div class="rid-mod-slot-info">
-              <div class="rid-mod-slot-name">${slot.charAt(0).toUpperCase()+slot.slice(1)}</div>
+              <div class="rid-mod-slot-name">${labelMap[slot]||slot}</div>
               <div class="rid-mod-slot-val">${m?(m.name||m):'Vazio'}</div>
             </div>
             ${xBtn}
           </div>`;
-        }).join('')}
-      </div>
-      ${memories.length>0?`<div class="rid-subtitle" style="margin:10px 0 6px">Memórias</div>`+memories.map(m=>`<div class="rid-memory"><div class="rid-mem-when">${m.when||''}</div><div class="rid-mem-text">${m.text||m}</div></div>`).join(''):''}
+        }).join('')}</div>
+        ${memories.length>0?`<div class="rid-subtitle" style="margin:10px 0 6px">Memórias</div>`+memories.map(m=>`<div class="rid-memory"><div class="rid-mem-when">${m.when||''}</div><div class="rid-mem-text">${m.text||m}</div></div>`).join(''):''}`;
+      })()}
     </div>
     <div class="rid-tab-content" data-tab="skins">
       <div class="rid-subtitle" style="margin:10px 0 6px">Descrição</div>
       <div class="rid-desc-edit" onclick="_editItemStat(${it.id},'desc','Descrição','textarea','${(it.desc&&it.desc!=='Sem descricao.'?String(it.desc):'').replace(/'/g,'&#39;').replace(/\n/g,'\\n')}')" style="padding:10px 12px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.06);border-radius:6px;cursor:pointer;font-size:12px;color:${it.desc&&it.desc!=='Sem descricao.'?'var(--text-primary)':'var(--text-dim)'};line-height:1.5;white-space:pre-wrap;min-height:60px">${it.desc&&it.desc!=='Sem descricao.'?String(it.desc).replace(/</g,'&lt;'):'Toque para adicionar descrição...'}</div>
+    </div>
+    <div class="rid-tab-content" data-tab="passos">
+      <div class="rid-subtitle" style="margin:10px 0 6px">Dano base e Passos</div>
+      <div class="rid-stat-row" onclick="_editItemStat(${it.id},'damageBase','Dano base','dice','${String(it.damageBase||dmg).replace(/'/g,'&#39;')}')"><div class="rid-stat-icon"><svg viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/></svg></div><div class="rid-stat-name">Dano base</div><div class="rid-stat-bar" style="--v:50%"></div><div class="rid-stat-num">${it.damageBase||dmg}</div></div>
+      <div class="rid-stat-row" onclick="_editItemStat(${it.id},'steps','Passos','int',${it.steps||1})"><div class="rid-stat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="rid-stat-name">Passos</div><div class="rid-stat-bar" style="--v:${_pct(it.steps||1,10)}%"></div><div class="rid-stat-num">${it.steps||1}</div></div>
     </div>`;
 }
 window._switchDetailTab=function(btn,tab){
@@ -13080,18 +13099,31 @@ window._switchDetailTab=function(btn,tab){
   card.querySelectorAll('.rid-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
   card.querySelectorAll('.rid-tab-content').forEach(c=>c.classList.toggle('active',c.dataset.tab===tab));
 };
-const MOD_SLOT_OPTIONS={
-  cano:{label:'Cano',emoji:'⚙',options:['Curto','Padrão','Longo','Pesado','Ventilado','Match-grade']},
-  mira:{label:'Mira',emoji:'◎',options:['Iron Sights','Red Dot','Holográfica','ACOG','Sniper Scope','Termal','Reflex']},
-  coronha:{label:'Coronha',emoji:'▭',options:['Padrão','Plegável','Tática','Ajustável','Sem coronha']},
-  carregador:{label:'Carregador',emoji:'▤',options:['10 rd','20 rd','30 rd','50 rd','Drum 100 rd','Estendido']},
-  silenciador:{label:'Silenciador',emoji:'⌬',options:['Compacto','Padrão','Pesado','Subsônico','Flash hider']},
-  laser:{label:'Laser',emoji:'✦',options:['Vermelho','Verde','Infravermelho','Combo lanterna']}
+// Mods FIREARMS
+const MOD_SLOT_OPTIONS_FIRE={
+  cano:{label:'Cano',options:['Curto','Padrão','Longo','Pesado','Ventilado','Match-grade']},
+  bocal:{label:'Bocal',options:['Freio de boca','Compensador','Supressor','Flash hider','Padrão']},
+  mira:{label:'Mira',options:['Iron Sights','Red Dot','Holográfica','ACOG','Sniper Scope','Termal','Reflex']},
+  empunhadura:{label:'Empunhadura',options:['Padrão','Vertical grip','Angled grip','Coronha tática','Coronha plegável','Pistol grip']},
+  carregador:{label:'Carregador',options:['10 rd','20 rd','30 rd','50 rd','Drum 100 rd','Estendido']},
+  trilho:{label:'Trilho Tático',options:['Laser','Lanterna','Combo laser+luz','Sensor IR','Câmera tática','Vazio']}
 };
+// Mods MELEE
+const MOD_SLOT_OPTIONS_MELEE={
+  lamina:{label:'Lâmina',options:['Reta','Curva','Serrilhada','Dupla','Curta','Longa']},
+  gume:{label:'Gume',options:['Afiado','Bruto','Reforçado','Veneno','Eletrificado','Frio']},
+  cabo:{label:'Cabo',options:['Curto','Padrão','Longo','Telescópico','Reforçado']},
+  empunhadura:{label:'Empunhadura',options:['Couro','Borracha','Antiderrapante','Tática','Forrada','Aramada']},
+  guarda:{label:'Guarda',options:['Cruzeta','Trava','Cesto','Quillon','Sem guarda']},
+  contrapeso:{label:'Contrapeso',options:['Leve','Padrão','Pesado','Equilibrado','Reforçado']}
+};
+const MOD_SLOT_OPTIONS=MOD_SLOT_OPTIONS_FIRE;
 window._modSlotClick=function(id,slot){
   const it=inventory.find(x=>x.id===id);if(!it)return;
   it.mods=it.mods||{};
-  const cfg=MOD_SLOT_OPTIONS[slot];if(!cfg)return;
+  const _w=it.iconWpn&&_wpnBaseEntry(it.iconWpn);
+  const set=(_w&&_w.type==='branca')?MOD_SLOT_OPTIONS_MELEE:MOD_SLOT_OPTIONS_FIRE;
+  const cfg=set[slot]||MOD_SLOT_OPTIONS[slot];if(!cfg)return;
   const cur=it.mods[slot]?.name||'';
   document.getElementById('mod-slot-modal')?.remove();
   const wrap=document.createElement('div');
@@ -21498,6 +21530,15 @@ document.addEventListener('visibilitychange',()=>{
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initOS);
   else initOS();
 })();
+
+// Atributos: shimmer touch on mobile
+document.addEventListener('pointerover',e=>{
+  const sb=e.target.closest('.stat-block');if(!sb)return;
+  if(e.pointerType==='touch')sb.classList.add('touched');
+});
+document.addEventListener('pointerout',e=>{
+  const sb=e.target.closest('.stat-block');if(sb&&e.pointerType==='touch')setTimeout(()=>sb.classList.remove('touched'),400);
+});
 </script>
 
 <!-- ═══ CUSTOM COLOR PICKER POPOVER ═══ -->
