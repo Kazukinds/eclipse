@@ -129,6 +129,47 @@ body[data-perf-low] .save-toast-bar-fill::after,
 body[data-perf-low] .pwa-install-btn,
 body[data-perf-low] .tab-soon-ico,
 body[data-perf-low] .save-toast-icon .sti-badge{animation:none!important}
+
+/* ═══ MOBILE PERF AGRESSIVO — todo touch device (sem distinção low-end) ═══ */
+@media (pointer:coarse){
+  /* zero backdrop em todos */
+  *,*::before,*::after{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  /* limita filter pesado */
+  *:not(svg):not(svg *){filter:none}
+  /* permite drop-shadow e blur só em itens explicitamente marcados */
+  [data-fx-allow]{filter:revert!important}
+  /* reduz transition-duration global; mantém transição mas curta */
+  *:not(.dash-wpn-arc):not(svg *){transition-duration:.12s!important}
+  /* desliga animações infinitas ambiente (mantém transitions e finite anims) */
+  .save-toast-bar-fill::after,.xp-fill::before,.xp-fill::after,
+  .status-fill::after,.attr-stat-fill::after,
+  .save-toast-icon .sti-badge,.tab-soon-ico,.pwa-install-btn,
+  .biblio-cover-icon svg,.dash-wpn-2h-tag,
+  .biblio-env::after{animation:none!important}
+  /* hover micro-anims fora */
+  .card:hover,.credit-card:hover,.biblio-env:hover,
+  .modal-btn:hover,.lout-card:hover,.notif-item:hover,
+  .skill-icon-box:hover,.weapon-card-pick:hover,
+  .item-row:hover,.dash-wpn-img:hover,.dash-wpn-sec:hover{
+    transform:none!important;box-shadow:none!important
+  }
+  /* remove will-change residual (custa GPU memory) */
+  *{will-change:auto!important}
+}
+
+/* ═══ ULTRA — perf-low device força no-anim ═══ */
+body[data-perf-low] *{
+  animation-duration:.001s!important;
+  animation-iteration-count:1!important;
+  transition-duration:.08s!important;
+}
+body[data-perf-low] *:not(svg):not(svg *){filter:none!important}
+body[data-perf-low] .biblio-env:hover,
+body[data-perf-low] .biblio-env.revealed,
+body[data-perf-low] .card:hover,
+body[data-perf-low] .credit-card:hover{transform:none!important}
+body[data-perf-low] .biblio-sleeve,
+body[data-perf-low] .biblio-cover{transform:none!important;transition:none!important}
 /* ═══ CÍRCULOS — proteção global contra ovalização ═══
    Força aspect-ratio:1/1 + flex-shrink:0 em elementos circulares comuns.
    Evita stretch de align-items + flex-shrink que distorce em portrait/grid. */
@@ -6803,9 +6844,17 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
   var hc=navigator.hardwareConcurrency||4;
   var mem=navigator.deviceMemory||4;
   var coarse=window.matchMedia('(pointer:coarse)').matches;
-  var narrow=window.innerWidth<=520;
-  // low-end: <=4 cores OU <=2GB RAM OU mobile narrow
-  if(hc<=4||mem<=2||(coarse&&narrow)){document.body.setAttribute('data-perf-low','')}
+  var hasTouch='ontouchstart' in window||navigator.maxTouchPoints>0;
+  var narrow=window.innerWidth<=900;
+  var ua=(navigator.userAgent||'').toLowerCase();
+  var isMobile=/android|iphone|ipad|ipod|mobile|webview|wv/.test(ua);
+  // Override manual via localStorage
+  var manual=localStorage.getItem('eclipse_perf_mode');
+  if(manual==='low'){document.body.setAttribute('data-perf-low','')}
+  else if(manual==='high'){/* nada */}
+  // Detecção: qualquer touch + viewport pequeno → perf-low (mesmo em flagships).
+  // Heavy CSS animações/blurs comem frame budget mesmo em Dimensity 8300.
+  else if(hc<=4||mem<=2||(coarse&&narrow)||(hasTouch&&narrow)||isMobile){document.body.setAttribute('data-perf-low','')}
   // pause anims quando aba escondida (economiza bateria + frame budget)
   document.addEventListener('visibilitychange',function(){
     if(document.visibilityState==='hidden')document.body.style.animationPlayState='paused';
@@ -7502,9 +7551,16 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
         <div class="profile-sidebar">
           <div class="profile-sidebar-card">
             <h4>Sobre</h4>
-            <div class="profile-stat-row"><span class="stat-label">Versão</span><span class="stat-val" id="cfg-app-ver">v3.7.6</span></div>
-            <div class="profile-stat-row"><span class="stat-label">Build</span><span class="stat-val" id="cfg-app-build">376</span></div>
+            <div class="profile-stat-row"><span class="stat-label">Versão</span><span class="stat-val" id="cfg-app-ver">v3.7.7</span></div>
+            <div class="profile-stat-row"><span class="stat-label">Build</span><span class="stat-val" id="cfg-app-build">377</span></div>
             <div class="profile-stat-row"><span class="stat-label">Plataforma</span><span class="stat-val" id="cfg-app-plat">Web</span></div>
+            <div class="profile-stat-row" style="flex-wrap:wrap;gap:6px"><span class="stat-label">Performance</span>
+              <select id="cfg-perf-mode" onchange="setPerfMode(this.value)" style="background:var(--bg-input);border:1px solid var(--border);color:var(--text-primary);padding:4px 8px;border-radius:6px;font-family:inherit;font-size:12px;outline:none;cursor:pointer">
+                <option value="auto">Automático</option>
+                <option value="low">Baixo (anims off)</option>
+                <option value="high">Alto (anims completas)</option>
+              </select>
+            </div>
           </div>
           <div class="profile-sidebar-card">
             <h4>Aparência</h4>
@@ -17104,6 +17160,22 @@ const PALETTES={
   amarelo:{main:'#fbbf24',dim:'#c8932a',rgb:'251,191,36'},
   esmeralda:{main:'#34d399',dim:'#1f9c6f',rgb:'52,211,153'}
 };
+window.setPerfMode=function(mode){
+  try{localStorage.setItem('eclipse_perf_mode',mode||'auto')}catch(_){}
+  document.body.removeAttribute('data-perf-low');
+  if(mode==='low'){document.body.setAttribute('data-perf-low','')}
+  else if(mode==='auto'){
+    const hc=navigator.hardwareConcurrency||4;
+    const mem=navigator.deviceMemory||4;
+    const coarse=window.matchMedia('(pointer:coarse)').matches;
+    const hasTouch='ontouchstart' in window||navigator.maxTouchPoints>0;
+    const narrow=window.innerWidth<=900;
+    const ua=(navigator.userAgent||'').toLowerCase();
+    const isMobile=/android|iphone|ipad|ipod|mobile|webview|wv/.test(ua);
+    if(hc<=4||mem<=2||(coarse&&narrow)||(hasTouch&&narrow)||isMobile){document.body.setAttribute('data-perf-low','')}
+  }
+  if(typeof toast==='function')toast('Modo: '+(mode==='low'?'Baixo (anims off)':mode==='high'?'Alto':'Automático'));
+};
 window.applyPalette=function(key,customHex){
   const p=PALETTES[key]||PALETTES.lime;
   const main=customHex||p.main;
@@ -17423,7 +17495,7 @@ function performSave(){
   if(!name)name='ficha';
   closeModal();
   const data=collectAllData();
-  data._meta={savedAt:new Date().toISOString(),version:'3.7.6',filename:name};
+  data._meta={savedAt:new Date().toISOString(),version:'3.7.7',filename:name};
   const json=JSON.stringify(data,null,2);
   const blob=new Blob([json],{type:'application/json'});
   const url=URL.createObjectURL(blob);
@@ -20254,6 +20326,8 @@ function switchToConfig(){
     const ss=document.getElementById('profile-sound-sub');if(ss)ss.textContent=muted?'Desativado':'Ativado';
     const isAndroid=/android/i.test(navigator.userAgent);
     const cp=document.getElementById('cfg-app-plat');if(cp)cp.textContent=isAndroid?'Android':'Web';
+    const pm=document.getElementById('cfg-perf-mode');
+    if(pm){pm.value=localStorage.getItem('eclipse_perf_mode')||'auto'}
     // Versão + Build dinâmicos: usa EclipseNative.appVersion() (Android) OU SW VERSION (Web)
     const cv=document.getElementById('cfg-app-ver');
     const cb=document.getElementById('cfg-app-build');
@@ -20842,6 +20916,12 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.7.7',date:'2026-05-05',title:'Perf mobile: anims/blurs/shadows desligados em touch + toggle manual',items:[
+    {tag:'perf',text:'Detecção perf-low expandida — qualquer touch device com viewport ≤900px ou UA mobile entra em modo baixo automaticamente (Poco X6 Pro, etc.)'},
+    {tag:'perf',text:'@media (pointer:coarse): zero backdrop-filter, transition-duration 120ms, hover transforms removidos, will-change limpo'},
+    {tag:'perf',text:'data-perf-low: animation-duration 1ms, transition 80ms, filters off em todos elementos não-SVG'},
+    {tag:'feat',text:'Toggle Performance em Configurações > Sobre — Auto / Baixo / Alto. Salva escolha em localStorage'}
+  ]},
   {version:'v3.7.6',date:'2026-05-05',title:'Topbar reorg, mini-calendário, loadouts, exportar item, biblioteca PDF, atalhos completos',items:[
     {tag:'feat',text:'Calendário movido para topbar ao lado da notificação — popup mensal compacto, marca dia atual e dias com evento'},
     {tag:'feat',text:'Engrenagem de config fixa no rodapé da sidebar (onde antes ficava o calendário)'},
