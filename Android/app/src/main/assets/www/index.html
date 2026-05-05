@@ -1129,8 +1129,11 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .re4-item-detail .rid-rarity-tag{font-size:9px;font-weight:800;letter-spacing:1px;color:var(--magenta)}
 .re4-item-detail .rid-subtitle{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
 .re4-item-detail .rid-stat-row{display:flex;align-items:center;gap:8px;padding:5px 6px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background .18s,transform .15s;border-radius:5px;margin:0 -6px}
-.re4-item-detail .rid-stat-row:hover{background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.01));transform:translateX(2px)}
-.re4-item-detail .rid-stat-row:hover .rid-stat-icon{color:var(--magenta);transform:scale(1.15)}
+@media (hover:hover){
+  .re4-item-detail .rid-stat-row:hover{background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.01));transform:translateX(2px)}
+  .re4-item-detail .rid-stat-row:hover .rid-stat-icon{color:var(--magenta);transform:scale(1.15)}
+}
+.re4-item-detail .rid-stat-row:active{background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.02))}
 .re4-item-detail .rid-stat-icon{transition:color .15s,transform .15s}
 .re4-item-detail .rid-stat-bar{height:4px!important;border-radius:3px}
 .re4-item-detail .rid-stat-bar::after{box-shadow:0 0 8px color-mix(in srgb,var(--magenta) 50%,transparent)}
@@ -1148,7 +1151,7 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .re4-item-detail .rid-name{font-size:14px!important;background:linear-gradient(180deg,#fff,#aaa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .re4-item-detail .rid-rarity-tag{padding:3px 7px;background:color-mix(in srgb,currentColor 12%,transparent);border:1px solid color-mix(in srgb,currentColor 30%,transparent);border-radius:4px;font-size:8px!important}
 .re4-item-detail .rid-stat-num{transition:color .15s}
-.re4-item-detail .rid-stat-row:hover .rid-stat-num{color:#fff;text-shadow:0 0 8px rgba(255,255,255,.3)}
+@media (hover:hover){.re4-item-detail .rid-stat-row:hover .rid-stat-num{color:#fff;text-shadow:0 0 8px rgba(255,255,255,.3)}}
 .stat-edit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:99999;display:flex;align-items:center;justify-content:center;animation:stEdFade .15s ease-out}
 .stat-edit-box{background:var(--bg-card,#1a1a1f);border:1px solid var(--border,rgba(255,255,255,.1));border-radius:12px;padding:18px;min-width:260px;max-width:340px;box-shadow:0 12px 40px rgba(0,0,0,.7);animation:stEdSlide .2s cubic-bezier(.34,1.4,.6,1)}
 .stat-edit-title{font-size:13px;font-weight:700;color:var(--text-primary,#fff);margin-bottom:12px;letter-spacing:.4px}
@@ -7551,8 +7554,8 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
         <div class="profile-sidebar">
           <div class="profile-sidebar-card">
             <h4>Sobre</h4>
-            <div class="profile-stat-row"><span class="stat-label">Versão</span><span class="stat-val" id="cfg-app-ver">v3.7.7</span></div>
-            <div class="profile-stat-row"><span class="stat-label">Build</span><span class="stat-val" id="cfg-app-build">377</span></div>
+            <div class="profile-stat-row"><span class="stat-label">Versão</span><span class="stat-val" id="cfg-app-ver">v3.7.8</span></div>
+            <div class="profile-stat-row"><span class="stat-label">Build</span><span class="stat-val" id="cfg-app-build">378</span></div>
             <div class="profile-stat-row"><span class="stat-label">Plataforma</span><span class="stat-val" id="cfg-app-plat">Web</span></div>
             <div class="profile-stat-row" style="flex-wrap:wrap;gap:6px"><span class="stat-label">Performance</span>
               <select id="cfg-perf-mode" onchange="setPerfMode(this.value)" style="background:var(--bg-input);border:1px solid var(--border);color:var(--text-primary);padding:4px 8px;border-radius:6px;font-family:inherit;font-size:12px;outline:none;cursor:pointer">
@@ -14107,6 +14110,12 @@ function renderItemDetail(){
         <button type="button" class="rid-import-btn" onclick="event.stopPropagation();window.openItemImport&&window.openItemImport()" title="Receber/importar item" style="background:var(--bg-input);border:1px solid var(--border);color:var(--text-secondary);width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--text-secondary)';this.style.color='var(--text-primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         </button>
+        <button type="button" class="rid-saveimg-btn" onclick="event.stopPropagation();window.saveItemImage&&window.saveItemImage(${it.id})" title="Salvar imagem na pasta" style="background:var(--bg-input);border:1px solid var(--border);color:var(--text-secondary);width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        </button>
+        <button type="button" class="rid-loadimg-btn" onclick="event.stopPropagation();window._pickItemImage&&window._pickItemImage(${it.id})" title="Importar imagem do dispositivo" style="background:var(--bg-input);border:1px solid var(--border);color:var(--text-secondary);width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </button>
         </div>
       </div>
       <div class="rid-desc-edit" onclick="_editItemStat(${it.id},'desc','Descrição','textarea','${(it.desc&&it.desc!=='Sem descricao.'?String(it.desc):'').replace(/'/g,'&#39;').replace(/\n/g,'\\n')}')" style="padding:10px 12px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.06);border-radius:6px;cursor:pointer;font-size:12px;color:${it.desc&&it.desc!=='Sem descricao.'?'var(--text-primary)':'var(--text-dim)'};line-height:1.5;white-space:pre-wrap;min-height:60px">${it.desc&&it.desc!=='Sem descricao.'?String(it.desc).replace(/</g,'&lt;'):'Toque para adicionar descrição...'}</div>
@@ -16970,6 +16979,27 @@ window._addAbilityFromBook=function(bookId,i){
 };
 
 window.openItemExport=openItemExport;
+window.saveItemImage=function(id){
+  const it=(window.inventory||[]).find(x=>x.id===id);if(!it)return;
+  const img=it.customImage||(it.iconWpn&&typeof _wpnBaseEntry==='function'?(()=>{const w=_wpnBaseEntry(it.iconWpn);return w?(typeof _themeWpnSrc==='function'?_themeWpnSrc(w.file):w.file):''})():'');
+  if(!img){toast&&toast('Item sem imagem custom','warn');return}
+  const safeName=(it.name||'item').replace(/[^a-z0-9]+/gi,'_').toLowerCase();
+  const dl=(href,filename)=>{const a=document.createElement('a');a.href=href;a.download=filename;document.body.appendChild(a);a.click();a.remove()};
+  // Detect format
+  if(/^data:image\/svg/i.test(img)){
+    dl(img,safeName+'.svg');toast&&toast('SVG salvo: '+safeName+'.svg');return;
+  }
+  if(/^data:image\/png/i.test(img)){dl(img,safeName+'.png');toast&&toast('PNG salvo');return}
+  if(/^data:image\/(jpe?g|webp|gif)/i.test(img)){const ext=img.match(/^data:image\/(\w+)/i)[1].replace('jpeg','jpg');dl(img,safeName+'.'+ext);toast&&toast('Imagem salva');return}
+  // External URL → fetch as blob then download
+  fetch(img).then(r=>r.blob()).then(b=>{
+    const url=URL.createObjectURL(b);
+    const ext=(b.type.split('/')[1]||'png').replace('svg+xml','svg');
+    dl(url,safeName+'.'+ext);
+    setTimeout(()=>URL.revokeObjectURL(url),2000);
+    toast&&toast('Imagem salva');
+  }).catch(e=>{toast&&toast('Falha: '+e.message,'error')});
+};
 window.openItemImport=function(){
   const ov=document.createElement('div');
   ov.className='lout-overlay open';
@@ -17495,7 +17525,7 @@ function performSave(){
   if(!name)name='ficha';
   closeModal();
   const data=collectAllData();
-  data._meta={savedAt:new Date().toISOString(),version:'3.7.7',filename:name};
+  data._meta={savedAt:new Date().toISOString(),version:'3.7.8',filename:name};
   const json=JSON.stringify(data,null,2);
   const blob=new Blob([json],{type:'application/json'});
   const url=URL.createObjectURL(blob);
@@ -20916,6 +20946,12 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.7.8',date:'2026-05-05',title:'Fix double-tap em mobile + salvar/importar SVG do item',items:[
+    {tag:'fix',text:'rid-stat-row hover envolto em @media (hover:hover) — touch agora dispara click no 1º tap (não precisa mais 2x)'},
+    {tag:'feat',text:'Botão "Salvar imagem" no item-detail (aba Descrição) — baixa customImage como SVG/PNG/JPG na pasta de downloads'},
+    {tag:'feat',text:'Botão "Importar imagem" lado a lado — abre file picker pra trocar imagem do item'},
+    {tag:'feat',text:'Linha de ações agora tem 5 ícones: editor avançado, exportar item, importar item, salvar imagem, importar imagem'}
+  ]},
   {version:'v3.7.7',date:'2026-05-05',title:'Perf mobile: anims/blurs/shadows desligados em touch + toggle manual',items:[
     {tag:'perf',text:'Detecção perf-low expandida — qualquer touch device com viewport ≤900px ou UA mobile entra em modo baixo automaticamente (Poco X6 Pro, etc.)'},
     {tag:'perf',text:'@media (pointer:coarse): zero backdrop-filter, transition-duration 120ms, hover transforms removidos, will-change limpo'},
