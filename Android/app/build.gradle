@@ -10,8 +10,8 @@ android {
         applicationId "com.fichaeclipse.widgets"
         minSdk 24
         targetSdk 34
-        versionCode 156
-        versionName "3.7.8"
+        versionCode 157
+        versionName "3.7.9"
     }
 
     signingConfigs {
@@ -34,7 +34,8 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -42,6 +43,20 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+    }
+    packagingOptions {
+        resources {
+            excludes += [
+                'META-INF/*.kotlin_module','META-INF/DEPENDENCIES','META-INF/LICENSE*',
+                'META-INF/NOTICE*','META-INF/AL2.0','META-INF/LGPL2.1','META-INF/*.version',
+                '**/*.kotlin_metadata','kotlin/**'
+            ]
+        }
+    }
+    bundle {
+        language { enableSplit = true }
+        density  { enableSplit = true }
+        abi      { enableSplit = true }
     }
     applicationVariants.all { variant ->
         variant.outputs.all {
