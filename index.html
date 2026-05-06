@@ -8395,8 +8395,17 @@ function getWeaponSize(k){
 const RARITY_LABELS={common:'Comum',uncommon:'Incomum',rare:'Raro',epic:'Epico',legendary:'Lendario'};
 // Tier de armas (mapeia rarity → classificacao tatica)
 const WEAPON_TIER_LABELS={common:'Improvisada',uncommon:'Basica',rare:'Tatica',epic:'Avancada',legendary:'Avancada+'};
-function tierLabelFor(it){const isWpn=it&&(it.cat==='arma'||it.cat==='armaBranca'||it.cat==='arma-fogo'||it.cat==='armaFogo'||it.cat==='explosivo');return (isWpn?WEAPON_TIER_LABELS:RARITY_LABELS)[it&&it.rarity]||(isWpn?'Improvisada':'Comum')}
-window.WEAPON_TIER_LABELS=WEAPON_TIER_LABELS;window.tierLabelFor=tierLabelFor;
+const PROT_TIER_LABELS={common:'Leve',rare:'Pesada'};
+function tierLabelFor(it){
+  if(!it)return 'Comum';
+  const cat=it.cat,catNew=it.catNew;
+  const isWpn=cat==='arma'||cat==='armaBranca'||cat==='arma-fogo'||cat==='armaFogo'||cat==='explosivo'||catNew==='armaBranca'||catNew==='armaFogo'||catNew==='explosivo';
+  const isProt=cat==='armadura'||cat==='protecao'||catNew==='protecao';
+  if(isWpn)return WEAPON_TIER_LABELS[it.rarity]||'Improvisada';
+  if(isProt)return PROT_TIER_LABELS[it.rarity]||'Leve';
+  return RARITY_LABELS[it.rarity]||'Comum';
+}
+window.WEAPON_TIER_LABELS=WEAPON_TIER_LABELS;window.PROT_TIER_LABELS=PROT_TIER_LABELS;window.tierLabelFor=tierLabelFor;
 const CATEGORY_LABELS={
   arma:'Arma Branca',armaBranca:'Armas Brancas','arma-fogo':'Armas de Fogo',armaFogo:'Armas de Fogo',
   explosivo:'Explosivos',operacional:'Itens Operacionais',implante:'Implantes',obscuro:'Itens Obscuros',
@@ -14793,12 +14802,13 @@ function openEditItem(id){
   const _cats=[['armaBranca','Armas Brancas'],['armaFogo','Armas de Fogo'],['explosivo','Explosivos'],['operacional','Itens Operacionais'],['implante','Implantes'],['obscuro','Itens Obscuros'],['protecao','Proteção'],['vestimenta','Vestimenta'],['acessorio','Acessório'],['municao','Munições'],['consumivel','Consumíveis'],['material','Materiais']];
   const _curCat=item.cat==='arma'?'armaBranca':(item.cat==='arma-fogo'?'armaFogo':(item.cat==='armadura'?'protecao':(item.cat==='chave'?'operacional':item.cat)));
   const _isWpn=['armaBranca','armaFogo','explosivo'].includes(_curCat);
-  const _tiers=_isWpn?[['common','Improvisada'],['uncommon','Básica'],['rare','Tática'],['epic','Avançada']]:[['common','Comum'],['uncommon','Incomum'],['rare','Raro'],['epic','Épico'],['legendary','Lendário']];
+  const _isProt=_curCat==='protecao';
+  const _tiers=_isWpn?[['common','Improvisada'],['uncommon','Básica'],['rare','Tática'],['epic','Avançada']]:(_isProt?[['common','Leve'],['rare','Pesada']]:[['common','Comum'],['uncommon','Incomum'],['rare','Raro'],['epic','Épico'],['legendary','Lendário']]);
   const _catOpts=_cats.map(([v,l])=>`<option value="${v}"${v===_curCat?' selected':''}>${l}</option>`).join('');
   const _tierOpts=_tiers.map(([v,l])=>`<option value="${v}"${v===item.rarity?' selected':''}>${l}</option>`).join('');
   body.innerHTML=`<div class="item-form-compact">
 <div class="form-group"><label>Nome</label><input type="text" id="m-ename" value="${item.name}"></div>
-<div class="form-row"><div class="form-group"><label>Categoria</label><select id="m-ecat" onchange="window._editToggleRarity&&window._editToggleRarity()">${_catOpts}</select></div><div class="form-group form-group-rarity${_isWpn||_curCat==='protecao'?' show-anim':' hide-anim'}" id="m-erarity-wrap" style="${_isWpn||_curCat==='protecao'?'':'display:none'}"><label>${_isWpn?'Classificação':'Raridade'}</label><select id="m-erarity">${_tierOpts}</select></div></div>
+<div class="form-row"><div class="form-group"><label>Categoria</label><select id="m-ecat" onchange="window._editToggleRarity&&window._editToggleRarity()">${_catOpts}</select></div><div class="form-group form-group-rarity${_isWpn||_isProt?' show-anim':' hide-anim'}" id="m-erarity-wrap" style="${_isWpn||_isProt?'':'display:none'}"><label>${_isWpn||_isProt?'Classificação':'Raridade'}</label><select id="m-erarity">${_tierOpts}</select></div></div>
 <!-- ÍCONE: toolbar Catálogo/Código/Arquivo + preview clicável que abre img-config -->
 <div class="form-group icon-section">
   <label>Ícone <span style="color:var(--text-dim);font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span></label>
@@ -14828,10 +14838,49 @@ function openEditItem(id){
   window._editToggleRarity=function(){
     const cat=document.getElementById('m-ecat')?.value;
     const wrap=document.getElementById('m-erarity-wrap');
-    if(!wrap)return;
-    const usesTier=['armaBranca','armaFogo','arma','arma-fogo','explosivo','protecao'].indexOf(cat)>=0;
+    const sel=document.getElementById('m-erarity');
+    const lbl=wrap?wrap.querySelector('label'):null;
+    if(!wrap||!sel)return;
+    const isWpn=['armaBranca','armaFogo','arma','arma-fogo','explosivo'].indexOf(cat)>=0;
+    const isProt=cat==='protecao';
+    const usesTier=isWpn||isProt;
     if(usesTier){wrap.style.display='';wrap.classList.remove('hide-anim');requestAnimationFrame(()=>wrap.classList.add('show-anim'))}
     else{wrap.classList.remove('show-anim');wrap.classList.add('hide-anim');setTimeout(()=>{if(wrap.classList.contains('hide-anim'))wrap.style.display='none'},280)}
+    let tiers;
+    if(isWpn)tiers=[['common','Improvisada'],['uncommon','Básica'],['rare','Tática'],['epic','Avançada']];
+    else if(isProt)tiers=[['common','Leve'],['rare','Pesada']];
+    else tiers=[['common','Comum'],['uncommon','Incomum'],['rare','Raro'],['epic','Épico'],['legendary','Lendário']];
+    const cur=sel.value;
+    sel.innerHTML=tiers.map(([v,t])=>`<option value="${v}">${t}</option>`).join('');
+    if(tiers.some(t=>t[0]===cur))sel.value=cur;
+    if(lbl)lbl.textContent=usesTier?'Classificação':'Raridade';
+    // Rebuild cselect dropdown in-place
+    const cs=sel.closest('.cselect');
+    if(cs){
+      const trigger=cs.querySelector('.cselect-trigger');
+      const dropdown=cs.querySelector('.cselect-dropdown');
+      if(trigger&&dropdown){
+        const curOpt=sel.options[sel.selectedIndex];
+        if(curOpt&&trigger.firstChild&&trigger.firstChild.nodeType===3)trigger.firstChild.textContent=curOpt.textContent;
+        dropdown.innerHTML='';
+        Array.from(sel.options).forEach((opt,idx)=>{
+          const o=document.createElement('div');
+          o.className='cselect-option'+(idx===sel.selectedIndex?' selected':'');
+          o.dataset.value=opt.value;
+          o.innerHTML=`<span class="opt-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>${opt.textContent}</span>`;
+          o.addEventListener('click',e=>{
+            e.stopPropagation();
+            sel.value=opt.value;
+            sel.dispatchEvent(new Event('change',{bubbles:true}));
+            if(trigger.firstChild&&trigger.firstChild.nodeType===3)trigger.firstChild.textContent=opt.textContent;
+            dropdown.querySelectorAll('.cselect-option').forEach(x=>x.classList.remove('selected'));
+            o.classList.add('selected');
+            trigger.classList.remove('open');dropdown.classList.remove('open');
+          });
+          dropdown.appendChild(o);
+        });
+      }
+    }
   };
   // Toolbar tabs
   window._editIconTool=function(tool){
@@ -16307,12 +16356,11 @@ function openModal(type,eid){
       const lbl=document.getElementById('m-irarity-label');
       const wrap=document.getElementById('m-irarity-wrap');
       if(!sel)return;
-      // Categorias que usam Classificação tática: armas + proteção
-      const usesTier=['armaBranca','armaFogo','arma','arma-fogo','explosivo','protecao'].indexOf(cat)>=0;
-      // Categorias que usam Raridade comum: nada — escondido se não usa tier
-      const showField=usesTier;
+      const isWpn=['armaBranca','armaFogo','arma','arma-fogo','explosivo'].indexOf(cat)>=0;
+      const isProt=cat==='protecao';
+      const usesTier=isWpn||isProt;
       if(wrap){
-        if(showField){
+        if(usesTier){
           wrap.classList.remove('hide-anim');
           wrap.style.display='';
           requestAnimationFrame(()=>wrap.classList.add('show-anim'));
@@ -16322,7 +16370,10 @@ function openModal(type,eid){
           setTimeout(()=>{if(wrap.classList.contains('hide-anim'))wrap.style.display='none'},280);
         }
       }
-      const tiers=usesTier?[['common','Improvisada'],['uncommon','Básica'],['rare','Tática'],['epic','Avançada']]:[['common','Comum'],['uncommon','Incomum'],['rare','Raro'],['epic','Épico'],['legendary','Lendário']];
+      let tiers;
+      if(isWpn)tiers=[['common','Improvisada'],['uncommon','Básica'],['rare','Tática'],['epic','Avançada']];
+      else if(isProt)tiers=[['common','Leve'],['rare','Pesada']];
+      else tiers=[['common','Comum'],['uncommon','Incomum'],['rare','Raro'],['epic','Épico'],['legendary','Lendário']];
       const cur=sel.value;
       sel.innerHTML=tiers.map(([v,t])=>`<option value="${v}">${t}</option>`).join('');
       if(tiers.some(t=>t[0]===cur))sel.value=cur;
@@ -16362,16 +16413,16 @@ function openModal(type,eid){
       const dur=document.getElementById('m-idur');
       const hint=document.getElementById('m-idur-hint');
       if(!dur)return;
-      // Tabela: Improvisada 40, Básica 60 (Normal), Tática 80 (Refinado), Avançada 100 (Inquebrável)
-      const tierDur={common:{v:40,n:'Danificado/Improvisada'},uncommon:{v:60,n:'Normal/Básica'},rare:{v:80,n:'Refinado/Tática'},epic:{v:100,n:'Inquebrável/Avançada'},legendary:{v:120,n:'Lendário'}};
-      // Categorias sem classificação tática: usam default Normal (60), exceto consumivel/municao (descartáveis)
-      const usesTier=['armaBranca','armaFogo','arma','arma-fogo','explosivo','protecao'].indexOf(cat)>=0;
+      const wpnDur={common:{v:40,n:'Danificado/Improvisada'},uncommon:{v:60,n:'Normal/Básica'},rare:{v:80,n:'Refinado/Tática'},epic:{v:100,n:'Inquebrável/Avançada'},legendary:{v:120,n:'Lendário'}};
+      const protDur={common:{v:60,n:'Leve (60)'},rare:{v:80,n:'Pesada (80)'}};
+      const isWpn=['armaBranca','armaFogo','arma','arma-fogo','explosivo'].indexOf(cat)>=0;
+      const isProt=cat==='protecao';
       let val=60,name='Normal (60)';
-      if(usesTier&&tierDur[rarity]){val=tierDur[rarity].v;name=tierDur[rarity].n+' ('+val+')'}
+      if(isWpn&&wpnDur[rarity]){val=wpnDur[rarity].v;name=wpnDur[rarity].n+' ('+val+')'}
+      else if(isProt&&protDur[rarity]){val=protDur[rarity].v;name=protDur[rarity].n}
       else if(cat==='consumivel'||cat==='municao'){val=1;name='Descartável'}
       else if(cat==='material'){val=100;name='Resistente (100)'}
-      else if(tierDur[rarity]){val=tierDur[rarity].v;name=tierDur[rarity].n+' ('+val+')'}
-      // Só sobrescreve se o usuário não mudou manualmente (flag)
+      else if(wpnDur[rarity]){val=wpnDur[rarity].v;name=wpnDur[rarity].n+' ('+val+')'}
       if(!dur.dataset.userTouched)dur.value=val;
       if(hint)hint.textContent='— '+name;
     };
