@@ -14829,8 +14829,8 @@ function openEditItem(id){
     <textarea id="m-eisvg" rows="3" placeholder="Cole &lt;svg&gt;...&lt;/svg&gt; aqui" oninput="window._renderEditIconPreview&&window._renderEditIconPreview()">${(item.iconSvg||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</textarea>
   </div>
   <div class="icon-pane" id="m-icon-pane-file" data-pane="file" style="display:none">
-    <input type="file" id="m-eifile" accept="image/png,image/jpeg,image/svg+xml,image/*,.svg" onchange="window._loadIconFile&&window._loadIconFile(this);window._renderEditIconPreview&&window._renderEditIconPreview()">
-    <div style="font-size:10px;color:var(--text-dim);margin-top:4px">PNG · JPG · SVG (galeria/documentos no mobile)</div>
+    <input type="file" id="m-eifile" accept="image/png,image/jpeg,image/svg+xml,image/*,.svg" onchange="window._loadIconFile&&window._loadIconFile(this);window._renderEditIconPreview&&window._renderEditIconPreview()" style="display:none">
+    <div style="font-size:11px;color:var(--text-dim);padding:8px 0;text-align:center">📁 Seletor aberto · PNG/JPG/SVG</div>
   </div>
 </div>
 <div class="form-row form-row-3"><div class="form-group"><label>Qtd</label><input type="number" id="m-eqty" value="${item.qty}" min="1"></div><div class="form-group"><label>Peso</label><input type="number" id="m-eweight" value="${item.weight}" min="0" step="0.5"></div><div class="form-group"><label>Valor</label><input type="number" id="m-evalue" value="${item.value}" min="0"></div></div>
@@ -14893,6 +14893,7 @@ function openEditItem(id){
       if(btn)btn.classList.toggle('active',t===tool);
       if(pane)pane.style.display=t===tool?'':'none';
     });
+    if(tool==='file'){const f=document.getElementById('m-eifile');if(f)setTimeout(()=>f.click(),50)}
   };
   window._renderEditIconPreview=function(){
     const prev=document.getElementById('m-icon-preview');if(!prev)return;
@@ -16288,8 +16289,8 @@ function openModal(type,eid){
     <textarea id="m-iisvg" rows="3" placeholder="Cole &lt;svg&gt;...&lt;/svg&gt; aqui" oninput="window._renderIconPreview&&window._renderIconPreview()"></textarea>
   </div>
   <div class="icon-pane" id="m-icon-pane-file" data-pane="file" style="display:none">
-    <input type="file" id="m-iifile" accept="image/png,image/jpeg,image/svg+xml,image/*,.svg" onchange="window._loadIconFile&&window._loadIconFile(this);window._renderIconPreview&&window._renderIconPreview()">
-    <div style="font-size:10px;color:var(--text-dim);margin-top:4px">PNG · JPG · SVG (galeria/documentos no mobile)</div>
+    <input type="file" id="m-iifile" accept="image/png,image/jpeg,image/svg+xml,image/*,.svg" onchange="window._loadIconFile&&window._loadIconFile(this);window._renderIconPreview&&window._renderIconPreview()" style="display:none">
+    <div style="font-size:11px;color:var(--text-dim);padding:8px 0;text-align:center">📁 Seletor aberto · PNG/JPG/SVG</div>
   </div>
 </div>
 <div class="form-group"><label>Tamanho <span style="color:var(--text-dim);font-weight:400;text-transform:none;letter-spacing:0">(L × A · máx 8)</span></label>
@@ -16439,6 +16440,8 @@ function openModal(type,eid){
         if(btn)btn.classList.toggle('active',t===tool);
         if(pane)pane.style.display=t===tool?'':'none';
       });
+      // File: dispara click direto no input (abre seletor nativo do SO/mobile)
+      if(tool==='file'){const f=document.getElementById('m-iifile');if(f)setTimeout(()=>f.click(),50)}
     };
     // Atualiza preview pequeno na toolbar
     window._renderIconPreview=function(){
