@@ -241,7 +241,8 @@ button:active:not(:disabled),.card-action-btn:active,.modal-btn:active,.credit-p
 .ripple{position:absolute;border-radius:50%;pointer-events:none;background:currentColor;opacity:.3;transform:scale(0);animation:anim-ripple 620ms var(--ease-out-expo) forwards;mix-blend-mode:overlay}
 
 /* ═══ SIDEBAR ═══ */
-.sidebar{width:72px;min-height:100vh;background:#0c0c0e!important;border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:flex-start;padding:16px 14px;position:fixed;left:0;top:0;bottom:0;z-index:9990;isolation:isolate;transition:width .45s cubic-bezier(.2,.8,.2,1),border-radius .45s,box-shadow .45s,transform .25s ease,opacity .25s ease;overflow:hidden}
+.sidebar{width:72px;min-height:100vh;background:#0c0c0e!important;border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:flex-start;padding:24px 14px 16px;position:fixed;left:0;top:0;bottom:0;z-index:9990;isolation:isolate;transition:width .45s cubic-bezier(.2,.8,.2,1),border-radius .45s,box-shadow .45s,transform .25s ease,opacity .25s ease;overflow:hidden}
+.sidebar.open{padding:24px 20px 16px}
 /* Esconde sidebar quando picker/modal/seleção aberto — usa opacity (não transform)
    pra não conflitar com translateX(-50%) do pill mobile */
 body:has(.modal-overlay.open) .sidebar,
@@ -258,7 +259,7 @@ body:has(.lout-overlay[aria-hidden="false"]) .sidebar{opacity:0;pointer-events:n
 .sidebar::after{content:'';position:absolute;top:0;right:0;bottom:0;width:20px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.12));opacity:0;transition:opacity .4s;pointer-events:none}
 .sidebar.open::after{opacity:1}
 .sidebar-grip{position:absolute;top:0;right:-6px;bottom:0;width:14px;cursor:ew-resize;z-index:2;background:transparent}
-.sidebar-logo{width:44px;height:44px;background:transparent;border:none;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 0 28px 0;cursor:pointer;transition:all var(--transition-base);flex-shrink:0}
+.sidebar-logo{width:44px;height:44px;background:transparent;border:none;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 0 32px 0;cursor:pointer;transition:all var(--transition-base);flex-shrink:0}
 .sidebar-logo:hover{transform:scale(1.12) rotate(-8deg)}
 .sidebar-logo svg{width:22px;height:22px;stroke:var(--magenta);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .sidebar-logo-img{
@@ -293,8 +294,12 @@ body:has(.lout-overlay[aria-hidden="false"]) .sidebar{opacity:0;pointer-events:n
 [data-theme="light"] .theme-ic-moon{display:none}
 [data-theme="light"] .theme-ic-sun{display:inline-block}
 .sidebar-nav{display:flex;flex-direction:column;gap:4px;flex:1;width:100%}
+.sidebar-section-label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-dim);padding:0 12px;margin:16px 0 8px;opacity:0;transform:translateX(-6px);transition:opacity .3s ease .15s,transform .35s cubic-bezier(.2,.8,.2,1) .12s;height:0;overflow:hidden}
+.sidebar.open .sidebar-section-label{opacity:.7;transform:translateX(0);height:auto;margin:24px 0 4px}
+.sidebar-section-label:first-child{margin-top:0}
+.sidebar.open .sidebar-section-label:first-child{margin-top:0}
 .sidebar-bottom{width:100%}
-.sidebar-btn{width:44px;height:44px;background:none;border:none;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:flex-start;cursor:pointer;color:var(--text-dim);transition:width .45s cubic-bezier(.2,.8,.2,1),color .2s,background .2s;position:relative;gap:12px;padding:0;flex-shrink:0;overflow:hidden;white-space:nowrap}
+.sidebar-btn{width:44px;height:40px;background:none;border:none;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:flex-start;cursor:pointer;color:var(--text-dim);transition:width .45s cubic-bezier(.2,.8,.2,1),color .2s,background .2s;position:relative;gap:12px;padding:0;flex-shrink:0;overflow:hidden;white-space:nowrap}
 .sidebar-btn svg{margin-left:12px;flex-shrink:0}
 .sidebar.open .sidebar-btn{width:100%}
 .sidebar-label{opacity:0;font-size:13px;font-weight:600;letter-spacing:.2px;transform:translateX(-6px);transition:opacity .3s cubic-bezier(.4,0,.2,1) .15s,transform .35s cubic-bezier(.2,.8,.2,1) .12s;pointer-events:none}
@@ -306,8 +311,8 @@ body:has(.lout-overlay[aria-hidden="false"]) .sidebar{opacity:0;pointer-events:n
 .sidebar-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .sidebar::before{content:"";position:absolute;left:0;top:0;bottom:0;width:14px;pointer-events:none;z-index:5;background:linear-gradient(90deg,#0c0c0e 0%,#0c0c0e 4px,rgba(12,12,14,.65) 8px,transparent 100%)}
 [data-theme="light"] .sidebar::before{background:linear-gradient(90deg,#fcfcfc 0%,#fcfcfc 4px,rgba(252,252,252,.65) 8px,transparent 100%)}
-.sidebar-bottom{margin-top:auto;display:flex;flex-direction:column;gap:6px;align-items:center;padding-top:12px;position:relative}
-.sidebar-bottom::before{content:"";position:absolute;top:0;left:14%;right:14%;height:1px;background:linear-gradient(90deg,transparent,var(--border) 25%,var(--border) 75%,transparent)}
+.sidebar-bottom{margin-top:auto;display:flex;flex-direction:column;gap:4px;align-items:center;padding-top:24px;position:relative}
+.sidebar-bottom::before{content:"";position:absolute;top:8px;left:14%;right:14%;height:1px;background:linear-gradient(90deg,transparent,var(--border) 25%,var(--border) 75%,transparent)}
 .sidebar-more{display:none}
 .sidebar-gear{display:none}
 .sidebar-more-pop{display:none}
