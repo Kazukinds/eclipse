@@ -1902,9 +1902,9 @@ input[type="number"]{-moz-appearance:textfield}
 .item-form-compact .size-row input[type="number"]{width:64px!important;flex:0 0 auto}
 #m-isize-preview,#m-esize-preview{display:inline-grid;gap:2px;padding:6px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;flex:0 0 auto;margin-left:auto;max-width:120px;max-height:120px;overflow:auto}
 /* Classificação fade hide */
-.form-group-rarity{overflow:hidden;max-height:90px;opacity:1;transform:translateY(0);transition:opacity .25s ease,max-height .28s ease,transform .25s ease,margin .25s ease,padding .25s ease}
-.form-group-rarity.hide-anim{opacity:0;max-height:0;transform:translateY(-6px);margin:0!important;padding:0!important;pointer-events:none;visibility:hidden}
-.form-group-rarity.show-anim{opacity:1;max-height:90px;transform:translateY(0);visibility:visible}
+.form-group-rarity{overflow:visible;max-height:90px;opacity:1;transform:translateY(0);transition:opacity .25s ease,max-height .28s ease,transform .25s ease,margin .25s ease,padding .25s ease;position:relative}
+.form-group-rarity.hide-anim{overflow:hidden;opacity:0;max-height:0;transform:translateY(-6px);margin:0!important;padding:0!important;pointer-events:none;visibility:hidden}
+.form-group-rarity.show-anim{overflow:visible;opacity:1;max-height:90px;transform:translateY(0);visibility:visible}
 /* Modal title mais limpo */
 #modal-title{font-size:16px;font-weight:700;letter-spacing:-.2px}
 .form-row.form-row-3{display:grid!important;grid-template-columns:1fr 1fr 1fr!important;gap:8px}
