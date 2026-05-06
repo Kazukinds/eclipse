@@ -1812,7 +1812,10 @@ input[type="number"]{-moz-appearance:textfield}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);display:flex;align-items:center;justify-content:center;z-index:300;opacity:0;pointer-events:none;transition:opacity var(--dur-md) var(--ease-out-expo),backdrop-filter var(--dur-md) ease}
 .modal-overlay.open{opacity:1;pointer-events:all;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .modal{background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius);padding:22px;width:460px;height:auto;min-height:auto;max-width:90vw;max-height:90vh;overflow-y:auto;overflow-x:hidden;transform:translateY(16px) scale(.94);filter:blur(6px);transition:transform var(--dur-lg) var(--ease-spring),filter var(--dur-md) var(--ease-out-expo);box-shadow:var(--shadow-lg),0 0 0 1px rgba(255,255,255,.03);overscroll-behavior:contain;display:flex;flex-direction:column}
-.modal>#modal-body{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.modal>#modal-body{flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;padding-right:4px;-webkit-overflow-scrolling:touch}
+.modal>#modal-body::-webkit-scrollbar{width:6px}
+.modal>#modal-body::-webkit-scrollbar-track{background:transparent}
+.modal>#modal-body::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
 .modal .item-tabs{flex-shrink:0}
 .modal .item-pane{flex:1;min-height:0;overflow-y:auto;padding-right:4px}
 .modal #modal-body>.modal-btns{flex-shrink:0;margin-top:auto;padding-top:14px;border-top:1px solid var(--border);background:var(--bg-card);position:sticky;bottom:0}
@@ -1842,12 +1845,19 @@ input[type="number"]{-moz-appearance:textfield}
   }
   .item-form-split .ifs-side .form-group{margin-bottom:0}
 }
-.modal{overflow:visible!important;position:relative}
-.item-form-compact .form-group{margin-bottom:6px}
-.item-form-compact .form-row{margin-bottom:6px}
-.item-form-compact .form-group label{font-size:9px;margin-bottom:2px;letter-spacing:.4px;font-weight:600}
-.item-form-compact .form-group input,.item-form-compact .form-group select{padding:6px 9px;font-size:12px;border-radius:6px}
-.item-form-compact .weapon-pick-trigger{padding:6px 10px;font-size:12px;border-radius:6px}
+.modal{overflow:visible!important;position:relative}/* dropdowns escapam — scroll fica em #modal-body */
+.item-form-compact .form-group{margin-bottom:8px;transition:opacity .25s ease,max-height .28s ease,margin-bottom .25s ease,transform .25s ease}
+.item-form-compact .form-row{margin-bottom:8px}
+.item-form-compact .form-group label{font-size:10px;margin-bottom:3px;letter-spacing:.5px;font-weight:700;color:var(--text-dim);text-transform:uppercase}
+.item-form-compact .form-group input,.item-form-compact .form-group select{padding:7px 10px;font-size:12px;border-radius:7px}
+.item-form-compact .form-group textarea{padding:7px 10px;font-size:11px;border-radius:7px;background:var(--bg-input);border:1px solid var(--border);color:var(--text-primary);width:100%}
+.item-form-compact .form-group textarea:focus{border-color:var(--magenta-dim);outline:none}
+.item-form-compact .form-group-svg{padding:8px;background:rgba(255,255,255,.02);border:1px dashed var(--border);border-radius:8px}
+.item-form-compact .weapon-pick-trigger{padding:7px 10px;font-size:12px;border-radius:7px}
+/* Classificação fade hide */
+.form-group-rarity{overflow:hidden;max-height:80px;opacity:1;transform:translateY(0);transition:opacity .25s ease,max-height .28s ease,transform .25s ease,margin .25s ease,padding .25s ease}
+.form-group-rarity.hide-anim{opacity:0;max-height:0;transform:translateY(-6px);margin:0!important;padding:0!important;pointer-events:none}
+.form-group-rarity.show-anim{opacity:1;max-height:80px;transform:translateY(0)}
 .form-row.form-row-3{display:grid!important;grid-template-columns:1fr 1fr 1fr!important;gap:8px}
 .form-row.form-row-3 .form-group{flex:none;width:auto;margin-bottom:0}
 .item-tabs{display:flex;gap:4px;padding:4px;background:var(--bg-input);border-radius:10px;margin-bottom:14px}
@@ -14701,7 +14711,23 @@ function openEditItem(id){
   const _tiers=_isWpn?[['common','Improvisada'],['uncommon','Básica'],['rare','Tática'],['epic','Avançada']]:[['common','Comum'],['uncommon','Incomum'],['rare','Raro'],['epic','Épico'],['legendary','Lendário']];
   const _catOpts=_cats.map(([v,l])=>`<option value="${v}"${v===_curCat?' selected':''}>${l}</option>`).join('');
   const _tierOpts=_tiers.map(([v,l])=>`<option value="${v}"${v===item.rarity?' selected':''}>${l}</option>`).join('');
-  body.innerHTML=`<div class="form-group"><label>Nome</label><input type="text" id="m-ename" value="${item.name}"></div><div class="form-row"><div class="form-group"><label>Categoria</label><select id="m-ecat">${_catOpts}</select></div><div class="form-group"><label>${_isWpn?'Classificação':'Raridade'}</label><select id="m-erarity">${_tierOpts}</select></div></div><div class="form-row"><div class="form-group"><label>Quantidade</label><input type="number" id="m-eqty" value="${item.qty}" min="1"></div><div class="form-group"><label>Peso</label><input type="number" id="m-eweight" value="${item.weight}" min="0" step="0.5"></div></div><div class="form-row"><div class="form-group"><label>Valor (credito)</label><input type="number" id="m-evalue" value="${item.value}" min="0"></div><div class="form-group"><label>Durabilidade</label><input type="number" id="m-edur" value="${item.durability}" min="0" max="100"></div></div><div class="form-group"><label>Descricao</label><input type="text" id="m-edesc" value="${item.desc}"></div><div class="form-group"><label>Ícone SVG <span style="color:var(--text-dim);font-weight:400">(opcional — cole código SVG)</span></label><textarea id="m-eisvg" rows="2" style="font-family:monospace;font-size:11px;width:100%;resize:vertical" placeholder="<svg ...>...</svg>">${(item.iconSvg||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</textarea></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveEditItem()">Salvar</button></div>`;
+  body.innerHTML=`<div class="item-form-compact">
+<div class="form-group"><label>Nome</label><input type="text" id="m-ename" value="${item.name}"></div>
+<div class="form-row"><div class="form-group"><label>Categoria</label><select id="m-ecat" onchange="window._editToggleRarity&&window._editToggleRarity()">${_catOpts}</select></div><div class="form-group form-group-rarity${_isWpn||_curCat==='protecao'?' show-anim':' hide-anim'}" id="m-erarity-wrap" style="${_isWpn||_curCat==='protecao'?'':'display:none'}"><label>${_isWpn?'Classificação':'Raridade'}</label><select id="m-erarity">${_tierOpts}</select></div></div>
+<div class="form-row form-row-3"><div class="form-group"><label>Qtd</label><input type="number" id="m-eqty" value="${item.qty}" min="1"></div><div class="form-group"><label>Peso</label><input type="number" id="m-eweight" value="${item.weight}" min="0" step="0.5"></div><div class="form-group"><label>Valor</label><input type="number" id="m-evalue" value="${item.value}" min="0"></div></div>
+<div class="form-group"><label>Durabilidade</label><input type="number" id="m-edur" value="${item.durability}" min="0" max="200"></div>
+<div class="form-group"><label>Descrição</label><input type="text" id="m-edesc" value="${item.desc}"></div>
+<div class="form-group form-group-svg"><label>Ícone SVG <span style="color:var(--text-dim);font-weight:400">(opcional — cole código)</span></label><textarea id="m-eisvg" rows="3" style="font-family:monospace;font-size:11px;width:100%;resize:vertical;min-height:64px" placeholder="<svg ...>...</svg>">${(item.iconSvg||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</textarea></div>
+<div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveEditItem()">Salvar</button></div>
+</div>`;
+  window._editToggleRarity=function(){
+    const cat=document.getElementById('m-ecat')?.value;
+    const wrap=document.getElementById('m-erarity-wrap');
+    if(!wrap)return;
+    const usesTier=['armaBranca','armaFogo','arma','arma-fogo','explosivo','protecao'].indexOf(cat)>=0;
+    if(usesTier){wrap.style.display='';wrap.classList.remove('hide-anim');requestAnimationFrame(()=>wrap.classList.add('show-anim'))}
+    else{wrap.classList.remove('show-anim');wrap.classList.add('hide-anim');setTimeout(()=>{if(wrap.classList.contains('hide-anim'))wrap.style.display='none'},280)}
+  };
   document.getElementById('modal-overlay').classList.add('open');
   initCustomSelects(body);
   setTimeout(()=>document.getElementById('m-ename').focus(),200);
@@ -14715,7 +14741,7 @@ function saveEditItem(){
   item.qty=_clampInt(document.getElementById('m-eqty').value,1,9999,1);
   item.weight=_clampFloat(document.getElementById('m-eweight').value,0,9999,0);
   item.value=_clampInt(document.getElementById('m-evalue').value,0,99999999,0);
-  item.durability=_clampInt(document.getElementById('m-edur').value,0,100,0);
+  item.durability=_clampInt(document.getElementById('m-edur').value,0,200,0);
   item.desc=document.getElementById('m-edesc').value||'Sem descricao.';
   const _svgRaw=(document.getElementById('m-eisvg')?.value||'').trim();
   if(_svgRaw){const m=_svgRaw.match(/<svg[\s\S]*?<\/svg>/i);item.iconSvg=m?m[0]:''}else{item.iconSvg=''}
@@ -16061,23 +16087,24 @@ function openModal(type,eid){
   } else if(type==='item'){
     title.textContent='Adicionar Item';
     const wpnBtns=Object.keys(WEAPON_TYPE_LABELS).map(t=>{const subs=WEAPON_SUB_LABELS[t]||{};const subKeys=Object.keys(subs);if(!subKeys.length)return'';const tabs=subKeys.map((s,i)=>`<button type="button" class="weapon-sub-tab${i===0?' active':''}" data-sub="${t}-${s}" onclick="window._pickWpnSubItem('${t}','${s}')">${subs[s]}</button>`).join('');const panes=subKeys.map((s,i)=>{const list=Object.entries(WEAPON_SVGS).filter(([,v])=>v.type===t&&v.sub===s);const btns=list.map(([k,v])=>`<button type="button" class="weapon-pick-btn" data-wpn="${k}" title="${v.label}" onclick="window._pickWeapon('${k}')"><img src="${v.file}" alt="${v.label}" draggable="false"><span>${v.label}</span></button>`).join('')||'<div style="font-size:11px;color:var(--text-dim);padding:8px">Vazio</div>';return`<div class="weapon-sub-pane${i===0?' active':''}" data-pane="${t}-${s}"><div class="weapon-pick-grid">${btns}</div></div>`}).join('');return`<div class="weapon-pick-group-label">${WEAPON_TYPE_LABELS[t]}</div><div class="weapon-sub-tabs" data-type="${t}">${tabs}</div>${panes}`}).join('');
-    body.innerHTML=`<div class="form-group"><label>Nome</label><input type="text" id="m-iname" placeholder="Ex: Espada Curta" required></div>
-<div class="form-row"><div class="form-group"><label>Categoria</label><select id="m-icat" onchange="window._toggleWpnPicker();window._updateRarityLabels&&window._updateRarityLabels()"><option value="armaBranca">Armas Brancas</option><option value="armaFogo">Armas de Fogo</option><option value="explosivo">Explosivos</option><option value="operacional">Itens Operacionais</option><option value="implante">Implantes</option><option value="obscuro">Itens Obscuros</option><option value="protecao">Proteção</option><option value="vestimenta">Vestimenta</option><option value="acessorio">Acessório</option><option value="municao">Munições</option><option value="consumivel">Consumíveis</option><option value="material">Materiais</option></select></div><div class="form-group"><label id="m-irarity-label">Classificação</label><select id="m-irarity"><option value="common">Improvisada</option><option value="uncommon">Básica</option><option value="rare">Tática</option><option value="epic">Avançada</option></select></div></div>
+    body.innerHTML=`<div class="item-form-compact">
+<div class="form-group"><label>Nome</label><input type="text" id="m-iname" placeholder="Ex: Espada Curta" required></div>
+<div class="form-row"><div class="form-group"><label>Categoria</label><select id="m-icat" onchange="window._toggleWpnPicker();window._updateRarityLabels&&window._updateRarityLabels();window._applyDurDefault&&window._applyDurDefault()"><option value="armaBranca">Armas Brancas</option><option value="armaFogo">Armas de Fogo</option><option value="explosivo">Explosivos</option><option value="operacional">Itens Operacionais</option><option value="implante">Implantes</option><option value="obscuro">Itens Obscuros</option><option value="protecao">Proteção</option><option value="vestimenta">Vestimenta</option><option value="acessorio">Acessório</option><option value="municao">Munições</option><option value="consumivel">Consumíveis</option><option value="material">Materiais</option></select></div><div class="form-group form-group-rarity" id="m-irarity-wrap"><label id="m-irarity-label">Classificação</label><select id="m-irarity" onchange="window._applyDurDefault&&window._applyDurDefault()"><option value="common">Improvisada</option><option value="uncommon">Básica</option><option value="rare">Tática</option><option value="epic">Avançada</option></select></div></div>
 <div class="form-group" id="m-wpn-wrap"><label>Ícone <span style="color:var(--text-dim);font-weight:400">(opcional)</span></label><button type="button" class="weapon-pick-trigger" onclick="window._openWpnPickerForItem()"><span id="m-iwpn-preview">Escolher ícone...</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button><input type="hidden" id="m-iwpn" value=""></div>
-<div class="form-group"><label>Descrição</label><input type="text" id="m-idesc" placeholder="Notas..."></div>
-<div class="form-group"><label>Tamanho no inventário <span style="color:var(--text-dim);font-weight:400">(largura × altura, máx 8)</span></label>
-<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-  <input type="number" id="m-igw" value="1" min="1" max="8" style="width:70px;flex:0 0 auto;outline:none;box-shadow:none" oninput="window._updateSizePreview&&window._updateSizePreview()">
-  <span style="color:var(--text-dim);font-weight:700;font-size:14px">×</span>
-  <input type="number" id="m-igh" value="1" min="1" max="8" style="width:70px;flex:0 0 auto;outline:none;box-shadow:none" oninput="window._updateSizePreview&&window._updateSizePreview()">
-  <button type="button" id="m-iswap" title="Inverter (girar 90°)" onclick="window._swapItemSize&&window._swapItemSize()" style="width:34px;height:34px;border-radius:50%;background:rgba(var(--magenta-rgb),.12);border:1px solid rgba(var(--magenta-rgb),.4);color:var(--magenta);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;transition:background .15s,transform .15s" onmouseover="this.style.background='rgba(var(--magenta-rgb),.22)';this.style.transform='rotate(-90deg)'" onmouseout="this.style.background='rgba(var(--magenta-rgb),.12)';this.style.transform=''"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button>
-  <div id="m-isize-preview" style="display:inline-grid;gap:1px;padding:4px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;flex:0 0 auto;margin-left:auto;max-width:120px;max-height:120px;overflow:auto"></div>
+<div class="form-group"><label>Tamanho <span style="color:var(--text-dim);font-weight:400">(L × A, máx 8)</span></label>
+<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+  <input type="number" id="m-igw" value="1" min="1" max="8" style="width:60px;flex:0 0 auto" oninput="window._updateSizePreview&&window._updateSizePreview()">
+  <span style="color:var(--text-dim);font-weight:700">×</span>
+  <input type="number" id="m-igh" value="1" min="1" max="8" style="width:60px;flex:0 0 auto" oninput="window._updateSizePreview&&window._updateSizePreview()">
+  <button type="button" id="m-iswap" title="Inverter" onclick="window._swapItemSize&&window._swapItemSize()" style="width:30px;height:30px;border-radius:50%;background:rgba(var(--magenta-rgb),.12);border:1px solid rgba(var(--magenta-rgb),.4);color:var(--magenta);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button>
+  <div id="m-isize-preview" style="display:inline-grid;gap:1px;padding:3px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;flex:0 0 auto;margin-left:auto;max-width:90px;max-height:90px;overflow:auto"></div>
 </div></div>
-<div class="form-row"><div class="form-group"><label>Quantidade</label><input type="number" id="m-iqty" value="1" min="1" max="9999"></div><div class="form-group"><label>Peso (kg)</label><input type="number" id="m-iweight" value="1" min="0" step="0.5"></div></div>
-<div class="form-row"><div class="form-group"><label>Valor</label><input type="number" id="m-ivalue" value="0" min="0"></div><div class="form-group"><label>Durabilidade</label><input type="number" id="m-idur" value="100" min="0" max="100"></div></div>
-<div class="form-group"><label>Ícone SVG <span style="color:var(--text-dim);font-weight:400">(opcional — cole código)</span></label><textarea id="m-iisvg" rows="2" style="font-family:monospace;font-size:11px;width:100%;resize:vertical" placeholder="<svg ...>...</svg>"></textarea></div>
-<div class="form-group"><label>Importar imagem <span style="color:var(--text-dim);font-weight:400">(PNG/JPG/SVG)</span></label><input type="file" id="m-iifile" accept="image/png,image/jpeg,image/svg+xml,image/*,.svg" onchange="window._loadIconFile&&window._loadIconFile(this)" style="font-size:11px"></div>
-<div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveItem()">Adicionar</button></div>`;
+<div class="form-row form-row-3"><div class="form-group"><label>Qtd</label><input type="number" id="m-iqty" value="1" min="1" max="9999"></div><div class="form-group"><label>Peso (kg)</label><input type="number" id="m-iweight" value="1" min="0" step="0.5"></div><div class="form-group"><label>Valor</label><input type="number" id="m-ivalue" value="0" min="0"></div></div>
+<div class="form-group"><label>Durabilidade <span style="color:var(--text-dim);font-weight:400" id="m-idur-hint"></span></label><input type="number" id="m-idur" value="60" min="0" max="200"></div>
+<div class="form-group"><label>Descrição</label><input type="text" id="m-idesc" placeholder="Notas..."></div>
+<div class="form-group form-group-svg"><label>Ícone SVG / Imagem <span style="color:var(--text-dim);font-weight:400">(opcional)</span></label><textarea id="m-iisvg" rows="3" style="font-family:monospace;font-size:11px;width:100%;resize:vertical;min-height:64px" placeholder="Cole código <svg>...</svg> ou use o seletor abaixo"></textarea><input type="file" id="m-iifile" accept="image/png,image/jpeg,image/svg+xml,image/*,.svg" onchange="window._loadIconFile&&window._loadIconFile(this)" style="font-size:11px;margin-top:6px"></div>
+<div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveItem()">Adicionar</button></div>
+</div>`;
     window._updateSizePreview=function(){
       const gw=parseInt(document.getElementById('m-igw')?.value)||1;
       const gh=parseInt(document.getElementById('m-igh')?.value)||1;
@@ -16088,7 +16115,7 @@ function openModal(type,eid){
       prev.style.gridTemplateRows=`repeat(${h},10px)`;
       prev.innerHTML=Array(w*h).fill('<div style="width:10px;height:10px;background:var(--magenta-bg-strong);border:1px solid var(--magenta-dim);border-radius:2px"></div>').join('');
     };
-    setTimeout(()=>{window._updateSizePreview&&window._updateSizePreview();window._toggleWpnPicker&&window._toggleWpnPicker()},30);
+    setTimeout(()=>{window._updateSizePreview&&window._updateSizePreview();window._toggleWpnPicker&&window._toggleWpnPicker();window._updateRarityLabels&&window._updateRarityLabels();window._applyDurDefault&&window._applyDurDefault()},30);
     window._swapItemSize=function(){
       const gw=document.getElementById('m-igw'),gh=document.getElementById('m-igh');
       if(!gw||!gh)return;
@@ -16128,16 +16155,52 @@ function openModal(type,eid){
       const cat=document.getElementById('m-icat').value;
       const sel=document.getElementById('m-irarity');
       const lbl=document.getElementById('m-irarity-label');
+      const wrap=document.getElementById('m-irarity-wrap');
       if(!sel)return;
-      const isWpn=(cat==='arma'||cat==='armaBranca'||cat==='arma-fogo'||cat==='armaFogo'||cat==='explosivo');
-      const tiers=isWpn?[['common','Improvisada'],['uncommon','Básica'],['rare','Tática'],['epic','Avançada']]:[['common','Comum'],['uncommon','Incomum'],['rare','Raro'],['epic','Épico'],['legendary','Lendário']];
+      // Categorias que usam Classificação tática: armas + proteção
+      const usesTier=['armaBranca','armaFogo','arma','arma-fogo','explosivo','protecao'].indexOf(cat)>=0;
+      // Categorias que usam Raridade comum: nada — escondido se não usa tier
+      const showField=usesTier;
+      if(wrap){
+        if(showField){
+          wrap.classList.remove('hide-anim');
+          wrap.style.display='';
+          requestAnimationFrame(()=>wrap.classList.add('show-anim'));
+        } else {
+          wrap.classList.remove('show-anim');
+          wrap.classList.add('hide-anim');
+          setTimeout(()=>{if(wrap.classList.contains('hide-anim'))wrap.style.display='none'},280);
+        }
+      }
+      const tiers=usesTier?[['common','Improvisada'],['uncommon','Básica'],['rare','Tática'],['epic','Avançada']]:[['common','Comum'],['uncommon','Incomum'],['rare','Raro'],['epic','Épico'],['legendary','Lendário']];
       const cur=sel.value;
       sel.innerHTML=tiers.map(([v,t])=>`<option value="${v}">${t}</option>`).join('');
       if(tiers.some(t=>t[0]===cur))sel.value=cur;
-      if(lbl)lbl.textContent=isWpn?'Classificação':'Raridade';
-      // re-init custom select se houver
+      if(lbl)lbl.textContent=usesTier?'Classificação':'Raridade';
       const cs=sel.closest('.cselect');if(cs&&typeof initCustomSelects==='function'){const par=cs.parentElement;cs.replaceWith(sel);initCustomSelects(par)}
     };
+    // Durabilidade default baseado em categoria + classificação (PDF DURABILIDADE)
+    window._applyDurDefault=function(){
+      const cat=document.getElementById('m-icat')?.value;
+      const rarity=document.getElementById('m-irarity')?.value;
+      const dur=document.getElementById('m-idur');
+      const hint=document.getElementById('m-idur-hint');
+      if(!dur)return;
+      // Tabela: Improvisada 40, Básica 60 (Normal), Tática 80 (Refinado), Avançada 100 (Inquebrável)
+      const tierDur={common:{v:40,n:'Danificado/Improvisada'},uncommon:{v:60,n:'Normal/Básica'},rare:{v:80,n:'Refinado/Tática'},epic:{v:100,n:'Inquebrável/Avançada'},legendary:{v:120,n:'Lendário'}};
+      // Categorias sem classificação tática: usam default Normal (60), exceto consumivel/municao (descartáveis)
+      const usesTier=['armaBranca','armaFogo','arma','arma-fogo','explosivo','protecao'].indexOf(cat)>=0;
+      let val=60,name='Normal (60)';
+      if(usesTier&&tierDur[rarity]){val=tierDur[rarity].v;name=tierDur[rarity].n+' ('+val+')'}
+      else if(cat==='consumivel'||cat==='municao'){val=1;name='Descartável'}
+      else if(cat==='material'){val=100;name='Resistente (100)'}
+      else if(tierDur[rarity]){val=tierDur[rarity].v;name=tierDur[rarity].n+' ('+val+')'}
+      // Só sobrescreve se o usuário não mudou manualmente (flag)
+      if(!dur.dataset.userTouched)dur.value=val;
+      if(hint)hint.textContent='— '+name;
+    };
+    // Marca como touched ao usuário editar manual
+    setTimeout(()=>{const dur=document.getElementById('m-idur');if(dur)dur.addEventListener('input',()=>{dur.dataset.userTouched='1'})},50);
   } else if(type==='weapon'){
     title.textContent='Adicionar Arma';
     body.innerHTML=`<div class="form-group"><label>Arma</label><button type="button" class="weapon-pick-trigger" onclick="window._openWpnPicker()"><span id="m-wpick-preview">Escolher arma...</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button><input type="hidden" id="m-wname-pick" value=""></div><div class="form-group"><label>Nome <span style="color:var(--text-dim);font-weight:400">(opcional)</span></label><input type="text" id="m-wname" placeholder="Ex: Pistola Curta"></div><div class="form-row"><div class="form-group"><label>Raridade</label><select id="m-wrarity"><option value="common">Comum</option><option value="uncommon">Incomum</option><option value="rare">Raro</option><option value="epic">Épico</option><option value="legendary">Lendário</option></select></div><div class="form-group"><label>Quantidade</label><input type="number" id="m-wqty" value="1" min="1"></div></div><div class="form-row"><div class="form-group"><label>Largura (slots)</label><input type="number" id="m-wgw" value="2" min="1" max="8"></div><div class="form-group"><label>Altura (slots)</label><input type="number" id="m-wgh" value="1" min="1" max="8"></div></div><div class="form-row"><div class="form-group"><label>Peso (kg)</label><input type="number" id="m-wweight" value="1" min="0" step="0.5"></div><div class="form-group"><label>Valor (créditos)</label><input type="number" id="m-wvalue" value="0" min="0"></div></div><div class="form-group"><label>Descrição</label><input type="text" id="m-wdesc" placeholder="Notas..."></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveWeapon()">Adicionar</button></div>`;
@@ -16564,7 +16627,7 @@ function saveItem(){let n=document.getElementById('m-iname').value.trim().slice(
   window._loadedIconSvg='';
   // Categoria final salva: mantém compat (arma) p/ classes existentes mas guarda subcat
   const _origCat=document.getElementById('m-icat').value;
-  const ni={id:nextId++,name:n,cat,catNew:_origCat,wpnSub:_wpnSub,rarity:document.getElementById('m-irarity').value,qty:_clampInt(document.getElementById('m-iqty').value,1,9999,1),weight:_clampFloat(document.getElementById('m-iweight').value,0,9999,1),value:_clampInt(document.getElementById('m-ivalue').value,0,99999999,0),durability:_clampInt(document.getElementById('m-idur').value,0,100,100),gw:_clampInt(document.getElementById('m-igw')?.value,1,8,1),gh:_clampInt(document.getElementById('m-igh')?.value,1,8,1),iconKey:iks[_rngInt(iks.length)]||'sword',iconWpn:cat==='arma'&&WEAPON_SVGS[wpn]?wpn:'',iconSvg:_iconSvg,desc:document.getElementById('m-idesc').value.trim().slice(0,500)||'Sem descricao.'};
+  const ni={id:nextId++,name:n,cat,catNew:_origCat,wpnSub:_wpnSub,rarity:document.getElementById('m-irarity').value,qty:_clampInt(document.getElementById('m-iqty').value,1,9999,1),weight:_clampFloat(document.getElementById('m-iweight').value,0,9999,1),value:_clampInt(document.getElementById('m-ivalue').value,0,99999999,0),durability:_clampInt(document.getElementById('m-idur').value,0,200,60),gw:_clampInt(document.getElementById('m-igw')?.value,1,8,1),gh:_clampInt(document.getElementById('m-igh')?.value,1,8,1),iconKey:iks[_rngInt(iks.length)]||'sword',iconWpn:cat==='arma'&&WEAPON_SVGS[wpn]?wpn:'',iconSvg:_iconSvg,desc:document.getElementById('m-idesc').value.trim().slice(0,500)||'Sem descricao.'};
   // Mochila: se categoria for "acessorio" e nome contém "mochila"/"bolsa", inicia container
   if(_origCat==='acessorio'&&/mochila|bolsa|saco|bag/i.test(n)){ni.isBag=true;ni.bag={gw:3,gh:3,items:[],quickDraw:false}}
   inventory.push(ni);
