@@ -1096,7 +1096,29 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .re4-shell>.re4-body>.re4-case-pane{flex:0 0 auto;min-width:0;align-self:flex-start}
 .re4-shell>.re4-body>.re4-item-detail{flex:0 0 280px;min-width:0;align-self:flex-start}
 .equip-slots{display:flex;flex-direction:column;gap:5px;padding:0;background:none;border:none;border-radius:0;width:56px;justify-content:center;align-items:center}
+.equip-conjunto-btn{width:42px;height:42px;border-radius:50%;background:linear-gradient(145deg,#1d1d23,#15151a);border:2px solid var(--magenta-dim);color:var(--magenta);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;padding:0;flex-shrink:0;margin-bottom:6px;box-shadow:0 0 0 1px rgba(0,0,0,.4),0 4px 12px rgba(var(--magenta-rgb),.15)}
+.equip-conjunto-btn:hover{transform:scale(1.06);background:linear-gradient(145deg,#26262e,#1c1c22);box-shadow:0 0 0 1px rgba(0,0,0,.4),0 4px 18px rgba(var(--magenta-rgb),.4)}
+.equip-conjunto-btn:active{transform:scale(.96)}
+.equip-conjunto-btn svg{width:22px;height:22px}
 .equip-slot{position:relative;width:42px;height:42px;border-radius:8px;background:#1a1a1f;border:3px solid #3a3a44;color:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;padding:0;flex-shrink:0;aspect-ratio:1/1}
+/* ═══ Bag/Mochila modal ═══ */
+.bag-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px}
+.bag-overlay.open{display:flex;animation:fadeIn .2s ease}
+.bag-modal{background:linear-gradient(160deg,#1a1a20,#101015);border:1px solid var(--magenta-dim);border-radius:14px;padding:20px;min-width:280px;max-width:90vw;max-height:85vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(var(--magenta-rgb),.15);position:relative}
+.bag-modal h3{margin:0 0 14px;color:var(--magenta);font-size:14px;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.bag-close{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.bag-close:hover{border-color:var(--magenta-dim);color:var(--magenta)}
+.bag-grid{display:grid;gap:4px;padding:8px;background:var(--bg-input);border:1px solid var(--border);border-radius:10px;margin:8px 0}
+.bag-cell{aspect-ratio:1/1;background:#0c0c10;border:1px solid #25252d;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-dim);position:relative;min-width:42px}
+.bag-cell.filled{background:linear-gradient(145deg,#1c1c22,#15151a);border-color:var(--magenta-dim);color:var(--magenta);cursor:pointer}
+.bag-cell.filled:hover{border-color:var(--magenta);box-shadow:0 0 0 1px rgba(var(--magenta-rgb),.3)}
+.bag-cell svg{width:60%;height:60%}
+.bag-cell .bag-cell-qty{position:absolute;bottom:2px;right:3px;font-size:9px;font-weight:700;color:var(--text-primary);background:rgba(0,0,0,.6);padding:1px 4px;border-radius:3px}
+.bag-actions{display:flex;gap:8px;margin-top:12px;align-items:center}
+.bag-actions label{font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:6px;cursor:pointer}
+.bag-actions input[type=checkbox]{accent-color:var(--magenta)}
+.bag-meta{font-size:11px;color:var(--text-dim);margin-bottom:8px}
+.item-bag-mark{position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:rgba(var(--magenta-rgb),.85);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;pointer-events:none;box-shadow:0 0 6px rgba(var(--magenta-rgb),.6)}
 .equip-slot:hover{border-color:var(--magenta-dim);color:var(--magenta);background:color-mix(in srgb,var(--magenta) 8%,#1a1a1f)}
 .equip-slot.equipped{border-color:var(--magenta);color:var(--magenta);box-shadow:0 0 0 2px color-mix(in srgb,var(--magenta) 28%,transparent),0 0 14px color-mix(in srgb,var(--magenta) 35%,transparent);background:color-mix(in srgb,var(--magenta) 18%,#1a1a1f)}
 .equip-slot svg{width:18px;height:18px;stroke:currentColor;fill:none}
@@ -1496,6 +1518,15 @@ html.no-radius,html.no-radius *{border-radius:0!important}
   .ppp-sv{height:180px}
 }
 .profile-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.protection-slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.prot-slot{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:10px;color:var(--text-secondary);cursor:pointer;font-family:inherit;font-size:13px;transition:all .15s;text-align:left;width:100%}
+.prot-slot:hover{border-color:var(--magenta-dim);color:var(--text-primary);background:color-mix(in srgb,var(--magenta) 6%,var(--bg-card-inner))}
+.prot-slot.equipped{border-color:var(--magenta);color:var(--magenta)}
+.prot-ico{width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--magenta);flex-shrink:0}
+.prot-ico svg{width:100%;height:100%}
+.prot-meta{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.prot-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-dim)}
+.prot-val{font-weight:600;font-size:12px;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .profile-field label{display:block;font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:4px}
 .profile-field-val{font-size:14px;color:var(--text-primary);padding:10px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-xs);width:100%;min-height:40px;box-sizing:border-box;display:flex;align-items:center}
 .profile-field input,.profile-field select{width:100%;padding:10px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-xs);color:var(--text-primary);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
@@ -5317,7 +5348,20 @@ button:not(:disabled):active{transform:scale(.97)}
 .ad-pts-total{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.35);font-weight:600;margin-top:2px}
 .ad-pts-cap{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;color:#fff}
 .ad-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media(max-width:520px){.ad-grid{grid-template-columns:1fr}}
+@media(max-width:520px){
+  .ad-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;padding:4px 0 12px;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;scrollbar-width:none}
+  .ad-grid::-webkit-scrollbar{display:none}
+  .ad-grid .ad-card{flex:0 0 88%;scroll-snap-align:center;padding:18px;min-height:160px}
+  .ad-card .ad-name{font-size:16px}
+  .ad-card .ad-val{font-size:24px}
+}
+.ad-nav-arrows{display:none;justify-content:space-between;align-items:center;margin:6px 0 0;gap:8px}
+@media(max-width:520px){.ad-nav-arrows{display:flex}}
+.ad-nav-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--bg-card-inner);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
+.ad-nav-btn:hover{border-color:var(--magenta-dim);color:var(--magenta)}
+.ad-nav-dots{display:flex;gap:6px;flex:1;justify-content:center}
+.ad-nav-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .2s}
+.ad-nav-dot.active{background:var(--magenta);transform:scale(1.4)}
 .ad-card{position:relative;padding:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:10px;display:flex;flex-direction:column;gap:8px;transition:background .25s,border-color .25s,box-shadow .25s}
 .ad-card.has-points{background:color-mix(in srgb,var(--c) 8%,transparent);border-color:color-mix(in srgb,var(--c) 30%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 12%,transparent),inset 0 0 12px color-mix(in srgb,var(--c) 8%,transparent)}
 .ad-card-head{display:flex;align-items:center;gap:8px}
@@ -7039,6 +7083,18 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
   </div>
 </aside>
 <div class="sidebar-more-pop" id="sidebar-more-pop" role="menu" aria-hidden="true"></div>
+<!-- Bag/Mochila Modal -->
+<div class="bag-overlay" id="bag-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="bag-modal" id="bag-modal">
+    <button class="bag-close" type="button" onclick="closeBagModal()" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+    <h3 id="bag-title">Mochila</h3>
+    <div class="bag-meta" id="bag-meta"></div>
+    <div class="bag-grid" id="bag-grid"></div>
+    <div class="bag-actions">
+      <label><input type="checkbox" id="bag-quickdraw" onchange="window._toggleQuickDraw&&window._toggleQuickDraw(this.checked)"> Saque rápido (duplo-clique solta no inventário)</label>
+    </div>
+  </div>
+</div>
 <!-- Loadout Manager (conjuntos de armas) -->
 <div class="lout-overlay" id="lout-overlay" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="lout-modal">
@@ -7377,6 +7433,7 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
             </div>
           </div>
           <aside class="equip-slots" id="equip-slots" aria-label="Slots de equipamento">
+            <button class="equip-conjunto-btn" type="button" onclick="openLoadoutManager()" title="Conjunto / Loadout" aria-label="Conjunto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3H8a3 3 0 0 0-3 3v3l-2 1v8a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-8l-2-1V6a3 3 0 0 0-3-3z"/><path d="M9 7h6"/><path d="M12 12v7"/></svg></button>
             <button class="equip-slot" data-slot="cabeca" title="Cabeça" onclick="openEquipSlotPicker('cabeca')"><span class="equip-slot-ico" style="--ico:url(icons/equip/cabeca.svg)"></span><span class="equip-slot-lbl">Cabeça</span></button>
             <button class="equip-slot" data-slot="rosto" title="Rosto" onclick="openEquipSlotPicker('rosto')"><span class="equip-slot-ico" style="--ico:url(icons/equip/rosto.svg)"></span><span class="equip-slot-lbl">Rosto</span></button>
             <button class="equip-slot" data-slot="pescoco" title="Pescoço" onclick="openEquipSlotPicker('pescoco')"><span class="equip-slot-ico" style="--ico:url(icons/equip/pescoco.svg)"></span><span class="equip-slot-lbl">Pescoço</span></button>
@@ -7400,11 +7457,18 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
             <div class="re4-stats" id="inv-stat-blocks"></div>
             <div class="re4-filters">
               <button class="inv-filter-pill active" data-f="all">Tudo</button>
-              <button class="inv-filter-pill" data-f="arma">Armas</button>
-              <button class="inv-filter-pill" data-f="armadura">Armaduras</button>
+              <button class="inv-filter-pill" data-f="armaBranca">Armas Brancas</button>
+              <button class="inv-filter-pill" data-f="armaFogo">Armas de Fogo</button>
+              <button class="inv-filter-pill" data-f="explosivo">Explosivos</button>
+              <button class="inv-filter-pill" data-f="operacional">Operacionais</button>
+              <button class="inv-filter-pill" data-f="implante">Implantes</button>
+              <button class="inv-filter-pill" data-f="obscuro">Obscuros</button>
+              <button class="inv-filter-pill" data-f="protecao">Proteção</button>
+              <button class="inv-filter-pill" data-f="vestimenta">Vestimenta</button>
+              <button class="inv-filter-pill" data-f="acessorio">Acessório</button>
+              <button class="inv-filter-pill" data-f="municao">Munições</button>
               <button class="inv-filter-pill" data-f="consumivel">Consumíveis</button>
               <button class="inv-filter-pill" data-f="material">Materiais</button>
-              <button class="inv-filter-pill" data-f="chave">Chaves</button>
             </div>
             <div class="re4-list" id="inv-tab-list"></div>
           </aside>
@@ -7504,6 +7568,17 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
           </div>
 
           <div class="profile-section">
+            <div class="profile-section-title">Proteção</div>
+            <div class="protection-slots" id="protection-slots">
+              <button class="prot-slot" data-prot="cabeca" type="button" onclick="window.openProtectionPicker&&openProtectionPicker('cabeca')"><span class="prot-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="6"/><path d="M6 15v3a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3v-3"/></svg></span><span class="prot-meta"><span class="prot-lbl">Cabeça</span><span class="prot-val" id="prot-val-cabeca">—</span></span></button>
+              <button class="prot-slot" data-prot="torso" type="button" onclick="window.openProtectionPicker&&openProtectionPicker('torso')"><span class="prot-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 4h10l2 4-3 2v10H8V10L5 8z"/></svg></span><span class="prot-meta"><span class="prot-lbl">Torso</span><span class="prot-val" id="prot-val-torso">—</span></span></button>
+              <button class="prot-slot" data-prot="pernaSup" type="button" onclick="window.openProtectionPicker&&openProtectionPicker('pernaSup')"><span class="prot-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6l1 8h-8z"/></svg></span><span class="prot-meta"><span class="prot-lbl">Perna Superior</span><span class="prot-val" id="prot-val-pernaSup">—</span></span></button>
+              <button class="prot-slot" data-prot="pernaCent" type="button" onclick="window.openProtectionPicker&&openProtectionPicker('pernaCent')"><span class="prot-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="6" width="6" height="12" rx="1"/></svg></span><span class="prot-meta"><span class="prot-lbl">Perna Central</span><span class="prot-val" id="prot-val-pernaCent">—</span></span></button>
+              <button class="prot-slot" data-prot="pernaInf" type="button" onclick="window.openProtectionPicker&&openProtectionPicker('pernaInf')"><span class="prot-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 4h6l-1 16h-4z"/></svg></span><span class="prot-meta"><span class="prot-lbl">Perna Inferior</span><span class="prot-val" id="prot-val-pernaInf">—</span></span></button>
+            </div>
+          </div>
+
+          <div class="profile-section">
             <div class="profile-section-title">Conta</div>
             <div class="profile-fields" id="profile-fields">
               <div class="profile-field"><label>Nome de usuário</label><div class="profile-field-val" id="pf-name">Aventureiro</div></div>
@@ -7581,6 +7656,16 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
               <span class="profile-system-info">
                 <span class="profile-system-name">Som</span>
                 <span class="profile-system-sub" id="profile-sound-sub">Ativado</span>
+              </span>
+              <svg class="profile-system-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+            <a class="profile-system-link" href="#" title="Gerenciar personagens (3 slots)" onclick="event.preventDefault();openCharSlotsModal();">
+              <span class="profile-system-icon" aria-hidden="true" style="color:var(--cyan);border-color:color-mix(in srgb,var(--cyan,#06b6d4) 45%,var(--border))">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="17" cy="6" r="2"/><path d="M22 14v-1a3 3 0 0 0-3-3"/></svg>
+              </span>
+              <span class="profile-system-info">
+                <span class="profile-system-name" style="color:var(--cyan,#06b6d4)">Personagens</span>
+                <span class="profile-system-sub">3 slots · alternar · listar</span>
               </span>
               <svg class="profile-system-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
             </a>
@@ -8236,7 +8321,16 @@ function getWeaponSize(k){
   return{w:preset.w,h:preset.h};
 }
 const RARITY_LABELS={common:'Comum',uncommon:'Incomum',rare:'Raro',epic:'Epico',legendary:'Lendario'};
-const CATEGORY_LABELS={arma:'Arma',armadura:'Armadura',consumivel:'Consumivel',material:'Material',chave:'Chave'};
+// Tier de armas (mapeia rarity → classificacao tatica)
+const WEAPON_TIER_LABELS={common:'Improvisada',uncommon:'Basica',rare:'Tatica',epic:'Avancada',legendary:'Avancada+'};
+function tierLabelFor(it){const isWpn=it&&(it.cat==='arma'||it.cat==='armaBranca'||it.cat==='arma-fogo'||it.cat==='armaFogo'||it.cat==='explosivo');return (isWpn?WEAPON_TIER_LABELS:RARITY_LABELS)[it&&it.rarity]||(isWpn?'Improvisada':'Comum')}
+window.WEAPON_TIER_LABELS=WEAPON_TIER_LABELS;window.tierLabelFor=tierLabelFor;
+const CATEGORY_LABELS={
+  arma:'Arma Branca',armaBranca:'Armas Brancas','arma-fogo':'Armas de Fogo',armaFogo:'Armas de Fogo',
+  explosivo:'Explosivos',operacional:'Itens Operacionais',implante:'Implantes',obscuro:'Itens Obscuros',
+  protecao:'Proteção',vestimenta:'Vestimenta',acessorio:'Acessório',municao:'Munições',
+  armadura:'Proteção',consumivel:'Consumíveis',material:'Materiais',chave:'Chaves'
+};
 const TYPE_LABELS={combat:'Combate',explore:'Exploracao',quest:'Quest',level:'Nivel',loot:'Loot',social:'Social'};
 const TYPE_ICONS={combat:'sword',explore:'eye',quest:'scroll',level:'zap',loot:'gem',social:'user'};
 const MEMBER_TYPES={aliado:'Aliado',jogador:'Jogador',npc:'NPC',pet:'Pet',montaria:'Montaria',mercador:'Mercador'};
@@ -12087,15 +12181,14 @@ function renderInvTab(){
     return;
   }
   const esc=s=>String(s||'').replace(/</g,'&lt;').replace(/"/g,'&quot;');
-  const RL={common:'Comum',uncommon:'Incomum',rare:'Raro',epic:'Épico',legendary:'Lendário'};
   listEl.innerHTML=filtered.map(i=>{
     const dur=Math.max(0,Math.min(100,i.durability||0));
     const durC=dur>70?'var(--green)':dur>40?'var(--yellow)':'var(--red)';
     return `<div class="inv-card" style="--ic:var(--rarity-${i.rarity})" onclick="openEditItem(${i.id})">
-      <div class="inv-card-icon">${i.iconWpn&&WEAPON_SVGS[i.iconWpn]?`<img src="${WEAPON_SVGS[i.iconWpn].file}" style="width:80%;height:80%;object-fit:contain" draggable="false">`:gi(i.iconKey)}</div>
+      <div class="inv-card-icon">${i.iconSvg?i.iconSvg:(i.iconWpn&&WEAPON_SVGS[i.iconWpn]?`<img src="${WEAPON_SVGS[i.iconWpn].file}" style="width:80%;height:80%;object-fit:contain" draggable="false">`:gi(i.iconKey))}</div>
       <div class="inv-card-info">
         <div class="inv-card-name">${_esc(i.name)}</div>
-        <div class="inv-card-meta"><span class="cat">${_esc(CATEGORY_LABELS[i.cat]||'')}</span><span class="rarity">${_esc(RL[i.rarity]||i.rarity||'')}</span>${i.value?`<span>${_clampInt(i.value,0,99999999,0)} cr</span>`:''}${i.weight?`<span>P${_clampInt(i.weight,0,9999,0)}</span>`:''}</div>
+        <div class="inv-card-meta"><span class="cat">${_esc(CATEGORY_LABELS[i.cat]||'')}</span><span class="rarity">${_esc(tierLabelFor(i))}</span>${i.value?`<span>${_clampInt(i.value,0,99999999,0)} cr</span>`:''}${i.weight?`<span>P${_clampInt(i.weight,0,9999,0)}</span>`:''}</div>
       </div>
       <div class="inv-card-dur"><div class="inv-card-dur-bar"><div class="inv-card-dur-fill" style="width:${dur}%;--d-c:${durC}"></div></div><span class="inv-card-dur-lbl">${dur}%</span></div>
       <div class="inv-card-qty"><span class="inv-card-qty-num">${i.qty}</span><span class="inv-card-qty-lbl">qty</span></div>
@@ -13017,9 +13110,11 @@ function buildCell(i){
     const _finalRot=_extraRot+(_conf.rot||0);
     const iconHTML=_resolvedImg
       ?`<img class="item-custom-img" src="${_resolvedImg}" alt="${item.name}" draggable="false" style="--_irot:${_finalRot}deg;--_isx:${_sx};--_isy:${_sy};--_iscl:${(_conf.scale||100)/100};transition:transform .25s cubic-bezier(.2,.9,.2,1.05)">`
-      :(wpnEntry
-        ?`<img class="item-icon-svg" src="${wpnSrcInitial}" alt="${wpnEntry.label}" draggable="false"${wpnRot}>`
-        :`<span class="item-icon" style="color:var(--rarity-${item.rarity})">${gi(item.iconKey)}</span>`);
+      :(item.iconSvg
+        ?`<span class="item-icon item-icon-custom-svg" style="color:var(--rarity-${item.rarity})">${item.iconSvg}</span>`
+        :(wpnEntry
+          ?`<img class="item-icon-svg" src="${wpnSrcInitial}" alt="${wpnEntry.label}" draggable="false"${wpnRot}>`
+          :`<span class="item-icon" style="color:var(--rarity-${item.rarity})">${gi(item.iconKey)}</span>`));
     // Badge munição (firearms)
     const _isFireItem=wpnEntry&&wpnEntry.type==='fogo'&&wpnEntry.sub!=='municao';
     let ammoBadge='';
@@ -13067,7 +13162,8 @@ function buildCell(i){
       overlay.style.height=`calc(${ih*100}% + ${(ih-1)*2}px)`;
       overlay.style.left='0';
       overlay.style.top='0';
-      overlay.innerHTML=`<div class="rarity-dot" style="background:var(--rarity-${item.rarity});--dot-glow:var(--rarity-${item.rarity})"></div>${iconHTML}${item.qty>1?`<span class="item-qty">${item.qty}</span>`:''}${ammoBadge}${equipMark}${gearBtn}${reloadRing}${rotateBtn}${modsStrip}`;
+      overlay.innerHTML=`<div class="rarity-dot" style="background:var(--rarity-${item.rarity});--dot-glow:var(--rarity-${item.rarity})"></div>${iconHTML}${item.qty>1?`<span class="item-qty">${item.qty}</span>`:''}${ammoBadge}${equipMark}${gearBtn}${reloadRing}${rotateBtn}${modsStrip}${item.isBag?'<span class="item-bag-mark" title="Mochila">M</span>':''}`;
+      if(item.isBag){overlay.ondblclick=ev=>{ev.preventDefault();ev.stopPropagation();window.openBagModal(item.id)}}
       cell.appendChild(overlay);
       // Refine: measure first/last cell rects, set overlay to exact pixel span.
       requestAnimationFrame(()=>{
@@ -13080,7 +13176,8 @@ function buildCell(i){
         overlay.style.height=(lR.bottom-fR.top)+'px';
       });
     } else {
-      cell.innerHTML=`<div class="rarity-dot" style="background:var(--rarity-${item.rarity});--dot-glow:var(--rarity-${item.rarity})"></div>${iconHTML}${item.qty>1?`<span class="item-qty">${item.qty}</span>`:''}${ammoBadge}${equipMark}${gearBtn}${reloadRing}${rotateBtn}${modsStrip}`;
+      cell.innerHTML=`<div class="rarity-dot" style="background:var(--rarity-${item.rarity});--dot-glow:var(--rarity-${item.rarity})"></div>${iconHTML}${item.qty>1?`<span class="item-qty">${item.qty}</span>`:''}${ammoBadge}${equipMark}${gearBtn}${reloadRing}${rotateBtn}${modsStrip}${item.isBag?'<span class="item-bag-mark" title="Mochila">M</span>':''}`;
+      if(item.isBag){cell.ondblclick=ev=>{ev.preventDefault();ev.stopPropagation();window.openBagModal(item.id)}}
     }
     if(wpnEntry){
       const _wpnImg=cell.querySelector('img.item-icon-svg');
@@ -14589,7 +14686,13 @@ function openEditItem(id){
   currentModal='editItem';editId=id;
   const title=document.getElementById('modal-title'),body=document.getElementById('modal-body');
   title.textContent='Editar Item';
-  body.innerHTML=`<div class="form-group"><label>Nome</label><input type="text" id="m-ename" value="${item.name}"></div><div class="form-row"><div class="form-group"><label>Categoria</label><select id="m-ecat"><option value="arma"${item.cat==='arma'?' selected':''}>Arma</option><option value="armadura"${item.cat==='armadura'?' selected':''}>Armadura</option><option value="consumivel"${item.cat==='consumivel'?' selected':''}>Consumivel</option><option value="material"${item.cat==='material'?' selected':''}>Material</option><option value="chave"${item.cat==='chave'?' selected':''}>Chave</option></select></div><div class="form-group"><label>Raridade</label><select id="m-erarity"><option value="common"${item.rarity==='common'?' selected':''}>Comum</option><option value="uncommon"${item.rarity==='uncommon'?' selected':''}>Incomum</option><option value="rare"${item.rarity==='rare'?' selected':''}>Raro</option><option value="epic"${item.rarity==='epic'?' selected':''}>Epico</option><option value="legendary"${item.rarity==='legendary'?' selected':''}>Lendario</option></select></div></div><div class="form-row"><div class="form-group"><label>Quantidade</label><input type="number" id="m-eqty" value="${item.qty}" min="1"></div><div class="form-group"><label>Peso</label><input type="number" id="m-eweight" value="${item.weight}" min="0" step="0.5"></div></div><div class="form-row"><div class="form-group"><label>Valor (credito)</label><input type="number" id="m-evalue" value="${item.value}" min="0"></div><div class="form-group"><label>Durabilidade</label><input type="number" id="m-edur" value="${item.durability}" min="0" max="100"></div></div><div class="form-group"><label>Descricao</label><input type="text" id="m-edesc" value="${item.desc}"></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveEditItem()">Salvar</button></div>`;
+  const _cats=[['armaBranca','Armas Brancas'],['armaFogo','Armas de Fogo'],['explosivo','Explosivos'],['operacional','Itens Operacionais'],['implante','Implantes'],['obscuro','Itens Obscuros'],['protecao','Proteção'],['vestimenta','Vestimenta'],['acessorio','Acessório'],['municao','Munições'],['consumivel','Consumíveis'],['material','Materiais']];
+  const _curCat=item.cat==='arma'?'armaBranca':(item.cat==='arma-fogo'?'armaFogo':(item.cat==='armadura'?'protecao':(item.cat==='chave'?'operacional':item.cat)));
+  const _isWpn=['armaBranca','armaFogo','explosivo'].includes(_curCat);
+  const _tiers=_isWpn?[['common','Improvisada'],['uncommon','Básica'],['rare','Tática'],['epic','Avançada']]:[['common','Comum'],['uncommon','Incomum'],['rare','Raro'],['epic','Épico'],['legendary','Lendário']];
+  const _catOpts=_cats.map(([v,l])=>`<option value="${v}"${v===_curCat?' selected':''}>${l}</option>`).join('');
+  const _tierOpts=_tiers.map(([v,l])=>`<option value="${v}"${v===item.rarity?' selected':''}>${l}</option>`).join('');
+  body.innerHTML=`<div class="form-group"><label>Nome</label><input type="text" id="m-ename" value="${item.name}"></div><div class="form-row"><div class="form-group"><label>Categoria</label><select id="m-ecat">${_catOpts}</select></div><div class="form-group"><label>${_isWpn?'Classificação':'Raridade'}</label><select id="m-erarity">${_tierOpts}</select></div></div><div class="form-row"><div class="form-group"><label>Quantidade</label><input type="number" id="m-eqty" value="${item.qty}" min="1"></div><div class="form-group"><label>Peso</label><input type="number" id="m-eweight" value="${item.weight}" min="0" step="0.5"></div></div><div class="form-row"><div class="form-group"><label>Valor (credito)</label><input type="number" id="m-evalue" value="${item.value}" min="0"></div><div class="form-group"><label>Durabilidade</label><input type="number" id="m-edur" value="${item.durability}" min="0" max="100"></div></div><div class="form-group"><label>Descricao</label><input type="text" id="m-edesc" value="${item.desc}"></div><div class="form-group"><label>Ícone SVG <span style="color:var(--text-dim);font-weight:400">(opcional — cole código SVG)</span></label><textarea id="m-eisvg" rows="2" style="font-family:monospace;font-size:11px;width:100%;resize:vertical" placeholder="<svg ...>...</svg>">${(item.iconSvg||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</textarea></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveEditItem()">Salvar</button></div>`;
   document.getElementById('modal-overlay').classList.add('open');
   initCustomSelects(body);
   setTimeout(()=>document.getElementById('m-ename').focus(),200);
@@ -14605,7 +14708,9 @@ function saveEditItem(){
   item.value=_clampInt(document.getElementById('m-evalue').value,0,99999999,0);
   item.durability=_clampInt(document.getElementById('m-edur').value,0,100,0);
   item.desc=document.getElementById('m-edesc').value||'Sem descricao.';
-  const iks=ICON_MAP[item.cat]||['sword'];item.iconKey=iks[_rngInt(iks.length)]||'sword';
+  const _svgRaw=(document.getElementById('m-eisvg')?.value||'').trim();
+  if(_svgRaw){const m=_svgRaw.match(/<svg[\s\S]*?<\/svg>/i);item.iconSvg=m?m[0]:''}else{item.iconSvg=''}
+  const iks=ICON_MAP[item.cat]||ICON_MAP['arma']||['sword'];item.iconKey=iks[_rngInt(iks.length)]||'sword';
   closeModal();renderGrid();renderDashLists();toast(`${item.name} atualizado`);
 }
 
@@ -15948,7 +16053,7 @@ function openModal(type,eid){
     title.textContent='Adicionar Item';
     const wpnBtns=Object.keys(WEAPON_TYPE_LABELS).map(t=>{const subs=WEAPON_SUB_LABELS[t]||{};const subKeys=Object.keys(subs);if(!subKeys.length)return'';const tabs=subKeys.map((s,i)=>`<button type="button" class="weapon-sub-tab${i===0?' active':''}" data-sub="${t}-${s}" onclick="window._pickWpnSubItem('${t}','${s}')">${subs[s]}</button>`).join('');const panes=subKeys.map((s,i)=>{const list=Object.entries(WEAPON_SVGS).filter(([,v])=>v.type===t&&v.sub===s);const btns=list.map(([k,v])=>`<button type="button" class="weapon-pick-btn" data-wpn="${k}" title="${v.label}" onclick="window._pickWeapon('${k}')"><img src="${v.file}" alt="${v.label}" draggable="false"><span>${v.label}</span></button>`).join('')||'<div style="font-size:11px;color:var(--text-dim);padding:8px">Vazio</div>';return`<div class="weapon-sub-pane${i===0?' active':''}" data-pane="${t}-${s}"><div class="weapon-pick-grid">${btns}</div></div>`}).join('');return`<div class="weapon-pick-group-label">${WEAPON_TYPE_LABELS[t]}</div><div class="weapon-sub-tabs" data-type="${t}">${tabs}</div>${panes}`}).join('');
     body.innerHTML=`<div class="form-group"><label>Nome</label><input type="text" id="m-iname" placeholder="Ex: Espada Curta" required></div>
-<div class="form-row"><div class="form-group"><label>Categoria</label><select id="m-icat" onchange="window._toggleWpnPicker()"><option value="arma">Arma Branca</option><option value="arma-fogo">Arma de Fogo</option><option value="armadura">Armadura</option><option value="consumivel">Consumivel</option><option value="material">Material</option><option value="chave">Chave</option></select></div><div class="form-group"><label>Raridade</label><select id="m-irarity"><option value="common">Comum</option><option value="uncommon">Incomum</option><option value="rare">Raro</option><option value="epic">Epico</option><option value="legendary">Lendario</option></select></div></div>
+<div class="form-row"><div class="form-group"><label>Categoria</label><select id="m-icat" onchange="window._toggleWpnPicker();window._updateRarityLabels&&window._updateRarityLabels()"><option value="armaBranca">Armas Brancas</option><option value="armaFogo">Armas de Fogo</option><option value="explosivo">Explosivos</option><option value="operacional">Itens Operacionais</option><option value="implante">Implantes</option><option value="obscuro">Itens Obscuros</option><option value="protecao">Proteção</option><option value="vestimenta">Vestimenta</option><option value="acessorio">Acessório</option><option value="municao">Munições</option><option value="consumivel">Consumíveis</option><option value="material">Materiais</option></select></div><div class="form-group"><label id="m-irarity-label">Classificação</label><select id="m-irarity"><option value="common">Improvisada</option><option value="uncommon">Básica</option><option value="rare">Tática</option><option value="epic">Avançada</option></select></div></div>
 <div class="form-group" id="m-wpn-wrap"><label>Ícone <span style="color:var(--text-dim);font-weight:400">(opcional)</span></label><button type="button" class="weapon-pick-trigger" onclick="window._openWpnPickerForItem()"><span id="m-iwpn-preview">Escolher ícone...</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button><input type="hidden" id="m-iwpn" value=""></div>
 <div class="form-group"><label>Descrição</label><input type="text" id="m-idesc" placeholder="Notas..."></div>
 <div class="form-group"><label>Tamanho no inventário <span style="color:var(--text-dim);font-weight:400">(largura × altura, máx 8)</span></label>
@@ -15961,6 +16066,8 @@ function openModal(type,eid){
 </div></div>
 <div class="form-row"><div class="form-group"><label>Quantidade</label><input type="number" id="m-iqty" value="1" min="1" max="9999"></div><div class="form-group"><label>Peso (kg)</label><input type="number" id="m-iweight" value="1" min="0" step="0.5"></div></div>
 <div class="form-row"><div class="form-group"><label>Valor</label><input type="number" id="m-ivalue" value="0" min="0"></div><div class="form-group"><label>Durabilidade</label><input type="number" id="m-idur" value="100" min="0" max="100"></div></div>
+<div class="form-group"><label>Ícone SVG <span style="color:var(--text-dim);font-weight:400">(opcional — cole código)</span></label><textarea id="m-iisvg" rows="2" style="font-family:monospace;font-size:11px;width:100%;resize:vertical" placeholder="<svg ...>...</svg>"></textarea></div>
+<div class="form-group"><label>Importar imagem <span style="color:var(--text-dim);font-weight:400">(PNG/JPG/SVG)</span></label><input type="file" id="m-iifile" accept="image/png,image/jpeg,image/svg+xml,image/*,.svg" onchange="window._loadIconFile&&window._loadIconFile(this)" style="font-size:11px"></div>
 <div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveItem()">Adicionar</button></div>`;
     window._updateSizePreview=function(){
       const gw=parseInt(document.getElementById('m-igw')?.value)||1;
@@ -16003,11 +16110,24 @@ function openModal(type,eid){
     window._toggleWpnPicker=function(){
       const cat=document.getElementById('m-icat').value;
       const wrap=document.getElementById('m-wpn-wrap');
-      const isArma=(cat==='arma'||cat==='arma-fogo');
+      const isArma=(cat==='arma'||cat==='armaBranca'||cat==='arma-fogo'||cat==='armaFogo'||cat==='explosivo');
       if(wrap)wrap.style.display=isArma?'':'none';
       if(!isArma)document.getElementById('m-iwpn').value='';
-      // Filtra picker por subtype
-      window._wpnPickerFilter=(cat==='arma-fogo')?'fogo':(cat==='arma'?'branca':null);
+      window._wpnPickerFilter=(cat==='arma-fogo'||cat==='armaFogo')?'fogo':((cat==='arma'||cat==='armaBranca')?'branca':null);
+    };
+    window._updateRarityLabels=function(){
+      const cat=document.getElementById('m-icat').value;
+      const sel=document.getElementById('m-irarity');
+      const lbl=document.getElementById('m-irarity-label');
+      if(!sel)return;
+      const isWpn=(cat==='arma'||cat==='armaBranca'||cat==='arma-fogo'||cat==='armaFogo'||cat==='explosivo');
+      const tiers=isWpn?[['common','Improvisada'],['uncommon','Básica'],['rare','Tática'],['epic','Avançada']]:[['common','Comum'],['uncommon','Incomum'],['rare','Raro'],['epic','Épico'],['legendary','Lendário']];
+      const cur=sel.value;
+      sel.innerHTML=tiers.map(([v,t])=>`<option value="${v}">${t}</option>`).join('');
+      if(tiers.some(t=>t[0]===cur))sel.value=cur;
+      if(lbl)lbl.textContent=isWpn?'Classificação':'Raridade';
+      // re-init custom select se houver
+      const cs=sel.closest('.cselect');if(cs&&typeof initCustomSelects==='function'){const par=cs.parentElement;cs.replaceWith(sel);initCustomSelects(par)}
     };
   } else if(type==='weapon'){
     title.textContent='Adicionar Arma';
@@ -16419,7 +16539,264 @@ function saveWeapon(){
   toast(`${name} adicionada ao inventário`);
 }
 
-function saveItem(){let n=document.getElementById('m-iname').value.trim().slice(0,80);if(!n){const usados=inventory.map(i=>i.name).filter(x=>/^item \d+$/i.test(x)).map(x=>parseInt(x.split(' ')[1])||0);const next=(usados.length?Math.max(...usados):0)+1;n=`item ${next}`}let cat=document.getElementById('m-icat').value;const _wpnSub=cat==='arma-fogo'?'fogo':(cat==='arma'?'branca':null);if(cat==='arma-fogo')cat='arma';const iks=ICON_MAP[cat]||['sword'],wpn=document.getElementById('m-iwpn')?.value||'',ni={id:nextId++,name:n,cat,wpnSub:_wpnSub,rarity:document.getElementById('m-irarity').value,qty:_clampInt(document.getElementById('m-iqty').value,1,9999,1),weight:_clampFloat(document.getElementById('m-iweight').value,0,9999,1),value:_clampInt(document.getElementById('m-ivalue').value,0,99999999,0),durability:_clampInt(document.getElementById('m-idur').value,0,100,100),gw:_clampInt(document.getElementById('m-igw')?.value,1,8,1),gh:_clampInt(document.getElementById('m-igh')?.value,1,8,1),iconKey:iks[_rngInt(iks.length)]||'sword',iconWpn:cat==='arma'&&WEAPON_SVGS[wpn]?wpn:'',desc:document.getElementById('m-idesc').value.trim().slice(0,500)||'Sem descricao.'};inventory.push(ni);if(typeof addLogRow==='function')try{addLogRow(ni)}catch(_){}renderGrid();if(typeof renderDashLists==='function')renderDashLists();if(typeof renderInvTab==='function')renderInvTab();closeModal();toast(`${n} adicionado ao inventario`)}
+function saveItem(){let n=document.getElementById('m-iname').value.trim().slice(0,80);if(!n){const usados=inventory.map(i=>i.name).filter(x=>/^item \d+$/i.test(x)).map(x=>parseInt(x.split(' ')[1])||0);const next=(usados.length?Math.max(...usados):0)+1;n=`item ${next}`}
+  let cat=document.getElementById('m-icat').value;
+  // Map novas cats → cat de armas/icons
+  let _wpnSub=null,iconCat=cat;
+  if(cat==='armaBranca'){_wpnSub='branca';iconCat='arma';cat='arma'}
+  else if(cat==='armaFogo'||cat==='arma-fogo'){_wpnSub='fogo';iconCat='arma';cat='arma'}
+  else if(cat==='explosivo'){iconCat='arma'}
+  else if(cat==='protecao'){iconCat='armadura'}
+  else if(cat==='vestimenta'||cat==='acessorio'||cat==='operacional'||cat==='implante'||cat==='obscuro'||cat==='municao'){iconCat='material'}
+  const iks=ICON_MAP[iconCat]||ICON_MAP['arma']||['sword'];
+  const wpn=document.getElementById('m-iwpn')?.value||'';
+  const _svgRaw=(document.getElementById('m-iisvg')?.value||'').trim();
+  const _iconSvg=_svgRaw?(_svgRaw.match(/<svg[\s\S]*?<\/svg>/i)||[''])[0]:(window._loadedIconSvg||'');
+  window._loadedIconSvg='';
+  // Categoria final salva: mantém compat (arma) p/ classes existentes mas guarda subcat
+  const _origCat=document.getElementById('m-icat').value;
+  const ni={id:nextId++,name:n,cat,catNew:_origCat,wpnSub:_wpnSub,rarity:document.getElementById('m-irarity').value,qty:_clampInt(document.getElementById('m-iqty').value,1,9999,1),weight:_clampFloat(document.getElementById('m-iweight').value,0,9999,1),value:_clampInt(document.getElementById('m-ivalue').value,0,99999999,0),durability:_clampInt(document.getElementById('m-idur').value,0,100,100),gw:_clampInt(document.getElementById('m-igw')?.value,1,8,1),gh:_clampInt(document.getElementById('m-igh')?.value,1,8,1),iconKey:iks[_rngInt(iks.length)]||'sword',iconWpn:cat==='arma'&&WEAPON_SVGS[wpn]?wpn:'',iconSvg:_iconSvg,desc:document.getElementById('m-idesc').value.trim().slice(0,500)||'Sem descricao.'};
+  // Mochila: se categoria for "acessorio" e nome contém "mochila"/"bolsa", inicia container
+  if(_origCat==='acessorio'&&/mochila|bolsa|saco|bag/i.test(n)){ni.isBag=true;ni.bag={gw:3,gh:3,items:[],quickDraw:false}}
+  inventory.push(ni);
+  if(typeof addLogRow==='function')try{addLogRow(ni)}catch(_){}renderGrid();if(typeof renderDashLists==='function')renderDashLists();if(typeof renderInvTab==='function')renderInvTab();closeModal();toast(`${n} adicionado ao inventario`)
+}
+window._loadIconFile=function(input){
+  const f=input&&input.files&&input.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const txt=String(e.target.result||'');
+    if(/^data:image\/svg/.test(txt)){try{const svg=atob(txt.split(',')[1]||'');window._loadedIconSvg=(svg.match(/<svg[\s\S]*?<\/svg>/i)||[''])[0]}catch(_){}}
+    else if(/<svg/i.test(txt)){window._loadedIconSvg=(txt.match(/<svg[\s\S]*?<\/svg>/i)||[''])[0]}
+    else if(/^data:image\//.test(txt)){window._loadedIconSvg=`<img src="${txt}" style="width:100%;height:100%;object-fit:contain" draggable="false">`}
+    toast&&toast('Ícone carregado','success');
+  };
+  if(/svg/i.test(f.type)||/\.svg$/i.test(f.name))r.readAsText(f);else r.readAsDataURL(f);
+};
+
+// ═══ BAG / MOCHILA SYSTEM ═══
+let _bagOpenId=null;
+window.openBagModal=function(itemId){
+  const it=inventory.find(i=>i.id===itemId);
+  if(!it)return toast&&toast('Item não encontrado','warn');
+  if(!it.isBag||!it.bag)return toast&&toast('Item não é mochila','warn');
+  _bagOpenId=itemId;
+  const ov=document.getElementById('bag-overlay');
+  const ti=document.getElementById('bag-title');
+  const meta=document.getElementById('bag-meta');
+  const grid=document.getElementById('bag-grid');
+  const qd=document.getElementById('bag-quickdraw');
+  ti.textContent=it.name;
+  const cells=it.bag.gw*it.bag.gh;
+  const used=(it.bag.items||[]).length;
+  meta.textContent=`${it.bag.gw}×${it.bag.gh} · ${used}/${cells} ocupados`;
+  qd.checked=!!it.bag.quickDraw;
+  grid.style.gridTemplateColumns=`repeat(${it.bag.gw},44px)`;
+  grid.style.gridTemplateRows=`repeat(${it.bag.gh},44px)`;
+  let html='';
+  for(let s=0;s<cells;s++){
+    const bi=(it.bag.items||[])[s];
+    if(bi){
+      const ic=bi.iconSvg?bi.iconSvg:(bi.iconWpn&&WEAPON_SVGS[bi.iconWpn]?`<img src="${WEAPON_SVGS[bi.iconWpn].file}" style="width:80%;height:80%;object-fit:contain" draggable="false">`:gi(bi.iconKey||'sword'));
+      html+=`<div class="bag-cell filled" data-slot="${s}" title="${_esc(bi.name)}" ondblclick="window._bagDblClick(${s})" onclick="window._bagCellClick(${s})">${ic}${bi.qty>1?`<span class="bag-cell-qty">${bi.qty}</span>`:''}</div>`;
+    } else {
+      html+=`<div class="bag-cell" data-slot="${s}"></div>`;
+    }
+  }
+  grid.innerHTML=html;
+  ov.classList.add('open');
+  ov.setAttribute('aria-hidden','false');
+};
+window.closeBagModal=function(){
+  const ov=document.getElementById('bag-overlay');
+  ov.classList.remove('open');
+  ov.setAttribute('aria-hidden','true');
+  _bagOpenId=null;
+};
+document.getElementById('bag-overlay').addEventListener('click',e=>{if(e.target.id==='bag-overlay')window.closeBagModal()});
+window._toggleQuickDraw=function(checked){
+  if(_bagOpenId==null)return;
+  const it=inventory.find(i=>i.id===_bagOpenId);if(!it||!it.bag)return;
+  it.bag.quickDraw=!!checked;
+};
+window._bagCellClick=function(slot){
+  if(_bagOpenId==null)return;
+  const it=inventory.find(i=>i.id===_bagOpenId);if(!it||!it.bag)return;
+  const bi=(it.bag.items||[])[slot];if(!bi)return;
+  if(typeof openEditItem==='function'&&bi._isInBag!==false){
+    // simples view: usa toast pra mostrar info
+    toast&&toast(`${bi.name} (${bi.qty}x)`,'info');
+  }
+};
+window._bagDblClick=function(slot){
+  if(_bagOpenId==null)return;
+  const it=inventory.find(i=>i.id===_bagOpenId);if(!it||!it.bag)return;
+  const bi=(it.bag.items||[])[slot];if(!bi)return;
+  if(it.bag.quickDraw){
+    // Tenta soltar no inventário principal
+    const newItem={...bi,id:nextId++};
+    delete newItem._isInBag;
+    if(typeof tryAutoPlaceItem==='function'){
+      const ok=tryAutoPlaceItem(newItem);
+      if(ok){
+        it.bag.items[slot]=null;
+        it.bag.items=it.bag.items.filter(x=>x);
+        toast&&toast(`${bi.name} sacado!`,'success');
+        renderGrid();renderInvTab&&renderInvTab();window.openBagModal(_bagOpenId);
+        return;
+      }
+    }
+    inventory.push(newItem);
+    it.bag.items[slot]=null;
+    it.bag.items=it.bag.items.filter(x=>x);
+    toast&&toast(`${bi.name} sacado (sem espaço — foi p/ excedentes)`,'success');
+    renderGrid();renderInvTab&&renderInvTab();window.openBagModal(_bagOpenId);
+  }
+};
+window.tryAutoPlaceItem=function(item){
+  // Best-effort: adiciona ao inventário (renderGrid faz layout)
+  inventory.push(item);return true;
+};
+// ═══ PROTEÇÃO (slots no perfil) ═══
+function _loadProtection(){try{return JSON.parse(localStorage.getItem('eclipse_protection')||'{}')}catch(_){return{}}}
+function _saveProtection(p){try{localStorage.setItem('eclipse_protection',JSON.stringify(p))}catch(_){}}
+function renderProtection(){
+  const p=_loadProtection();
+  ['cabeca','torso','pernaSup','pernaCent','pernaInf'].forEach(slot=>{
+    const el=document.getElementById('prot-val-'+slot);
+    const btn=document.querySelector(`.prot-slot[data-prot="${slot}"]`);
+    const id=p[slot];
+    const it=id?inventory.find(i=>i.id===id):null;
+    if(it){if(el)el.textContent=it.name;if(btn)btn.classList.add('equipped')}
+    else{if(el)el.textContent='—';if(btn)btn.classList.remove('equipped')}
+  });
+}
+window.openProtectionPicker=function(slot){
+  const protItems=inventory.filter(i=>i.catNew==='protecao'||i.cat==='armadura'||i.cat==='protecao');
+  if(!protItems.length)return toast&&toast('Nenhum item de Proteção no inventário','warn');
+  const p=_loadProtection();
+  const cur=p[slot];
+  let html=`<div class="form-group"><label>Selecionar proteção</label><div style="display:flex;flex-direction:column;gap:6px;max-height:300px;overflow:auto">`;
+  html+=`<button class="modal-btn secondary" onclick="window._setProtection('${slot}',null)" style="text-align:left">— Nenhum —</button>`;
+  protItems.forEach(it=>{
+    html+=`<button class="modal-btn ${it.id===cur?'primary':'secondary'}" onclick="window._setProtection('${slot}',${it.id})" style="text-align:left">${_esc(it.name)} <span style="opacity:.6;font-size:11px">(${_esc(tierLabelFor(it))})</span></button>`;
+  });
+  html+=`</div></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Fechar</button></div>`;
+  document.getElementById('modal-title').textContent='Proteção: '+slot;
+  document.getElementById('modal-body').innerHTML=html;
+  document.getElementById('modal-overlay').classList.add('open');
+};
+window._setProtection=function(slot,id){
+  const p=_loadProtection();
+  if(id==null)delete p[slot];else p[slot]=id;
+  _saveProtection(p);renderProtection();
+  if(typeof closeModal==='function')closeModal();
+  toast&&toast(id?'Proteção equipada':'Proteção removida','success');
+};
+window.renderProtection=renderProtection;
+// Boot: render quando perfil abrir
+document.addEventListener('DOMContentLoaded',()=>{setTimeout(renderProtection,500)});
+
+// ═══ CHARACTER SLOTS (multi-personagem 3 slots) ═══
+const _CHAR_KEYS_TO_SAVE=[
+  'eclipse_inventory','eclipse_attrs','eclipse_status','eclipse_xp','eclipse_skills','eclipse_proficiencias','eclipse_userName','eclipse_userNick','eclipse_userRole','eclipse_charname','eclipse_age','eclipse_gender','eclipse_height','eclipse_weight','eclipse_occupation','eclipse_traco','eclipse_concept','eclipse_motto','eclipse_linhagem','eclipse_passado','eclipse_arquetipo','eclipse_caminho','eclipse_protection','eclipse_loadouts','playerLevel','playerXP','playerHP','playerHPMax','currency','playerStatus','eclipse_avatar'
+];
+function _snapshotChar(){
+  const out={};
+  // copy ALL eclipse_* keys + the ones above
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(k&&(k.startsWith('eclipse_')||_CHAR_KEYS_TO_SAVE.indexOf(k)>=0))out[k]=localStorage.getItem(k);
+  }
+  return out;
+}
+function _restoreChar(snap){
+  // Limpa todas chaves eclipse_* atuais
+  const toDel=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('eclipse_'))toDel.push(k)}
+  toDel.forEach(k=>localStorage.removeItem(k));
+  Object.entries(snap||{}).forEach(([k,v])=>{try{localStorage.setItem(k,v)}catch(_){}});
+}
+function _loadCharSlots(){try{return JSON.parse(localStorage.getItem('eclipse_char_slots')||'{"active":1,"slots":{}}')}catch(_){return{active:1,slots:{}}}}
+function _saveCharSlots(s){try{localStorage.setItem('eclipse_char_slots',JSON.stringify(s))}catch(_){}}
+function _slotMeta(slot){
+  return{
+    name:(slot&&slot.eclipse_charname)||(slot&&slot.eclipse_userName)||'Sem nome',
+    level:slot?(slot.playerLevel||'0'):'0',
+    money:slot?(slot.currency||'0'):'0',
+    saved:slot?slot._savedAt:null
+  };
+}
+window.openCharSlotsModal=function(){
+  const data=_loadCharSlots();
+  const active=data.active||1;
+  let html='<div style="display:flex;flex-direction:column;gap:10px">';
+  html+='<div style="font-size:11px;color:var(--text-dim);margin-bottom:6px">Salve sua ficha em até 3 slots independentes. Alterne entre eles a qualquer momento.</div>';
+  for(let i=1;i<=3;i++){
+    const slot=data.slots[i];
+    const meta=_slotMeta(slot);
+    const isActive=i===active;
+    const empty=!slot;
+    html+=`<div class="char-slot-card${isActive?' active':''}" style="display:flex;align-items:center;gap:12px;padding:12px;border:1px solid ${isActive?'var(--magenta)':'var(--border)'};border-radius:10px;background:var(--bg-card-inner)">`;
+    html+=`<div style="flex:0 0 38px;height:38px;border-radius:50%;background:${isActive?'var(--magenta)':'var(--bg-input)'};color:${isActive?'#000':'var(--text-secondary)'};display:flex;align-items:center;justify-content:center;font-weight:700">${i}</div>`;
+    html+=`<div style="flex:1;min-width:0">`;
+    html+=`<div style="font-weight:600;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${empty?'<span style="opacity:.5">— vazio —</span>':_esc(meta.name)}</div>`;
+    if(!empty)html+=`<div style="font-size:11px;color:var(--text-dim)">Nível ${meta.level} · ${meta.money} cr</div>`;
+    html+=`</div>`;
+    html+=`<div style="display:flex;gap:6px;flex-shrink:0">`;
+    if(empty){
+      html+=`<button class="modal-btn primary" style="padding:6px 10px;font-size:11px" onclick="window.saveCharSlot(${i})">Salvar</button>`;
+    } else {
+      if(!isActive)html+=`<button class="modal-btn primary" style="padding:6px 10px;font-size:11px" onclick="window.loadCharSlot(${i})">Carregar</button>`;
+      html+=`<button class="modal-btn secondary" style="padding:6px 10px;font-size:11px" onclick="window.saveCharSlot(${i})" title="Sobrescrever">⟳</button>`;
+      html+=`<button class="modal-btn danger" style="padding:6px 10px;font-size:11px" onclick="window.deleteCharSlot(${i})" title="Apagar">✕</button>`;
+    }
+    html+=`</div></div>`;
+  }
+  html+=`</div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Fechar</button></div>`;
+  document.getElementById('modal-title').textContent='Personagens';
+  document.getElementById('modal-body').innerHTML=html;
+  document.getElementById('modal-overlay').classList.add('open');
+};
+window.saveCharSlot=function(n){
+  if(!confirm('Salvar personagem atual no slot '+n+'? Sobrescreve o que estava lá.'))return;
+  const data=_loadCharSlots();
+  const snap=_snapshotChar();snap._savedAt=new Date().toISOString();
+  data.slots[n]=snap;data.active=n;
+  _saveCharSlots(data);
+  toast&&toast('Slot '+n+' salvo','success');
+  if(typeof closeModal==='function')closeModal();
+  setTimeout(()=>window.openCharSlotsModal(),200);
+};
+window.loadCharSlot=function(n){
+  const data=_loadCharSlots();
+  if(!data.slots[n])return toast&&toast('Slot vazio','warn');
+  if(!confirm('Carregar slot '+n+'? Sua ficha atual será substituída (salve antes se quiser).'))return;
+  _restoreChar(data.slots[n]);
+  data.active=n;_saveCharSlots(data);
+  toast&&toast('Slot '+n+' carregado · recarregando...','success');
+  setTimeout(()=>location.reload(),600);
+};
+window.deleteCharSlot=function(n){
+  if(!confirm('Apagar slot '+n+' definitivamente?'))return;
+  const data=_loadCharSlots();
+  delete data.slots[n];_saveCharSlots(data);
+  toast&&toast('Slot '+n+' apagado','warn');
+  setTimeout(()=>window.openCharSlotsModal(),200);
+};
+
+// Adiciona item à bag (chamado por drop handlers ou botões)
+window.addItemToBag=function(bagId,itemId){
+  const bag=inventory.find(i=>i.id===bagId);if(!bag||!bag.isBag)return false;
+  const cells=bag.bag.gw*bag.bag.gh;
+  if((bag.bag.items||[]).filter(x=>x).length>=cells)return false;
+  const it=inventory.find(i=>i.id===itemId);if(!it)return false;
+  if(it.isBag)return false; // não aceita mochila dentro de mochila
+  bag.bag.items=bag.bag.items||[];
+  bag.bag.items.push({...it,_isInBag:true});
+  inventory=inventory.filter(x=>x.id!==itemId);
+  renderGrid();renderInvTab&&renderInvTab();
+  return true;
+};
 
 // ═══ MONTARIAS ═══
 const MOUNT_ICONS={
@@ -21995,7 +22372,12 @@ function _openCustomArchetype(){
         <span class="ad-pts-cap">${cap.maxPerAttr}</span>
       </div>
     </div>
-    <div class="ad-grid">${cards}</div>
+    <div class="ad-grid" id="ad-grid">${cards}</div>
+    <div class="ad-nav-arrows">
+      <button type="button" class="ad-nav-btn" id="ad-nav-prev" aria-label="Anterior"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <div class="ad-nav-dots" id="ad-nav-dots"></div>
+      <button type="button" class="ad-nav-btn" id="ad-nav-next" aria-label="Próximo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
     <div class="modal-btns" style="margin-top:14px;gap:8px">
       <button class="modal-btn secondary" onclick="openArchetypePicker()">Voltar</button>
       <button class="modal-btn primary" id="arch-apply" disabled>Aplicar</button>
@@ -22085,6 +22467,22 @@ function _openCustomArchetype(){
       closeModal();
     });
   });
+  // Nav arrows + dots (carrossel mobile)
+  const grid=document.getElementById('ad-grid');
+  const dotsEl=document.getElementById('ad-nav-dots');
+  const prevBtn=document.getElementById('ad-nav-prev');
+  const nextBtn=document.getElementById('ad-nav-next');
+  if(grid&&dotsEl){
+    const cards=Array.from(grid.querySelectorAll('.ad-card'));
+    dotsEl.innerHTML=cards.map((_,i)=>`<span class="ad-nav-dot${i===0?' active':''}" data-i="${i}"></span>`).join('');
+    let cur=0;
+    const updDots=()=>dotsEl.querySelectorAll('.ad-nav-dot').forEach((d,i)=>d.classList.toggle('active',i===cur));
+    const goTo=i=>{cur=Math.max(0,Math.min(cards.length-1,i));cards[cur].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});updDots()};
+    prevBtn&&prevBtn.addEventListener('click',()=>goTo(cur-1));
+    nextBtn&&nextBtn.addEventListener('click',()=>goTo(cur+1));
+    dotsEl.addEventListener('click',e=>{const d=e.target.closest('.ad-nav-dot');if(d)goTo(parseInt(d.dataset.i)||0)});
+    grid.addEventListener('scroll',()=>{const cw=grid.clientWidth;const sl=grid.scrollLeft;const idx=Math.round(sl/(cw*.88));if(idx!==cur){cur=Math.max(0,Math.min(cards.length-1,idx));updDots()}});
+  }
   render();
 }
 
