@@ -7108,7 +7108,7 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
     <!-- ═══ DASHBOARD ═══ -->
     <section class="tab-content active" id="tab-dashboard">
       <div class="summary-bar">
-        <div class="summary-block"><div class="summary-label">Inventário</div><div class="summary-value"><span class="unit">ITM</span><span id="sum-items">0</span></div><div class="summary-sub"><span class="dot" style="background:var(--magenta)"></span><span style="color:var(--text-dim)">Capacidade &middot; <span id="sum-weight">0</span>/15</span></div></div>
+        <div class="summary-block"><div class="summary-label">Inventário</div><div class="summary-value"><span class="unit">ITM</span><span id="sum-items">0</span></div><div class="summary-sub"><span class="dot" style="background:var(--magenta)"></span><span style="color:var(--text-dim)">Carga &middot; <span id="sum-weight">0</span>/<span id="sum-weight-max">10</span></span></div></div>
         <div class="summary-block"><div class="summary-label" id="sum-currency-label">Crédito</div><div class="summary-value medium" style="color:var(--yellow)"><span class="unit" id="sum-currency-sym">C$</span><span id="sum-gold">0</span></div><div class="summary-sub"><span class="dot" style="background:var(--yellow)"></span><span style="color:var(--text-dim)">Saldo total</span></div></div>
         <div class="summary-progress-row" id="sum-progress"></div>
       </div>
@@ -12115,15 +12115,19 @@ document.addEventListener('DOMContentLoaded',()=>{
 function _calcInvWeight(items){
   let w=0,zeroQty=0;
   for(const i of items){const q=i.qty||1;if((i.weight||0)>0)w+=i.weight*q;else zeroQty+=q}
-  return w+Math.floor(zeroQty/6);
+  return w+Math.floor(zeroQty/5);
 }
-const INV_WEIGHT_CAP=15;
+function _calcInvCap(){
+  try{const f=(typeof attributes!=='undefined')?(attributes.find(a=>a.name==='Fisico')?.val||0):0;return 10+f}catch(_){return 10}
+}
+Object.defineProperty(window,'INV_WEIGHT_CAP',{get:()=>_calcInvCap(),configurable:true});
 function renderSummary(){
   const totalItems=inventory.reduce((s,i)=>s+i.qty,0);
   const totalWeight=_calcInvWeight(inventory);
   const potions=inventory.filter(i=>i.cat==='consumivel').reduce((s,i)=>s+i.qty,0);
   const siEl=document.getElementById('sum-items');if(siEl)siEl.textContent=totalItems;
   const swEl=document.getElementById('sum-weight');if(swEl)swEl.textContent=totalWeight;
+  const swMaxEl=document.getElementById('sum-weight-max');if(swMaxEl)swMaxEl.textContent=_calcInvCap();
   const sgEl=document.getElementById('sum-gold');if(sgEl)sgEl.textContent=playerGold.toLocaleString();
   const sLD=document.getElementById('sum-level-display');if(sLD)sLD.textContent=playerLevel;
   const sXD=document.getElementById('sum-xp-display');if(sXD)sXD.textContent=playerXP.toLocaleString();
@@ -16215,7 +16219,7 @@ function saveLevel(){
   if(window._hudRefresh)window._hudRefresh();
 }
 
-function saveAttrs(){let idx=0;attributes.forEach(a=>{if(a.name==='Neural'||a.name==='Cortex')return;const vEl=document.getElementById(`m-attr-val-${idx}`),mEl=document.getElementById(`m-attr-max-${idx}`);if(vEl&&mEl){a.val=Math.max(0,parseInt(vEl.value)||0);a.max=Math.max(1,parseInt(mEl.value)||1);if(a.val>a.max)a.val=a.max}idx++});renderAttrs();renderStatus();closeModal();toast('Atributos atualizados')}
+function saveAttrs(){let idx=0;attributes.forEach(a=>{if(a.name==='Neural'||a.name==='Cortex')return;const vEl=document.getElementById(`m-attr-val-${idx}`),mEl=document.getElementById(`m-attr-max-${idx}`);if(vEl&&mEl){a.val=Math.max(0,parseInt(vEl.value)||0);a.max=Math.max(1,parseInt(mEl.value)||1);if(a.val>a.max)a.val=a.max}idx++});renderAttrs();renderStatus();if(typeof renderSummary==='function')renderSummary();closeModal();toast('Atributos atualizados')}
 
 function saveStatus(){
   playerHPMax=_clampInt(document.getElementById('m-st-hpmax').value,1,99999,1);
