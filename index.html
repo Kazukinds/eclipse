@@ -6701,10 +6701,20 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
 .img-cfg-flip-btn:hover,.img-cfg-reset-btn:hover{background:rgba(255,255,255,.08);color:#fff}
 .img-cfg-flip-btn.active{background:#c8f542;color:#0a0a0c;border-color:#c8f542}
 .img-cfg-foot{display:flex;gap:6px;padding:8px 12px;border-top:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02)}
-.img-cfg-btn{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#ccc;font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:9px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s}
+.img-cfg-btn{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#ccc;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:9px 6px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s,transform .12s;min-width:0;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center}
 .img-cfg-btn:hover{background:rgba(255,255,255,.08);color:#fff}
+.img-cfg-btn:active{transform:scale(.96)}
+.img-cfg-btn#imgCfgApply{background:rgba(var(--magenta-rgb),.14);border-color:rgba(var(--magenta-rgb),.4);color:var(--magenta)}
+.img-cfg-btn#imgCfgApply:hover{background:rgba(var(--magenta-rgb),.25)}
 .img-cfg-btn.primary{background:#c8f542;color:#0a0a0c;border-color:#c8f542}
 .img-cfg-btn.primary:hover{background:#d4ff5a}
+/* Ângulo salvo: dot indicator no botão de rotação */
+.img-cfg-rots button.saved{position:relative}
+.img-cfg-rots button.saved::after{content:'';position:absolute;top:3px;right:3px;width:6px;height:6px;border-radius:50%;background:#c8f542;box-shadow:0 0 4px #c8f542}
+/* Lista de ângulos salvos */
+.img-cfg-saved-list{padding:6px 12px;font-size:10px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:.4px;text-transform:uppercase;display:flex;align-items:center;gap:6px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.04);min-height:0;transition:padding .2s}
+.img-cfg-saved-list:empty{padding:0;border-top:0}
+.img-cfg-saved-pill{padding:2px 8px;background:rgba(200,245,66,.14);border:1px solid rgba(200,245,66,.35);color:#c8f542;border-radius:999px;font-size:9px;font-weight:700;letter-spacing:.3px}
 /* Equip slot picker */
 .equip-slot.has-item{border-color:rgba(255,255,255,.18);color:rgba(255,255,255,.85)}
 .equip-slot.has-item .equip-slot-ico{background:currentColor}
@@ -14040,8 +14050,10 @@ window._openImgConfig=function(id,sourceData){
       <div class="img-cfg-foot">
         <button type="button" class="img-cfg-btn" id="imgCfgCancel">Cancelar</button>
         <button type="button" class="img-cfg-btn" id="imgCfgSwap" title="Substituir imagem deste ângulo"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-2px;margin-right:4px"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>Trocar</button>
-        <button type="button" class="img-cfg-btn primary" id="imgCfgOk">Aplicar</button>
+        <button type="button" class="img-cfg-btn" id="imgCfgApply" title="Salvar este ângulo (continua aberto)"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-2px;margin-right:4px"><polyline points="20 6 9 17 4 12"/></svg>Aplicar</button>
+        <button type="button" class="img-cfg-btn primary" id="imgCfgOk" title="Confirmar tudo + fechar">Confirmar</button>
       </div>
+      <div class="img-cfg-saved-list" id="imgCfgSavedList"></div>
     </div>`;
   document.body.appendChild(ov);
   // state.rot = ÂNGULO CONTEXTO (qual variant editar, define shape do bloco)
@@ -14222,15 +14234,35 @@ window._openImgConfig=function(id,sourceData){
   });
   ov.querySelector('.img-cfg-close').addEventListener('click',close);
   ov.addEventListener('click',e=>{if(e.target===ov)close()});
-  ov.querySelector('#imgCfgOk').addEventListener('click',()=>{
-    // Salva por-ângulo: src + scale/flip independentes para cada rot
+  // Helper: salva config no ângulo atual (sem fechar)
+  function _saveCurrentAngle(notify){
     const key=window._normRotKey?window._normRotKey(state.rot):String(state.rot);
     if(!it.customImages)it.customImages={};
     it.customImages[key]=src;
     if(!it._imgConfs)it._imgConfs={};
     it._imgConfs[key]={scale:state.scale,flipH:state.flipH,flipV:state.flipV,rot:state.iconRot};
     it.customImage=src;
-    // Usa setItemRotation pra fazer swap gw/gh + reposicionamento
+    // Marca botão de ângulo como "salvo"
+    ov.querySelectorAll('.img-cfg-rots button').forEach(b=>{
+      const r=b.dataset.rot;
+      if(it.customImages&&it.customImages[r])b.classList.add('saved');else b.classList.remove('saved');
+    });
+    _updateSavedList();
+    if(notify)toast&&toast(`Ângulo ${state.rot}° salvo · continue editando`,'success');
+  }
+  function _updateSavedList(){
+    const el=ov.querySelector('#imgCfgSavedList');if(!el)return;
+    const angs=[0,90,180,-90].filter(r=>{const k=window._normRotKey?window._normRotKey(r):String(r);return it.customImages&&it.customImages[k]});
+    if(!angs.length){el.innerHTML='';return}
+    el.innerHTML='Salvos: '+angs.map(a=>`<span class="img-cfg-saved-pill">${a}°</span>`).join(' ');
+  }
+  // APLICAR: salva ângulo atual, mantém aberto
+  ov.querySelector('#imgCfgApply').addEventListener('click',()=>{
+    _saveCurrentAngle(true);
+  });
+  // CONFIRMAR: salva último ângulo + aplica tudo + fecha
+  ov.querySelector('#imgCfgOk').addEventListener('click',()=>{
+    _saveCurrentAngle(false);
     if(typeof setItemRotation==='function' && (it.rot||0)!==state.rot){
       setItemRotation(it.id,state.rot);
     } else {
@@ -14238,9 +14270,19 @@ window._openImgConfig=function(id,sourceData){
       try{renderGrid();renderItemDetail();renderDashLists()}catch(_){}
     }
     if(typeof saveGame==='function')try{saveGame()}catch(_){}
-    toast(`Imagem ${state.rot}° aplicada`);
+    const total=Object.keys(it.customImages||{}).length;
+    toast(`Imagem confirmada · ${total} ângulo${total>1?'s':''} salvo${total>1?'s':''}`);
     close();
   });
+  // Inicializa lista de salvos
+  setTimeout(_updateSavedList,30);
+  // Marca ângulo atual como salvo se já tem
+  setTimeout(()=>{
+    ov.querySelectorAll('.img-cfg-rots button').forEach(b=>{
+      const r=b.dataset.rot;
+      if(it.customImages&&it.customImages[r])b.classList.add('saved');
+    });
+  },30);
   document.addEventListener('keydown',function esc(e){if(e.key==='Escape'){close();document.removeEventListener('keydown',esc)}});
 };
 window._clearItemImage=function(id){
