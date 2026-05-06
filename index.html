@@ -1866,7 +1866,11 @@ input[type="number"]{-moz-appearance:textfield}
 .item-form-compact .icon-tool span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .item-form-compact .icon-tool:hover{color:var(--text-secondary);background:rgba(255,255,255,.04)}
 .item-form-compact .icon-tool.active{background:var(--bg-card);color:var(--magenta);box-shadow:0 1px 3px rgba(0,0,0,.2),inset 0 0 0 1px color-mix(in srgb,var(--magenta) 25%,transparent)}
-.item-form-compact .icon-preview{flex:0 0 30px;width:30px;height:30px;border-radius:6px;background:var(--bg-card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-dim);overflow:hidden;margin-left:4px}
+.item-form-compact .icon-preview{flex:0 0 32px;width:32px;height:32px;border-radius:6px;background:var(--bg-card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-dim);overflow:hidden;margin-left:4px;padding:0;cursor:pointer;transition:all .15s;position:relative;font-family:inherit}
+.item-form-compact .icon-preview:hover{border-color:var(--magenta);color:var(--magenta);transform:scale(1.06);box-shadow:0 0 0 2px rgba(var(--magenta-rgb),.18)}
+.item-form-compact .icon-preview:active{transform:scale(.94)}
+.item-form-compact .icon-preview::after{content:'';position:absolute;bottom:-1px;right:-1px;width:10px;height:10px;background:var(--magenta);border-radius:50%;border:2px solid var(--bg-card);transition:transform .15s}
+.item-form-compact .icon-preview:hover::after{transform:scale(1.15)}
 .item-form-compact .icon-preview svg,.item-form-compact .icon-preview img{width:80%;height:80%;object-fit:contain}
 .item-form-compact .icon-pane{animation:icon-pane-in .2s ease}
 @keyframes icon-pane-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
@@ -16125,7 +16129,7 @@ function openModal(type,eid){
     <button type="button" id="m-icon-tab-pick" class="icon-tool active" data-tool="pick" onclick="window._iconTool('pick')" title="Catálogo de ícones"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg><span>Catálogo</span></button>
     <button type="button" id="m-icon-tab-svg" class="icon-tool" data-tool="svg" onclick="window._iconTool('svg')" title="Colar código SVG"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span>Código</span></button>
     <button type="button" id="m-icon-tab-file" class="icon-tool" data-tool="file" onclick="window._iconTool('file')" title="Upload arquivo"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><span>Arquivo</span></button>
-    <span class="icon-preview" id="m-icon-preview"></span>
+    <button type="button" class="icon-preview" id="m-icon-preview" title="Configurar imagem dentro do grid" onclick="window._openDraftIconConfig&&window._openDraftIconConfig()"></button>
   </div>
   <div class="icon-pane" id="m-icon-pane-pick" data-pane="pick">
     <div id="m-wpn-wrap"><button type="button" class="weapon-pick-trigger" onclick="window._openWpnPickerForItem()"><span id="m-iwpn-preview">Escolher do catálogo...</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button><input type="hidden" id="m-iwpn" value=""></div>
@@ -16308,6 +16312,54 @@ function openModal(type,eid){
       if(msg)msg.style.display=isWpn?'none':'';
     };
     setTimeout(()=>{window._renderIconPreview&&window._renderIconPreview()},50);
+    // Configurar imagem dentro do grid (draft — antes de salvar item)
+    window._openDraftIconConfig=function(){
+      // Coleta source da imagem atual
+      const svgRaw=(document.getElementById('m-iisvg')?.value||'').trim();
+      const wpn=document.getElementById('m-iwpn')?.value||'';
+      const loaded=window._loadedIconSvg||'';
+      const gw=Math.max(1,Math.min(8,parseInt(document.getElementById('m-igw')?.value)||1));
+      const gh=Math.max(1,Math.min(8,parseInt(document.getElementById('m-igh')?.value)||1));
+      let src='';
+      if(loaded&&/^<img\s+src="([^"]+)"/.test(loaded)){src=loaded.match(/^<img\s+src="([^"]+)"/)[1]}
+      else if(svgRaw&&/<svg/i.test(svgRaw)){
+        const svg=svgRaw.match(/<svg[\s\S]*?<\/svg>/i)?.[0]||'';
+        src='data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(svg)));
+      }
+      else if(loaded&&/<svg/i.test(loaded)){
+        const svg=loaded.match(/<svg[\s\S]*?<\/svg>/i)?.[0]||'';
+        src='data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(svg)));
+      }
+      else if(wpn&&WEAPON_SVGS[wpn]){src=WEAPON_SVGS[wpn].file}
+      if(!src){toast&&toast('Escolha um ícone primeiro (Catálogo, Código ou Arquivo)','warn');return}
+      // Cria draft item temporário no inventory
+      const DRAFT_ID=-99999;
+      const existingDraft=inventory.find(i=>i.id===DRAFT_ID);
+      if(existingDraft){inventory=inventory.filter(i=>i.id!==DRAFT_ID)}
+      const conf=window._pendingIconConfig||{};
+      const draft={id:DRAFT_ID,name:'__draft',cat:'arma',rarity:'common',qty:1,weight:0,value:0,durability:60,gw,gh,iconKey:'sword',iconWpn:'',iconSvg:'',customImage:src,customImages:conf.customImages||{0:src},imageConf:conf.imageConf||{},desc:''};
+      inventory.push(draft);
+      // Abre configurador
+      window._openImgConfig(DRAFT_ID,src);
+      // Hook close: extrai config + remove draft
+      const ov=document.querySelector('.img-cfg-overlay');
+      if(ov){
+        const observer=new MutationObserver(()=>{
+          if(!document.body.contains(ov)){
+            observer.disconnect();
+            const d=inventory.find(i=>i.id===DRAFT_ID);
+            if(d){
+              window._pendingIconConfig={customImage:d.customImage,customImages:d.customImages,imageConf:d.imageConf};
+              window._loadedIconSvg=`<img src="${d.customImage||src}" style="width:100%;height:100%;object-fit:contain" draggable="false">`;
+            }
+            inventory=inventory.filter(i=>i.id!==DRAFT_ID);
+            window._renderIconPreview&&window._renderIconPreview();
+            toast&&toast('Imagem configurada','success');
+          }
+        });
+        observer.observe(document.body,{childList:true,subtree:true});
+      }
+    };
   } else if(type==='weapon'){
     title.textContent='Adicionar Arma';
     body.innerHTML=`<div class="form-group"><label>Arma</label><button type="button" class="weapon-pick-trigger" onclick="window._openWpnPicker()"><span id="m-wpick-preview">Escolher arma...</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button><input type="hidden" id="m-wname-pick" value=""></div><div class="form-group"><label>Nome <span style="color:var(--text-dim);font-weight:400">(opcional)</span></label><input type="text" id="m-wname" placeholder="Ex: Pistola Curta"></div><div class="form-row"><div class="form-group"><label>Raridade</label><select id="m-wrarity"><option value="common">Comum</option><option value="uncommon">Incomum</option><option value="rare">Raro</option><option value="epic">Épico</option><option value="legendary">Lendário</option></select></div><div class="form-group"><label>Quantidade</label><input type="number" id="m-wqty" value="1" min="1"></div></div><div class="form-row"><div class="form-group"><label>Largura (slots)</label><input type="number" id="m-wgw" value="2" min="1" max="8"></div><div class="form-group"><label>Altura (slots)</label><input type="number" id="m-wgh" value="1" min="1" max="8"></div></div><div class="form-row"><div class="form-group"><label>Peso (kg)</label><input type="number" id="m-wweight" value="1" min="0" step="0.5"></div><div class="form-group"><label>Valor (créditos)</label><input type="number" id="m-wvalue" value="0" min="0"></div></div><div class="form-group"><label>Descrição</label><input type="text" id="m-wdesc" placeholder="Notas..."></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveWeapon()">Adicionar</button></div>`;
@@ -16735,6 +16787,14 @@ function saveItem(){let n=document.getElementById('m-iname').value.trim().slice(
   // Categoria final salva: mantém compat (arma) p/ classes existentes mas guarda subcat
   const _origCat=document.getElementById('m-icat').value;
   const ni={id:nextId++,name:n,cat,catNew:_origCat,wpnSub:_wpnSub,rarity:document.getElementById('m-irarity').value,qty:_clampInt(document.getElementById('m-iqty').value,1,9999,1),weight:_clampFloat(document.getElementById('m-iweight').value,0,9999,1),value:_clampInt(document.getElementById('m-ivalue').value,0,99999999,0),durability:_clampInt(document.getElementById('m-idur').value,0,200,60),gw:_clampInt(document.getElementById('m-igw')?.value,1,8,1),gh:_clampInt(document.getElementById('m-igh')?.value,1,8,1),iconKey:iks[_rngInt(iks.length)]||'sword',iconWpn:cat==='arma'&&WEAPON_SVGS[wpn]?wpn:'',iconSvg:_iconSvg,desc:document.getElementById('m-idesc').value.trim().slice(0,500)||'Sem descricao.'};
+  // Aplica config de imagem draft (do _openDraftIconConfig)
+  if(window._pendingIconConfig){
+    const pc=window._pendingIconConfig;
+    if(pc.customImage)ni.customImage=pc.customImage;
+    if(pc.customImages)ni.customImages=pc.customImages;
+    if(pc.imageConf)ni.imageConf=pc.imageConf;
+    window._pendingIconConfig=null;
+  }
   // Mochila: se categoria for "acessorio" e nome contém "mochila"/"bolsa", inicia container
   if(_origCat==='acessorio'&&/mochila|bolsa|saco|bag/i.test(n)){ni.isBag=true;ni.bag={gw:3,gh:3,items:[],quickDraw:false}}
   inventory.push(ni);
