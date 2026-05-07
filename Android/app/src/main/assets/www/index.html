@@ -7838,7 +7838,7 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
         <div class="profile-sidebar">
           <div class="profile-sidebar-card">
             <h4>Sobre</h4>
-            <div class="profile-stat-row"><span class="stat-label">Versão</span><span class="stat-val" id="cfg-app-ver">v3.8.3</span></div>
+            <div class="profile-stat-row"><span class="stat-label">Versão</span><span class="stat-val" id="cfg-app-ver">v3.8.4</span></div>
             <div class="profile-stat-row"><span class="stat-label">Build</span><span class="stat-val" id="cfg-app-build">380</span></div>
             <div class="profile-stat-row"><span class="stat-label">Plataforma</span><span class="stat-val" id="cfg-app-plat">Web</span></div>
             <div class="profile-stat-row" style="flex-wrap:wrap;gap:6px"><span class="stat-label">Performance</span>
@@ -19015,7 +19015,7 @@ function performSave(){
   if(!name)name='ficha';
   closeModal();
   const data=collectAllData();
-  data._meta={savedAt:new Date().toISOString(),version:'3.8.3',filename:name};
+  data._meta={savedAt:new Date().toISOString(),version:'3.8.4',filename:name};
   const json=JSON.stringify(data,null,2);
   const blob=new Blob([json],{type:'application/json'});
   const url=URL.createObjectURL(blob);
@@ -22434,6 +22434,22 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.4',date:'2026-05-07',title:'Extensions wave 3 — backups visíveis, HP quick adjust, print view, PWA helpers',items:[
+    {tag:'feat',text:'Backup count badge na topbar — clique abre lista de backups com botões Restaurar / Excluir por item'},
+    {tag:'feat',text:'Save indicator dot — pulsa em verde quando autosaveNow() dispara'},
+    {tag:'feat',text:'Quick HP adjust: Alt+H = -1 HP · Alt+Shift+H = +1 HP · Alt+R = descanso completo (vit/esf/foc cheios)'},
+    {tag:'feat',text:'Alt+P = abre print view limpa em nova aba (HTML formatado, dispara window.print)'},
+    {tag:'feat',text:'CSV export do inventário (paleta) — gera .csv com name/cat/rarity/qty/weight/desc'},
+    {tag:'feat',text:'SW manual update + version check (paleta) — força atualização do service worker'},
+    {tag:'feat',text:'Limpar cache + reload (paleta) — limpa caches API, mantém localStorage, recarrega'},
+    {tag:'feat',text:'Memory stats (paleta) — mostra JS heap se browser suportar performance.memory'},
+    {tag:'feat',text:'Auto theme by hour (paleta) — define dark 19h-7h / light 7h-19h'},
+    {tag:'feat',text:'PWA install trigger (paleta) — captura beforeinstallprompt e oferece manualmente'},
+    {tag:'feat',text:'Online/offline toast — notifica em transição de conectividade'},
+    {tag:'feat',text:'Storage cap warning — toast quando navigator.storage.estimate atinge 85%+'},
+    {tag:'feat',text:'Restaurar VIT/ESF/FOC individual (paleta) — preenche stat até o max correspondente'},
+    {tag:'feat',text:'API window.eclipseExt3 expõe todas as novas funções pra plugins'}
+  ]},
   {version:'v3.8.3',date:'2026-05-07',title:'Extensions wave 2 — quick stats, action log, markdown export',items:[
     {tag:'feat',text:'Quick stats popover (Ctrl+Shift+I) — nome + status (vit/esf/foc/det/neu/cor) + atributos + storage + sessão num modal compacto'},
     {tag:'feat',text:'Action log drawer (Ctrl+Shift+A) — registra últimas 30 ações (deletes, troca de aba) com timestamp; copy + clear'},
@@ -27036,6 +27052,373 @@ document.addEventListener('pointerout',e=>{
     snapshotDiff,quickDicePalette,
     scrollToTop,scrollToBottom,
     inventoryWeight,showInventoryWeight,
+  };
+})();
+</script>
+
+<style id="eclipse-ext3-css">
+/* ═══ Save indicator dot na topbar ═══ */
+.ecx3-save-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 8px rgba(52,211,153,.6);margin-left:6px;opacity:0;transition:opacity .25s ease;vertical-align:middle}
+.ecx3-save-dot.pulse{opacity:1;animation:ecx3Pulse 1.2s ease-out}
+@keyframes ecx3Pulse{0%{transform:scale(.4);opacity:1}50%{transform:scale(1.4);opacity:.8}100%{transform:scale(1);opacity:0}}
+
+/* ═══ Backup count badge ═══ */
+.ecx3-bkp-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);border-radius:999px;font:600 10px JetBrains Mono,monospace;color:#60a5fa;cursor:pointer;user-select:none}
+.ecx3-bkp-badge:hover{background:rgba(96,165,250,.22)}
+
+/* ═══ Backup list modal ═══ */
+.ecx3-modal-bk{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:99993;display:none;align-items:center;justify-content:center;padding:18px}
+.ecx3-modal-bk.open{display:flex}
+.ecx3-modal{width:min(540px,100%);max-height:80vh;background:var(--bg-card,#131316);border:1px solid var(--border,#232329);border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.5);overflow:hidden;display:flex;flex-direction:column}
+.ecx3-mh{padding:16px 20px;border-bottom:1px solid var(--border,#232329);display:flex;align-items:center;justify-content:space-between}
+.ecx3-mh h3{font:700 14px Inter,sans-serif;color:var(--text-primary,#f0f0f5);letter-spacing:.04em}
+.ecx3-mc{padding:4px 0;overflow-y:auto;flex:1}
+.ecx3-bkp-row{padding:11px 18px;border-bottom:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;color:var(--text-primary,#f0f0f5)}
+.ecx3-bkp-row small{color:var(--text-dim,#5a5a6e);font-family:JetBrains Mono,monospace;font-size:11px}
+.ecx3-bkp-row .ecx3-bkp-info{flex:1;display:flex;flex-direction:column;gap:2px}
+.ecx3-bkp-row button{padding:5px 11px;background:var(--bg-input,#1c1c21);border:1px solid var(--border,#232329);color:var(--text-primary,#f0f0f5);border-radius:6px;font:600 10px Inter,sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.06em}
+.ecx3-bkp-row button:hover{background:var(--magenta,#fe1455);border-color:var(--magenta,#fe1455);color:#fff}
+.ecx3-bkp-row button.ecx3-del{color:#f87171;border-color:rgba(248,113,113,.3)}
+.ecx3-bkp-row button.ecx3-del:hover{background:#f87171;border-color:#f87171;color:#fff}
+.ecx3-empty{padding:24px;text-align:center;color:var(--text-dim,#5a5a6e);font-size:13px}
+.ecx3-mc-close{background:none;border:none;color:var(--text-dim,#5a5a6e);font-size:22px;cursor:pointer;line-height:1}
+.ecx3-mc-close:hover{color:var(--magenta,#fe1455)}
+</style>
+
+<script>
+(function eclipseExt3(){
+  'use strict';
+  const VER='3.8.4';
+  if(!window.eclipseExt){console.warn('[ext3] host eclipseExt missing');return}
+  const has=fn=>typeof fn==='function';
+  const safe=(fn,label)=>{try{return fn()}catch(e){console.warn('[ext3]',label||'',e);return null}};
+  const _toast=(m,o)=>{if(has(window.toast)){try{window.toast(m,o)}catch(e){}}};
+  const SS=window.eclipseExt.SS;
+
+  // ═══ 1. Save indicator dot ═══
+  function injectSaveDot(){
+    const chip=document.getElementById('ecx-session-chip');
+    if(!chip)return;
+    if(chip.querySelector('.ecx3-save-dot'))return;
+    const dot=document.createElement('span');
+    dot.className='ecx3-save-dot';dot.title='Indicador de save';
+    chip.appendChild(dot);
+  }
+  function pulseSaveDot(){
+    const dot=document.querySelector('.ecx3-save-dot');
+    if(!dot)return;
+    dot.classList.remove('pulse');void dot.offsetWidth;dot.classList.add('pulse');
+  }
+  // Wrap autosaveNow pra disparar pulso
+  if(has(window.autosaveNow)&&!window.autosaveNow.__ecx3Wrapped){
+    const orig=window.autosaveNow;
+    window.autosaveNow=function(){
+      pulseSaveDot();
+      return orig.apply(this,arguments);
+    };
+    window.autosaveNow.__ecx3Wrapped=true;
+  }
+
+  // ═══ 2. Backup count badge ═══
+  function injectBackupBadge(){
+    const chip=document.getElementById('ecx-session-chip');
+    if(!chip)return;
+    if(document.getElementById('ecx3-bkp-badge'))return;
+    const badge=document.createElement('button');
+    badge.id='ecx3-bkp-badge';badge.className='ecx3-bkp-badge';badge.type='button';
+    badge.title='Ver backups (clique)';badge.innerHTML='<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>0</span>';
+    badge.addEventListener('click',openBackupList);
+    chip.parentElement.insertBefore(badge,chip.nextSibling);
+    refreshBackupBadge();
+  }
+  function refreshBackupBadge(){
+    const badge=document.getElementById('ecx3-bkp-badge');
+    if(!badge)return;
+    const n=window.eclipseExt.listBackups().length;
+    badge.querySelector('span').textContent=n;
+    badge.style.display=n>0?'inline-flex':'none';
+  }
+
+  // ═══ 3. Backup list modal ═══
+  function openBackupList(){
+    let ov=document.getElementById('ecx3-bkp-modal');
+    if(!ov){
+      ov=document.createElement('div');ov.id='ecx3-bkp-modal';ov.className='ecx3-modal-bk';
+      ov.innerHTML='<div class="ecx3-modal"><div class="ecx3-mh"><h3>Backups automáticos</h3><button class="ecx3-mc-close" aria-label="Fechar">&times;</button></div><div class="ecx3-mc"></div></div>';
+      document.body.appendChild(ov);
+      ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open')});
+      ov.querySelector('.ecx3-mc-close').addEventListener('click',()=>ov.classList.remove('open'));
+    }
+    const list=window.eclipseExt.listBackups();
+    const c=ov.querySelector('.ecx3-mc');
+    if(!list.length){c.innerHTML='<div class="ecx3-empty">Nenhum backup ainda. Auto-backup roda a cada 10 min.</div>'}
+    else{
+      c.innerHTML=list.map(b=>{
+        const data=SS.getJSON(b.key);
+        const name=data&&data.profile?(data.profile.name||'Sem nome'):'(sem dados)';
+        const size=JSON.stringify(data||{}).length;
+        const sizeKB=(size/1024).toFixed(1);
+        return `<div class="ecx3-bkp-row" data-key="${b.key}">
+          <div class="ecx3-bkp-info"><span>${name}</span><small>${b.date} · ${sizeKB} KB</small></div>
+          <button data-act="restore">Restaurar</button>
+          <button class="ecx3-del" data-act="delete">×</button>
+        </div>`;
+      }).join('');
+      c.querySelectorAll('.ecx3-bkp-row').forEach(row=>{
+        const key=row.dataset.key;
+        row.querySelector('[data-act="restore"]').addEventListener('click',async()=>{
+          if(!has(window.appConfirm)){
+            if(!confirm('Restaurar este backup? O estado atual será sobrescrito.'))return;
+          }else{
+            const ok=await window.appConfirm('Restaurar este backup? Estado atual será sobrescrito.',{type:'warning'});
+            if(!ok)return;
+          }
+          window.eclipseExt.restoreBackup(key);
+          ov.classList.remove('open');
+        });
+        row.querySelector('[data-act="delete"]').addEventListener('click',()=>{
+          SS.del(key);refreshBackupBadge();openBackupList();
+        });
+      });
+    }
+    ov.classList.add('open');
+  }
+
+  // ═══ 4. CSV export do inventário ═══
+  function exportInventoryCSV(){
+    const inv=window.inventory;
+    if(!Array.isArray(inv)||!inv.length){_toast('Inventário vazio','warn');return}
+    const cols=['name','cat','rarity','qty','weight','desc'];
+    const csv=[cols.join(',')];
+    inv.forEach(it=>{
+      if(!it)return;
+      const row=cols.map(c=>{
+        let v=it[c];
+        if(v==null)v='';
+        v=String(v).replace(/"/g,'""').replace(/\r?\n/g,' ');
+        return /[",]/.test(v)?'"'+v+'"':v;
+      });
+      csv.push(row.join(','));
+    });
+    const fname='inventario-'+new Date().toISOString().slice(0,10)+'.csv';
+    if(window.eclipseExt.downloadAsText(fname,csv.join('\n')))_toast('Exportado: '+fname);
+  }
+
+  // ═══ 5. Quick HP adjuster (Alt+H) ═══
+  function adjustHP(delta){
+    // Tenta achar input/span de HP atual
+    const hpEl=document.querySelector('[data-stat="vit"] .stat-cur,#st-vit-cur,.st-vit .cur,#hp-cur,#vit-cur');
+    if(!hpEl){_toast('HP não encontrado','warn');return}
+    const cur=parseInt(hpEl.value||hpEl.textContent||'0',10)||0;
+    const next=cur+delta;
+    if(hpEl.value!==undefined)hpEl.value=String(next);
+    else hpEl.textContent=String(next);
+    // Trigger change event
+    safe(()=>hpEl.dispatchEvent(new Event('change',{bubbles:true})),'hp-change');
+    safe(()=>hpEl.dispatchEvent(new Event('input',{bubbles:true})),'hp-input');
+    _toast('HP: '+next+(delta>=0?' (+'+delta+')':' ('+delta+')'),delta>=0?'success':'warn');
+  }
+
+  // ═══ 6. Print view (limpo) ═══
+  function openPrintView(){
+    if(!has(window.collectAllData)){_toast('Indisponível','error');return}
+    const data=safe(()=>window.collectAllData());if(!data)return;
+    const w=window.open('','_blank','width=800,height=900');
+    if(!w){_toast('Pop-up bloqueado','error');return}
+    const name=(data.profile&&data.profile.name)||'Personagem';
+    function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+    function dump(o,d){
+      if(o==null)return'';
+      if(typeof o!=='object')return esc(o);
+      if(Array.isArray(o)){return '<ul>'+o.map(v=>'<li>'+dump(v,d+1)+'</li>').join('')+'</ul>'}
+      return '<dl>'+Object.entries(o).filter(([,v])=>v!=null&&v!==''&&!(Array.isArray(v)&&!v.length)).map(([k,v])=>`<dt>${esc(k)}</dt><dd>${dump(v,d+1)}</dd>`).join('')+'</dl>';
+    }
+    w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${esc(name)}</title>
+      <style>body{font:14px/1.5 -apple-system,Inter,system-ui,sans-serif;color:#222;background:#fff;padding:32px;max-width:800px;margin:0 auto}
+      h1{font-size:24px;margin-bottom:6px}p.meta{color:#888;font-size:11px;margin-bottom:24px}
+      h2{font-size:14px;text-transform:uppercase;letter-spacing:1.5px;color:#666;margin-top:18px;border-bottom:1px solid #ccc;padding-bottom:4px}
+      dt{font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#444;margin-top:8px}
+      dd{margin-left:0;font-size:13px}ul{padding-left:18px;margin:4px 0}
+      @media print{body{padding:8px}}
+      </style></head><body>
+      <h1>${esc(name)}</h1>
+      <p class="meta">Gerado: ${new Date().toLocaleString('pt-BR')} · Ficha Eclipse v${VER}</p>
+      ${dump(data,0)}
+      <script>window.print()<\/script>
+    </body></html>`);
+    w.document.close();
+  }
+
+  // ═══ 7. Service worker manual update ═══
+  async function checkSWUpdate(){
+    if(!('serviceWorker'in navigator)){_toast('SW indisponível','warn');return}
+    try{
+      const reg=await navigator.serviceWorker.getRegistration();
+      if(!reg){_toast('SW não registrado','warn');return}
+      await reg.update();
+      _toast('Verificando atualizações…','info');
+    }catch(e){_toast('Falha: '+e.message,'error')}
+  }
+
+  // ═══ 8. Cache cleaner + reload ═══
+  async function clearCachesAndReload(){
+    if(!has(window.appConfirm)){
+      if(!confirm('Limpar cache e recarregar app? Dados ficam mantidos.'))return;
+    }else{
+      const ok=await window.appConfirm('Limpar cache do app e recarregar? Dados ficam mantidos.',{type:'warning'});
+      if(!ok)return;
+    }
+    try{
+      if('caches' in window){
+        const keys=await caches.keys();
+        await Promise.all(keys.map(k=>caches.delete(k)));
+      }
+      _toast('Cache limpo · recarregando…','info');
+      setTimeout(()=>location.reload(),500);
+    }catch(e){_toast('Falha: '+e.message,'error')}
+  }
+
+  // ═══ 9. Memory monitor ═══
+  function showMemoryStats(){
+    const p=performance;
+    if(!p||!p.memory){_toast('API memory indisponível','warn');return}
+    const mb=n=>(n/1048576).toFixed(1)+' MB';
+    _toast(`JS heap: ${mb(p.memory.usedJSHeapSize)} / ${mb(p.memory.jsHeapSizeLimit)}`,'info');
+  }
+
+  // ═══ 10. Auto theme by hour ═══
+  function autoThemeByHour(){
+    const h=new Date().getHours();
+    const wantDark=(h>=19||h<7);
+    const root=document.documentElement;
+    const cur=root.getAttribute('data-theme');
+    const want=wantDark?'dark':'light';
+    if(cur===want){_toast('Tema já apropriado para o horário ('+h+'h)','info');return}
+    if(has(window.toggleTheme))window.toggleTheme();
+    else root.setAttribute('data-theme',want);
+    _toast('Tema ajustado p/ '+want+' (hora '+h+')');
+  }
+
+  // ═══ 11. Service worker version check ═══
+  async function getSWVersion(){
+    if(!('serviceWorker'in navigator)){_toast('SW indisponível','warn');return}
+    try{
+      const reg=await navigator.serviceWorker.getRegistration();
+      if(!reg||!reg.active){_toast('SW não ativo','warn');return}
+      const ch=new MessageChannel();
+      const p=new Promise(res=>{ch.port1.onmessage=e=>res(e.data)});
+      reg.active.postMessage({type:'GET_VERSION'},[ch.port2]);
+      const result=await Promise.race([p,new Promise(res=>setTimeout(()=>res(null),2000))]);
+      _toast('SW: '+(result&&result.version?result.version:'(sem resposta)'));
+    }catch(e){_toast('Falha: '+e.message,'error')}
+  }
+
+  // ═══ 12. PWA install prompt ═══
+  let _deferredPrompt=null;
+  window.addEventListener('beforeinstallprompt',e=>{_deferredPrompt=e});
+  async function triggerInstall(){
+    if(!_deferredPrompt){_toast('Já instalado ou navegador não suporta','info');return}
+    _deferredPrompt.prompt();
+    const r=await _deferredPrompt.userChoice;
+    _toast('Install: '+r.outcome);_deferredPrompt=null;
+  }
+
+  // ═══ 13. Online/offline indicator ═══
+  function setupOnlineIndicator(){
+    function update(){
+      const online=navigator.onLine;
+      // Pode integrar visual depois; por enquanto só toast em transição
+      if(window._ecx3Online===undefined){window._ecx3Online=online;return}
+      if(window._ecx3Online!==online){
+        _toast(online?'Voltou online':'Modo offline',online?'success':'warn');
+        window._ecx3Online=online;
+      }
+    }
+    window.addEventListener('online',update);
+    window.addEventListener('offline',update);
+    update();
+  }
+
+  // ═══ 14. Storage cap warning (75%+) ═══
+  function checkStorageCap(){
+    if(!navigator.storage||!navigator.storage.estimate)return;
+    navigator.storage.estimate().then(est=>{
+      const usage=est.usage||0,quota=est.quota||1;
+      const pct=usage/quota*100;
+      if(pct>=85){
+        _toast(`Storage ${pct.toFixed(0)}% cheio — considere limpar`,'warn');
+      }
+    }).catch(()=>{});
+  }
+
+  // ═══ 15. Quick reset focus / detono / corrupcao to max ═══
+  function refillStat(stat){
+    const max=document.querySelector(`[data-stat="${stat}"] .stat-max,#st-${stat}-max,.st-${stat} .max`);
+    const cur=document.querySelector(`[data-stat="${stat}"] .stat-cur,#st-${stat}-cur,.st-${stat} .cur`);
+    if(!cur||!max){_toast(stat+' não encontrado','warn');return}
+    const mxV=max.value||max.textContent;
+    if(cur.value!==undefined)cur.value=mxV;else cur.textContent=mxV;
+    safe(()=>cur.dispatchEvent(new Event('change',{bubbles:true})));
+    safe(()=>cur.dispatchEvent(new Event('input',{bubbles:true})));
+    _toast(stat.toUpperCase()+' restaurado: '+mxV);
+  }
+
+  // ═══ 16. Rest helper — restaura vit/esf/foc full ═══
+  function fullRest(){
+    ['vit','esf','foc'].forEach(s=>safe(()=>refillStat(s),'rest:'+s));
+    _toast('Descanso completo · vit/esf/foc cheios','success');
+  }
+
+  // ═══ Registra hotkeys + comandos ═══
+  if(window.eclipseExt&&window.eclipseExt.addHotkey){
+    [
+      {k:'h',alt:true,desc:'-1 HP (Alt+H)',action:()=>adjustHP(-1)},
+      {k:'h',alt:true,shift:true,desc:'+1 HP (Alt+Shift+H)',action:()=>adjustHP(1)},
+      {k:'r',alt:true,desc:'Descanso completo',action:fullRest},
+      {k:'p',alt:true,desc:'Imprimir ficha',action:openPrintView},
+    ].forEach(h=>window.eclipseExt.addHotkey(h));
+  }
+  if(window.eclipseExt&&window.eclipseExt.addCommand){
+    [
+      {label:'Listar / restaurar backups',run:openBackupList},
+      {label:'Exportar inventário (CSV)',run:exportInventoryCSV},
+      {label:'-1 HP',hint:'Alt+H',run:()=>adjustHP(-1)},
+      {label:'+1 HP',hint:'Alt+Shift+H',run:()=>adjustHP(1)},
+      {label:'Descanso completo (vit/esf/foc cheios)',hint:'Alt+R',run:fullRest},
+      {label:'Imprimir ficha',hint:'Alt+P',run:openPrintView},
+      {label:'Verificar atualização (SW)',run:checkSWUpdate},
+      {label:'Versão do service worker',run:getSWVersion},
+      {label:'Limpar cache + reload',run:clearCachesAndReload},
+      {label:'Memory stats',run:showMemoryStats},
+      {label:'Tema automático (hora)',run:autoThemeByHour},
+      {label:'Instalar como app (PWA)',run:triggerInstall},
+      {label:'Restaurar VIT (full)',run:()=>refillStat('vit')},
+      {label:'Restaurar ESF (full)',run:()=>refillStat('esf')},
+      {label:'Restaurar FOC (full)',run:()=>refillStat('foc')},
+    ].forEach(c=>window.eclipseExt.addCommand(c));
+  }
+
+  // ═══ Inicialização ═══
+  function init(){
+    safe(injectSaveDot,'save-dot');
+    safe(injectBackupBadge,'bkp-badge');
+    safe(setupOnlineIndicator,'online');
+    safe(checkStorageCap,'storage-cap');
+    // Refresh badge periódico
+    setInterval(refreshBackupBadge,60000);
+    // Storage cap a cada 5 min
+    setInterval(()=>safe(checkStorageCap,'storage-cap-loop'),5*60*1000);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,1500));
+  else setTimeout(init,1500);
+
+  // ═══ API pública wave 3 ═══
+  window.eclipseExt3={
+    version:VER,
+    pulseSaveDot,refreshBackupBadge,openBackupList,
+    exportInventoryCSV,adjustHP,fullRest,refillStat,
+    openPrintView,checkSWUpdate,getSWVersion,clearCachesAndReload,
+    showMemoryStats,autoThemeByHour,triggerInstall,checkStorageCap,
   };
 })();
 </script>
