@@ -1108,12 +1108,18 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 #tab-inventory.active{margin:0;padding:0}
 .re4-shell>.re4-bar{grid-column:1/-1}
 .re4-shell>.re4-body{grid-column:1/-1;display:flex;gap:10px;align-items:stretch}
-.re4-shell>.re4-body>.equip-slots{flex:0 0 0;width:0;align-self:flex-start;position:sticky;top:80px;overflow:hidden;opacity:0;transition:flex-basis .35s cubic-bezier(.2,.8,.2,1),width .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease,padding .35s ease;order:99;padding:0;pointer-events:none}
-.re4-shell.equip-open>.re4-body>.equip-slots{flex:0 0 56px;width:56px;opacity:1;pointer-events:auto}
+/* Painel equip: position fixed à direita, slide via transform (sem layout shift) */
+.re4-shell>.re4-body>.equip-slots{position:fixed;right:0;top:80px;bottom:80px;width:64px;flex:none;background:linear-gradient(180deg,color-mix(in srgb,var(--bg-card) 96%,transparent),color-mix(in srgb,var(--bg-card) 92%,transparent));border:1px solid var(--border);border-right:none;border-radius:14px 0 0 14px;box-shadow:-8px 0 24px rgba(0,0,0,.35);padding:14px 6px;z-index:90;display:flex;flex-direction:column;gap:8px;justify-content:center;align-items:center;transform:translate3d(110%,0,0);opacity:0;transition:transform .42s cubic-bezier(.22,.94,.3,1.02),opacity .22s ease;pointer-events:none;will-change:transform}
+.re4-shell.equip-open>.re4-body>.equip-slots{transform:translate3d(0,0,0);opacity:1;pointer-events:auto}
 @media(max-width:980px){
-  .re4-shell>.re4-body>.equip-slots{position:fixed!important;inset:0;width:100vw!important;height:100vh!important;flex:none!important;background:rgba(8,8,12,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:9998;display:flex!important;flex-direction:row;justify-content:center;align-items:center;gap:10px;padding:20px;flex-wrap:wrap;transform:translateY(100%);opacity:0;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .25s ease;pointer-events:none}
-  .re4-shell.equip-open>.re4-body>.equip-slots{transform:translateY(0);opacity:1;pointer-events:auto}
+  .re4-shell>.re4-body>.equip-slots{top:0;bottom:0;right:0;width:84vw;max-width:340px;height:100vh;border-radius:18px 0 0 18px;padding:24px 12px;justify-content:flex-start;background:linear-gradient(180deg,#101015,#08080b);box-shadow:-16px 0 40px rgba(0,0,0,.55);transform:translate3d(110%,0,0);will-change:transform;gap:10px}
+  .re4-shell.equip-open>.re4-body>.equip-slots{transform:translate3d(0,0,0)}
   .re4-shell.equip-open>.re4-body>.equip-slots .equip-slot{width:64px;height:64px}
+}
+/* Backdrop só no mobile (pseudo via body::after quando aberto) */
+@media(max-width:980px){
+  body:has(.re4-shell.equip-open)::after{content:'';position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:80;pointer-events:none;animation:equip-backdrop-in .25s ease forwards}
+  @keyframes equip-backdrop-in{from{opacity:0}to{opacity:1}}
 }
 .re4-shell>.re4-body>.re4-case-pane{flex:0 0 auto;min-width:0;align-self:flex-start}
 .re4-shell>.re4-body>.re4-item-detail{flex:0 0 280px;min-width:0;align-self:flex-start}
@@ -7864,8 +7870,8 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
         <div class="profile-sidebar">
           <div class="profile-sidebar-card">
             <h4>Sobre</h4>
-            <div class="profile-stat-row"><span class="stat-label">Versão</span><span class="stat-val" id="cfg-app-ver">v3.8.11</span></div>
-            <div class="profile-stat-row"><span class="stat-label">Build</span><span class="stat-val" id="cfg-app-build">385</span></div>
+            <div class="profile-stat-row"><span class="stat-label">Versão</span><span class="stat-val" id="cfg-app-ver">v3.8.12</span></div>
+            <div class="profile-stat-row"><span class="stat-label">Build</span><span class="stat-val" id="cfg-app-build">386</span></div>
             <div class="profile-stat-row"><span class="stat-label">Plataforma</span><span class="stat-val" id="cfg-app-plat">Web</span></div>
             <div class="profile-stat-row" style="flex-wrap:wrap;gap:6px"><span class="stat-label">Performance</span>
               <select id="cfg-perf-mode" onchange="setPerfMode(this.value)" style="background:var(--bg-input);border:1px solid var(--border);color:var(--text-primary);padding:4px 8px;border-radius:6px;font-family:inherit;font-size:12px;outline:none;cursor:pointer">
@@ -22540,6 +22546,10 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.12',date:'2026-05-07',title:'Animações suaves — painel equip + drag card no mobile',items:[
+    {tag:'feat',text:'Painel cabide: agora desliza com transform translate3d (sem layout shift). Position fixed à direita, drop shadow, border-radius. Mobile: drawer 84vw com backdrop blur. Animação 0.42s easing nítido.'},
+    {tag:'fix',text:'Card 3D drag mobile: requestAnimationFrame throttle + will-change:transform. Pointermove com {passive:false} e preventDefault. Sem mais lag no rotation.'}
+  ]},
   {version:'v3.8.11',date:'2026-05-07',title:'Hotfix — save/share cartão no app Android',items:[
     {tag:'fix',text:'Save cartão: bridge retorna `ERROR:motivo` em falha (era string vazia silenciosa). JS exibe motivo claro no toast. Permissão pedida só quando reason contém "permiss".'},
     {tag:'feat',text:'Compartilhar cartão no app Android: nova bridge EclipseFiles.shareImage que dispara Intent.ACTION_SEND com PNG via FileProvider. Abre seletor nativo "Compartilhar via" com WhatsApp/Instagram/etc. Browser web continua usando Web Share API com arquivo.'}
@@ -25726,25 +25736,42 @@ document.addEventListener('visibilitychange',()=>{
     $$('.eo-card').forEach(c=>{
       if(!c.querySelector('.eo-card-front')){const front=document.createElement('div');front.className='eo-card-front';Array.from(c.children).forEach(ch=>{if(!ch.classList||!ch.classList.contains('eo-card-back'))front.appendChild(ch)});c.insertBefore(front,c.firstChild)}
       if(!c.querySelector('.eo-card-back')){const back=document.createElement('div');back.className='eo-card-back';back.innerHTML='<div class="eo-back-logo"></div>';c.appendChild(back)}
-      let rotY=0,dragStart=null;
+      let rotY=0,dragStart=null,_rafId=0,_pendingRotY=0;
       function baseRot(){return c.dataset.variation==='5'?180:0}
       function applyT(){
         if(c.classList.contains('eo-spin'))return;
-        // Sem drag e sem custom rotY → deixa CSS controlar
         if(rotY===0&&!dragStart){c.style.transform='';return}
         const total=baseRot()+rotY;
         c.style.transform='perspective(1200px) rotateY('+total+'deg)';
       }
-      c.addEventListener('pointerdown',e=>{if(e.target.closest('canvas, [contenteditable], button, [data-go]'))return;if(c.hasAttribute('data-signing'))return;dragStart={x:e.clientX,or:rotY};c.setAttribute('data-dragging','');c.style.transition='none';try{c.setPointerCapture(e.pointerId)}catch(_){}});
-      c.addEventListener('pointermove',e=>{if(!dragStart)return;rotY=dragStart.or+(e.clientX-dragStart.x)*0.35;applyT()});
+      function _scheduleApply(){
+        if(_rafId)return;
+        _rafId=requestAnimationFrame(()=>{_rafId=0;rotY=_pendingRotY;applyT()});
+      }
+      c.addEventListener('pointerdown',e=>{
+        if(e.target.closest('canvas, [contenteditable], button, [data-go]'))return;
+        if(c.hasAttribute('data-signing'))return;
+        dragStart={x:e.clientX,or:rotY};
+        _pendingRotY=rotY;
+        c.setAttribute('data-dragging','');
+        c.style.transition='none';
+        c.style.willChange='transform';
+        try{c.setPointerCapture(e.pointerId)}catch(_){}
+      });
+      c.addEventListener('pointermove',e=>{
+        if(!dragStart)return;
+        e.preventDefault();
+        _pendingRotY=dragStart.or+(e.clientX-dragStart.x)*0.35;
+        _scheduleApply();
+      },{passive:false});
       const stop=()=>{
         if(!dragStart)return;
+        if(_rafId){cancelAnimationFrame(_rafId);_rafId=0}
         dragStart=null;c.removeAttribute('data-dragging');
-        // Sempre snap múltiplo de 180 (frente/verso) com easing — evita rotação infinita.
-        rotY=Math.round(rotY/180)*180;
+        rotY=Math.round(_pendingRotY/180)*180;
         c.style.transition='transform .55s cubic-bezier(.2,.8,.2,1)';
         applyT();
-        setTimeout(()=>{c.style.transition='';if(rotY===0){c.style.transform=''}},560);
+        setTimeout(()=>{c.style.transition='';c.style.willChange='';if(rotY===0){c.style.transform=''}},560);
       };
       c.addEventListener('pointerup',stop);c.addEventListener('pointercancel',stop);c.addEventListener('pointerleave',stop);
       // Dblclick no cartão removido — conflitava com cycle font e era animação excessiva.
@@ -27284,7 +27311,7 @@ document.addEventListener('pointerout',e=>{
 <script>
 (function eclipseExt3(){
   'use strict';
-  const VER='3.8.11';
+  const VER='3.8.12';
   if(!window.eclipseExt){console.warn('[ext3] host eclipseExt missing');return}
   const has=fn=>typeof fn==='function';
   const safe=(fn,label)=>{try{return fn()}catch(e){console.warn('[ext3]',label||'',e);return null}};
