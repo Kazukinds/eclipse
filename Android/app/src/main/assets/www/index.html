@@ -7838,7 +7838,7 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
         <div class="profile-sidebar">
           <div class="profile-sidebar-card">
             <h4>Sobre</h4>
-            <div class="profile-stat-row"><span class="stat-label">Versão</span><span class="stat-val" id="cfg-app-ver">v3.8.5</span></div>
+            <div class="profile-stat-row"><span class="stat-label">Versão</span><span class="stat-val" id="cfg-app-ver">v3.8.6</span></div>
             <div class="profile-stat-row"><span class="stat-label">Build</span><span class="stat-val" id="cfg-app-build">380</span></div>
             <div class="profile-stat-row"><span class="stat-label">Plataforma</span><span class="stat-val" id="cfg-app-plat">Web</span></div>
             <div class="profile-stat-row" style="flex-wrap:wrap;gap:6px"><span class="stat-label">Performance</span>
@@ -19015,7 +19015,7 @@ function performSave(){
   if(!name)name='ficha';
   closeModal();
   const data=collectAllData();
-  data._meta={savedAt:new Date().toISOString(),version:'3.8.5',filename:name};
+  data._meta={savedAt:new Date().toISOString(),version:'3.8.6',filename:name};
   const json=JSON.stringify(data,null,2);
   const blob=new Blob([json],{type:'application/json'});
   const url=URL.createObjectURL(blob);
@@ -22434,6 +22434,11 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.6',date:'2026-05-07',title:'Hotfix definitivo — print view sem injeção de tag JS',items:[
+    {tag:'fix',text:'openPrintView reescrita: removida totalmente a tentativa de injetar `<script>` na janela popup. Agora w.print() é chamado do contexto pai via setTimeout(350ms). Source do módulo eclipseExt3 não contém mais nenhuma sequência de bytes parecida com tag de script — Android WebView antigo não consegue mais fechar prematuramente o bloco de script da extensão.'},
+    {tag:'fix',text:'Comentário interno também removeu menção literal a "<script>" — ZERO ocorrências em qualquer ponto do source dos 3 módulos da extensão (apenas os delimitadores externos legítimos do <script> tag de cada módulo).'},
+    {tag:'fix',text:'Print agora usa w.focus() + w.print() do contexto pai — funciona em popup blocker fallback também'}
+  ]},
   {version:'v3.8.5',date:'2026-05-07',title:'Hotfix — vazamento de código fonte do print view',items:[
     {tag:'fix',text:'openPrintView: substituído `<script>...<\\/script>` literal no template literal por concatenação `<scr\'+\'ipt>...</scr\'+\'ipt>` — alguns parsers HTML (incluindo Android WebView em certas configurações) interpretavam erroneamente, vazando o restante do JS como texto visível na página'},
     {tag:'fix',text:'Adicionado setTimeout(200ms) antes do window.print() na janela popup pra garantir que o DOM esteja pronto antes da impressão'}
@@ -27092,7 +27097,7 @@ document.addEventListener('pointerout',e=>{
 <script>
 (function eclipseExt3(){
   'use strict';
-  const VER='3.8.5';
+  const VER='3.8.6';
   if(!window.eclipseExt){console.warn('[ext3] host eclipseExt missing');return}
   const has=fn=>typeof fn==='function';
   const safe=(fn,label)=>{try{return fn()}catch(e){console.warn('[ext3]',label||'',e);return null}};
@@ -27223,34 +27228,26 @@ document.addEventListener('pointerout',e=>{
     _toast('HP: '+next+(delta>=0?' (+'+delta+')':' ('+delta+')'),delta>=0?'success':'warn');
   }
 
-  // ═══ 6. Print view (limpo) ═══
+  // ═══ 6. Print view — sem injeção de tags JS no popup ═══
   function openPrintView(){
     if(!has(window.collectAllData)){_toast('Indisponível','error');return}
     const data=safe(()=>window.collectAllData());if(!data)return;
     const w=window.open('','_blank','width=800,height=900');
     if(!w){_toast('Pop-up bloqueado','error');return}
     const name=(data.profile&&data.profile.name)||'Personagem';
-    function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-    function dump(o,d){
+    function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+    function dump(o){
       if(o==null)return'';
       if(typeof o!=='object')return esc(o);
-      if(Array.isArray(o)){return '<ul>'+o.map(v=>'<li>'+dump(v,d+1)+'</li>').join('')+'</ul>'}
-      return '<dl>'+Object.entries(o).filter(([,v])=>v!=null&&v!==''&&!(Array.isArray(v)&&!v.length)).map(([k,v])=>`<dt>${esc(k)}</dt><dd>${dump(v,d+1)}</dd>`).join('')+'</dl>';
+      if(Array.isArray(o))return '<ul>'+o.map(v=>'<li>'+dump(v)+'</li>').join('')+'</ul>';
+      return '<dl>'+Object.entries(o).filter(([,v])=>v!=null&&v!==''&&!(Array.isArray(v)&&!v.length)).map(([k,v])=>'<dt>'+esc(k)+'</dt><dd>'+dump(v)+'</dd>').join('')+'</dl>';
     }
-    w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${esc(name)}</title>
-      <style>body{font:14px/1.5 -apple-system,Inter,system-ui,sans-serif;color:#222;background:#fff;padding:32px;max-width:800px;margin:0 auto}
-      h1{font-size:24px;margin-bottom:6px}p.meta{color:#888;font-size:11px;margin-bottom:24px}
-      h2{font-size:14px;text-transform:uppercase;letter-spacing:1.5px;color:#666;margin-top:18px;border-bottom:1px solid #ccc;padding-bottom:4px}
-      dt{font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#444;margin-top:8px}
-      dd{margin-left:0;font-size:13px}ul{padding-left:18px;margin:4px 0}
-      @media print{body{padding:8px}}
-      </style></head><body>
-      <h1>${esc(name)}</h1>
-      <p class="meta">Gerado: ${new Date().toLocaleString('pt-BR')} · Ficha Eclipse v${VER}</p>
-      ${dump(data,0)}
-      `+'<scr'+'ipt>setTimeout(function(){window.print()},200)</scr'+'ipt>'+`
-    </body></html>`);
-    w.document.close();
+    const css='body{font:14px/1.5 -apple-system,Inter,system-ui,sans-serif;color:#222;background:#fff;padding:32px;max-width:800px;margin:0 auto}h1{font-size:24px;margin-bottom:6px}p.meta{color:#888;font-size:11px;margin-bottom:24px}h2{font-size:14px;text-transform:uppercase;letter-spacing:1.5px;color:#666;margin-top:18px;border-bottom:1px solid #ccc;padding-bottom:4px}dt{font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#444;margin-top:8px}dd{margin-left:0;font-size:13px}ul{padding-left:18px;margin:4px 0}@media print{body{padding:8px}}';
+    const html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+esc(name)+'</title><style>'+css+'</style></head><body><h1>'+esc(name)+'</h1><p class="meta">Gerado: '+esc(new Date().toLocaleString('pt-BR'))+' · Ficha Eclipse v'+VER+'</p>'+dump(data)+'</body></html>';
+    try{w.document.open();w.document.write(html);w.document.close();}
+    catch(e){_toast('Falha ao abrir print','error');return}
+    // Print disparado do contexto pai — popup nem precisa de seu próprio script.
+    setTimeout(function(){try{w.focus();w.print()}catch(e){console.warn('print fail',e)}},350);
   }
 
   // ═══ 7. Service worker manual update ═══
