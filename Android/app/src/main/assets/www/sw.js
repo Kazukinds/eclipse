@@ -1,10 +1,9 @@
 /* Ficha Eclipse — service worker */
-const VERSION = 'v3.8.0';
+const VERSION = 'v3.8.1';
 const CACHE = 'ficha-eclipse-' + VERSION;
 const ASSETS = [
   './',
   './index.html',
-  './biblioteca.html',
   './calendario.html',
   './manifest.webmanifest',
   './icons/icon.svg',
@@ -17,12 +16,19 @@ const ASSETS = [
   './icons/equip/pescoco.svg',
   './icons/equip/torso.svg',
   './icons/equip/pernas.svg',
-  './icons/equip/pes.svg'
+  './icons/equip/pes.svg',
+  './widgets/dice.html',
+  './widgets/timer.html',
+  './widgets/level.html',
+  './widgets/notes.html',
+  './widgets/init.html'
 ];
 
-// Notify clients when a new version installs
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+  // Use addAll com fallback individual: se um asset falhar, não quebra o install inteiro.
+  e.waitUntil(caches.open(CACHE).then(c =>
+    Promise.all(ASSETS.map(a => c.add(a).catch(err => console.warn('[sw] cache fail', a, err))))
+  ));
 });
 
 self.addEventListener('activate', e => {
@@ -30,14 +36,18 @@ self.addEventListener('activate', e => {
     caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
       .then(() => self.clients.matchAll({includeUncontrolled:true}))
-      .then(cls => cls.forEach(c => { try { c.postMessage({type:'ACTIVATED', version: VERSION}); } catch(_){} }))
+      .then(cls => cls.forEach(c => { try { c.postMessage({type:'ACTIVATED', version: VERSION}); } catch(e){ console.warn('[sw] postMessage fail', e); } }))
   );
 });
 
 self.addEventListener('message', e => {
-  if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
-  if (e.data && e.data.type === 'GET_VERSION' && e.source) e.source.postMessage({type:'VERSION', version: VERSION});
-  if (e.data && e.data.type === 'GET_CURRENT_VERSION' && e.source) e.source.postMessage({type:'CURRENT_VERSION', version: VERSION});
+  if (!e.data) return;
+  const src = e.source;
+  if (e.data.type === 'SKIP_WAITING') self.skipWaiting();
+  else if ((e.data.type === 'GET_VERSION' || e.data.type === 'GET_CURRENT_VERSION') && src) {
+    try { src.postMessage({type: e.data.type === 'GET_VERSION' ? 'VERSION' : 'CURRENT_VERSION', version: VERSION}); }
+    catch(err){ console.warn('[sw] reply fail', err); }
+  }
 });
 
 self.addEventListener('fetch', e => {
@@ -46,13 +56,12 @@ self.addEventListener('fetch', e => {
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
 
-  // Network-first for everything same-origin so updated files (HTML, SVG, JS, CSS) always reflect changes.
-  // Cache acts only as offline fallback.
+  // Network-first same-origin: HTML/SVG/JS/CSS sempre frescos. Cache só fallback offline.
   e.respondWith(
     fetch(req).then(resp => {
       if (resp && resp.status === 200 && resp.type === 'basic') {
         const clone = resp.clone();
-        caches.open(CACHE).then(c => c.put(req, clone));
+        caches.open(CACHE).then(c => c.put(req, clone)).catch(()=>{});
       }
       return resp;
     }).catch(() => caches.match(req).then(c => c || (req.mode === 'navigate' ? caches.match('./index.html') : undefined)))

@@ -39,6 +39,15 @@ $RECYCLE.BIN/
 ficha-*.json
 *.ficha.json
 
+# Native Android (Android/) — build outputs e config local
+Android/.gradle/
+Android/build/
+Android/app/build/
+Android/local.properties
+Android/captures/
+Android/.cxx/
+Android/.idea/
+
 # Capacitor / Android build (in build-app/)
 build-app/www/
 build-app/node_modules/

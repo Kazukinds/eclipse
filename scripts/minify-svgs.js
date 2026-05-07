@@ -8,6 +8,10 @@ const ROOT=path.resolve(__dirname,'..','icons');
 let totalBefore=0,totalAfter=0,filesProcessed=0;
 
 function minifySvg(src){
+  // Coleta ids referenciados via url(#x), href="#x", xlink:href="#x" — esses precisam ser preservados.
+  const refIds=new Set();
+  src.replace(/url\(#([^)]+)\)/g,(_,id)=>{refIds.add(id);return ''});
+  src.replace(/(?:xlink:)?href="#([^"]+)"/g,(_,id)=>{refIds.add(id);return ''});
   return src
     .replace(/<!--[\s\S]*?-->/g,'')
     .replace(/<\?xml[^?]*\?>/g,'')
@@ -21,7 +25,8 @@ function minifySvg(src){
     .replace(/(\s)version="1\.[01]"/g,'')
     .replace(/(\s)xml:space="preserve"/g,'')
     .replace(/(\s)style=""/g,'')
-    .replace(/(\s)id="[^"]*"/g,'')
+    // Só remove id se não estiver em uso interno
+    .replace(/(\s)id="([^"]*)"/g,(m,sp,id)=>refIds.has(id)?m:'')
     .trim();
 }
 
