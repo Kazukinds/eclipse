@@ -4538,6 +4538,18 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .adv-detail-slot{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:6px 0}
 .adv-detail-or{font-size:10.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em}
 .adv-detail-free{font-size:11.5px;color:var(--text-secondary);font-style:italic;margin-top:4px}
+.adv-detail-hint{font-size:10.5px;font-weight:500;color:var(--text-dim);text-transform:none;letter-spacing:0;margin-left:6px}
+.adv-detail-hab-list{display:flex;flex-direction:column;gap:8px}
+.adv-detail-hab{padding:11px 13px;background:var(--bg-input);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;gap:6px}
+.adv-detail-hab.locked{opacity:.55;filter:grayscale(.4)}
+.adv-detail-hab.unlocked{border-color:color-mix(in srgb,var(--magenta) 45%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--magenta) 7%,var(--bg-input)),var(--bg-input))}
+.adv-detail-hab-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.adv-detail-hab-idx{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:22px;padding:0 7px;background:var(--magenta-bg);color:var(--magenta);border:1px solid var(--magenta-dim);border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.4px}
+.adv-detail-hab-name{font-size:13.5px;font-weight:800;color:var(--text-primary);letter-spacing:-.15px;flex:1;min-width:0}
+.adv-detail-hab-cost{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--magenta);padding:3px 7px;background:var(--magenta-bg);border-radius:4px;border:1px solid var(--magenta-dim)}
+.adv-detail-hab-cost.zero{color:var(--text-dim);background:var(--bg-card);border-color:var(--border)}
+.adv-detail-hab-locked{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.6px;color:var(--text-dim);background:rgba(255,255,255,.05);border:1px solid var(--border);padding:2px 6px;border-radius:3px}
+.adv-detail-hab-desc{font-size:12px;line-height:1.55;color:var(--text-secondary);white-space:pre-line}
 /* Status edit modal */
 .stat-edit-preview{
   display:flex;align-items:center;gap:14px;
@@ -28674,6 +28686,7 @@ window._advShowDetail=function(field,item){
   const esc=s=>String(s||'').replace(/</g,'&lt;').replace(/"/g,'&quot;');
   const current=(typeof profileData!=='undefined'&&profileData[field])||'';
   const isSelected=current===item.name;
+  const STATUS_LBL={esforco:'Esforço',foco:'Foco',determinacao:'Determinação',vitalidade:'Vitalidade'};
   let periIds=[];
   if(field==='passado')periIds=(window._PASSADO_PER&&window._PASSADO_PER[item.name])||[];
   else if(field==='caminho')periIds=(window._CAMINHO_PER&&window._CAMINHO_PER[item.name])||[];
@@ -28682,12 +28695,56 @@ window._advShowDetail=function(field,item){
     if(cfg)periIds=[...(cfg.fixed||[])];
   }
   const allP=(typeof PERICIAS_DATA!=='undefined')?Object.values(PERICIAS_DATA).flat():[];
-  const periChips=periIds.map(id=>{const p=allP.find(x=>x.id===id);return `<span class="adv-detail-peri">${esc(p?p.name:id)}</span>`}).join('');
+  const _pn=id=>{const p=allP.find(x=>x.id===id);return p?p.name:id};
+  const periChips=periIds.map(id=>`<span class="adv-detail-peri">${esc(_pn(id))}</span>`).join('');
   const slotsHtml=(field==='arquetipo')?(function(){
     const cfg=window._ARQUETIPO_PER_CFG&&window._ARQUETIPO_PER_CFG[item.name];
     if(!cfg||!cfg.slots||!cfg.slots.length)return '';
-    return `<div class="adv-detail-section"><div class="adv-detail-section-title">Escolhas de perícia (definidas após confirmar)</div>${cfg.slots.map(opts=>`<div class="adv-detail-slot">${opts.map(id=>{const p=allP.find(x=>x.id===id);return `<span class="adv-detail-peri ghost">${esc(p?p.name:id)}</span>`}).join(' <span class="adv-detail-or">ou</span> ')}</div>`).join('')}${cfg.free?`<div class="adv-detail-free">+ ${cfg.free} perícia(s) livre(s)</div>`:''}</div>`;
+    return `<div class="adv-detail-section"><div class="adv-detail-section-title">Escolhas de perícia <span class="adv-detail-hint">(definidas após confirmar)</span></div>${cfg.slots.map(opts=>`<div class="adv-detail-slot">${opts.map(id=>`<span class="adv-detail-peri ghost">${esc(_pn(id))}</span>`).join(' <span class="adv-detail-or">ou</span> ')}</div>`).join('')}${cfg.free?`<div class="adv-detail-free">+ ${cfg.free} perícia(s) livre(s)</div>`:''}</div>`;
   })():'';
+  // Habilidade(s) + traços por field
+  let habHtml='';
+  if(field==='passado'){
+    const h=window._PASSADO_HABILIDADES&&window._PASSADO_HABILIDADES[item.name];
+    if(h){
+      const cost=h.cost?`<span class="adv-detail-hab-cost">${h.cost} ${STATUS_LBL[h.costStatus]||h.costStatus||'PE'}</span>`:`<span class="adv-detail-hab-cost zero">Sem custo</span>`;
+      habHtml=`<div class="adv-detail-section"><div class="adv-detail-section-title">Habilidade</div><div class="adv-detail-hab"><div class="adv-detail-hab-head"><span class="adv-detail-hab-name">${esc(h.name)}</span>${cost}</div><div class="adv-detail-hab-desc">${esc(h.desc)}</div></div></div>`;
+    }
+  } else if(field==='linhagem'){
+    const h=window._LINHAGEM_HABILIDADES&&window._LINHAGEM_HABILIDADES[item.name];
+    if(h){
+      const cost=h.cost?`<span class="adv-detail-hab-cost">${h.cost} ${STATUS_LBL[h.costStatus]||h.costStatus||'PE'}</span>`:`<span class="adv-detail-hab-cost zero">Sem custo</span>`;
+      habHtml+=`<div class="adv-detail-section"><div class="adv-detail-section-title">Habilidade base</div><div class="adv-detail-hab"><div class="adv-detail-hab-head"><span class="adv-detail-hab-name">${esc(h.name)}</span>${cost}</div><div class="adv-detail-hab-desc">${esc(h.desc)}</div></div></div>`;
+    }
+    const tracos=window._LINHAGEM_TRACOS&&window._LINHAGEM_TRACOS[item.name];
+    if(tracos&&tracos.length){
+      habHtml+=`<div class="adv-detail-section"><div class="adv-detail-section-title">Traços <span class="adv-detail-hint">(escolha 1 após confirmar)</span></div><div class="adv-detail-hab-list">${tracos.map((t,i)=>`<div class="adv-detail-hab"><div class="adv-detail-hab-head"><span class="adv-detail-hab-idx">${i+1}</span><span class="adv-detail-hab-name">${esc(t.name)}</span></div><div class="adv-detail-hab-desc">${esc(t.desc)}</div></div>`).join('')}</div></div>`;
+    }
+  } else if(field==='arquetipo'){
+    const habW=window._ARQUETIPO_HABILIDADES&&window._ARQUETIPO_HABILIDADES[item.name];
+    if(habW&&habW.options&&habW.options.length){
+      const hint=habW.options.length>1?'<span class="adv-detail-hint">(escolha 1 após confirmar)</span>':'';
+      habHtml=`<div class="adv-detail-section"><div class="adv-detail-section-title">Habilidades ${hint}</div><div class="adv-detail-hab-list">${habW.options.map((h,i)=>{
+        const cost=h.cost?`<span class="adv-detail-hab-cost">${h.cost} ${STATUS_LBL[h.costStatus]||h.costStatus||'PE'}</span>`:`<span class="adv-detail-hab-cost zero">Sem custo</span>`;
+        return `<div class="adv-detail-hab"><div class="adv-detail-hab-head"><span class="adv-detail-hab-idx">${i+1}</span><span class="adv-detail-hab-name">${esc(h.name)}</span>${cost}</div><div class="adv-detail-hab-desc">${esc(h.desc)}</div></div>`;
+      }).join('')}</div></div>`;
+    }
+  } else if(field==='caminho'){
+    const cm=window._CAMINHO_HABILIDADES&&window._CAMINHO_HABILIDADES[item.name];
+    if(cm){
+      const lv=(typeof playerLevel!=='undefined')?(playerLevel||1):1;
+      const milestones=cm.milestones||(cm.name?[{level:3,name:cm.name,desc:cm.desc,cost:cm.cost,costStatus:cm.costStatus}]:[]);
+      if(milestones.length){
+        const unlockedN=milestones.filter(ms=>lv>=ms.level).length;
+        habHtml=`<div class="adv-detail-section"><div class="adv-detail-section-title">Habilidades <span class="adv-detail-hint">(${unlockedN}/${milestones.length} desbloqueada${unlockedN!==1?'s':''} · Nv atual ${lv})</span></div><div class="adv-detail-hab-list">${milestones.map(ms=>{
+          const unlocked=lv>=ms.level;
+          const cost=ms.cost?`<span class="adv-detail-hab-cost">${ms.cost} ${STATUS_LBL[ms.costStatus]||ms.costStatus||'PE'}</span>`:'';
+          const tag=unlocked?'':'<span class="adv-detail-hab-locked">BLOQUEADO</span>';
+          return `<div class="adv-detail-hab${unlocked?' unlocked':' locked'}"><div class="adv-detail-hab-head"><span class="adv-detail-hab-idx">NV ${ms.level}</span><span class="adv-detail-hab-name">${esc(ms.name)}</span>${cost}${tag}</div><div class="adv-detail-hab-desc">${esc(ms.desc)}</div></div>`;
+        }).join('')}</div></div>`;
+      }
+    }
+  }
   body.innerHTML=`
     <div class="adv-detail">
       <div class="adv-detail-head">
@@ -28703,6 +28760,7 @@ window._advShowDetail=function(field,item){
       </div>
       ${periChips?`<div class="adv-detail-section"><div class="adv-detail-section-title">Perícias automáticas</div><div class="adv-detail-peris">${periChips}</div></div>`:''}
       ${slotsHtml}
+      ${habHtml}
     </div>
     <div class="modal-btns">
       <button type="button" class="modal-btn secondary" id="adv-detail-back">← Voltar</button>
