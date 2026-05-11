@@ -4545,6 +4545,10 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .adv-detail-hab{padding:11px 13px;background:var(--bg-input);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;gap:6px}
 .adv-detail-hab.locked{opacity:.55;filter:grayscale(.4)}
 .adv-detail-hab.unlocked{border-color:color-mix(in srgb,var(--magenta) 45%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--magenta) 7%,var(--bg-input)),var(--bg-input))}
+button.adv-detail-hab{font-family:inherit;text-align:left;cursor:pointer;transition:border-color .15s,background .15s,transform .12s;width:100%}
+button.adv-detail-hab:hover{border-color:color-mix(in srgb,var(--magenta) 55%,transparent);background:color-mix(in srgb,var(--magenta) 5%,var(--bg-input))}
+button.adv-detail-hab:active{transform:scale(.985)}
+button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(in srgb,var(--magenta) 12%,var(--bg-input));box-shadow:0 0 0 1px var(--magenta) inset}
 .adv-detail-hab-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .adv-detail-hab-idx{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:22px;padding:0 7px;background:var(--magenta-bg);color:var(--magenta);border:1px solid var(--magenta-dim);border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.4px}
 .adv-detail-hab-name{font-size:13.5px;font-weight:800;color:var(--text-primary);letter-spacing:-.15px;flex:1;min-width:0}
@@ -6077,7 +6081,18 @@ body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-ins
 }
 
 /* ═══════════ APP SPLASH / INTRO ═══════════ */
-.app-splash{display:none}
+.app-splash{
+  position:fixed;inset:0;z-index:99999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  background:#0a0a0d;
+  opacity:1;pointer-events:all;
+  transition:opacity .28s ease, visibility 0s linear .28s;
+}
+.app-splash.gone{opacity:0;visibility:hidden;pointer-events:none}
+html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-banner{display:none!important}
+.app-splash .splash-progress{width:120px;height:3px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;position:relative;margin-top:6px}
+.app-splash .splash-progress::after{content:"";position:absolute;top:0;left:0;height:100%;width:40%;background:linear-gradient(90deg,transparent,var(--magenta),transparent);border-radius:999px;animation:splash-progress 1.1s ease-in-out infinite}
+@keyframes splash-progress{0%{transform:translateX(-100%)}100%{transform:translateX(350%)}}
 .app-splash .splash-bolt{width:76px;height:76px;display:flex;align-items:center;justify-content:center;border-radius:20px;background:linear-gradient(145deg,rgba(var(--magenta-rgb),.18),rgba(var(--magenta-rgb),.04));border:1px solid rgba(var(--magenta-rgb),.35);box-shadow:0 0 0 1px rgba(var(--magenta-rgb),.12),0 0 40px rgba(var(--magenta-rgb),.22),inset 0 1px 0 rgba(255,255,255,.05);animation:splash-bolt-in .55s cubic-bezier(.2,1.2,.3,1) both, splash-bolt-pulse 1.1s ease-in-out .55s infinite}
 .app-splash .splash-bolt svg{width:42px;height:42px;stroke:var(--magenta);fill:rgba(var(--magenta-rgb),.12);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 8px rgba(var(--magenta-rgb),.55))}
 .app-splash .splash-name{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:6px;color:var(--magenta);text-transform:uppercase;opacity:0;animation:splash-text-in .5s cubic-bezier(.2,.8,.2,1) .3s forwards}
@@ -9193,6 +9208,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
 <div class="app-splash" id="app-splash" aria-hidden="true">
   <div class="splash-bolt"><div class="eclipse-logo" style="width:60%;height:60%"><span class="el-moon"></span><span class="el-star"></span></div></div>
   <div class="splash-name">Ficha<span class="splash-dot"></span>Eclipse</div>
+  <div class="splash-progress"></div>
 </div>
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-grip" id="sidebar-grip"></div>
@@ -26391,6 +26407,15 @@ window.openBiblioChapter=function(id){
   reader.classList.remove('stage-2');
   reader.classList.add('show','stage-1');
   document.body.style.overflow='hidden';
+  // Pod chapters + mobile: pula intro do livro (panel direto)
+  const skipBookIntro=ch.cat==='pod'||window.matchMedia('(max-width:780px)').matches;
+  if(skipBookIntro){
+    requestAnimationFrame(()=>{
+      reader.classList.remove('stage-1');
+      reader.classList.add('stage-2','intro-arc');
+      setTimeout(()=>reader.classList.remove('intro-arc'),900);
+    });
+  }
   // Carrega conteúdo completo em background
   loadBiblioFull().then(d=>{if(d)_biblioRenderSubPage()});
 };
@@ -27180,10 +27205,12 @@ document.addEventListener('touchcancel',()=>{
 },{passive:true});
 
 // ═══ SPLASH / INTRO ═══
-window.addEventListener('load',()=>{
+document.documentElement.classList.add('app-booting');
+function _hideSplash(){
   const sp=document.getElementById('app-splash');
-  if(sp)setTimeout(()=>sp.classList.add('gone'),750);
-  // Garante que nenhum toast/save-toast esteja preso em .show vazio após o boot
+  if(sp&&!sp.classList.contains('gone'))sp.classList.add('gone');
+  document.documentElement.classList.remove('app-booting');
+  // Sweep: remove qualquer toast/save-toast preso em .show vazio
   try{
     document.querySelectorAll('#toast.show').forEach(t=>{
       const tit=(t.querySelector('.toast-title')?.textContent||'').trim();
@@ -27195,7 +27222,10 @@ window.addEventListener('load',()=>{
       if(!nm)t.remove();
     });
   }catch(_){ }
-});
+}
+window.addEventListener('load',()=>{requestAnimationFrame(()=>setTimeout(_hideSplash,200))});
+// Fallback: se 'load' demorar (recursos lentos), some em 4s
+setTimeout(()=>{if(document.documentElement.classList.contains('app-booting'))_hideSplash()},4000);
 
 // ═══ AUTOSAVE (localStorage) + CONFIRMAR RECARGA ═══
 const AUTOSAVE_KEY='ficha-eclipse-save';
@@ -28732,7 +28762,8 @@ window._advShowDetail=function(field,item){
     }
     const tracos=window._LINHAGEM_TRACOS&&window._LINHAGEM_TRACOS[item.name];
     if(tracos&&tracos.length){
-      habHtml+=`<div class="adv-detail-section"><div class="adv-detail-section-title">Traços <span class="adv-detail-hint">(escolha 1 após confirmar)</span></div><div class="adv-detail-hab-list">${tracos.map((t,i)=>`<div class="adv-detail-hab"><div class="adv-detail-hab-head"><span class="adv-detail-hab-idx">${i+1}</span><span class="adv-detail-hab-name">${esc(t.name)}</span></div><div class="adv-detail-hab-desc">${esc(t.desc)}</div></div>`).join('')}</div></div>`;
+      const _curT=(profileData.linTracoPicks&&typeof profileData.linTracoPicks[item.name]==='number')?profileData.linTracoPicks[item.name]:-1;
+      habHtml+=`<div class="adv-detail-section"><div class="adv-detail-section-title">Traços <span class="adv-detail-hint">(clique pra escolher 1)</span></div><div class="adv-detail-hab-list" data-traco-pick="1">${tracos.map((t,i)=>`<button type="button" class="adv-detail-hab${_curT===i?' selected':''}" data-ti="${i}"><div class="adv-detail-hab-head"><span class="adv-detail-hab-idx">${i+1}</span><span class="adv-detail-hab-name">${esc(t.name)}</span></div><div class="adv-detail-hab-desc">${esc(t.desc)}</div></button>`).join('')}</div></div>`;
     }
   } else if(field==='arquetipo'){
     const habW=window._ARQUETIPO_HABILIDADES&&window._ARQUETIPO_HABILIDADES[item.name];
@@ -28785,6 +28816,18 @@ window._advShowDetail=function(field,item){
   if(backBtn)backBtn.addEventListener('click',()=>openAdvPicker(field));
   const cbtn=document.getElementById('adv-detail-confirm');
   if(cbtn&&!isSelected)cbtn.addEventListener('click',()=>applyAdv(field,item.name));
+  // Click pra escolher traço de linhagem no próprio preview
+  if(field==='linhagem'){
+    body.querySelectorAll('[data-ti]').forEach(b=>{
+      b.addEventListener('click',()=>{
+        const i=parseInt(b.dataset.ti);
+        if(!profileData.linTracoPicks)profileData.linTracoPicks={};
+        profileData.linTracoPicks[item.name]=i;
+        body.querySelectorAll('[data-ti]').forEach(x=>x.classList.toggle('selected',parseInt(x.dataset.ti)===i));
+        try{window.sfx&&sfx.tick&&sfx.tick()}catch(_){}
+      });
+    });
+  }
 };
 // Recalcula status base quando arquétipo muda fora do gerador automático
 // Auto-build de ficha por arquétipo + nível.
@@ -28943,7 +28986,10 @@ window.applyAdv=function(field,name){
   }
   if(field==='linhagem'){
     const tr=window._LINHAGEM_TRACOS&&window._LINHAGEM_TRACOS[name];
-    if(tr&&tr.length)setTimeout(()=>window._openLinhagemTracoPicker(name),250);
+    if(tr&&tr.length){
+      const picked=profileData.linTracoPicks&&typeof profileData.linTracoPicks[name]==='number'&&profileData.linTracoPicks[name]>=0;
+      if(!picked)setTimeout(()=>window._openLinhagemTracoPicker(name),250);
+    }
   }
 };
 window._openLinhagemTracoPicker=function(lin){
