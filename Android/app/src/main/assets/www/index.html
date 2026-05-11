@@ -2181,7 +2181,7 @@ html.no-radius,html.no-radius *{border-radius:0!important}
 #tab-config .cfg-head-info{min-width:0}
 #tab-config .cfg-head h2{font-size:18px;font-weight:800;letter-spacing:-.2px;color:var(--text-primary);margin:0;line-height:1.15}
 #tab-config .cfg-head p{font-size:12px;color:var(--text-dim);margin:2px 0 0;line-height:1.3}
-#tab-config .cfg-tabs{display:flex;gap:4px;background:var(--bg-card-inner);padding:5px;border-radius:12px;border:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+#tab-config .cfg-tabs{display:flex;gap:4px;background:var(--bg-card-inner);padding:5px;border-radius:12px;border:1px solid var(--border);overflow-x:auto;scrollbar-width:none;margin-bottom:14px}
 #tab-config .cfg-tabs::-webkit-scrollbar{display:none}
 #tab-config .cfg-tab{flex:1;min-width:max-content;padding:8px 14px;background:transparent;border:none;color:var(--text-dim);font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:8px;cursor:pointer;transition:background .15s,color .15s,box-shadow .15s;display:flex;align-items:center;gap:6px;justify-content:center;white-space:nowrap}
 #tab-config .cfg-tab:hover{color:var(--text-primary)}
@@ -2539,8 +2539,14 @@ input[type="number"]{-moz-appearance:textfield}
 .xp-gear svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .progress-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm)}
 .progress-card h4{font-size:16px;font-weight:600;margin-bottom:0;padding-bottom:0;border-bottom:none}
-.progress-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
-@media(max-width:980px){.progress-grid{grid-template-columns:1fr}}
+.progress-grid{display:grid;grid-template-columns:2fr 1.1fr;grid-auto-rows:min-content;gap:14px;align-items:stretch}
+.progress-grid .progress-skills{grid-column:1;grid-row:1/span 2;align-self:stretch}
+.progress-grid .progress-malds{grid-column:2;grid-row:1}
+.progress-grid .progress-comps{grid-column:2;grid-row:2}
+@media(max-width:980px){
+  .progress-grid{grid-template-columns:1fr}
+  .progress-grid .progress-skills,.progress-grid .progress-malds,.progress-grid .progress-comps{grid-column:1;grid-row:auto}
+}
 @media(max-width:640px){
   #tab-progress .xp-card{grid-template-columns:1fr !important;gap:14px;padding:18px}
   #tab-progress .xp-card>div:nth-child(2){justify-content:flex-end}
@@ -2555,6 +2561,27 @@ input[type="number"]{-moz-appearance:textfield}
 /* progress-stats nunca deve ser sticky no mobile */
 @media(max-width:980px){.progress-stats{position:static !important;top:auto !important}}
 .pc-header-pro{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--border)}
+.pc-add-btn{width:30px;height:30px;border-radius:8px;background:var(--bg-card-inner);border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:all .15s}
+.pc-add-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.pc-add-btn:hover{color:var(--magenta);border-color:var(--magenta-dim);background:color-mix(in srgb,var(--magenta) 10%,var(--bg-card-inner))}
+.progress-malds .pc-add-btn:hover{color:#dc2626;border-color:color-mix(in srgb,#dc2626 50%,var(--border));background:color-mix(in srgb,#dc2626 10%,var(--bg-card-inner))}
+.progress-comps .pc-add-btn:hover{color:#fb923c;border-color:color-mix(in srgb,#fb923c 50%,var(--border));background:color-mix(in srgb,#fb923c 10%,var(--bg-card-inner))}
+.pc-list{display:flex;flex-direction:column;gap:8px;min-height:60px}
+.pc-empty{text-align:center;padding:24px 12px;color:var(--text-dim);font-size:12px;font-style:italic}
+.pc-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:10px;transition:border-color .15s,transform .12s;cursor:pointer}
+.pc-item:hover{transform:translateY(-1px)}
+.pc-item-desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pc-item:hover{border-color:color-mix(in srgb,var(--c,var(--magenta)) 50%,var(--border))}
+.pc-item-ico{width:28px;height:28px;border-radius:7px;background:color-mix(in srgb,var(--c,var(--magenta)) 14%,transparent);color:var(--c,var(--magenta));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pc-item-ico svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.pc-item-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.pc-item-name{font-size:12.5px;font-weight:700;color:var(--text-primary)}
+.pc-item-desc{font-size:11px;color:var(--text-dim);line-height:1.4}
+.pc-item-del{width:24px;height:24px;border-radius:6px;background:transparent;border:none;color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:color .15s}
+.pc-item-del:hover{color:var(--red,#ef4444)}
+.pc-item-del svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.progress-malds{--c:#dc2626}
+.progress-comps{--c:#fb923c}
 .pc-tools{display:flex;align-items:center;gap:4px}
 .pc-tools-sep{width:1px;height:18px;background:var(--border);margin:0 4px}
 .skill-icon-btn{width:32px;height:32px;border-radius:8px;background:var(--bg-input);border:1px solid var(--border);color:var(--text-dim);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;padding:0}
@@ -2657,20 +2684,93 @@ input[type="number"]{-moz-appearance:textfield}
 .hab-picker-chip.active{color:var(--c,var(--magenta));border-color:var(--c,var(--magenta));background:color-mix(in srgb,var(--c,var(--magenta)) 14%,var(--bg-input))}
 .hab-picker-chip-sep{flex:0 0 1px;height:18px;background:var(--border);margin:0 4px;align-self:center}
 .hab-picker-body{flex:1;overflow-y:auto;padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;align-content:start}
-.hab-picker-card{background:var(--bg-input);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;transition:all .18s}
+.hab-picker-card{position:relative;background:var(--bg-input);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;transition:border-color .18s,transform .18s;cursor:pointer}
 .hab-picker-card:hover{border-color:var(--c,var(--magenta));transform:translateY(-1px)}
+.hab-picker-card-req{display:flex;align-items:center;gap:4px;flex-wrap:wrap;word-break:break-word}
+.hab-picker-card-req .req-val{flex:1;min-width:0}
+/* ═══ HAB DETAIL MODAL ═══ */
+.hab-detail-overlay{position:fixed;inset:0;z-index:1000000;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(4,4,8,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .18s ease-out}
+.hab-detail-overlay.open{opacity:1}
+.hab-detail-modal{position:relative;width:min(560px,94vw);max-height:88vh;overflow-y:auto;background:var(--bg-card);border:1px solid color-mix(in srgb,var(--c,var(--magenta)) 30%,var(--border));border-radius:16px;padding:28px 26px 22px;box-shadow:0 24px 60px rgba(0,0,0,.55);transform:scale(.95);transition:transform .2s var(--ease-spring,cubic-bezier(.2,.9,.2,1.05))}
+.hab-detail-overlay.open .hab-detail-modal{transform:scale(1)}
+.hab-detail-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:8px;background:var(--bg-card-inner);border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:all .15s}
+.hab-detail-close svg{width:16px;height:16px}
+.hab-detail-close:hover{color:var(--c,var(--magenta));border-color:var(--c,var(--magenta))}
+.hab-detail-chap{display:inline-block;padding:3px 10px;background:color-mix(in srgb,var(--c,var(--magenta)) 14%,transparent);color:var(--c,var(--magenta));border:1px solid color-mix(in srgb,var(--c,var(--magenta)) 35%,transparent);border-radius:5px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.hab-detail-name{font-size:22px;font-weight:800;color:var(--text-primary);margin:0 0 14px;line-height:1.2;letter-spacing:-.2px;padding-right:36px}
+.hab-detail-desc{font-size:13.5px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px;white-space:pre-wrap;text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}
+.hab-detail-req{font-size:12.5px;color:var(--text-dim);padding:10px 12px;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:8px;line-height:1.5}
+.hab-detail-req .req-label{color:var(--c,var(--magenta));font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:.92em;margin-right:6px}
+.hab-picker-card-aff{margin-top:6px;padding:8px 10px;background:color-mix(in srgb,var(--c,var(--magenta)) 8%,var(--bg-card));border:1px dashed color-mix(in srgb,var(--c,var(--magenta)) 40%,var(--border));border-radius:8px;font-size:11px;color:var(--text-secondary);line-height:1.45}
+.hab-picker-card-aff .aff-label{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--c,var(--magenta));margin-right:6px}
+.hab-detail-aff{margin-top:14px;padding:14px 16px;background:color-mix(in srgb,var(--c,var(--magenta)) 8%,var(--bg-card));border:1px dashed color-mix(in srgb,var(--c,var(--magenta)) 45%,var(--border));border-radius:10px}
+.hab-detail-aff .aff-label{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--c,var(--magenta));margin-bottom:6px}
+.hab-detail-aff .aff-text{font-size:13px;color:var(--text-secondary);line-height:1.6;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.elpick-overlay{position:fixed;inset:0;z-index:1000002;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(4,4,8,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .18s ease-out}
+.elpick-overlay.open{opacity:1}
+.elpick-modal{position:relative;width:min(520px,94vw);max-height:88vh;overflow-y:auto;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px 26px 24px;box-shadow:0 24px 60px rgba(0,0,0,.55);transform:scale(.95);transition:transform .2s var(--ease-spring,cubic-bezier(.2,.9,.2,1.05))}
+.elpick-overlay.open .elpick-modal{transform:scale(1)}
+.elpick-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:8px;background:var(--bg-card-inner);border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:all .15s}
+.elpick-close svg{width:16px;height:16px}
+.elpick-close:hover{color:var(--magenta);border-color:var(--magenta)}
+.elpick-title{font-size:18px;font-weight:800;color:var(--text-primary);margin:0 0 6px;letter-spacing:-.2px;padding-right:36px}
+.elpick-sub{font-size:12px;color:var(--text-dim);margin:0 0 16px;line-height:1.4}
+.elpick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.elpick-card{display:flex;align-items:center;gap:10px;padding:14px 14px;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:10px;cursor:pointer;font-family:inherit;color:var(--text-primary);transition:all .15s;text-align:left}
+.elpick-card:hover{border-color:var(--c);background:color-mix(in srgb,var(--c) 12%,var(--bg-card-inner));transform:translateY(-1px)}
+.elpick-dot{width:14px;height:14px;border-radius:50%;background:var(--c);flex-shrink:0;box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 30%,transparent)}
+.elpick-name{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+/* Botão Slots toolbar + modal */
+.hab-picker-slots-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-secondary);font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:all .15s;flex-shrink:0}
+.hab-picker-slots-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.hab-picker-slots-btn:hover{border-color:var(--magenta-dim);color:var(--magenta);background:color-mix(in srgb,var(--magenta) 10%,var(--bg-input))}
+.hab-picker-slots-hidden{display:none!important}
+.hab-slots-overlay{position:fixed;inset:0;z-index:1000001;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(4,4,8,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .18s ease-out}
+.hab-slots-overlay.open{opacity:1}
+.hab-slots-modal{position:relative;width:min(680px,94vw);max-height:88vh;overflow-y:auto;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:26px 24px 22px;box-shadow:0 24px 60px rgba(0,0,0,.55);transform:scale(.95);transition:transform .2s var(--ease-spring,cubic-bezier(.2,.9,.2,1.05))}
+.hab-slots-overlay.open .hab-slots-modal{transform:scale(1)}
+.hab-slots-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:8px;background:var(--bg-card-inner);border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:all .15s}
+.hab-slots-close svg{width:16px;height:16px}
+.hab-slots-close:hover{color:var(--magenta);border-color:var(--magenta)}
+.hab-slots-title{font-size:18px;font-weight:800;color:var(--text-primary);margin:0;letter-spacing:-.2px}
+.hab-slots-sub{font-size:11.5px;color:var(--text-dim);margin:4px 0 0;line-height:1.4}
+.hab-slots-head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:14px;margin:0 36px 16px 0;padding:0 0 14px;border-bottom:1px solid var(--border)}
+.hab-slots-stats{display:flex;gap:8px;flex-wrap:wrap}
+.hab-slots-stat{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:8px;min-width:54px}
+.hab-slots-stat .v{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:800;color:var(--text-primary);line-height:1;font-variant-numeric:tabular-nums}
+.hab-slots-stat .l{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-weight:700}
+.hab-slots-grid-new{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.hab-slot-card{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:10px;transition:border-color .15s,background .15s}
+.hab-slot-card.filled{border-color:color-mix(in srgb,var(--green,#22c55e) 50%,var(--border));background:color-mix(in srgb,var(--green,#22c55e) 6%,var(--bg-card-inner))}
+.hab-slot-card.open{border-color:color-mix(in srgb,var(--magenta) 40%,var(--border))}
+.hab-slot-card.locked{opacity:.5}
+.hab-slot-ico{width:28px;height:28px;border-radius:7px;background:var(--bg-card);display:flex;align-items:center;justify-content:center;color:var(--text-dim);flex-shrink:0}
+.hab-slot-card.filled .hab-slot-ico{background:color-mix(in srgb,var(--green,#22c55e) 18%,var(--bg-card));color:var(--green,#22c55e)}
+.hab-slot-card.open .hab-slot-ico{color:var(--magenta);background:color-mix(in srgb,var(--magenta) 14%,var(--bg-card))}
+.hab-slot-ico svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.hab-slot-meta{min-width:0;display:flex;flex-direction:column;gap:1px}
+.hab-slot-lvl{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim)}
+.hab-slot-power{font-size:12px;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hab-slot-card.locked .hab-slot-power{color:var(--text-dim);font-weight:600}
+.hab-slot-card.open .hab-slot-power{color:var(--text-secondary);font-weight:600;font-style:italic}
 .hab-picker-card.locked{opacity:.78}
 .hab-picker-card.owned{opacity:.62;border-style:dashed}
 .hab-picker-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .hab-picker-card-name{font-size:13px;font-weight:800;color:var(--text-primary);line-height:1.2}
 .hab-picker-card-chap{flex:0 0 auto;padding:2px 7px;background:color-mix(in srgb,var(--c,var(--magenta)) 14%,transparent);color:var(--c,var(--magenta));border:1px solid color-mix(in srgb,var(--c,var(--magenta)) 35%,transparent);border-radius:4px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-.hab-picker-card-desc{font-size:11.5px;color:var(--text-secondary,#bbb);line-height:1.5}
+.hab-picker-card-desc{font-size:11.5px;color:var(--text-secondary,#bbb);line-height:1.5;text-align:justify!important;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto;padding:0;margin:0}
+.hab-picker-readmore{display:inline;background:transparent!important;border:none!important;outline:none!important;box-shadow:none!important;color:var(--c,var(--magenta));font-family:inherit;font-size:inherit;font-weight:700;cursor:pointer;padding:0;margin:0 0 0 4px;text-decoration:none}
+.hab-picker-readmore:hover{filter:brightness(1.25);text-decoration:underline;text-underline-offset:2px}
 .hab-picker-card-req{font-size:10.5px;color:var(--text-dim);padding:5px 7px;background:rgba(0,0,0,.18);border-radius:5px;line-height:1.4}
 .hab-picker-card-req .req-label{color:var(--c,var(--magenta));font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.92em;margin-right:3px}
 .hab-picker-card-req.req-pulse{animation:req-pulse-anim 1.6s ease-in-out infinite}
 .hab-picker-card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:6px;border-top:1px solid var(--border)}
-.hab-picker-lock{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--text-dim);font-weight:600}
+.hab-picker-lock{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--text-dim);font-weight:600;flex-wrap:wrap}
 .hab-picker-lock svg{width:12px;height:12px}
+.req-piece{font-weight:700;letter-spacing:.02em}
+.req-piece.met{color:var(--green,#22c55e)}
+.req-piece.unmet{color:var(--red,#ef4444)}
+.req-piece.unknown{color:var(--text-dim)}
 .hab-picker-ok{font-size:10.5px;color:var(--green,#3fb950);font-weight:700;letter-spacing:.04em;text-transform:uppercase}
 .hab-picker-add{padding:5px 12px;background:var(--c,var(--magenta));color:#0a0a0c;border:none;border-radius:6px;font-family:inherit;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .15s}
 .hab-picker-add:hover{filter:brightness(1.12);transform:translateY(-1px)}
@@ -5393,6 +5493,8 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
   background-size:14px 14px;background-position:0 0;
 }
 .update-banner.show{transform:translate(-50%,0);opacity:1;pointer-events:all}
+/* Banner de update do PWA desabilitado — nunca renderizar */
+.update-banner,.ub-overlay{display:none!important}
 .ub-handle{width:44px;height:4px;border-radius:999px;background:rgba(255,255,255,.18);margin-bottom:4px}
 .ub-icon-wrap{position:relative;width:84px;height:84px;margin-top:8px}
 .ub-app-icon{
@@ -5604,12 +5706,12 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
   .main-wrapper{padding-bottom:0;background:transparent}
   [data-theme="light"] .main-wrapper{background:transparent}
   /* Content reserva espaço inferior (scroll alcança últimos itens sem ficar tampado) */
-  .content{padding-bottom:calc(80px + env(safe-area-inset-bottom,0px))}
+  .content{padding-bottom:calc(98px + env(safe-area-inset-bottom,0px))}
   /* === Floating pill sidebar (mobile, bottom center) — só pill compacta, sem barra de fundo === */
   .sidebar{
     width:auto;height:auto;min-height:0;
     top:auto;left:50%;right:auto;
-    bottom:calc(14px + env(safe-area-inset-bottom,0px));
+    bottom:calc(32px + env(safe-area-inset-bottom,0px));
     transform:translateX(-50%);
     flex-direction:row;align-items:center;justify-content:center;
     padding:6px 8px;gap:4px;
@@ -5637,6 +5739,11 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
     transition:none
   }
   .sidebar-btn,.sidebar-btn svg,.sidebar-btn[data-tab].nav-anim svg{animation:none!important;transition:none!important}
+  /* Pill mobile — sem hover/active que mexe os botões */
+  .sidebar-btn:hover,.sidebar-btn:active,.sidebar-btn:focus,
+  .sidebar-gear:hover,.sidebar-gear:active,.sidebar-gear:focus{transform:none!important}
+  .sidebar-btn:hover svg,.sidebar-btn:active svg,
+  .sidebar-gear:hover svg,.sidebar-gear:active svg{transform:none!important;filter:none!important}
   .sidebar-btn svg{margin-left:0;width:20px;height:20px}
   .sidebar-label{display:none!important}
   .sidebar-btn.active{
@@ -6180,9 +6287,10 @@ body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-ins
 @media (max-width:640px) and (orientation:portrait){
   html,body{height:100vh;height:100dvh;overflow:hidden!important;position:fixed;width:100%;inset:0}
   .main-wrapper{height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;margin-left:0}
-  .topbar{display:none!important}
+  .topbar{padding:8px 12px 6px!important;gap:6px!important}
+  .topbar-row-2{display:none!important}
   .content{flex:1 1 0;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
-           padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;
+           padding-bottom:calc(58px + env(safe-area-inset-bottom,0px))!important;
            background:transparent!important;border-radius:0!important;box-shadow:none!important;
            scrollbar-width:none;-ms-overflow-style:none}
   .content::-webkit-scrollbar{width:0;height:0;display:none}
@@ -6193,7 +6301,7 @@ body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-ins
   .sidebar{
     position:fixed!important;
     top:auto!important;left:50%!important;right:auto!important;
-    bottom:calc(12px + env(safe-area-inset-bottom,0px))!important;
+    bottom:env(safe-area-inset-bottom,0px)!important;
     transform:translateX(-50%)!important;
     width:auto!important;height:auto!important;
     min-height:0!important;
@@ -6209,7 +6317,7 @@ body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-ins
   }
   .sidebar .sidebar-nav{flex-direction:row!important;display:flex!important;width:auto!important;height:auto!important;align-items:center;justify-content:center;gap:4px;padding:0;overflow-x:auto;scrollbar-width:none}
   .sidebar .sidebar-nav::-webkit-scrollbar{display:none}
-  .main-wrapper{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))!important;padding-right:0!important}
+  .main-wrapper{padding-bottom:0!important;padding-right:0!important}
   /* Status: card quadrado arredondado, padronizado */
   .status-row{background:var(--bg-card-inner);border:1px solid var(--border);padding:8px;border-radius:var(--radius-sm);gap:10px}
   .status-row:hover{background:var(--bg-input)}
@@ -6517,6 +6625,27 @@ button:not(:disabled):active{transform:scale(.97)}
 
 
 
+/* Dashboard — pill compacta 4 atributos (INT/PSY/FYS/MOT) */
+.attr-pill-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:var(--bg-card-inner);border:1px solid var(--border);
+  border-radius:10px;padding:0;overflow:hidden;
+}
+.attr-pill-cell{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1px;padding:6px 4px;
+  border-right:1px solid var(--border);
+}
+.attr-pill-cell:last-child{border-right:none}
+.attr-pill-num{
+  font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:800;
+  line-height:1;letter-spacing:-.02em;color:var(--text-primary)!important;
+}
+.attr-pill-lbl{
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+}
+
 /* Atributos — barras estilo arquétipo (substitui donut antigo) */
 .attr-stat-head{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -6536,7 +6665,7 @@ button:not(:disabled):active{transform:scale(.97)}
 .attr-flower-svg .afp-petal:hover{fill-opacity:.85;transform:scale(1.03)}
 [data-theme="light"] .attr-flower-svg{filter:drop-shadow(0 6px 18px rgba(0,0,0,.18))}
 /* ═══════════ ATTR TANKS — 4 diamantes outline (cross layout) ═══════════ */
-.attr-tanks-wrap{position:relative;width:min(300px,92%);aspect-ratio:1/1;margin:14px auto 8px;animation:atkIn .4s cubic-bezier(.2,.8,.2,1);-webkit-tap-highlight-color:transparent}
+.attr-tanks-wrap{position:relative;width:min(240px,82%);aspect-ratio:1/1;margin:12px auto 6px;animation:atkIn .4s cubic-bezier(.2,.8,.2,1);-webkit-tap-highlight-color:transparent;contain:layout paint}
 @keyframes atkIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
 .attr-tank{position:absolute;width:46%;height:46%;cursor:pointer;outline:none;transition:filter .2s,transform .2s;-webkit-tap-highlight-color:transparent}
 .attr-tank:focus,.attr-tank:focus-visible{outline:none!important}
@@ -6549,9 +6678,83 @@ button:not(:disabled):active{transform:scale(.97)}
 .attr-tank:hover{z-index:5}
 .attr-tank:hover::before{background:var(--at-c,var(--magenta))}
 .attr-tank:active{transform:scale(.96)}
-.attr-tank-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--text-primary);pointer-events:none;z-index:1}
-.attr-tank-val{font-family:'Inter',sans-serif;font-size:clamp(22px,5vw,30px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.attr-tank-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--text-primary);pointer-events:none;z-index:2}
+.attr-tank-val{font-family:'Inter',sans-serif;font-size:clamp(22px,5vw,30px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 1px 2px rgba(0,0,0,.5),0 0 8px color-mix(in srgb,var(--at-c,var(--magenta)) 40%,transparent)}
 .attr-tank-name{font-size:8.5px;letter-spacing:1.4px;text-transform:uppercase;font-weight:700;margin-top:4px;color:var(--text-dim);opacity:.9}
+
+/* Efeito de onda — duas camadas da mesma cor (clara/escura) deslizando devagar */
+.attr-tank-water{
+  position:absolute;inset:1.5px;
+  clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);
+  pointer-events:none;z-index:1;overflow:hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%,
+      color-mix(in srgb,var(--at-c,var(--magenta)) 30%,transparent) 0%,
+      transparent 70%),
+    linear-gradient(180deg,
+      color-mix(in srgb,var(--at-c,var(--magenta)) 12%,transparent) 0%,
+      color-mix(in srgb,var(--at-c,var(--magenta)) 22%,transparent) 100%);
+}
+/* Wrapper de fill — desloca ondas pra baixo conforme --at-fill (0% = invisível) */
+.attr-tank-fill{
+  position:absolute;inset:0;
+  transform:translate3d(0,calc(100% - var(--at-fill,0%)),0);
+  transition:transform 620ms cubic-bezier(.2,.8,.2,1);
+  will-change:transform;
+}
+/* Onda — base props compartilhadas (GPU-friendly) */
+.attr-tank-wave{
+  position:absolute;left:0;right:0;top:0;bottom:0;
+  -webkit-mask-size:100% 100%;mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  will-change:transform;
+  backface-visibility:hidden;
+}
+/* Segundo plano — onda escura no fundo (mais baixa, fill maior) */
+.attr-tank-wave-2{
+  -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'><path d='M0,72 Q220,54 400,58 L400,100 L0,100 Z' fill='black'/></svg>")!important;
+  mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'><path d='M0,72 Q220,54 400,58 L400,100 L0,100 Z' fill='black'/></svg>")!important;
+  background:linear-gradient(180deg,
+    color-mix(in srgb,var(--at-c,var(--magenta)) 28%,#000) 0%,
+    color-mix(in srgb,var(--at-c,var(--magenta)) 42%,#000) 100%)!important;
+  animation:atkWaveRev 5s ease-in-out infinite alternate!important;
+  opacity:.95!important;
+}
+/* Primeiro plano — clara, mais rápida, posição baixa */
+.attr-tank-wave:not(.attr-tank-wave-2){
+  -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'><path d='M0,54 Q180,68 400,78 L400,100 L0,100 Z' fill='black'/></svg>");
+  mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'><path d='M0,54 Q180,68 400,78 L400,100 L0,100 Z' fill='black'/></svg>");
+  background:linear-gradient(180deg,
+    color-mix(in srgb,var(--at-c,var(--magenta)) 70%,#fff) 0%,
+    color-mix(in srgb,var(--at-c,var(--magenta)) 88%,#fff) 100%);
+  animation:atkWave 4s ease-in-out infinite alternate;
+  opacity:.94;
+}
+/* Slide horizontal seamless + bobbing vertical composto (animation-composition:add) */
+@keyframes atkWave{
+  0%,100%{transform:translate3d(0,0,0)}
+  50%{transform:translate3d(0,-2px,0)}
+}
+@keyframes atkWaveRev{
+  0%,100%{transform:translate3d(0,0,0)}
+  50%{transform:translate3d(0,-3px,0)}
+}
+@keyframes atkBob{
+  0%,100%{transform:translate3d(0,0,0)}
+  50%{transform:translate3d(0,-2px,0)}
+}
+/* Pausar quando fora da tela (IntersectionObserver) ou aba oculta */
+.attr-tank.atk-offscreen .attr-tank-wave,
+.attr-tank.atk-offscreen .attr-tank-wave-2,
+body.atk-hidden .attr-tank-wave,
+body.atk-hidden .attr-tank-wave-2{animation-play-state:paused!important}
+/* Pausar quando aba não visível ou perf-low */
+body[data-perf-low] .attr-tank-wave,
+body[data-perf-low] .attr-tank-wave-2{animation:none}
+/* Reduce-motion: para tudo */
+@media (prefers-reduced-motion:reduce){
+  .attr-tank-wave,.attr-tank-wave-2{animation:none!important}
+}
 .attr-stat-head-l{display:flex;align-items:baseline;gap:4px}
 .attr-stat-used{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;color:var(--text-primary);line-height:1;font-variant-numeric:tabular-nums}
 .attr-stat-used.has-pts{color:var(--magenta)}
@@ -9199,7 +9402,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
         </div>
         <!-- ATRIBUTOS -->
         <div class="card">
-          <div class="card-header"><div class="card-title">Atributos</div><div class="card-actions"><div class="card-action-btn" onclick="openAttrGearMenu(this)" title="Opções de atributos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(-15 12 12)"><rect x="4" y="5" width="9" height="14" rx="1.5"/></g><g transform="rotate(15 12 12)"><rect x="11" y="5" width="9" height="14" rx="1.5"/></g></svg></div></div></div>
+          <div class="card-header"><div class="card-title">Atributos</div><div class="card-actions"><div class="card-action-btn" onclick="openAttrGearMenu(this)" title="Opções de atributos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div></div></div>
           <div class="attr-list" id="dash-attr-list"></div>
         </div>
       </div>
@@ -9240,20 +9443,67 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
           </div>
           <div class="skill-list" id="skill-list"></div>
         </div>
-        <div class="progress-card progress-stats" id="progress-stats">
-          <div class="pc-header pc-header-pro"><h4>Resumo</h4></div>
-          <div class="pc-stats-grid">
-            <div class="pc-stat-row"><span class="pc-stat-k">Total habilidades</span><span class="pc-stat-v" id="pst-total">0</span></div>
-            <div class="pc-stat-row"><span class="pc-stat-k">Destaques</span><span class="pc-stat-v" id="pst-fav">0</span></div>
-            <div class="pc-stat-row"><span class="pc-stat-k">Custo total</span><span class="pc-stat-v" id="pst-cost">0</span></div>
-            <div class="pc-stat-row"><span class="pc-stat-k">Disponíveis (sem custo)</span><span class="pc-stat-v" id="pst-free">0</span></div>
+        <div class="progress-card progress-malds" id="progress-malds">
+          <div class="pc-header pc-header-pro"><h4>Maldições</h4>
+            <button type="button" class="pc-add-btn" id="add-mald-btn" title="Adicionar maldição" aria-label="Adicionar maldição"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
           </div>
-          <div class="pc-origin-block">
-            <div class="pc-origin-title">Por origem</div>
-            <div class="pc-origin-bars" id="pst-origins"></div>
+          <div class="pc-list" id="mald-list"><div class="pc-empty">Sem maldições</div></div>
+        </div>
+        <div class="progress-card progress-comps" id="progress-comps">
+          <div class="pc-header pc-header-pro"><h4>Complicações</h4>
+            <button type="button" class="pc-add-btn" id="add-comp-btn" title="Adicionar complicação" aria-label="Adicionar complicação"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
           </div>
+          <div class="pc-list" id="comp-list"><div class="pc-empty">Sem complicações</div></div>
         </div>
       </div>
+      <script>
+      (function(){
+        window._malds=[];window._comps=[];
+        try{window._malds=JSON.parse(localStorage.getItem('eclipse_maldicoes')||'[]')}catch(_){};
+        try{window._comps=JSON.parse(localStorage.getItem('eclipse_complicacoes')||'[]')}catch(_){};
+        window._saveMalds=()=>{try{localStorage.setItem('eclipse_maldicoes',JSON.stringify(window._malds))}catch(_){};};
+        window._saveComps=()=>{try{localStorage.setItem('eclipse_complicacoes',JSON.stringify(window._comps))}catch(_){};};
+        const ICO_M='<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2c2 4 5 5 5 9.5a5 5 0 1 1-10 0c0-2 .8-3 1.7-3.8.1 1.4.9 2.3 2.1 2.3 0-2.2-1.3-3-1.3-5.2 0-1.3 1.1-2.3 2.5-2.8z"/></svg>';
+        const ICO_C='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+        const ICO_X='<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        const trunc=(s,n)=>{if(!s)return '';if(s.length<=n)return s;const slice=s.slice(0,n);const lastDot=slice.lastIndexOf('. ');const cutAt=lastDot>n*0.5?lastDot+1:n;return s.slice(0,cutAt).trim()+'…'};
+        window._renderMald=()=>{
+          const el=document.getElementById('mald-list');if(!el)return;
+          if(!window._malds.length){el.innerHTML='<div class="pc-empty">Sem maldições</div>';return}
+          el.innerHTML=window._malds.map((m,i)=>`<div class="pc-item" data-i="${i}" data-type="m"><div class="pc-item-ico">${ICO_M}</div><div class="pc-item-info"><div class="pc-item-name">${m.name}</div>${m.desc?`<div class="pc-item-desc">${trunc(m.desc,110)}</div>`:''}</div><button type="button" class="pc-item-del" data-i="${i}" title="Remover">${ICO_X}</button></div>`).join('');
+        };
+        window._renderComp=()=>{
+          const el=document.getElementById('comp-list');if(!el)return;
+          if(!window._comps.length){el.innerHTML='<div class="pc-empty">Sem complicações</div>';return}
+          el.innerHTML=window._comps.map((c,i)=>`<div class="pc-item" data-i="${i}" data-type="c"><div class="pc-item-ico">${ICO_C}</div><div class="pc-item-info"><div class="pc-item-name">${c.name}</div>${c.desc?`<div class="pc-item-desc">${trunc(c.desc,110)}</div>`:''}</div><button type="button" class="pc-item-del" data-i="${i}" title="Remover">${ICO_X}</button></div>`).join('');
+        };
+        const ELS=(typeof MALD_ELEMENTS!=='undefined')?MALD_ELEMENTS:[];
+        document.addEventListener('click',e=>{
+          if(e.target.closest('#add-mald-btn')){window.openCplMaldPicker&&window.openCplMaldPicker('mald');return}
+          if(e.target.closest('#add-comp-btn')){window.openCplMaldPicker&&window.openCplMaldPicker('comp');return}
+          const dM=e.target.closest('#mald-list .pc-item-del');
+          if(dM){window._malds.splice(parseInt(dM.dataset.i)||0,1);window._saveMalds();window._renderMald();return}
+          const dC=e.target.closest('#comp-list .pc-item-del');
+          if(dC){window._comps.splice(parseInt(dC.dataset.i)||0,1);window._saveComps();window._renderComp();return}
+          // Click no item (fora do delete) abre detail
+          const itM=e.target.closest('#mald-list .pc-item');
+          if(itM&&!e.target.closest('.pc-item-del')){
+            const m=window._malds[parseInt(itM.dataset.i)||0];if(!m||!window._openHabDetail)return;
+            const elMeta=m.el?ELS.find(x=>x.id===m.el):null;
+            const env=elMeta?{[elMeta.id]:elMeta.c}:{red:'#dc2626'};
+            window._openHabDetail({name:m.name,desc:m.desc||'',req:m.req||'',chapTitle:elMeta?elMeta.l:'Maldição',c:elMeta?elMeta.id:'red'},env);
+            return;
+          }
+          const itC=e.target.closest('#comp-list .pc-item');
+          if(itC&&!e.target.closest('.pc-item-del')){
+            const c=window._comps[parseInt(itC.dataset.i)||0];if(!c||!window._openHabDetail)return;
+            window._openHabDetail({name:c.name,desc:c.desc||'',req:c.req||'',chapTitle:'Complicação',c:'orange'},{orange:'#fb923c'});
+            return;
+          }
+        });
+        window._renderMald();window._renderComp();
+      })();
+      </script>
     </section>
 
 
@@ -9743,13 +9993,13 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
 
     <!-- ═══ CONFIG ═══ -->
     <section class="tab-content" id="tab-config">
+      <nav class="cfg-tabs" role="tablist">
+        <button type="button" class="cfg-tab active" data-cfg-tab="ficha" role="tab"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Ficha</button>
+        <button type="button" class="cfg-tab" data-cfg-tab="app" role="tab"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>App</button>
+        <button type="button" class="cfg-tab" data-cfg-tab="tema" role="tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>Tema</button>
+        <button type="button" class="cfg-tab" data-cfg-tab="avancado" role="tab"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Avançado</button>
+      </nav>
       <div class="cfg-app">
-        <nav class="cfg-tabs" role="tablist">
-          <button type="button" class="cfg-tab active" data-cfg-tab="ficha" role="tab"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Ficha</button>
-          <button type="button" class="cfg-tab" data-cfg-tab="app" role="tab"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>App</button>
-          <button type="button" class="cfg-tab" data-cfg-tab="tema" role="tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>Tema</button>
-          <button type="button" class="cfg-tab" data-cfg-tab="avancado" role="tab"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Avançado</button>
-        </nav>
         <div class="cfg-body">
         <div class="cfg-panel active" data-cfg-panel="ficha">
           <div class="cfg-grid">
@@ -9853,7 +10103,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.15</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.16</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -9912,11 +10162,10 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
                 <button type="button" class="palette-swatch bg-swatch" data-bg="rosado" style="background:linear-gradient(135deg,#1c0e16 50%,#fdf2f8 50%)" onclick="applyBgPreset('rosado')" title="Rosado"></button>
                 <button type="button" class="palette-swatch bg-swatch" data-bg="crepusculo" style="background:linear-gradient(135deg,#1a0d1a 50%,#fdf2fa 50%)" onclick="applyBgPreset('crepusculo')" title="Crepúsculo"></button>
                 <button type="button" class="palette-swatch bg-swatch" data-bg="arroxeado" style="background:linear-gradient(135deg,#150d1f 50%,#f5f3ff 50%)" onclick="applyBgPreset('arroxeado')" title="Arroxeado"></button>
-                <button type="button" id="bg-custom-wrap" class="palette-custom bg-custom" title="Cor personalizada" onclick="openBgPicker()">
+                <button type="button" id="bg-custom-wrap" class="palette-custom bg-custom" title="Cor personalizada" onclick="openBgPicker(this)">
                   <span class="palette-custom-dot" id="bg-custom-dot"></span>
                   <svg class="palette-custom-brush" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.07"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg>
                 </button>
-                <input type="color" id="bg-color-input" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none" oninput="setBgCustom(this.value)">
               </div>
             </div>
             <div class="cfg-block">
@@ -11744,7 +11993,6 @@ window.toggleHUD=function(force){
   hud._refresh=paint;
   window._hudRefresh=paint;
 };
-// Auto-show on load se ativo
 if(_hudVisible)setTimeout(()=>toggleHUD(true),2000);
 
 // ═══ Sheet stats summary (one-shot popup) ═══
@@ -14658,7 +14906,6 @@ window.invSetFilter=function(f){
 window.openRegister=function(){if(typeof openModal==='function')openModal('item')};
 document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.inv-filter-pill').forEach(p=>p.addEventListener('click',()=>invSetFilter(p.dataset.f)));
-  renderInvTab();
 });
 
 function _calcInvWeight(items){
@@ -17801,7 +18048,7 @@ function addXP(amount,desc){
   const now=new Date();
   xpLog.unshift({val:amount,desc:desc||'XP adicionado',target:'nivel',time:now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0'),day:now.getDate().toString().padStart(2,'0')+'/'+String(now.getMonth()+1).padStart(2,'0')});
   let leveled=false;
-  while(playerXP>=xpToNext){if(playerLevel>=MAX_LEVEL){playerXP=xpToNext;break}playerXP-=xpToNext;playerLevel++;xpToNext=Math.round(xpToNext*1.2);toast(`Nível ${playerLevel} alcançado!`);leveled=true;if(playerLevel===10){setTimeout(()=>toast('🔓 Nv 10 — +2 pontos de atributo liberados (cap 6)','success'),900)}}
+  while(playerXP>=xpToNext){if(playerLevel>=MAX_LEVEL){playerXP=xpToNext;break}playerXP-=xpToNext;playerLevel++;xpToNext=Math.round(xpToNext*1.2);toast(`Nível ${playerLevel} alcançado!`,{notify:true,notifyType:'level'});leveled=true;if(playerLevel===10){setTimeout(()=>toast('🔓 Nv 10 — +2 pontos de atributo liberados (cap 6)',{notify:true,notifyType:'level'}),900)}}
   try{if(window.sfx){leveled?sfx.levelup():sfx.unlock()}}catch(_){}
   if(leveled&&typeof playLottieCelebration==='function')playLottieCelebration();
   if(leveled){
@@ -17819,7 +18066,7 @@ function addStageXP(amount,desc){
   const now=new Date();
   xpLog.unshift({val:amount,desc:desc||'Estágio XP',target:'estagio',time:now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0'),day:now.getDate().toString().padStart(2,'0')+'/'+String(now.getMonth()+1).padStart(2,'0')});
   let leveled=false;
-  while(stageXP>=stageToNext){if(playerStage>=MAX_STAGE){stageXP=stageToNext;break}stageXP-=stageToNext;playerStage++;stageToNext=Math.round(stageToNext*1.3);toast(`Estágio ${playerStage} alcançado!`);leveled=true}
+  while(stageXP>=stageToNext){if(playerStage>=MAX_STAGE){stageXP=stageToNext;break}stageXP-=stageToNext;playerStage++;stageToNext=Math.round(stageToNext*1.3);toast(`Estágio ${playerStage} alcançado!`,{notify:true,notifyType:'level'});leveled=true}
   try{if(window.sfx){leveled?sfx.levelup():sfx.unlock()}}catch(_){}
   if(leveled&&typeof playLottieCelebration==='function')playLottieCelebration();
   renderXP();renderSummary();
@@ -18302,9 +18549,16 @@ function useSkill(id){const s=skills.find(x=>x.id===id);if(!s||!s.cost)return;to
 
 // ═══ ATTRIBUTES ═══
 const ATTR_LABEL={Fisico:'Físico',Motora:'Motora',Psique:'Psique',Intelecto:'Intelecto'};
+const ATTR_ABBR={Fisico:'FÍS',Motora:'MOT',Psique:'PSI',Intelecto:'INT'};
 function renderAttrFlower(items){
   const POS=['top','right','bottom','left'];
-  const tanks=items.slice(0,4).map((it,i)=>{const lbl=ATTR_LABEL[it.name]||it.name;return `<div class="attr-tank" data-pos="${POS[i]}" style="--at-c:${it.color}" data-attr="${it.name}" aria-label="${lbl}: ${it.val||0}/${it.max||5}"><div class="attr-tank-content"><div class="attr-tank-val">${it.val||0}</div><div class="attr-tank-name">${lbl}</div></div></div>`}).join('');
+  const tanks=items.slice(0,4).map((it,i)=>{
+    const lbl=ATTR_LABEL[it.name]||it.name;
+    const abbr=ATTR_ABBR[it.name]||(it.name||'').slice(0,3).toUpperCase();
+    const max=it.max||5;
+    const pct=Math.max(0,Math.min(100,((it.val||0)/max)*100));
+    return `<div class="attr-tank" data-pos="${POS[i]}" style="--at-c:${it.color}" data-attr="${it.name}" aria-label="${lbl}: ${it.val||0}/${max}"><div class="attr-tank-content"><div class="attr-tank-val">${it.val||0}</div><div class="attr-tank-name">${abbr}</div></div></div>`;
+  }).join('');
   return `<div class="attr-tanks-wrap">${tanks}</div>`;
 }
 function _initAttrTanks(root){
@@ -18314,8 +18568,24 @@ function _initAttrTanks(root){
       const t=e.target&&e.target.closest&&e.target.closest('.attr-tank');
       if(t&&typeof openModal==='function')openModal('attribute');
     });
+    // Pausa onda quando fora da tela (perf)
+    try{
+      const io=new IntersectionObserver(entries=>{
+        entries.forEach(ent=>{
+          ent.target.querySelectorAll('.attr-tank').forEach(t=>{
+            t.classList.toggle('atk-offscreen',!ent.isIntersecting);
+          });
+        });
+      },{rootMargin:'80px'});
+      io.observe(wrap);
+      wrap._atkIO=io;
+    }catch(_){}
   });
 }
+// Pausa global quando aba esconde
+if(!window._atkVisInit){window._atkVisInit=1;document.addEventListener('visibilitychange',()=>{
+  document.body.classList.toggle('atk-hidden',document.hidden);
+});}
 function renderAttrs(){
   const ORDER=['Intelecto','Psique','Fisico','Motora'];
   const COLORS={Intelecto:'#60a5fa',Psique:'#c084fc',Fisico:'#f87171',Motora:'#34d399'};
@@ -20785,7 +21055,8 @@ function toast(m,opts){
   e.classList.add('show');
   clearTimeout(toast._t);
   toast._t=setTimeout(()=>e.classList.remove('show'),o.duration||3000);
-  addNotif(title);_toasting=false;
+  if(o.notify)addNotif(title,o.notifyType);
+  _toasting=false;
 }
 
 // ═══ Fix: fecha toast ao trocar tela / swipe (evita popup '+XP' preso) ═══
@@ -20872,6 +21143,7 @@ const NOTIF_ICONS={
   item:{bg:_NOTIF_GRAY_BG,color:_NOTIF_GRAY_FG,svg:'<svg viewBox="0 0 24 24"><path d="M20 7H4a1 1 0 0 0-1 1v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a1 1 0 0 0-1-1Z"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>'},
   level:{bg:_NOTIF_GRAY_BG,color:_NOTIF_GRAY_FG,svg:'<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'},
   status:{bg:_NOTIF_GRAY_BG,color:_NOTIF_GRAY_FG,svg:'<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>'},
+  update:{bg:'var(--magenta-bg)',color:'var(--magenta)',svg:'<svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 4 21 10 15 10"/></svg>'},
   default:{bg:_NOTIF_GRAY_BG,color:_NOTIF_GRAY_FG,svg:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'}
 };
 
@@ -20885,13 +21157,13 @@ function getNotifType(msg){
   return'default';
 }
 
-function addNotif(msg){
+function addNotif(msg,typeOverride){
   const now=new Date();
   const time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
   const last=notifications[0];
   if(last&&last.msg===msg&&Date.now()-(addNotif._lastAt||0)<1500){addNotif._lastAt=Date.now();return}
   addNotif._lastAt=Date.now();
-  notifications.unshift({msg,type:getNotifType(msg),time,read:false});
+  notifications.unshift({msg,type:typeOverride||getNotifType(msg),time,read:false});
   if(notifications.length>50)notifications.pop();
   try{localStorage.setItem('eclipse_notifs',JSON.stringify(notifications.slice(0,30)))}catch(_){}
   renderNotifs();
@@ -21968,15 +22240,29 @@ window.setBgCustom=function(hex){
   try{localStorage.setItem('rpg-bg-custom-'+t,hex)}catch(_){}
   window.applyBgPreset('custom');
 };
-window.openBgPicker=function(){
-  const inp=document.getElementById('bg-color-input');
-  if(!inp)return;
+window.openBgPicker=function(anchor){
+  _buildPalettePicker();
+  const pop=document.getElementById('palette-picker-pop');
+  const bd=document.getElementById('ppp-backdrop');
   const t=document.documentElement.getAttribute('data-theme')||'dark';
   let cur='';
   try{cur=localStorage.getItem('rpg-bg-custom-'+t)||''}catch(_){}
   if(!cur)cur=(getComputedStyle(document.documentElement).getPropertyValue('--bg-body').trim()||(t==='light'?'#f4f4f4':'#09090b'));
-  inp.value=cur;
-  inp.click();
+  if(!/^#[0-9a-f]{6}$/i.test(cur))cur='#09090b';
+  _pppState=_hexToHsv(cur);
+  _pppState.target='bg';
+  pop.hidden=false;
+  _pppRender();
+  const a=anchor||document.getElementById('bg-custom-wrap');
+  const r=a?a.getBoundingClientRect():{bottom:80,top:60,left:80};
+  const popW=276,popH=pop.offsetHeight||380;
+  let top=r.bottom+10,left=r.left;
+  if(top+popH>window.innerHeight-12)top=Math.max(12,r.top-popH-10);
+  if(left+popW>window.innerWidth-12)left=window.innerWidth-popW-12;
+  if(left<12)left=12;
+  pop.style.top=top+'px';
+  pop.style.left=left+'px';
+  bd.classList.add('open');
 };
 (function(){try{
   const k=localStorage.getItem('rpg-bg')||'default';
@@ -22158,7 +22444,8 @@ function _pppRender(){
 function _pppApply(skipRender){
   const hex=_hsvToHex(_pppState.h,_pppState.s,_pppState.v);
   if(!skipRender)_pppRender();
-  window.applyPalette('custom',hex);
+  if(_pppState.target==='bg')window.setBgCustom(hex);
+  else window.applyPalette('custom',hex);
 }
 function _buildPalettePicker(){
   if(document.getElementById('palette-picker-pop'))return;
@@ -22225,6 +22512,7 @@ window.openPalettePicker=function(anchor){
   const bd=document.getElementById('ppp-backdrop');
   const cur=getComputedStyle(document.documentElement).getPropertyValue('--magenta').trim()||'#c8f542';
   _pppState=_hexToHsv(cur);
+  _pppState.target='palette';
   pop.hidden=false;
   _pppRender();
   const r=anchor.getBoundingClientRect();
@@ -22443,12 +22731,22 @@ window.addEventListener('load',()=>{try{renderThemeSlots()}catch(_){}});
 try{localStorage.removeItem('eclipse_cam_vit')}catch(_){}
 
 function refreshAll(){
-  renderGrid();renderDashLists();renderXP();renderSkills();renderAttrs();renderAch();renderGroup();
-  renderCaseSelector();renderStatus();renderProficiencias();renderSummary();
+  // Sync: dashboard visivel no boot
+  renderSummary();renderXP();renderStatus();renderAttrs();renderDashLists();renderGroup();renderAch();
   if(typeof renderCredit==='function')renderCredit();
-  if(typeof renderProfile==='function')renderProfile();
-  if(typeof rebuildLid==='function'){rebuildLid();applySuitcaseColor(suitcaseColor)}
   setTimeout(()=>drawChart(false),50);
+  // Idle: tabs nao-dashboard (renderInvTab/Biblio/Feit continuam no DOMContentLoaded)
+  const tasks=[
+    ()=>renderSkills(),
+    ()=>renderProficiencias(),
+    ()=>renderCaseSelector(),
+    ()=>renderGrid(),
+    ()=>{if(typeof renderProfile==='function')renderProfile()},
+    ()=>{if(typeof rebuildLid==='function'){rebuildLid();applySuitcaseColor(suitcaseColor)}}
+  ];
+  const ric=window.requestIdleCallback||(f=>setTimeout(f,80));
+  const next=()=>{const t=tasks.shift();if(!t)return;try{t()}catch(_){}ric(next)};
+  ric(next);
 }
 
 function saveToFile(){
@@ -24271,10 +24569,10 @@ function _podCheckLock(reqText){
   if(typeof attributes!=='undefined'){
     const attMap={'Físico':'Fisico','Fisico':'Fisico','Psique':'Psique','Motoras':'Motora','Motora':'Motora','Intelecto':'Intelecto','Neural':'Neural','Córtex':'Cortex','Cortex':'Cortex'};
     const ROMAN={I:1,II:2,III:3,IV:4,V:5,VI:6,VII:7};
-    const ATTR_RX=/\b(Físico|Fisico|Psique|Motoras?|Intelecto|Neural|Córtex|Cortex)\s+(IV|VI{0,3}|I{1,3})\b/g;
+    const ATTR_RX=/\b(Físico|Fisico|Psique|Motoras?|Intelecto|Neural|Córtex|Cortex)\s+(IV|VI{0,3}|I{1,3}|\d+)\b/g;
     let m;while((m=ATTR_RX.exec(r))){
       const key=attMap[m[1]]||m[1];
-      const need=ROMAN[m[2]]||0;
+      const need=ROMAN[m[2]]||parseInt(m[2])||0;
       const att=attributes.find(a=>a.name===key);
       if(att && (att.val||0)<need)reasons.push(`${m[1]} ${m[2]}`);
     }
@@ -24334,27 +24632,151 @@ function _podSlotInfo(chapId){
   const pl=typeof playerLevel==='number'?playerLevel:0;
   let unlocked=0,total=0;
   for(const m of POD_LEVELS){total+=m.bonus;if(pl>=m.lv)unlocked+=m.bonus}
+  const POOL=['pwv','pwo','pwf','pwa','pwg'];
   let filled=0;
   if(typeof skills!=='undefined'){
     if(chapId)filled=skills.filter(s=>s.origin==='arquetipo'&&s.classe===chapId).length;
-    else filled=skills.filter(s=>s.origin==='arquetipo'&&['pwv','pwo','pwf','pwa'].includes(s.classe)).length;
+    else filled=skills.filter(s=>s.origin==='arquetipo'&&POOL.includes(s.classe)).length;
   }
-  return {unlocked,total,filled,remaining:Math.max(0,unlocked-filled),playerLevel:pl};
+  const filledGlobal=(typeof skills!=='undefined')?skills.filter(s=>s.origin==='arquetipo'&&POOL.includes(s.classe)).length:0;
+  const remainingGlobal=Math.max(0,unlocked-filledGlobal);
+  return {unlocked,total,filled,filledGlobal,remaining:remainingGlobal,playerLevel:pl};
 }
 function _podSlotLabel(chapId){
   const info=_podSlotInfo(chapId);
   return `${info.filled}/${info.unlocked} usados · ${info.remaining} disponí${info.remaining===1?'vel':'veis'}`;
 }
+function _buildReqHtml(reqText){
+  if(!reqText)return '';
+  const r=reqText.trim();
+  const pieces=r.split(/\s*(?:,|·|\be\b)\s*/i).map(s=>s.trim()).filter(Boolean);
+  const playerLvl=typeof playerLevel==='number'?playerLevel:0;
+  const ROMAN={I:1,II:2,III:3,IV:4,V:5,VI:6,VII:7};
+  const attMap={'Físico':'Fisico','Fisico':'Fisico','Psique':'Psique','Motoras':'Motora','Motora':'Motora','Intelecto':'Intelecto','Neural':'Neural','Córtex':'Cortex','Cortex':'Cortex'};
+  return pieces.map(p=>{
+    let met=null;
+    const lvm=p.match(/^N[íi]vel\s+(\d+)$/i);
+    if(lvm){met=playerLvl>=parseInt(lvm[1])}
+    else{
+      const am=p.match(/^(Físico|Fisico|Psique|Motoras?|Intelecto|Neural|Córtex|Cortex)\s+(IV|VI{0,3}|I{1,3}|\d+)$/i);
+      if(am){
+        const need=ROMAN[am[2].toUpperCase()]||parseInt(am[2])||0;
+        const key=attMap[am[1]]||am[1];
+        const att=(typeof attributes!=='undefined')?attributes.find(a=>a.name===key):null;
+        met=att?(att.val||0)>=need:false;
+      }
+    }
+    const cls=met===true?'met':(met===false?'unmet':'unknown');
+    return `<span class="req-piece ${cls}">${p}</span>`;
+  }).join(' · ');
+}
+window._openHabDetail=function(power,ENV){
+  document.querySelectorAll('.hab-detail-overlay').forEach(o=>o.remove());
+  const color=(ENV&&ENV[power.c])||'var(--magenta)';
+  const ov=document.createElement('div');
+  ov.className='hab-detail-overlay';
+  ov.style.setProperty('--c',color);
+  const chapLabel=(power.chapTitle||'').replace(/^Poderes /,'');
+  // Separa Afinidade
+  const fullDesc=power.desc||'';
+  const affMatch=fullDesc.match(/\bAfinidade:\s*(.+)$/is);
+  const baseDesc=affMatch?fullDesc.slice(0,affMatch.index).trim().replace(/[.,;\s]+$/,''):fullDesc;
+  const affText=affMatch?affMatch[1].trim():'';
+  ov.innerHTML=`<div class="hab-detail-modal" role="dialog" aria-label="${power.name}">
+    <button type="button" class="hab-detail-close" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="hab-detail-chap">${chapLabel}</div>
+    <h2 class="hab-detail-name">${power.name}</h2>
+    <div class="hab-detail-desc">${baseDesc}</div>
+    ${affText?`<div class="hab-detail-aff"><div class="aff-label">Afinidade</div><div class="aff-text">${affText}</div></div>`:''}
+  </div>`;
+  document.body.appendChild(ov);
+  requestAnimationFrame(()=>ov.classList.add('open'));
+  const close=()=>{ov.classList.remove('open');setTimeout(()=>ov.remove(),200);document.removeEventListener('keydown',esc)};
+  const esc=e=>{if(e.key==='Escape')close()};
+  ov.addEventListener('click',e=>{if(e.target===ov||e.target.closest('.hab-detail-close'))close()});
+  document.addEventListener('keydown',esc);
+}
+function _parseVersateisBody(html){
+  const tmp=document.createElement('div');tmp.innerHTML=html;
+  let txt=tmp.textContent.replace(/[​ ]/g,' ').replace(/\s+/g,' ').trim();
+  // Lookbehind pra não consumir o pre-char (\s) — regex global precisa pre-char ficar disponível pro próximo match
+  const nameRx=/(?<=^|[.\s])([A-ZÀ-ſ][A-Za-zÀ-ſ]+(?:\s+(?:de|do|da|dos|das|em|no|na|e|[A-ZÀ-ſ][A-Za-zÀ-ſ]+)){0,5}):\s+/g;
+  const ATTR_TOKEN=/^(?:n[íi]vel\s+\d+|f[íi]sico|psique|intelecto|motoras?|sentidos|neural|c[óo]rtex|córtex|cortex)(?:\s+(?:I{1,3}|IV|V|\d+))?$/i;
+  const REQ_LABEL=/^reque(?:r|rimento)?$/i;
+  function stripAttrPrefix(name){
+    // Remove prefixos tipo "Psique III ", "Nível 5 e ", "Físico II e " do nome capturado
+    let n=name.trim();
+    let removed=0;
+    let changed=true;
+    while(changed){
+      changed=false;
+      const m=n.match(/^(n[íi]vel\s+\d+|f[íi]sico|psique|intelecto|motoras?|sentidos|neural|c[óo]rtex|córtex|cortex)(?:\s+(?:I{1,3}|IV|V|\d+))?(?:\s*(?:e|,)\s*)?/i);
+      if(m&&m[0].length>0&&n.length>m[0].length){
+        removed+=m[0].length;
+        n=n.slice(m[0].length);
+        // Conta espaços removidos no trim
+        const trimLen=n.length-n.trimStart().length;
+        removed+=trimLen;
+        n=n.trimStart();
+        changed=true;
+      }
+    }
+    return {cleaned:n,removedLen:removed};
+  }
+  const all=[];let m;
+  while((m=nameRx.exec(txt))){
+    let name=m[1].trim();
+    const matchStart=m.index;
+    const bodyStart=m.index+m[0].length;
+    all.push({rawName:name,name,matchStart,bodyStart});
+  }
+  // Limpa cada match: remove prefix de atributos/nivel; ajusta nameStart real
+  for(const x of all){
+    const {cleaned,removedLen}=stripAttrPrefix(x.rawName);
+    x.cleanedName=cleaned;
+    x.realNameStart=x.matchStart+removedLen;
+    x.isLabel=REQ_LABEL.test(x.rawName);
+    x.isAttrOnly=ATTR_TOKEN.test(x.rawName);
+    // Filtra nomes inválidos: começando lowercase ou < 3 chars
+    const firstChar=cleaned.charAt(0);
+    const startsUpper=firstChar&&firstChar===firstChar.toUpperCase()&&firstChar!==firstChar.toLowerCase();
+    x.isPureReq=x.isLabel||x.isAttrOnly||cleaned.length<3||!startsUpper;
+  }
+  // Walk: power = match não-puro-req. desc vai até próximo power
+  const out=[];
+  for(let i=0;i<all.length;i++){
+    const cur=all[i];
+    if(cur.isPureReq)continue;
+    let j=i+1;
+    while(j<all.length&&all[j].isPureReq)j++;
+    const next=all[j];
+    const sliceEnd=next?next.realNameStart:txt.length;
+    let body=txt.slice(cur.bodyStart,sliceEnd).trim();
+    let req='';
+    const rm=body.match(/Reque(?:r|rimento)?\.?:\s*(.+?)$/is);
+    if(rm){req=rm[1].trim();body=body.slice(0,rm.index).trim()}
+    body=body.replace(/[.\s,]+$/,'').trim();
+    if(!body)continue;
+    out.push({name:cur.cleanedName,desc:body,req});
+  }
+  return out;
+}
 function _gatherPodPowers(){
   const out=[];
   if(typeof BIBLIO_DATA==='undefined')return out;
-  const pods=BIBLIO_DATA.filter(c=>c.cat==='pod');
+  const pods=BIBLIO_DATA.filter(c=>c.cat==='pod'||c.id==='pvs');
   for(const ch of pods){
     let html=ch.body||'';
     if(typeof _BIBLIO_FULL!=='undefined'&&_BIBLIO_FULL&&typeof BIBLIO_TITLE_MAP!=='undefined'){
       const titleKey=BIBLIO_TITLE_MAP[ch.id];
       const full=_BIBLIO_FULL.find(c=>c.title===titleKey);
       if(full&&full.html)html=full.html;
+    }
+    if(ch.id==='pvs'){
+      for(const it of _parseVersateisBody(html)){
+        out.push({name:it.name,desc:it.desc,req:it.req,chap:'pwg',chapTitle:ch.title,c:ch.c});
+      }
+      continue;
     }
     const tmp=document.createElement('div');tmp.innerHTML=html;
     for(const p of tmp.children){
@@ -24384,6 +24806,258 @@ function _gatherPodPowers(){
   }
   return out;
 }
+function _parseCplBody(html){
+  const tmp=document.createElement('div');tmp.innerHTML=html;
+  const out=[];const seen=new Set();
+  tmp.querySelectorAll('em').forEach(em=>{
+    const name=em.textContent.replace(/\.$/,'').trim();
+    if(!name||name.length<3||name.length>50||seen.has(name.toLowerCase()))return;
+    let desc='';let n=em.nextSibling;
+    while(n){
+      if(n.nodeType===1&&n.tagName==='EM')break;
+      if(n.nodeType===3)desc+=n.nodeValue;
+      else if(n.nodeType===1)desc+=n.textContent;
+      n=n.nextSibling;
+    }
+    desc=desc.trim().replace(/\s+/g,' ');
+    if(desc.length>=10){out.push({name,desc});seen.add(name.toLowerCase())}
+  });
+  // -Nome- ▪ desc no texto puro
+  const txt=tmp.textContent.replace(/\s+/g,' ');
+  const dashRx=/-([A-ZÀ-ſ][A-Za-zÀ-ſ\s-]{2,40}?)-\s*▪\s*([^.]+\.(?:[^.]+\.){0,3})/g;
+  let m;while((m=dashRx.exec(txt))){
+    const name=m[1].replace(/-/g,' ').trim();
+    if(seen.has(name.toLowerCase()))continue;
+    out.push({name,desc:m[2].trim()});
+    seen.add(name.toLowerCase());
+  }
+  return out;
+}
+const MALD_ELEMENTS=[
+  {id:'geral',l:'Geral',c:'#3b82f6'},
+  {id:'alba',l:'Alba',c:'#22c55e'},
+  {id:'carmim',l:'Carmim',c:'#dc2626'},
+  {id:'ruina',l:'Ruína',c:'#1f2937'},
+  {id:'perene',l:'Perene',c:'#e5e7eb'},
+  {id:'lumen',l:'Lúmen',c:'#d4af37'},
+  {id:'kaos',l:'Kaos',c:'#7c3aed'}
+];
+const MALD_CATALOG=[
+  {name:'Aprender Feitiços',el:'geral',desc:'Você domina os fundamentos de um ritual oculto. Escolha um ritual de 1° Grau para aprender e usar normalmente. Ao ganhar um novo poder paranormal, pode trocá-lo por outro do mesmo Grau. A partir do Nível 4, pode substituí-lo por um de 2° Grau. Pode ser adquirido uma vez por Essência e conta como um poder daquela Essência. Afinidade: Você aprende dois rituais de até 2° Grau da mesma Essência, podendo trocá-lo ao adquirir um novo poder paranormal. A partir do Nível 8, pode substituí-lo por um ritual de 3° Grau, ritual de 4° Grau só da essência escolhida.'},
+  {name:'Resistência Essencial',el:'geral',desc:'Você endurece seu corpo e mente contra uma das Essências. Escolha uma Essência (Alba, Carmim, Ruína, Ethernus, Lúmen ou Kaos). Você recebe resistência a dano 2 contra efeitos desta Essência. Afinidade: A resistência aumenta para 4.'},
+  {name:'Assimilação Vital',el:'alba',req:'Alba II (afinidade)',desc:'Sempre que causar dano corpo a corpo ou tocar voluntariamente uma criatura viva, o usuário pode gastar 2 Esforço para assimilar temporariamente uma característica física ou funcional do alvo, concedendo +2 em uma perícia ou um benefício narrativo até o fim da cena. Afinidade: Uma vez por missão, o usuário pode tornar permanente uma característica assimilada, em forma atenuada, mantendo o benefício narrativo e um bônus reduzido de +1 relacionado à adaptação.'},
+  {name:'Carne em Comunhão',el:'alba',req:'Alba I',desc:'Ao gastar 2 Esforço, o usuário e aliados em alcance curto compartilham adaptações simples, recebendo +1 em testes físicos e ignorando penalidades leves de terreno ou ambiente até o fim da cena. Afinidade: Enquanto o efeito durar, aliados podem usar a melhor Percepção do grupo e recebem resistência leve a dano ambiental.'},
+  {name:'Assimilação Instintiva',el:'alba',desc:'Enquanto estiver em um ambiente com criaturas vivas, o usuário recebe +1 em testes físicos de movimento ou resistência enquanto permanecer no local. Afinidade: A adaptação se torna consciente, permitindo ao usuário escolher receber +2 em um único teste físico por rodada enquanto estiver em contato com outros seres vivos.'},
+  {name:'Carne Maleável',el:'alba',desc:'O usuário ignora penalidades por espaços apertados, empurrões leves e terreno irregular. Afinidade: Além de ignorar penalidades, o usuário pode atravessar aberturas improváveis ou superfícies instáveis sem testes adicionais.'},
+  {name:'Ecos de Vida',el:'alba',desc:'O usuário percebe a presença de vida como vibração orgânica no ambiente. Criaturas vivas em alcance curto nunca são consideradas completamente ocultas para ele, mesmo atrás de cobertura leve ou obstáculos orgânicos. Afinidade: A percepção se amplia e passa a funcionar através de paredes finas e solo raso, desde que haja vida do outro lado.'},
+  {name:'Fusão Momentânea',el:'alba',req:'Alba I',desc:'Ao gastar 2 Esforço, o usuário entra em sintonia com um ser vivo adjacente e, até o fim da rodada, pode usar o maior atributo físico entre os dois em testes físicos. Afinidade: A fusão passa a durar 1d4 rodadas e pode ser mantida mesmo se o alvo se afastar.'},
+  {name:'Memória Orgânica',el:'alba',req:'Alba I',desc:'Na primeira vez em uma cena que sofrer um tipo de dano, o usuário recebe resistência leve contra esse tipo até o fim da cena. Afinidade: A resistência passa a ser média e pode ser ativada mesmo sem sofrer dano, uma vez por cena.'},
+  {name:'Crescimento Reativo',el:'alba',req:'Alba II',desc:'A carne do usuário responde à violência com expansão e densidade aumentada. Sempre que sofrer dano, pode gastar 2 Esforço para receber +1 em Defesa ou +1 Passo de dano corpo a corpo até o próximo turno. Afinidade: O bônus pode ser aplicado simultaneamente à Defesa e ao dano, limitado a uma vez por rodada.'},
+  {name:'Comunhão Vital',el:'alba',req:'Alba II',desc:'Ao gastar 3 Esforço, aliados em alcance curto podem usar o melhor valor de Robustez ou Atletismo do grupo em testes de resistência até o fim da cena. Afinidade: Além disso, aliados ignoram condições físicas leves enquanto permanecerem próximos.'},
+  {name:'Forma Adaptável',el:'alba',req:'Alba III',desc:'Ao gastar 3 Esforço, o usuário escolhe um benefício adaptativo (deslocamento aumentado, respiração alternativa, resistência ambiental ou vantagem em testes físicos) até o fim da cena. Afinidade: O usuário pode manter dois benefícios ativos simultaneamente.'},
+  {name:'Assimilação Profunda',el:'alba',req:'Alba IV',desc:'O usuário absorve padrões vitais complexos, integrando-os à própria biologia. Uma vez por cena, pode gastar 4 Esforço para copiar uma característica especial simples de uma criatura viva que tenha observado durante a cena. Afinidade: A característica copiada pode ser mantida até o próximo descanso.'},
+  {name:'Unidade Viva',el:'alba',req:'Alba V',desc:'Ao gastar 5 Esforço, o usuário cria uma área em alcance médio onde criaturas vivas não sofrem penalidades físicas severas e recuperam 1 Vitalidade por rodada enquanto permanecerem nela. Afinidade: Além da recuperação, aliados podem substituir testes de Robustez por Vontade ou Atletismo à escolha.'},
+  {name:'Batimento Excedente',el:'carmim',desc:'Uma vez por rodada, ao gastar 2 Esforço, o usuário recebe +2 em um teste físico ou +1 passo de dano corpo a corpo até o fim da ação. Afinidade: Sempre que ativar este poder e sofrer dano na mesma rodada, o usuário recupera 2 Vitalidade.'},
+  {name:'Células Cicatrizantes',el:'carmim',desc:'O corpo do usuário se reorganiza de forma contínua tratando o descanso como um processo ativo de reconstrução vital. Ao dormir recupera +2 Vitalidade e +1 Esforço por limite de Esforço por rodada de descanso. Afinidade: A regeneração aumenta para +4 Vitalidade e +2 Esforço. Durante o descanso, o usuário pode compartilhar o efeito com um aliado, que recupera +2 Vitalidade e +2 Esforço, enquanto o usuário passa a recuperar apenas +2 Vitalidade e +2 Esforço além do normal.'},
+  {name:'Confiança',el:'carmim',req:'Carmim I',desc:'O corpo do usuário se adapta a estados de limitação e entorpecimento transformando desconforto em estabilidade funcional. Enquanto estiver sob efeito de paralisia ou fadiga, o usuário recebe +2 em todas as perícias. Afinidade: A adaptação se torna agressiva fazendo com que o usuário receba +1 Passo de dano corpo a corpo e +2 em Defesa enquanto essas condições estiverem ativas.'},
+  {name:'Consumo Impulsivo',el:'carmim',desc:'O usuário transforma ferimentos recentes em combustível imediato. Sempre que sofrer dano, pode gastar 2 Esforço para receber +2 em testes de ataque até o fim do próximo turno. Afinidade: Se reduzir um inimigo a 0 Vitalidade enquanto este bônus estiver ativo, o usuário recupera 2 Esforço.'},
+  {name:'Feridas Permanentes',el:'carmim',desc:'O usuário reconhece rupturas vitais abertas e direciona seus ataques para pontos já comprometidos. Contra inimigos que tenham sofrido dano desde seu último turno, o usuário recebe +1d em testes de ataque. Afinidade: O bônus aumenta para +2d em testes de ataque e o usuário recebe +2 em rolagens de dano.'},
+  {name:'Glutão',el:'carmim',req:'Carmim I',desc:'O usuário recebe +4 espaços de inventário e pode sacar itens armazenados como ação livre ao custo de 1 Esforço. Itens guardados assim não são detectáveis por meios convencionais. Afinidade: O bônus aumenta para +6 espaços e o usuário não precisa gastar Esforço para sacar itens armazenados como ação livre.'},
+  {name:'Olhos nas Costas',el:'carmim',desc:'O usuário desenvolve percepção contínua do espaço ao redor eliminando pontos cegos e antecipando ameaças. O usuário passa a ter visão em 360°, tornando-se imune a flanqueamento. Afinidade: O usuário se torna imune às condições Surpreendido e Vulnerável. Caso seja afetado por Cegueira ou Ofuscado, sofre o dobro do efeito.'},
+  {name:'Pulso Carmesim',el:'carmim',req:'Carmim II',desc:'A vitalidade do usuário se manifesta em ondas de pressão agressiva. Uma vez por cena, ao gastar 3 Esforço, inimigos em alcance curto sofrem –2 em Defesa até o fim da rodada atual. Afinidade: Além do efeito normal, o usuário recebe +1 em testes de ataque contra alvos afetados até o fim do próximo turno.'},
+  {name:'Sede de Sangue',el:'carmim',desc:'Sempre que realiza um acerto crítico ou reduz um inimigo a 0 Vitalidade, o usuário recebe +1 cumulativo em testes de ataque, limitado pelo valor de Físico. Afinidade: O bônus também se aplica às rolagens de dano e o limite passa a ser o dobro do valor de Físico.'},
+  {name:'Vínculo de Dor Compartilhada',el:'carmim',req:'Carmim II',desc:'O usuário estabelece uma ligação instintiva entre sua própria vitalidade e a de um aliado adjacente. Enquanto permanecerem próximos, sempre que um deles sofrer dano, o outro pode escolher sofrer 1 Vitalidade de dano para reduzir o dano recebido pelo aliado em 2. Afinidade: Uma vez por cena, quando este efeito reduzir dano, o usuário pode recuperar 1 Esforço.'},
+  {name:'Aparar',el:'ruina',desc:'Ao sofrer um ataque corpo a corpo, o usuário pode gastar 3 Esforço para testar ataque corpo a corpo contra o inimigo. Se vencer, todo o dano é anulado. Afinidade: O custo do poder é reduzido para 2 Esforço. Se o ataque for aparado com sucesso, o usuário pode gastar 1 Esforço para realizar um ataque imediato contra o agressor se estiver ao alcance.'},
+  {name:'Ataque Espacial',el:'ruina',req:'Ruína I',desc:'O usuário distorce o trajeto do golpe atingindo o alvo por um ponto impossível. Ao realizar um ataque, pode gastar 2 Esforço para deixar o alvo Vulnerável contra esse ataque. Afinidade: O custo é reduzido para 1 Esforço e o alvo fica Desprevenido em vez de Vulnerável.'},
+  {name:'Casca da Ruína',el:'ruina',req:'Ruína II',desc:'Ao gastar 2 Esforço como ação de movimento, o corpo do usuário se envolve em cinzas. Sempre que for atacado, o agressor sofre dano igual à Presença do usuário e, se errar, o usuário recupera 2 Vitalidade. Afinidade: O custo passa a ser 3 Esforço. O dano refletido se torna 2× Psique e a recuperação passa a ser 5 Vitalidade.'},
+  {name:'Empunhadura Poderosa',el:'ruina',req:'Ruína II',desc:'O usuário distorce o peso da arma, podendo empunhar uma categoria maior ou uma arma de duas mãos como se fosse de uma, com –1d nos testes de ataque. Afinidade: O usuário ignora todas as penalidades deste poder.'},
+  {name:'Falso Conforto',el:'ruina',req:'Ruína II',desc:'O usuário exala uma presença decadente porém estranhamente acolhedora. Recebe +2 em Diplomacia, Enganação, Artes e Adestramento. Afinidade: Além do bônus normal, o usuário recebe +2 na DT de todas as suas habilidades, pois alvos tendem a confiar e ceder à sua presença.'},
+  {name:'Laços de Lodo',el:'ruina',desc:'O usuário manifesta extensões viscosas que prendem e puxam inimigos. Recebe +1d em testes de agarrar e pode agarrar alvos em alcance médio. Ao agarrar à distância, pode usar uma ação de movimento para puxar o alvo até si. Afinidade: O bônus se torna +5 fixo e o alcance aumenta para o extremo.'},
+  {name:'Ladrão do Tempo',el:'ruina',desc:'A percepção do usuário se estende além do fluxo normal. Recebe +2 em Crime e Desarmar. Afinidade: Como ação decisiva, o usuário pode tentar roubar ações de um inimigo realizando um teste de Crime contra os Reflexos do alvo. Em sucesso, rouba 1 ação de movimento. Em sucesso por 2 ou mais, rouba 1 ação decisiva. Por 14 ou mais, rouba 1 ação completa. Por 18 ou mais, o alvo perde a rodada inteira.'},
+  {name:'Lunar',el:'ruina',desc:'O usuário gira o próprio corpo como um eixo de destruição atingindo todos os alvos ao alcance corpo a corpo com um único movimento. Afinidade: O usuário rola o dano uma única vez e aplica o mesmo valor a todos os alvos atingidos. Cada alvo acertado recebe +2 nesse dano.'},
+  {name:'Raízes da Ruína',el:'ruina',desc:'O usuário se ancora ao solo com estruturas decadentes tornando-se imóvel. Enquanto ativo, recebe bônus em Defesa igual ao Físico e pode substituir testes de Reflexos por Robustez. Afinidade: O usuário também pode substituir testes de Vontade e receber cura acelerada 2 enquanto estiver ancorado.'},
+  {name:'Vorpal',el:'ruina',req:'Ruína I',desc:'Os golpes do usuário exploram falhas estruturais absolutas. Sempre que realizar um ataque e obtiver 20 natural em pelo menos dois dados, aumenta o multiplicador de crítico em +1. Afinidade: Além do dano aumentado, o usuário pode mutilar o alvo, arrancando membros ou sentidos. Em três dados 20 naturais, pode decapitar criaturas vulneráveis. Em quatro dados 20 naturais ou mais, a destruição é imediata se narrativamente possível.'},
+  {name:'Âncora da Existência',el:'perene',desc:'A presença do usuário se fixa na realidade, tornando difícil que forças externas o alterem. O usuário recebe +2 em testes para resistir a efeitos que causem transformação, deslocamento forçado ou mudança de estado físico ou mental. Afinidade: A âncora se estende ao redor, permitindo que aliados em alcance curto recebam +1 nesses mesmos testes enquanto permanecerem próximos.'},
+  {name:'Corpo Imutável',el:'perene',desc:'O corpo do usuário mantém uma configuração constante, rejeitando alterações involuntárias. Condições físicas simples como Fraco, Enjoado ou Desorientado têm sua duração reduzida pela metade. Afinidade: O usuário pode ignorar completamente a primeira condição física simples que sofreria em cada cena.'},
+  {name:'Eco do Que Foi',el:'perene',desc:'O usuário carrega lembranças tão densas que elas interferem no presente. Uma vez por cena, pode repetir um teste recém-falhado, usando exatamente o mesmo atributo e perícia, mantendo todos os modificadores. Afinidade: Ao repetir o teste, recebe +2 no resultado final.'},
+  {name:'Estado Preservado',el:'perene',req:'Perene I',desc:'O usuário pode gastar 2 Esforço para fixar seu estado atual até o fim da rodada. Durante esse período, não pode perder Vitalidade, Esforço ou sofrer novas condições, mas também não pode recuperar nenhum desses recursos. Afinidade: O efeito pode durar até 1d4 rodadas, pagando 1 Esforço adicional por rodada extra.'},
+  {name:'Inércia Vital',el:'perene',req:'Perene I',desc:'A energia do usuário se recusa a entrar em colapso. Sempre que seus Vitalidade chegariam a 0, ele permanece consciente por 1 rodada adicional antes de cair, podendo agir normalmente. Afinidade: Uma vez por cena, esse efeito ocorre sem custo algum.'},
+  {name:'Memória Inapagável',el:'perene',desc:'O usuário nunca esquece informações importantes. Recebe +2 em testes de Investigação, Atualidades ou Percepção relacionados a eventos já presenciados ou estudados anteriormente. Afinidade: O usuário pode acessar detalhes que outros esqueceram completamente, mesmo sem registros físicos.'},
+  {name:'Preservação Compartilhada',el:'perene',req:'Perene II',desc:'Ao gastar 3 Esforço, o usuário estende sua estabilidade a aliados em alcance curto. Até o fim da cena, efeitos de deterioração como sangramento, veneno ou exaustão não se agravam nesses aliados. Afinidade: Além de não se agravarem, esses efeitos têm sua duração reduzida em 1 rodada ao serem aplicados.'},
+  {name:'Retenção do Instante',el:'perene',req:'Perene III',desc:'O usuário fixa um momento específico da própria existência. Uma vez por cena, pode gastar 4 Esforço para retornar imediatamente ao estado em que estava no início do turno anterior, recuperando posição, Vitalidade e condições daquele momento. Afinidade: O usuário pode escolher retornar ao estado de até 2 turnos atrás.'},
+  {name:'Agilidade Imprópria',el:'kaos',desc:'O corpo se move de forma antinatural, permitindo usar Motoras em testes de ataque com qualquer arma, ignorando restrições de uso. Afinidade: Sempre que usar Motoras para atacar, o usuário recebe +2 na margem de ameaça do ataque.'},
+  {name:'Aprendizado Fraturado',el:'kaos',desc:'O conhecimento do usuário se reorganiza de forma instável. Durante um interlúdio, escolha uma perícia treinada e role 1d8 por grau de treinamento. Até o próximo interlúdio, esse resultado substitui o bônus normal da perícia. Afinidade: Em vez de 1d8, role 2d4+1 por grau e pode afetar duas perícias na mesma ação.'},
+  {name:'Descarga Primária',el:'kaos',desc:'Energia elemental instável se manifesta de forma bruta. Ao adquirir este poder, escolha um tipo de dano elemental. (1) Cone de 4,5m: ação decisiva, 2 Esforço, causa 3d6 de dano. (2) Disparo concentrado: ação de movimento, 2 Esforço, ataque único que causa 6d6 de dano. Após ser utilizado, o poder entra em recarga por 8 - Físico, em rodadas. Afinidade: O dano passa para 4d6 / 8d6, a recarga reduz para 5 – Vigor, e o usuário pode investir 3 Esforço permanentes para permitir crítico 20/x3.'},
+  {name:'Deslocamento Entrópico',el:'kaos',desc:'O movimento do usuário não segue trajetórias previsíveis. Seu deslocamento aumenta em +3m, e ele soma Motoras ao total de Esforço máximo. Afinidade: O bônus de deslocamento aumenta para +9m, e no primeiro turno de cada cena o usuário recebe +1 ação de movimento, apenas para deslocamento.'},
+  {name:'Disparo Desancorado',el:'kaos',desc:'Ao gastar 2 Esforço em um ataque à distância, o disparo ignora cobertura leve e parcial e penalidade de alcance médio, mesmo em erro, e após o ataque role 1d4 para aplicar um efeito. (1) O recuo entrópico desestabiliza o usuário, que sofre –1 em Defesa até o início do próximo turno. (2) A energia se dissipa de forma irregular, sem efeitos adicionais. (3) A trajetória se corrige no impacto, causando +1 Passo de dano. (4) O disparo colapsa perfeitamente, causando +1 Passo de dano e concedendo +1 em Precisão até o fim do próximo turno. Afinidade: O usuário passa a modular melhor a instabilidade. Ao usar este poder, pode rolar 2d4 e escolher um dos resultados. Se o resultado escolhido for 4, o bônus de Precisão aumenta para +2.'},
+  {name:'Eco Vibracional',el:'kaos',desc:'Você sente presença, direção e movimento de criaturas em alcance médio, mesmo através de obstáculos, desde que estejam em movimento. Afinidade: O alcance aumenta para longo, e o usuário ignora penalidades causadas por sentidos bloqueados ou interferência sensorial.'},
+  {name:'Erro Premiado',el:'kaos',desc:'O fracasso do inimigo alimenta o caos ofensivo do usuário. Sempre que um inimigo errar um ataque contra ele, pode gastar 2 Esforço para receber +1d em testes de ataque contra esse inimigo até o fim do próximo turno. Afinidade: Além do bônus normal, o próximo ataque ignora até 4 de RD e causa +2 de dano.'},
+  {name:'Recusa do Fim',el:'kaos',desc:'A morte hesita diante da instabilidade do usuário. Sempre que entrar no estado Morrendo, ele possui 4 rodadas para ser estabilizado em vez de 3. Afinidade: O limite aumenta para 5 rodadas.'},
+  {name:'Reescrita do Acaso',el:'kaos',desc:'O usuário se recusa a aceitar um resultado falho. Após falhar em um teste, pode gastar 2 Esforço para rolar novamente. Se falhar outra vez, perde 1d6 Esforço. Afinidade: O custo reduz para 1 Esforço, e a perda passa a ser 1d3 Esforço.'},
+  {name:'Reversão Entropia',el:'kaos',desc:'Sempre que realizar um ataque bem-sucedido, o usuário pode gastar 2 Esforço para alterar o tipo de dano. Role 1d6 para definir o novo tipo, antes de aplicar resistências, vulnerabilidades ou imunidades. Tabela 1d6: 1-Impacto, 2-Cortante, 3-Perfurante, 4-Fogo, 5-Elétrico, 6-Químico. O ataque mantém todos os demais modificadores, Passos de dano e efeitos adicionais, alterando apenas a natureza do dano. Afinidade: Ao usar Reversão Entropia, o usuário rola 2d6 e escolhe um resultado. Se o dano explorar uma vulnerabilidade do alvo, o ataque causa +1 passo de dano.'},
+  {name:'Antagonista Ambiental',el:'lumen',desc:'O usuário não reage ao ambiente, ele o contradiz. Fenômenos naturais deixam de ser ameaças e passam a ser variáveis irrelevantes, fazendo com que penalidades causadas por clima, terreno, pressão, temperatura, fumaça, poeira ou condições ambientais semelhantes simplesmente não se apliquem a ele. Afinidade: A presença do usuário impõe estabilidade absoluta ao entorno imediato, tornando-o imune a qualquer dano ou penalidade plausível causada por ambientes hostis e fazendo com que qualquer descanso realizado conte como confortável, independentemente do local.'},
+  {name:'A Voz de Todas as Coisas',el:'lumen',desc:'O usuário compreende o significado e a intenção por trás de qualquer som, vibração ou manifestação, entendendo criaturas, seres paranormais e formas de consciência não convencionais, mesmo sem linguagem estruturada ou cognição reconhecível. Afinidade: O usuário pode interagir e conversar com qualquer coisa, viva ou não. Objetos, criaturas e fenômenos o compreendem e respondem de forma coerente, e testes para lidar com eles passam a usar Diplomacia com +2.'},
+  {name:'Destino Selado',el:'lumen',req:'Lúmen III',desc:'Ao gastar 3 Esforço, o usuário rola 5d20 e registra os resultados em ordem. Até o fim da cena ou até usá-los, pode substituir a rolagem de um teste por esses valores na ordem, após rolar e antes de bônus ou penalidades. Não funciona em ataques. Afinidade: O Destino Selado passa a custar 2 Esforço, rola 7d20 e os valores registrados podem substituir qualquer teste, incluindo ataques, resistências e rolagens narrativas.'},
+  {name:'Duro na Queda',el:'lumen',req:'Lúmen I',desc:'A mente do usuário se recusa a colapsar facilmente. Quando entra no estado Enlouquecendo, ele permanece funcional por 4 turnos em vez de 3, mantendo consciência e capacidade de agir antes do colapso total. Afinidade: O limite de turnos antes do colapso mental definitivo aumenta para 5.'},
+  {name:'Identidade Sintética',el:'lumen',desc:'O usuário domina a lógica documental e social do mundo, sendo capaz de fabricar documentos simples perfeitamente convincentes, como identidades, autorizações básicas ou registros comuns, gastando 2 Esforço. Afinidade: O usuário pode fabricar documentos complexos, como contratos jurídicos, registros oficiais extensos ou arquivos institucionais completos, mantendo validade narrativa mesmo sob análise especializada.'},
+  {name:'Palavras Afiadas',el:'lumen',req:'Lúmen I',desc:'O usuário transforma lógica e discurso em força ofensiva direta, podendo gastar 2 Esforço para somar seu Intelecto às rolagens de dano realizadas com armas, representando ataques guiados por análise e intenção precisa. Afinidade: O usuário pode gastar 10 Esforço para somar o valor de Intelecto também à quantidade de dados rolados para o dano.'},
+  {name:'Palavras do Bem',el:'lumen',desc:'O usuário utiliza discurso, clareza e propósito para restaurar o equilíbrio mental do grupo. Ao gastar uma ação de interlúdio e 1 Esforço, restaura 1d4 de Sanidade dos aliados e, para cada Nível 3, pode gastar 2 Esforço adicionais para curar +1d4. Afinidade: A cura base e adicional passam a ser 1d6, o custo adicional cai para 1 Esforço e o usuário pode gastar 5 Esforço extras para remover 1 Trauma de cada aliado afetado.'},
+  {name:'Previsões',el:'lumen',req:'Lúmen I',desc:'O usuário antecipa padrões imediatos do futuro próximo. Sempre que for alvo de um efeito que permita um teste de Reflexos para reduzir o dano à metade, não sofre dano algum em caso de sucesso. Afinidade: Mesmo em falha no teste de Reflexos, o usuário sofre apenas metade do dano.'},
+  {name:'Sigilo Limitante',el:'lumen',req:'Lúmen II',desc:'Com uma ação completa, o usuário testa Reflexos vs. Reflexos e, em sucesso, o alvo não pode usar uma perícia escolhida pelo usuário (exceto Luta, Pontaria, Vontade ou Robustez) pela cena, com máximo de dois sigilos simultâneos. Afinidade: O usuário pode bloquear uma perícia adicional ao aplicar o sigilo.'},
+  {name:'Tudo Conforme os Planos',el:'lumen',req:'Lúmen II',desc:'O usuário escolhe perícias treinadas iguais ao Intelecto e pode gastar 2 Esforço para tratar o resultado como 10 nesses testes, exceto ataques. Afinidade: Custo cai para 1 Esforço e, uma vez por missão, o usuário pode gastar 2 Esforço para tratar um teste como 20, inclusive em ataques.'}
+];
+function _openElementPickModal(item,onPick){
+  document.querySelectorAll('.elpick-overlay').forEach(o=>o.remove());
+  const elements=MALD_ELEMENTS.filter(e=>e.id!=='geral');
+  const ov=document.createElement('div');
+  ov.className='elpick-overlay';
+  const cardsHtml=elements.map(e=>`<button type="button" class="elpick-card" data-el="${e.id}" style="--c:${e.c}">
+    <span class="elpick-dot"></span>
+    <span class="elpick-name">${e.l}</span>
+  </button>`).join('');
+  ov.innerHTML=`<div class="elpick-modal" role="dialog">
+    <button type="button" class="elpick-close" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <h2 class="elpick-title">Escolha a Essência</h2>
+    <p class="elpick-sub">"${item.name}" é uma maldição Geral — vincule a uma essência específica.</p>
+    <div class="elpick-grid">${cardsHtml}</div>
+  </div>`;
+  document.body.appendChild(ov);
+  requestAnimationFrame(()=>ov.classList.add('open'));
+  const close=()=>{ov.classList.remove('open');setTimeout(()=>ov.remove(),200);document.removeEventListener('keydown',esc)};
+  const esc=e=>{if(e.key==='Escape')close()};
+  ov.addEventListener('click',e=>{
+    if(e.target===ov||e.target.closest('.elpick-close')){close();return}
+    const card=e.target.closest('.elpick-card');
+    if(card){close();onPick(card.dataset.el)}
+  });
+  document.addEventListener('keydown',esc);
+}
+window.openCplMaldPicker=function(type){
+  document.querySelectorAll('.cpl-picker-overlay').forEach(o=>o.remove());
+  const isMald=type==='mald';
+  let items;
+  if(isMald){
+    items=MALD_CATALOG.slice();
+  }else{
+    const cplEntry=(typeof BIBLIO_DATA!=='undefined')?BIBLIO_DATA.find(c=>c.id==='cpl'):null;
+    items=cplEntry?_parseCplBody(cplEntry.body||''):[];
+  }
+  const targetArr=isMald?(window._malds||[]):(window._comps||[]);
+  const has=(name)=>targetArr.some(x=>(x.name||'').toLowerCase()===name.toLowerCase());
+  const accentColor=isMald?'#dc2626':'#fb923c';
+  const overlay=document.createElement('div');
+  overlay.className='hab-picker-overlay cpl-picker-overlay';
+  overlay.style.setProperty('--c',accentColor);
+  const cardsHtml=items.map(p=>{
+    const owned=has(p.name);
+    // Separa Afinidade do desc principal
+    const affMatch=(p.desc||'').match(/\bAfinidade:\s*(.+)$/is);
+    const baseDesc=affMatch?p.desc.slice(0,affMatch.index).trim().replace(/[.,;\s]+$/,''):(p.desc||'').trim();
+    const affText=affMatch?affMatch[1].trim():'';
+    const truncated=baseDesc.length>240;
+    let descShort=baseDesc;
+    if(truncated){
+      const slice=baseDesc.slice(0,240);
+      const lastDot=slice.lastIndexOf('. ');
+      const cutAt=lastDot>120?lastDot+1:240;
+      descShort=baseDesc.slice(0,cutAt).trim();
+    }
+    let elMeta=null,elColor=accentColor,elLabel=isMald?'MALDIÇÃO':'COMPLICAÇÃO';
+    if(isMald&&p.el){
+      elMeta=MALD_ELEMENTS.find(e=>e.id===p.el);
+      if(elMeta){elColor=elMeta.c;elLabel=elMeta.l.toUpperCase()}
+    }
+    return `<div class="hab-picker-card${owned?' owned':''}" data-power-name="${encodeURIComponent(p.name)}" data-power-desc="${encodeURIComponent(p.desc)}" data-el="${p.el||''}" style="--c:${elColor}">
+      <div class="hab-picker-card-head">
+        <span class="hab-picker-card-name">${p.name}</span>
+        <span class="hab-picker-card-chap">${elLabel}</span>
+      </div>
+      <div class="hab-picker-card-desc">${descShort}${truncated?` <button type="button" class="hab-picker-readmore">Ler mais</button>`:''}</div>
+      ${affText?`<div class="hab-picker-card-aff"><span class="aff-label">Afinidade</span><span class="aff-text">${affText}</span></div>`:''}
+      <div class="hab-picker-card-foot">
+        ${p.req?`<span class="hab-picker-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>${p.req}</span>`:'<span class="hab-picker-ok">Disponível</span>'}
+        ${owned?'<button class="hab-picker-add owned" disabled>Já tem</button>':'<button class="hab-picker-add" data-name="'+encodeURIComponent(p.name)+'">Adicionar</button>'}
+      </div>
+    </div>`;
+  }).join('');
+  const elFiltersHtml=isMald?`<div class="hab-picker-filters"><button class="hab-picker-chip active" data-el="">Todos</button>${MALD_ELEMENTS.map(e=>`<button class="hab-picker-chip" data-el="${e.id}" style="--c:${e.c}">${e.l}</button>`).join('')}</div>`:'';
+  overlay.innerHTML=`<div class="hab-picker-modal" role="dialog">
+    <div class="hab-picker-head">
+      <div class="hab-picker-title">
+        <span class="hab-picker-ico" style="color:${accentColor};border-color:color-mix(in srgb,${accentColor} 50%,var(--border))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${isMald?'<path d="M12 2c2 4 5 5 5 9.5a5 5 0 1 1-10 0c0-2 .8-3 1.7-3.8.1 1.4.9 2.3 2.1 2.3 0-2.2-1.3-3-1.3-5.2 0-1.3 1.1-2.3 2.5-2.8z"/>':'<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>'}</svg></span>
+        <span>Adicionar ${isMald?'Maldição':'Complicação'}</span>
+      </div>
+      <button type="button" class="hab-picker-close" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="hab-picker-toolbar">
+      <div class="hab-picker-search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="cpl-picker-search" placeholder="Buscar pelo nome..." autocomplete="off">
+      </div>
+    </div>
+    ${elFiltersHtml}
+    <div class="hab-picker-body">${items.length?cardsHtml:'<div class="hab-picker-empty">Nenhum item da biblioteca</div>'}</div>
+    <div class="hab-picker-foot"><span>${items.length} ${isMald?'maldições':'complicações'}</span></div>
+  </div>`;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(()=>overlay.classList.add('open'));
+  const close=()=>{overlay.classList.remove('open');setTimeout(()=>overlay.remove(),240);document.removeEventListener('keydown',esc)};
+  const esc=(e)=>{if(e.key==='Escape')close()};
+  overlay.addEventListener('click',e=>{
+    if(e.target===overlay||e.target.closest('.hab-picker-close')){close();return}
+    const card=e.target.closest('.hab-picker-card');
+    const btnAdd=e.target.closest('.hab-picker-add');
+    if(card&&!btnAdd){
+      const name=decodeURIComponent(card.dataset.powerName);
+      const item=items.find(p=>p.name===name)||{};
+      const elMeta=item.el?MALD_ELEMENTS.find(e=>e.id===item.el):null;
+      const chapTitle=isMald?(elMeta?elMeta.l:'Maldição'):'Complicação';
+      window._openHabDetail({name,desc:item.desc||'',req:item.req||'',chapTitle,c:elMeta?elMeta.id:(isMald?'red':'orange')},elMeta?{[elMeta.id]:elMeta.c}:{red:'#dc2626',orange:'#fb923c'});
+      return;
+    }
+    if(btnAdd&&!btnAdd.disabled){
+      const name=decodeURIComponent(btnAdd.dataset.name);
+      const it=items.find(p=>p.name===name);if(!it)return;
+      if(has(name)){if(typeof toast==='function')toast(`Já tem: ${name}`);return}
+      const finalize=(elChosen)=>{
+        const item={name:it.name,desc:it.desc,el:elChosen||it.el||'',req:it.req||''};
+        if(isMald){window._malds.push(item);window._saveMalds();window._renderMald()}
+        else{window._comps.push(item);window._saveComps();window._renderComp()}
+        btnAdd.disabled=true;btnAdd.classList.add('owned');btnAdd.textContent='Já tem';
+        if(typeof toast==='function')toast(`"${name}" adicionada`);
+      };
+      // Maldição "Geral" pede escolha de essência
+      if(isMald&&it.el==='geral'){
+        _openElementPickModal(it,finalize);
+        return;
+      }
+      finalize(it.el);
+    }
+  });
+  document.addEventListener('keydown',esc);
+  const search=overlay.querySelector('#cpl-picker-search');
+  function applyFilter(){
+    const q=search.value.trim().toLowerCase();
+    const activeChip=overlay.querySelector('.hab-picker-chip.active');
+    const elFilter=activeChip?activeChip.dataset.el:'';
+    overlay.querySelectorAll('.hab-picker-card').forEach(card=>{
+      const name=decodeURIComponent(card.dataset.powerName).toLowerCase();
+      const cardEl=card.dataset.el||'';
+      const okSearch=!q||name.startsWith(q);
+      const okEl=!elFilter||cardEl===elFilter;
+      card.style.display=(okSearch&&okEl)?'':'none';
+    });
+  }
+  search.addEventListener('input',applyFilter);
+  overlay.querySelectorAll('.hab-picker-chip[data-el]').forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      overlay.querySelectorAll('.hab-picker-chip[data-el]').forEach(x=>x.classList.remove('active'));
+      chip.classList.add('active');
+      applyFilter();
+    });
+  });
+  setTimeout(()=>search.focus(),240);
+};
 window.openHabilidadesPicker=function(){
   document.querySelectorAll('.hab-picker-overlay').forEach(o=>o.remove());
   const ENV=(typeof BIBLIO_ENV_COLORS!=='undefined'?BIBLIO_ENV_COLORS:{});
@@ -24391,6 +25065,7 @@ window.openHabilidadesPicker=function(){
   const overlay=document.createElement('div');
   overlay.className='hab-picker-overlay';
   const chapters=[
+    {id:'pwg',l:'Versáteis',c:'green'},
     {id:'pwv',l:'Vanguarda',c:'orange'},
     {id:'pwo',l:'Operador',c:'cyan'},
     {id:'pwf',l:'Feiticeiro',c:'purple'},
@@ -24409,6 +25084,7 @@ window.openHabilidadesPicker=function(){
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="search" id="hab-picker-search" placeholder="Buscar pelo nome..." autocomplete="off">
       </div>
+      <button type="button" class="hab-picker-slots-btn" id="hab-picker-slots-btn" title="Ver slots de habilidade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/></svg>Slots</button>
       <button type="button" class="hab-picker-new" onclick="openModal('skill');document.querySelectorAll('.hab-picker-overlay').forEach(o=>o.remove())"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Criar nova</button>
     </div>
     <div class="hab-picker-filters">
@@ -24419,7 +25095,7 @@ window.openHabilidadesPicker=function(){
       <button class="hab-picker-chip avail" data-avail="open">Disponíveis</button>
       <button class="hab-picker-chip avail" data-avail="locked">Bloqueadas</button>
     </div>
-    <div class="hab-picker-slots" id="hab-picker-slots"></div>
+    <div class="hab-picker-slots-hidden" id="hab-picker-slots" hidden></div>
     <div class="hab-picker-body" id="hab-picker-body"></div>
     <div class="hab-picker-foot">
       <span id="hab-picker-count">0 habilidades</span>
@@ -24462,13 +25138,14 @@ window.openHabilidadesPicker=function(){
     if(chap){
       const meta=chapters.find(c=>c.id===chap);
       const ico=(typeof BIBLIO_DATA!=='undefined')?(BIBLIO_DATA.find(b=>b.id===chap)?.ico||''):'';
+      const counterTxt=`${info.filled}/${info.unlocked} · ${info.remaining} livre${info.remaining===1?'':'s'} (pool global)`;
       headHtml=`<div class="hab-slots-panel" style="--c:${color}">
         <div class="hab-slots-panel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ico}</svg></div>
         <div class="hab-slots-panel-info">
-          <div class="hab-slots-panel-tag">Arquétipo</div>
+          <div class="hab-slots-panel-tag">${chap==='pwg'?'Categoria':'Arquétipo'}</div>
           <div class="hab-slots-panel-name">${meta.l}</div>
         </div>
-        <div class="hab-slots-panel-counter">${info.filled}/${info.unlocked} · ${info.remaining} livre${info.remaining===1?'':'s'}</div>
+        <div class="hab-slots-panel-counter">${counterTxt}</div>
         <button type="button" class="hab-slots-panel-back" data-back title="Voltar (Todos)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>`;
     } else {
@@ -24502,15 +25179,26 @@ window.openHabilidadesPicker=function(){
       const card=document.createElement('div');
       card.className='hab-picker-card'+(lock.locked?' locked':'')+(owned?' owned':'')+(noSlot?' noslot':'');
       card.style.setProperty('--c',color);
+      card.dataset.powerName=p.name;
+      card.dataset.powerChap=p.chap;
+      // Trunca no último ponto final antes de 240 chars; se não tem, usa fim natural
+      let descShort=p.desc;
+      let truncated=false;
+      if(p.desc.length>240){
+        const slice=p.desc.slice(0,240);
+        const lastDot=Math.max(slice.lastIndexOf('. '),slice.lastIndexOf('.\n'),slice.lastIndexOf('. '));
+        const cutAt=lastDot>120?lastDot+1:240;
+        descShort=p.desc.slice(0,cutAt).trim();
+        truncated=true;
+      }
       card.innerHTML=`
         <div class="hab-picker-card-head">
           <span class="hab-picker-card-name">${p.name}</span>
           <span class="hab-picker-card-chap">${p.chapTitle.replace(/^Poderes /,'')}</span>
         </div>
-        <div class="hab-picker-card-desc">${p.desc.length>180?p.desc.slice(0,180)+'…':p.desc}</div>
-        ${p.req?`<div class="hab-picker-card-req${lock.locked?' req-pulse':''}"><span class="req-label">Requer:</span> ${p.req}</div>`:''}
+        <div class="hab-picker-card-desc">${descShort}${truncated?` <button type="button" class="hab-picker-readmore">Ler mais</button>`:''}</div>
         <div class="hab-picker-card-foot">
-          ${lock.locked?`<span class="hab-picker-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>${lock.reason}</span>`:noSlot?'<span class="hab-picker-lock">Sem slot livre</span>':'<span class="hab-picker-ok">Disponível</span>'}
+          ${p.req?`<span class="hab-picker-lock${lock.locked?' locked':''}">${lock.locked?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>':''}${_buildReqHtml(p.req)}</span>`:noSlot?'<span class="hab-picker-lock">Sem slot livre</span>':'<span class="hab-picker-ok">Disponível</span>'}
           ${owned?'<button class="hab-picker-add owned" disabled>Já tem</button>':lock.locked?`<button class="hab-picker-add disabled" disabled>Bloqueada</button>`:noSlot?`<button class="hab-picker-add disabled" disabled>Sem slot</button>`:`<button class="hab-picker-add" data-name="${encodeURIComponent(p.name)}" data-chap="${p.chap}">Adicionar</button>`}
         </div>`;
       body.appendChild(card);
@@ -24520,8 +25208,17 @@ window.openHabilidadesPicker=function(){
     renderSlots();
   }
   body.addEventListener('click',e=>{
-    const btn=e.target.closest('.hab-picker-add');
-    if(!btn||btn.disabled)return;
+    const card=e.target.closest('.hab-picker-card');
+    const btnAdd=e.target.closest('.hab-picker-add');
+    if(card&&!btnAdd){
+      const name=card.dataset.powerName;
+      const chap=card.dataset.powerChap;
+      const power=powers.find(p=>p.name===name&&p.chap===chap);
+      if(power)window._openHabDetail(power,ENV);
+      return;
+    }
+    if(!btnAdd||btnAdd.disabled)return;
+    const btn=btnAdd;
     const name=decodeURIComponent(btn.dataset.name);
     const chap=btn.dataset.chap;
     const power=powers.find(p=>p.name===name&&p.chap===chap);
@@ -24547,9 +25244,58 @@ window.openHabilidadesPicker=function(){
     overlay.querySelectorAll('.hab-picker-chip.avail').forEach(x=>x.classList.remove('active'));
     b.classList.add('active');render();
   }));
+  // Botão Slots: abre modal mostrando o painel de slots
+  const slotsBtn=overlay.querySelector('#hab-picker-slots-btn');
+  if(slotsBtn)slotsBtn.addEventListener('click',()=>_openSlotsModal(slotsEl));
   render();
   setTimeout(()=>overlay.querySelector('#hab-picker-search').focus(),240);
 };
+function _openSlotsModal(srcEl){
+  document.querySelectorAll('.hab-slots-overlay').forEach(o=>o.remove());
+  const info=_podSlotInfo('');
+  const pl=info.playerLevel;
+  const POOL=['pwv','pwo','pwf','pwa','pwg'];
+  const filledList=(typeof skills!=='undefined')?skills.filter(s=>s.origin==='arquetipo'&&POOL.includes(s.classe)):[];
+  const POD_LV=(typeof POD_LEVELS!=='undefined')?POD_LEVELS:[];
+  const items=[];
+  let fIdx=0;
+  for(const m of POD_LV){
+    for(let b=0;b<m.bonus;b++){
+      const unlocked=pl>=m.lv;
+      const filled=fIdx<filledList.length;
+      const sk=filled?filledList[fIdx]:null;
+      const cls=filled?'filled':(unlocked?'open':'locked');
+      const ico=filled?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':(unlocked?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>');
+      const lbl=filled?(sk.name||'—'):(unlocked?'Vazio':'Bloqueado');
+      items.push(`<div class="hab-slot-card ${cls}"><div class="hab-slot-ico">${ico}</div><div class="hab-slot-meta"><div class="hab-slot-lvl">Nv ${String(m.lv).padStart(2,'0')}</div><div class="hab-slot-power">${lbl}</div></div></div>`);
+      if(filled)fIdx++;
+    }
+  }
+  const ov=document.createElement('div');
+  ov.className='hab-slots-overlay';
+  ov.innerHTML=`<div class="hab-slots-modal" role="dialog" aria-label="Slots de habilidade">
+    <button type="button" class="hab-slots-close" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="hab-slots-head">
+      <div>
+        <h2 class="hab-slots-title">Slots de habilidade</h2>
+        <p class="hab-slots-sub">Escolhas desbloqueiam por marco de nível · pool global</p>
+      </div>
+      <div class="hab-slots-stats">
+        <div class="hab-slots-stat"><span class="v">${info.filled}</span><span class="l">Usados</span></div>
+        <div class="hab-slots-stat"><span class="v">${info.remaining}</span><span class="l">Livres</span></div>
+        <div class="hab-slots-stat"><span class="v">${info.unlocked}</span><span class="l">Desbloq.</span></div>
+        <div class="hab-slots-stat"><span class="v">${info.total}</span><span class="l">Total</span></div>
+      </div>
+    </div>
+    <div class="hab-slots-grid-new">${items.join('')}</div>
+  </div>`;
+  document.body.appendChild(ov);
+  requestAnimationFrame(()=>ov.classList.add('open'));
+  const close=()=>{ov.classList.remove('open');setTimeout(()=>ov.remove(),200);document.removeEventListener('keydown',esc)};
+  const esc=e=>{if(e.key==='Escape')close()};
+  ov.addEventListener('click',e=>{if(e.target===ov||e.target.closest('.hab-slots-close'))close()});
+  document.addEventListener('keydown',esc);
+}
 window.addPodPowerToSheet=function(card,chapId){
   const strong=card.firstElementChild;if(!strong)return;
   const name=strong.textContent.trim();
@@ -25926,7 +26672,6 @@ window.closeBiblioReader=function(){
   },900);
 };
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('biblio-reader')?.classList.contains('show'))closeBiblioReader()});
-document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{try{renderBiblioGrid();renderFeitTab()}catch(_){}},50)});
 document.addEventListener('DOMContentLoaded',()=>{
   renderFicha();
   document.querySelectorAll('[data-ficha]').forEach(el=>{
@@ -26517,10 +27262,9 @@ function tryRestoreAutosave(){
   }catch(err){console.warn('Restore autosave falhou:',err&&err.message);return false}
 }
 
-// Restaura no boot (silencioso — sem toast)
-window.addEventListener('load',()=>{
-  tryRestoreAutosave();
-});
+// Restaura no boot (silencioso — sem toast). DOMContentLoaded pra dashboard pintar populado no primeiro paint.
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',tryRestoreAutosave,{once:true});
+else tryRestoreAutosave();
 
 // Salva periodicamente enquanto o app está aberto (pula se aba não visível)
 setInterval(()=>{if(document.visibilityState==='visible')autosaveNow()},15000);
@@ -26596,6 +27340,13 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.16',date:'2026-05-11',title:'Remove wave atributos + boot ainda mais rápido',items:[
+    {tag:'ui',text:'Tanque de atributos volta ao formato simples (sem animação de água/onda). Diamante limpo com valor + abbr.'},
+    {tag:'perf',text:'NUKER (scanner DOM em cada mutation + 4 passes pós-load) removido. Era a maior fonte de jank no boot.'},
+    {tag:'perf',text:'renderInvTab/renderBiblioGrid/renderFeitTab no DOMContentLoaded removidos — tab switch já renderiza on demand. Boot só renderiza dashboard agora.'},
+    {tag:'fix',text:'Topbar mobile mostra notif+calendário+perfil (row-1 visível, row-2 search escondida).'},
+    {tag:'fix',text:'Quick HUD bar (HP/XP/Gold floating) reativada — antes era nukada 200ms após render.'}
+  ]},
   {version:'v3.8.15',date:'2026-05-09',title:'Boot mobile rápido — bridge splash + init waits cortados',items:[
     {tag:'perf',text:'Android splash hide via JS bridge EclipseNative.hideSplash() chamado logo após HTML parsed (não espera resources). Antes só sumia em onPageFinished (full load). Saved ~1-2s no app.'},
     {tag:'perf',text:'Init waits artificiais eliminados: 200/300/400/500/1500ms setTimeouts → requestIdleCallback. Total ~3s de delays removidos.'},
@@ -26926,7 +27677,7 @@ if(typeof renderProfileLog==='function')try{renderProfileLog()}catch(_){}
   let currentVersion=null;
   let notified=false;
 
-  function showBanner(){if(banner){banner.classList.add('show');overlay&&overlay.classList.add('show')}}
+  function showBanner(){/* disabled — banner de update removido a pedido do usuário */}
   function hideBanner(){if(banner){banner.classList.remove('show');overlay&&overlay.classList.remove('show');setTimeout(()=>banner.classList.remove('installing'),400)}}
   function setProgress(p){if(progress)progress.style.width=Math.min(100,Math.max(0,p))+'%'}
 
@@ -26954,7 +27705,11 @@ if(typeof renderProfileLog==='function')try{renderProfileLog()}catch(_){}
     try{worker.postMessage({type:'GET_VERSION'})}catch(_){}
     if(registration&&registration.active)registration.active.postMessage({type:'GET_CURRENT_VERSION'});
     showBanner();
-    setTimeout(()=>fireOSNotification(newVerEl?newVerEl.textContent:''),300);
+    setTimeout(()=>{
+      const ver=newVerEl?newVerEl.textContent:'';
+      fireOSNotification(ver);
+      try{if(typeof addNotif==='function')addNotif('Atualização disponível'+(ver?' · '+ver:''),'update')}catch(_){}
+    },300);
   }
 
   function applyUpdate(){
@@ -27383,7 +28138,7 @@ function _archetypePointCap(){
 }
 window._attrPointsClick=function(){
   if(_attrUnlocked){if(typeof _openCustomArchetype==='function')_openCustomArchetype();else openModal('attribute');return}
-  if(typeof openAttrGearMenu==='function')openAttrGearMenu();else openModal('attribute');
+  openModal('attribute');
 };
 function _applyArchetypeAttrs(attrs){
   if(typeof attributes==='undefined')return false;
