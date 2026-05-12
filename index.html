@@ -10111,7 +10111,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.26</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.27</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -24896,7 +24896,23 @@ window.POWER_OVERRIDES=window.POWER_OVERRIDES||{
   'quebra de forma':{
     req:'Nível 10 e Psique IV',
     extra:'Observação: transformação forte — req endgame consistente com escala de efeito.'
-  }
+  },
+  // ─── v3.8.27: pass bulk filtrado (heurística keyword-scoring + dedup chains) ───
+  // PVS
+  'efeito dominó':{req:'Nível 5 e Físico III',_auto:true,extra:'Auto: floor de Nível adicionado a req atual (Físico III).'},
+  'esconderijo estratégico':{req:'Nível 8 e Psique III',_auto:true,extra:'Auto: atributo Psique III adicionado a req de Nível 8.'},
+  // PWV (Vanguarda)
+  'agressor inabalável':{req:'Nível 8 e Psique IV',_auto:true,extra:'Auto: req bumped — efeito ignora condições + uma vez por cena.'},
+  'fôlego de batalha':{req:'Nível 9 e Físico III',_auto:true,extra:'Auto: req unificado (Constituição→Físico III pra alinhar com sistema de 6 atributos).'},
+  // PWO (Operador)
+  'gravidade guiada':{req:'Nível 8 e Motoras IV',_auto:true,extra:'Auto: efeito dobra distância + Passo dano — Motoras IV mínimo.'},
+  'zona de impacto':{req:'Nível 5 e Motoras III',_auto:true,extra:'Auto: floor de Nível adicionado a Motoras III.'},
+  // PWF (Feiticeiro)
+  'efeito reverso':{req:'Nível 5 e Intelecto III',_auto:true,extra:'Auto: floor de Nível adicionado a Intelecto III.'},
+  'olhos do abismo':{req:'Nível 5 e Físico III',_auto:true,extra:'Auto: req mínimo adicionado (sem req anteriormente).'},
+  'presságio controlado':{req:'Nível 5 e Intelecto III',_auto:true,extra:'Auto: req mínimo adicionado (sem req anteriormente).'},
+  // PWA (Aberração)
+  'cuspe da podridão':{req:'Nível 6 e Físico III',_auto:true,extra:'Auto: atributo Físico III adicionado a req de Nível 6.'}
 };
 
 function _applyPowerOverride(power){
