@@ -10111,7 +10111,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.24</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.25</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -24811,10 +24811,37 @@ function _parsePowerSections(text){
   return {base,sections:sec};
 }
 
+// POWER_OVERRIDES — refina req/desc de poderes específicos sem editar BIBLIO_DATA minificado.
+// _openHabDetail consulta este map por name (case-insensitive); override.req/desc substituem; override.extra é appendado em desc.
+window.POWER_OVERRIDES=window.POWER_OVERRIDES||{
+  'abraço de urso':{
+    req:'Nível 8 e Físico IV',
+    desc:'Ao gastar 3 Esforço, o usuário concentra o peso do próprio corpo em um impacto esmagador. Realiza um ataque corpo a corpo que ignora RD e causa dano adicional igual a 1/4 dos PV atuais do usuário, arredondado para baixo. Esse ataque não pode receber bônus de crítico nem ser combinado com outros efeitos que multipliquem dano. Mecânica: ignora RD; dano extra = floor(HP_atual / 4). Observação: req ajustado pra escalar com o impacto real do efeito.'
+  },
+  // Outras anomalias de balance — adicionar conforme revisão. Schema: 'nome em lowercase':{req,desc,extra}
+  // Templates abaixo: descomentar e ajustar quando tiver dados confirmados.
+  // 'alma inquebrável':{req:'Nível 6 e Vontade III'},
+  // 'asa do vento':{req:'Nível 4 e Motoras II'},
+};
+
+function _applyPowerOverride(power){
+  if(!power||!power.name)return power;
+  const key=String(power.name).trim().toLowerCase();
+  const ov=window.POWER_OVERRIDES&&window.POWER_OVERRIDES[key];
+  if(!ov)return power;
+  const out={...power};
+  if(ov.req!=null)out.req=ov.req;
+  if(ov.desc!=null)out.desc=ov.desc;
+  if(ov.extra)out.desc=(out.desc||'')+(out.desc?' ':'')+ov.extra;
+  out._overridden=true;
+  return out;
+}
+
 window._openHabDetail=function(power,ENV){
   document.querySelectorAll('.hab-detail-overlay').forEach(o=>o.remove());
   // Mobile keyboard fix: blur active element antes de abrir modal de leitura
   try{if(document.activeElement&&document.activeElement.blur)document.activeElement.blur()}catch(_){}
+  power=_applyPowerOverride(power);
   const color=(ENV&&ENV[power.c])||'var(--magenta)';
   const ov=document.createElement('div');
   ov.className='hab-detail-overlay';
