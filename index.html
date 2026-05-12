@@ -2896,7 +2896,10 @@ input[type="number"]{-moz-appearance:textfield}
 .hab-picker-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .hab-picker-card-name{font-size:13px;font-weight:800;color:var(--text-primary);line-height:1.2}
 .hab-picker-card-chap{flex:0 0 auto;padding:2px 7px;background:color-mix(in srgb,var(--c,var(--magenta)) 14%,transparent);color:var(--c,var(--magenta));border:1px solid color-mix(in srgb,var(--c,var(--magenta)) 35%,transparent);border-radius:4px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-.hab-picker-card-desc{font-size:11.5px;color:var(--text-secondary,#bbb);line-height:1.5;text-align:justify!important;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto;padding:0;margin:0}
+.hab-picker-card-desc{font-size:11.5px;color:var(--text-secondary,#bbb);line-height:1.5;text-align:justify!important;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto;padding:0;margin:0;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden;position:relative}
+.hab-picker-card-desc.expanded{display:block;-webkit-line-clamp:unset;-webkit-box-orient:initial;overflow:visible}
+.hab-picker-card-desc .hab-picker-readmore{display:none}
+.hab-picker-card-desc[data-overflow="1"] .hab-picker-readmore{display:inline}
 .hab-picker-readmore{display:inline;background:transparent!important;border:none!important;outline:none!important;box-shadow:none!important;color:var(--c,var(--magenta));font-family:inherit;font-size:inherit;font-weight:700;cursor:pointer;padding:0;margin:0 0 0 4px;text-decoration:none}
 .hab-picker-readmore:hover{filter:brightness(1.25);text-decoration:underline;text-underline-offset:2px}
 .hab-picker-card-req{font-size:10.5px;color:var(--text-dim);padding:5px 7px;background:rgba(0,0,0,.18);border-radius:5px;line-height:1.4}
@@ -10122,7 +10125,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.42</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.43</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -25523,14 +25526,9 @@ window.openCplMaldPicker=function(type){
     const affMatch=(p.desc||'').match(/\bAfinidade:\s*(.+)$/is);
     const baseDesc=affMatch?p.desc.slice(0,affMatch.index).trim().replace(/[.,;\s]+$/,''):(p.desc||'').trim();
     const affText=affMatch?affMatch[1].trim():'';
-    const truncated=baseDesc.length>200;
-    let descShort=baseDesc;
-    if(truncated){
-      const slice=baseDesc.slice(0,240);
-      const lastDot=slice.lastIndexOf('. ');
-      const cutAt=lastDot>100?lastDot+1:200;
-      descShort=baseDesc.slice(0,cutAt).trim();
-    }
+    // Sem char-truncation: CSS line-clamp + JS detect overflow visual decide se Ler mais aparece
+    const descShort=baseDesc;
+    const truncated=true; // sempre renderiza botão; CSS esconde se não overflow
     let elMeta=null,elColor=accentColor,elLabel=isMald?'MALDIÇÃO':'COMPLICAÇÃO';
     if(isMald&&p.el){
       elMeta=MALD_ELEMENTS.find(e=>e.id===p.el);
@@ -25570,10 +25568,18 @@ window.openCplMaldPicker=function(type){
   </div>`;
   document.body.appendChild(overlay);
   requestAnimationFrame(()=>overlay.classList.add('open'));
+  // Detecta overflow visual em cada desc e marca data-overflow="1" (CSS mostra Ler mais só nelas)
+  requestAnimationFrame(()=>{
+    overlay.querySelectorAll('.hab-picker-card-desc').forEach(d=>{
+      if(d.scrollHeight>d.clientHeight+2)d.setAttribute('data-overflow','1');
+    });
+  });
   const close=()=>{overlay.classList.remove('open');setTimeout(()=>overlay.remove(),240);document.removeEventListener('keydown',esc)};
   const esc=(e)=>{if(e.key==='Escape')close()};
   overlay.addEventListener('click',e=>{
     if(e.target===overlay||e.target.closest('.hab-picker-close')){close();return}
+    const rm=e.target.closest('.hab-picker-readmore');
+    if(rm){const dEl=rm.closest('.hab-picker-card-desc');if(dEl){dEl.classList.toggle('expanded');rm.textContent=dEl.classList.contains('expanded')?'Ler menos':'Ler mais'}return}
     const card=e.target.closest('.hab-picker-card');
     const btnAdd=e.target.closest('.hab-picker-add');
     if(card&&!btnAdd){
@@ -25678,6 +25684,8 @@ window.openHabilidadesPicker=function(){
   overlay.addEventListener('click',e=>{
     if(e.target===overlay){close();return}
     if(e.target.closest('.hab-picker-close')){close();return}
+    const rm=e.target.closest('.hab-picker-readmore');
+    if(rm){const dEl=rm.closest('.hab-picker-card-desc');if(dEl){dEl.classList.toggle('expanded');rm.textContent=dEl.classList.contains('expanded')?'Ler menos':'Ler mais'}return}
   });
   document.addEventListener('keydown',esc);
   // Render cards
@@ -25751,15 +25759,9 @@ window.openHabilidadesPicker=function(){
       card.dataset.powerName=p.name;
       card.dataset.powerChap=p.chap;
       // Trunca no último ponto final antes de 240 chars; se não tem, usa fim natural
-      let descShort=p.desc;
-      let truncated=false;
-      if(p.desc.length>200){
-        const slice=p.desc.slice(0,240);
-        const lastDot=Math.max(slice.lastIndexOf('. '),slice.lastIndexOf('.\n'),slice.lastIndexOf('. '));
-        const cutAt=lastDot>100?lastDot+1:200;
-        descShort=p.desc.slice(0,cutAt).trim();
-        truncated=true;
-      }
+      // Sem char-truncation: CSS line-clamp + JS detecta overflow visual
+      const descShort=p.desc;
+      const truncated=true;
       card.innerHTML=`
         <div class="hab-picker-card-head">
           <span class="hab-picker-card-name">${p.name}</span>
@@ -25775,6 +25777,13 @@ window.openHabilidadesPicker=function(){
     if(visible===0){body.innerHTML='<div class="hab-picker-empty">Nenhuma habilidade encontrada</div>'}
     countEl.textContent=`${visible} habilidade${visible===1?'':'s'}`;
     renderSlots();
+    // Detect overflow visual em cada desc
+    requestAnimationFrame(()=>{
+      body.querySelectorAll('.hab-picker-card-desc').forEach(d=>{
+        if(d.scrollHeight>d.clientHeight+2)d.setAttribute('data-overflow','1');
+        else d.removeAttribute('data-overflow');
+      });
+    });
   }
   body.addEventListener('click',e=>{
     const card=e.target.closest('.hab-picker-card');
