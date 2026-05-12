@@ -10117,7 +10117,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.35</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.36</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -25076,11 +25076,7 @@ window._openHabDetail=function(power,ENV){
       <div class="hd-block-label">Bônus por ${parsed.sections.niveis.entries[0].kind.toLowerCase()}</div>
       <ul class="hd-niveis-list">${parsed.sections.niveis.entries.map(l=>`<li><span class="hd-niv-pill">${l.kind} ${l.n}</span><span class="hd-niv-txt">${l.text}</span></li>`).join('')}</ul>
     </div>`:'';
-  const blocks=['mecanica','narrativa','observacao'].filter(k=>parsed.sections[k]&&parsed.sections[k].text).map(k=>`
-    <div class="hab-detail-block hab-detail-${k}">
-      <div class="hd-block-label">${parsed.sections[k].label}</div>
-      <div class="hd-block-text">${parsed.sections[k].text}</div>
-    </div>`).join('');
+  const blocks='';
   const affText=parsed.sections.afinidade?parsed.sections.afinidade.text:'';
   ov.innerHTML=`<div class="hab-detail-modal" role="dialog" aria-label="${power.name}" tabindex="-1">
     <button type="button" class="hab-detail-close" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
