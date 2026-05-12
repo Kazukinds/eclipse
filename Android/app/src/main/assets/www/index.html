@@ -10117,7 +10117,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.34</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.35</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -25086,7 +25086,7 @@ window._openHabDetail=function(power,ENV){
     <button type="button" class="hab-detail-close" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     ${chapLabel?`<div class="hab-detail-chap">${chapLabel}</div>`:''}
     <h2 class="hab-detail-name">${power.name}</h2>
-    ${reqText?`<div class="hab-detail-req"><span class="req-label">Requisito</span>${reqText}${/\b\d+\s+(Alba|Lumen|Carmim|Carmin|Kaos|Perene|Ru[íi]na)\b/i.test(reqText)?`<div class="req-hint">Esse número indica quantos poderes/maldições daquela Essência você precisa ter antes de pegar este. Ex: <b>2 Alba</b> = já tem 2, este será o 3º.</div>`:''}</div>`:''}
+${/* Requisito intencionalmente NÃO renderizado no modal de leitura — info já visível no card/picker. */''}
     ${parsed.base?`<div class="hab-detail-desc">${parsed.base}</div>`:''}
     ${niveisHtml}
     ${blocks}
