@@ -11,14 +11,9 @@ const ROOT = path.resolve(__dirname, '..', '..');          // c:/Users/Kazuki/Do
 const DEST = path.resolve(__dirname, '..', 'www');         // build-app/www
 const INCLUDE = [
   'index.html',
-  'biblioteca.html',
   'manifest.webmanifest',
   'sw.js',
-  'alert-component.html',
-  'icons',
-  'widgets',
-  'android-widgets',
-  'assets'
+  'icons'
 ];
 const EXCLUDE_DIRS = new Set(['.git', '.github', '.vscode', '.claude', 'node_modules', 'build-app', 'docs']);
 
