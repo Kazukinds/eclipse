@@ -34203,19 +34203,11 @@ body[data-perf-anim-tabswitch="off"] .sidebar-btn[data-tab].nav-anim svg{animati
 })();
 </script>
 
-<!-- Long-press Config: opens radial swap picker (uses center radial-menu style) -->
+<!-- Long-press Config: reusa radial-menu existente (center pill) em modo swap -->
 <style>
-.gear-swap-ov{position:fixed;inset:0;z-index:9999;background:rgba(10,10,13,.92);backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .28s cubic-bezier(.2,.8,.2,1)}
-.gear-swap-ov.open{opacity:1;pointer-events:auto}
-.gear-swap-ring{position:relative;width:min(86vw,420px);height:min(86vw,420px);flex-shrink:0}
-.gear-swap-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,.78);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-align:center;line-height:1.15;padding:0 10px;gap:4px}
-.gear-swap-center small{font-size:9px;font-weight:500;letter-spacing:.06em;text-transform:none;color:rgba(255,255,255,.45)}
-.gear-swap-item{position:absolute;left:50%;top:50%;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.85);cursor:pointer;transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .2s,background .2s,color .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent;opacity:0;transform:translate(0,0) scale(.5)}
-.gear-swap-ov.open .gear-swap-item{opacity:1;transform:translate(var(--rx),var(--ry)) scale(1)}
-.gear-swap-item:hover,.gear-swap-item:active,.gear-swap-item.touched{background:var(--magenta);color:#0c0c0e;border-color:var(--magenta);box-shadow:0 0 0 3px color-mix(in srgb,var(--magenta) 28%,transparent),0 0 22px color-mix(in srgb,var(--magenta) 60%,transparent);transform:translate(var(--rx),var(--ry)) scale(1.08)}
-.gear-swap-item.selected{border-color:var(--magenta);background:color-mix(in srgb,var(--magenta) 22%,transparent);color:#fff}
-.gear-swap-item svg{width:24px;height:24px}
-.gear-swap-item .gs-lbl{position:absolute;top:66px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.65);white-space:nowrap;pointer-events:none}
+.radial-menu.swap-mode .radial-menu-item{color:rgba(255,255,255,.92)}
+.radial-menu.swap-mode .radial-menu-item svg,.radial-menu.swap-mode .radial-menu-item svg path{color:rgba(255,255,255,.92);fill:currentColor;stroke:none}
+.radial-menu.swap-mode .radial-menu-item.selected{border-color:var(--magenta)!important;background:color-mix(in srgb,var(--magenta) 22%,transparent)!important;box-shadow:0 0 0 2px color-mix(in srgb,var(--magenta) 40%,transparent)}
 </style>
 <script>
 (function(){
@@ -34266,32 +34258,51 @@ body[data-perf-anim-tabswitch="off"] .sidebar-btn[data-tab].nav-anim svg{animati
     applyGearSwap(tab);
   }
   function openPicker(){
-    let ov=document.getElementById('gear-swap-ov');
-    if(ov){ov.remove()}
-    ov=document.createElement('div');
-    ov.id='gear-swap-ov';
-    ov.className='gear-swap-ov';
+    // Reusa o radial-menu existente (mesmo do botão central) em modo swap
+    const menu=document.getElementById('radial-menu');
+    const ring=document.getElementById('radial-ring');
+    const closeBtn=document.getElementById('radial-close');
+    if(!menu||!ring)return;
+    menu.classList.add('swap-mode');
+    ring.innerHTML='';
     const cur=getCurrent();
     const N=PIN_OPTIONS.length;
-    const radius=Math.min(window.innerWidth,window.innerHeight)*0.32;
-    const items=PIN_OPTIONS.map((o,i)=>{
-      const ang=(i/N)*Math.PI*2-Math.PI/2;
-      const x=Math.cos(ang)*radius;
-      const y=Math.sin(ang)*radius;
-      const sel=o.tab===cur?' selected':'';
-      return '<button type="button" class="gear-swap-item'+sel+'" data-tab="'+o.tab+'" style="--rx:'+x.toFixed(1)+'px;--ry:'+y.toFixed(1)+'px" title="'+o.label+'">'+_svgFor(o)+'<span class="gs-lbl">'+o.label+'</span></button>';
-    }).join('');
-    ov.innerHTML='<div class="gear-swap-ring"><div class="gear-swap-center">Atalho<small>Escolha</small></div>'+items+'</div>';
-    document.body.appendChild(ov);
-    requestAnimationFrame(()=>ov.classList.add('open'));
-    const close=()=>{ov.classList.remove('open');setTimeout(()=>ov.remove(),260);document.removeEventListener('keydown',esc)};
-    const esc=(e)=>{if(e.key==='Escape')close()};
-    ov.addEventListener('click',e=>{
-      const it=e.target.closest('.gear-swap-item');
-      if(it){saveGearSwap(it.dataset.tab);close();return}
-      if(e.target===ov)close();
+    const vw=window.innerWidth,vh=window.innerHeight;
+    const itemHalf=22,protect=itemHalf+18;
+    const angStep=(2*Math.PI)/N;
+    const minChord=2*protect;
+    const byChord=N>1?minChord/(2*Math.sin(angStep/2)):120;
+    const vwMax=Math.min(vw,vh)*0.38;
+    const radius=Math.max(115,Math.min(byChord,vwMax,180));
+    const angleOffset=Math.PI/N;
+    PIN_OPTIONS.forEach((o,i)=>{
+      const angle=(i/N)*Math.PI*2-Math.PI/2+angleOffset;
+      const rx=Math.cos(angle)*radius;
+      const ry=Math.sin(angle)*radius;
+      const el=document.createElement('button');
+      el.type='button';
+      el.className='radial-menu-item'+(o.tab===cur?' selected':'');
+      el.style.setProperty('--rx',rx+'px');
+      el.style.setProperty('--ry',ry+'px');
+      el.style.transitionDelay=(i*35+80)+'ms';
+      el.innerHTML=_svgFor(o);
+      el.setAttribute('aria-label',o.label);
+      el.title=o.label;
+      el.addEventListener('click',()=>{saveGearSwap(o.tab);close()});
+      ring.appendChild(el);
     });
+    function close(){
+      menu.classList.remove('open');
+      menu.classList.remove('swap-mode');
+      setTimeout(()=>{ring.innerHTML=''},260);
+      document.removeEventListener('keydown',esc);
+      if(closeBtn)closeBtn.removeEventListener('click',close);
+    }
+    function esc(e){if(e.key==='Escape')close()}
+    if(closeBtn)closeBtn.addEventListener('click',close,{once:true});
     document.addEventListener('keydown',esc);
+    menu.setAttribute('aria-hidden','false');
+    requestAnimationFrame(()=>menu.classList.add('open'));
   }
   function wireLongPress(){
     const gear=document.getElementById('sidebar-gear-btn');
