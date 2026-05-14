@@ -3,6 +3,10 @@ package com.fichaeclipse.widgets;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.app.PendingIntent;
+import android.content.pm.PackageInstaller;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -705,6 +709,17 @@ public class MainActivity extends Activity {
     }
 
     private void _installApk(File apk) {
+        // Tenta PackageInstaller Session (silent update, sem Play Protect prompt em updates)
+        // Requer: REQUEST_INSTALL_PACKAGES + mesma signing key + API 31+ pra USER_ACTION_NOT_REQUIRED
+        if (Build.VERSION.SDK_INT >= 31) {
+            try {
+                _installViaSession(apk);
+                return;
+            } catch (Exception e) {
+                // Fallback pra Intent.ACTION_VIEW se sessão falhar
+            }
+        }
+        // Fallback legacy: abre installer dialog do sistema
         try {
             Uri contentUri;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -724,6 +739,38 @@ public class MainActivity extends Activity {
             if (webView != null)
                 webView.evaluateJavascript("window.__otaError&&window.__otaError('install falhou')", null);
         }
+    }
+
+    private void _installViaSession(File apk) throws Exception {
+        PackageInstaller installer = getPackageManager().getPackageInstaller();
+        PackageInstaller.SessionParams params = new PackageInstaller.SessionParams(
+                PackageInstaller.SessionParams.MODE_FULL_INSTALL);
+        params.setAppPackageName(getPackageName());
+        // API 31+: skip user prompt em self-update com mesma signing
+        if (Build.VERSION.SDK_INT >= 31) {
+            params.setRequireUserAction(PackageInstaller.SessionParams.USER_ACTION_NOT_REQUIRED);
+        }
+        // API 34+: claim update ownership — futuras updates do mesmo installer bypassam Play Protect re-verify
+        if (Build.VERSION.SDK_INT >= 34) {
+            params.setRequestUpdateOwnership(true);
+        }
+        int sessionId = installer.createSession(params);
+        PackageInstaller.Session session = installer.openSession(sessionId);
+        try (OutputStream os = session.openWrite("Eclipse.apk", 0, apk.length());
+             FileInputStream is = new FileInputStream(apk)) {
+            byte[] buf = new byte[64 * 1024];
+            int n;
+            while ((n = is.read(buf)) > 0) os.write(buf, 0, n);
+            session.fsync(os);
+        }
+        Intent statusIntent = new Intent(this, MainActivity.class).setAction("eclipse.INSTALL_RESULT");
+        int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+        if (Build.VERSION.SDK_INT >= 31) flags |= PendingIntent.FLAG_MUTABLE;
+        PendingIntent pi = PendingIntent.getActivity(this, sessionId, statusIntent, flags);
+        session.commit(pi.getIntentSender());
+        session.close();
+        if (webView != null)
+            webView.evaluateJavascript("window.__otaReady&&window.__otaReady()", null);
     }
 
     // ═══ Storage Bridge — SAF folder picker + file IO ═══
