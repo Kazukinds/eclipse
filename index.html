@@ -94,6 +94,12 @@ textarea,input,[contenteditable="true"],
 .summary-value,.profile-field-value{user-select:text;-webkit-user-select:text}
 ::selection{background:color-mix(in srgb,var(--magenta) 32%,transparent);color:var(--text-primary)}
 *:focus-visible{outline:2px solid var(--magenta);outline-offset:2px;border-radius:var(--radius-xs)}
+/* Kill Android/iOS tap highlight global — fica invisível ao tocar */
+*,*::before,*::after{-webkit-tap-highlight-color:transparent!important;-webkit-touch-callout:none}
+/* Em touch devices, sem outline de focus (só keyboard usa focus-visible) */
+@media (hover:none) and (pointer:coarse){
+  *:focus,*:focus-visible{outline:none!important}
+}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{
     animation-duration:.01ms !important;
