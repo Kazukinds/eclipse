@@ -70,15 +70,15 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(Color.parseColor("#09090B"));
-        getWindow().setNavigationBarColor(Color.parseColor("#09090B"));
-        // StatusBar + NavBar visíveis (mostra relógio/notch). Layout usa safe-area-inset.
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
                 getWindow().getAttributes().layoutInDisplayCutoutMode =
                         WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
             } catch (Exception ignored) {}
         }
+        _enterImmersive();
 
         FrameLayout root = new FrameLayout(this);
         root.setBackgroundColor(Color.parseColor("#09090B"));
@@ -393,6 +393,26 @@ public class MainActivity extends Activity {
         return info != null && info.isConnected();
     }
 
+    @SuppressLint("InlinedApi")
+    private void _enterImmersive() {
+        try {
+            View decor = getWindow().getDecorView();
+            decor.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        } catch (Exception ignored) {}
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) _enterImmersive();
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -449,6 +469,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        _enterImmersive();
         if (webView != null) {
             webView.onResume();
             // Restaura aba se foi salva

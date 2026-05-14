@@ -10307,7 +10307,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.50</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.51</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -28252,6 +28252,10 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.51',date:'2026-05-14',title:'Fullscreen immersive sticky no app Android',items:[
+    {tag:'ui',text:'StatusBar + NavBar escondidas no app (immersive sticky). Swipe da borda mostra barras transientes que somem sozinhas. Status/nav bar colors transparent.'},
+    {tag:'fix',text:'Reaplica flags em onResume + onWindowFocusChanged pra resistir teclado, lock screen e volta de background.'}
+  ]},
   {version:'v3.8.16',date:'2026-05-11',title:'Remove wave atributos + boot ainda mais rápido',items:[
     {tag:'ui',text:'Tanque de atributos volta ao formato simples (sem animação de água/onda). Diamante limpo com valor + abbr.'},
     {tag:'perf',text:'NUKER (scanner DOM em cada mutation + 4 passes pós-load) removido. Era a maior fonte de jank no boot.'},
