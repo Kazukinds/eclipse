@@ -83,6 +83,9 @@ html{font-size:var(--base-font,14px)}
 @media(prefers-reduced-motion:reduce){.rid-rarity-tag.rid-rarity-shine::after,.inv-card-meta .rarity.legendary-shine::after{animation:none}}
 html{overflow-y:auto;overflow-x:hidden;height:auto}
 body{overflow-y:visible;overflow-x:hidden;overscroll-behavior-y:auto;max-width:100vw}
+/* touch-action global: mata 300ms tap delay legacy + double-tap zoom. Inputs/textareas mantém default. */
+html,body,div,span,button,a,h1,h2,h3,h4,h5,h6,p,li,ul,ol,table,td,th,tr,svg,img,label,section,article,header,footer,nav,main,aside,figure{touch-action:manipulation}
+input,textarea,select,[contenteditable]{touch-action:auto}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg-body);color:var(--text-primary);min-height:100vh;display:flex;user-select:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;position:relative;width:100%;min-width:0}
 /* Container principal não pode ter overflow horizontal */
 .tab-content,main,section{max-width:100%;min-width:0}
@@ -129,6 +132,12 @@ textarea,input,[contenteditable="true"],
 body[data-perf-low] *,body[data-perf-low] *::before,body[data-perf-low] *::after{
   backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
 }
+/* Override blur custoso em pills flutuantes — solid bg em perf-low (libera GPU) */
+body[data-perf-low] .topbar,body[data-perf-low] .sidebar{
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  background:#0d0d12!important;
+}
+[data-theme="light"] body[data-perf-low] .topbar,[data-theme="light"] body[data-perf-low] .sidebar{background:#f5f5f7!important}
 /* Desliga só anims ambient específicos (não global iteration-count que matava pulse de feedback) */
 body[data-perf-low] .xp-fill::before,
 body[data-perf-low] .save-toast-bar-fill::after,
@@ -6598,6 +6607,12 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
 [class*="-avatar"],[class*="-icon-btn"],[class*="icon-btn"],
 [class*="-gear"],[class*="-close"]:not(.modal-close):not(.register-close),
 [class*="-pill-dot"],[class*="-mini-dot"],
+[class*="-top-btn"],[class*="top-btn"],
+[class*="-x-btn"],[class*="btn-x"],[class*="-square-btn"],
+[class*="-del"],[class*="-add"]:not(.add-nav-btn),
+[class*="-swap"]:not(.elemento-swap-orb),
+[class*="-confirm"]:not(.app-confirm-icon),
+[aria-label*="Fechar"],[aria-label*="Close"],[title^="Fechar"],
 .sidebar-btn,.topbar-icon-btn,.notif-icon,
 .profile-avatar,.profile-hero-back,.profile-hero-action,
 .skill-icon,.peri-cat-dot,.pericia-rank,.pericia-roll-btn,
@@ -6614,7 +6629,8 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
 .biblio-toc-close,.biblio-toc-dot,.adv-locked-ico,.app-confirm-icon,
 .credit-modal-icon,.arch-benef-dot,.forja-status-mark,
 .inv-card-btn,.ota-icon,.notif-badge,.app-splash .splash-dot,
-.splash-ring,.peri-cat-grid > *::before,.week-today-dot{
+.splash-ring,.week-today-dot,
+.re4-top-btn,.btp-btn,.biblio-tbl-pager .btp-btn{
   aspect-ratio:1/1!important;
   flex-shrink:0!important;
   flex-grow:0!important;
@@ -6622,6 +6638,8 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
 }
 /* Quando elemento tem border-radius:50% inline + width definido — height segue */
 [style*="border-radius:50%"],[style*="border-radius: 50%"]{aspect-ratio:1/1}
+/* Count chips/pills permanecem com altura mínima fixa pra parecer simétrico */
+.notif-count,.minical-head-count{min-width:1.8em;height:1.6em;padding:0 8px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box}
 
 /* ═══════════ POLIMENTO GERAL ═══════════ */
 .card{transition:border-color .2s,transform .2s,box-shadow .2s}
@@ -9731,7 +9749,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
         // Detecta cell central durante scroll → marca selected
         const attachScrollSnap=(col)=>{
           let raf=null;
-          col.addEventListener('scroll',()=>{
+          const onScroll=()=>{
             if(raf)cancelAnimationFrame(raf);
             raf=requestAnimationFrame(()=>{
               const center=col.scrollTop+col.clientHeight/2;
@@ -9749,7 +9767,8 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
                 updatePreview();
               }
             });
-          },{passive:true});
+          };
+          col.addEventListener('scroll',onScroll,{passive:true});
         };
         attachScrollSnap(colH);attachScrollSnap(colM);
         const close=()=>{ov.classList.remove('open');setTimeout(()=>ov.remove(),200);document.removeEventListener('keydown',escKey)};
@@ -10357,12 +10376,12 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
               <span class="cfg-item-name profile-system-name">Verificar atualização</span>
               <span class="cfg-item-sub profile-system-sub">Checa nova versão · OTA</span>
             </a>
-            <a class="cfg-item profile-system-link" id="cfg-bkp-link" href="#" title="Backups automáticos (a cada 10 min)" onclick="event.preventDefault();window.eclipseExt3&&window.eclipseExt3.openBackupList();" style="color:#60a5fa">
+            <a class="cfg-item profile-system-link" id="cfg-bkp-link" href="#" title="Backup automático (1 snapshot — atualizado em background ou após alteração)" onclick="event.preventDefault();window.eclipseExt3&&window.eclipseExt3.openBackupList();" style="color:#60a5fa">
               <span class="cfg-item-icon profile-system-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               </span>
-              <span class="cfg-item-name profile-system-name">Backups automáticos</span>
-              <span class="cfg-item-sub profile-system-sub" id="cfg-bkp-sub">0 backups · auto a cada 10 min</span>
+              <span class="cfg-item-name profile-system-name">Backup automático</span>
+              <span class="cfg-item-sub profile-system-sub" id="cfg-bkp-sub">0 backup · em background ou após alteração</span>
             </a>
           </div>
           <div class="cfg-cards">
@@ -10819,8 +10838,8 @@ window.addEventListener('DOMContentLoaded',()=>{
     document.documentElement.style.setProperty('--kb','0px');
     document.body.classList.remove('kb-open');
   }
-  vv.addEventListener('resize',update);
-  vv.addEventListener('scroll',update);
+  vv.addEventListener('resize',update,{passive:true});
+  vv.addEventListener('scroll',update,{passive:true});
   document.addEventListener('focusin',update);
   document.addEventListener('focusout',()=>{
     // 2 ticks: 1) imediato pra refletir blur, 2) +200ms pra esperar teclado fechar
@@ -18761,6 +18780,34 @@ function saveAddXP(){
 }
 
 // ═══ SKILLS ═══
+// Long-press handler: 450ms hold em qualquer .skill-row dispara openSkillDetail.
+// Funciona em pointer/touch — usa pointerdown/up/move/cancel pra detectar gesto.
+if(!window._skillLpInit){window._skillLpInit=true;
+  let _lpTimer=null,_lpId=null,_lpSx=0,_lpSy=0;
+  const skillListEl=()=>document.getElementById('skill-list');
+  document.addEventListener('pointerdown',(e)=>{
+    const row=e.target.closest&&e.target.closest('.skill-row');
+    if(!row||!skillListEl()||!skillListEl().contains(row))return;
+    if(e.target.closest('button'))return; // botões internos preservam click
+    const id=parseInt(row.dataset.id);if(!id)return;
+    _lpSx=e.clientX;_lpSy=e.clientY;_lpId=id;
+    clearTimeout(_lpTimer);
+    _lpTimer=setTimeout(()=>{
+      try{window.openSkillDetail&&window.openSkillDetail(_lpId)}catch(_){}
+      try{navigator.vibrate&&navigator.vibrate(15)}catch(_){}
+      _lpId=null;
+    },450);
+  },{passive:true});
+  const cancel=(e)=>{
+    if(e&&e.clientX!=null){
+      if(Math.hypot(e.clientX-_lpSx,e.clientY-_lpSy)<8)return; // tolera micro-shake
+    }
+    clearTimeout(_lpTimer);_lpId=null;
+  };
+  document.addEventListener('pointerup',()=>{clearTimeout(_lpTimer);_lpId=null},{passive:true});
+  document.addEventListener('pointercancel',cancel,{passive:true});
+  document.addEventListener('pointermove',cancel,{passive:true});
+}
 function renderSkills(){
   const el=document.getElementById('skill-list');if(!el)return;
   const sortMode=window._skillSort||'origin';
@@ -28244,7 +28291,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 else tryRestoreAutosave();
 
 // Salva periodicamente enquanto o app está aberto (pula se aba não visível)
-setInterval(()=>{if(document.visibilityState==='visible')autosaveNow()},15000);
+// 15s → 30s reduz wakeups + GC churn (~50% menos saves), data-perf-low estende pra 60s
+setInterval(()=>{if(document.visibilityState==='visible')autosaveNow()},document.body&&document.body.hasAttribute('data-perf-low')?60000:30000);
 
 // Salva quando o app vai pra background / o usuário minimiza
 // + Refresh discreto quando volta de bg longo (>5min) pra evitar UI travada/desatualizada
@@ -28412,250 +28460,6 @@ const APP_CHANGELOG=[
     {tag:'feat',text:'Storage cap warning — toast quando navigator.storage.estimate atinge 85%+'},
     {tag:'feat',text:'Restaurar VIT/ESF/FOC individual (paleta) — preenche stat até o max correspondente'},
     {tag:'feat',text:'API window.eclipseExt3 expõe todas as novas funções pra plugins'}
-  ]},
-  {version:'v3.8.3',date:'2026-05-07',title:'Extensions wave 2 — quick stats, action log, markdown export',items:[
-    {tag:'feat',text:'Quick stats popover (Ctrl+Shift+I) — nome + status (vit/esf/foc/det/neu/cor) + atributos + storage + sessão num modal compacto'},
-    {tag:'feat',text:'Action log drawer (Ctrl+Shift+A) — registra últimas 30 ações (deletes, troca de aba) com timestamp; copy + clear'},
-    {tag:'feat',text:'Theme cycle (Ctrl+Shift+T) — alterna claro/escuro; usa toggleTheme do host se existir'},
-    {tag:'feat',text:'Markdown export (Ctrl+Shift+M) — exporta ficha como .md formatado pro GitHub/Obsidian'},
-    {tag:'feat',text:'Quick dice palette (Ctrl+Shift+D) — rola d4/d6/d8/d10/d12/d20/d100 todos juntos num toast'},
-    {tag:'feat',text:'Snapshot diff (paleta) — compara último auto-backup com estado atual e mostra delta de tamanho'},
-    {tag:'feat',text:'Storage report (paleta) — top 8 chaves por tamanho copiadas pro clipboard'},
-    {tag:'feat',text:'Purge stale backups (paleta) — limpa auto-backups com mais de 30 dias automaticamente'},
-    {tag:'feat',text:'Inventory weight (paleta) — soma peso × qty de todos os items'},
-    {tag:'feat',text:'Scroll to top/bottom (paleta) — atalho rápido pra rolar conteúdo'},
-    {tag:'feat',text:'API window.eclipseExt2 expõe as novas utilidades pra plugins futuros'}
-  ]},
-  {version:'v3.8.2',date:'2026-05-07',title:'Extensões — hotkeys, paleta de comandos, auto-backup, session timer',items:[
-    {tag:'feat',text:'Paleta de comandos (Ctrl+Shift+P) — busca rápida sobre todas ações: trocar aba, exportar, copiar, backup, etc.'},
-    {tag:'feat',text:'Auto-backup silencioso a cada 10 minutos — últimas 3 versões salvas em localStorage; restaurar via paleta'},
-    {tag:'feat',text:'Hotkey Ctrl+S = salvar agora · Ctrl+/ = atalhos · Ctrl+Shift+B = backup · Ctrl+Shift+E = exportar texto · Ctrl+Shift+C = copiar nome · Ctrl+Shift+J = copiar JSON'},
-    {tag:'feat',text:'Session-time chip na topbar — mostra há quanto tempo você tá editando'},
-    {tag:'feat',text:'Floating dice button (desktop) — clique pra rolar 1d20 rápido com toast de resultado'},
-    {tag:'feat',text:'Last-tab restore — recarregou a página e volta na aba que você tava'},
-    {tag:'feat',text:'Modal de ajuda (Ctrl+/) lista atalhos do plugin + uso de localStorage + tempo de sessão'},
-    {tag:'feat',text:'Export plain text — gera .txt formatado com toda a ficha (legível, não JSON)'},
-    {tag:'fix',text:'localStorage quota exceeded agora avisa via toast em vez de falhar silenciosamente'},
-    {tag:'fix',text:'API pública window.eclipseExt expõe utilitários (SS wrapper, makeBackup, restoreBackup, openCmdPalette, addCommand, addHotkey)'}
-  ]},
-  {version:'v3.8.1',date:'2026-05-07',title:'Polimento geral — bugs, dead code, storage',items:[
-    {tag:'fix',text:'drawInterludioChart duplicada — segunda definição (variante Perícia) sobrescrevia a versão semanal correta; removida'},
-    {tag:'fix',text:'Service worker: removida referência a biblioteca.html (arquivo inexistente, quebrava install do cache)'},
-    {tag:'fix',text:'sw.js install agora tolera falha individual de asset (Promise.all com catch por item) em vez de abortar tudo'},
-    {tag:'fix',text:'sw.js postMessage agora protegido com try/catch + guard de e.source'},
-    {tag:'fix',text:'console.log debug em _combatLogForDisplay vazava log a cada combate — removido'},
-    {tag:'perf',text:'CSS root limpo: --phi-*, --sa-*, --cam-clear (e overrides) removidos — não eram usados em nenhum var()'},
-    {tag:'perf',text:'sw.js cacheia widgets dice/timer/level/notes/init pra suporte offline aos atalhos do manifest'},
-    {tag:'perf',text:'sync-assets.sh agora copia widgets/ pro APK e exclui weapon-test.html (dev only)'},
-    {tag:'perf',text:'2 SVGs órfãos (mods/bocal.svg, mods/mira.svg) removidos do bundle'},
-    {tag:'perf',text:'minify-svgs.js mais seguro: preserva ids quando referenciados via url(#x) ou href="#x"'}
-  ]},
-  {version:'v3.8.0',date:'2026-05-05',title:'Remoção dos widgets nativos Android',items:[
-    {tag:'change',text:'DiceWidget e ShortcutWidget (Iniciativa, Nível, Timer, Notas) removidos do APK'},
-    {tag:'change',text:'AndroidManifest.xml limpo: 5 receivers + meta-data dos widgets retirados'},
-    {tag:'change',text:'Resources widget_dice/widget_shortcut/widget_bg deletados'},
-    {tag:'perf',text:'APK ainda menor — menos código, menos recursos, menos receivers registrados no sistema'},
-    {tag:'change',text:'README atualizado refletindo só o WebView wrapper + UpdateCheckWorker (OTA)'}
-  ]},
-  {version:'v3.7.9',date:'2026-05-05',title:'Redução de tamanho do APK (R8 minify, shrinkResources, splits, SVG minify)',items:[
-    {tag:'perf',text:'minifyEnabled true + shrinkResources true em build de release — R8 remove código/recursos não usados'},
-    {tag:'perf',text:'packagingOptions exclui META-INF/kotlin_module/license/dependencies — limpa overhead'},
-    {tag:'perf',text:'bundle splits por ABI/density/language — Play Store entrega APK menor por device'},
-    {tag:'perf',text:'proguard-rules.pro mantém widgets/receivers/workers do Eclipse intactos'},
-    {tag:'perf',text:'148 SVGs minificados (comments/whitespace/version/id strip) — sem perda visual'}
-  ]},
-  {version:'v3.7.8',date:'2026-05-05',title:'Fix double-tap em mobile + salvar/importar SVG do item',items:[
-    {tag:'fix',text:'rid-stat-row hover envolto em @media (hover:hover) — touch agora dispara click no 1º tap (não precisa mais 2x)'},
-    {tag:'feat',text:'Botão "Salvar imagem" no item-detail (aba Descrição) — baixa customImage como SVG/PNG/JPG na pasta de downloads'},
-    {tag:'feat',text:'Botão "Importar imagem" lado a lado — abre file picker pra trocar imagem do item'},
-    {tag:'feat',text:'Linha de ações agora tem 5 ícones: editor avançado, exportar item, importar item, salvar imagem, importar imagem'}
-  ]},
-  {version:'v3.7.7',date:'2026-05-05',title:'Perf mobile: anims/blurs/shadows desligados em touch + toggle manual',items:[
-    {tag:'perf',text:'Detecção perf-low expandida — qualquer touch device com viewport ≤900px ou UA mobile entra em modo baixo automaticamente (Poco X6 Pro, etc.)'},
-    {tag:'perf',text:'@media (pointer:coarse): zero backdrop-filter, transition-duration 120ms, hover transforms removidos, will-change limpo'},
-    {tag:'perf',text:'data-perf-low: animation-duration 1ms, transition 80ms, filters off em todos elementos não-SVG'},
-    {tag:'feat',text:'Toggle Performance em Configurações > Sobre — Auto / Baixo / Alto. Salva escolha em localStorage'}
-  ]},
-  {version:'v3.7.6',date:'2026-05-05',title:'Topbar reorg, mini-calendário, loadouts, exportar item, biblioteca PDF, atalhos completos',items:[
-    {tag:'feat',text:'Calendário movido para topbar ao lado da notificação — popup mensal compacto, marca dia atual e dias com evento'},
-    {tag:'feat',text:'Engrenagem de config fixa no rodapé da sidebar (onde antes ficava o calendário)'},
-    {tag:'feat',text:'Conjuntos de armas (loadouts) — botão chevron no card Inventário do dashboard abre gerenciador, equipa preset com 1 clique. Respeita regra 1×2H ou 2×1H'},
-    {tag:'feat',text:'Exportar item — ícone novo na aba Descrição do item-detail. Gera código base64/JSON, copia/baixa. Opção transferir apaga o item e mantém backup 20min'},
-    {tag:'feat',text:'Biblioteca importa PDF via pdf.js — extrai texto, classifica categoria, lista entre os livros do sistema'},
-    {tag:'feat',text:'Extrator de habilidades em livro importado — heurística por seções em CAIXA-ALTA, adiciona à ficha com 1 clique'},
-    {tag:'feat',text:'Atalhos de teclado completos: Ctrl+S/O/E/L/B/I/M/J/. + Ctrl+1..7 por aba + Ctrl+←/→ + Ctrl+Shift+P/L/I + F11 fullscreen'},
-    {tag:'feat',text:'Ctrl+Click em item exporta (ou equipa, se arma); Ctrl+Click em livro importado abre extrator'},
-    {tag:'feat',text:'Touch: 2 dedos toca = Ctrl+Click; 3 dedos = busca global; segurar dedo no livro importado = extrator'},
-    {tag:'feat',text:'CRIAÇÃO DE PERSONAGEM agora com texto literal do livro fonte (CONCEITO, LINHAGEM, PASSADO, ARQUÉTIPO, CAMINHO, ATRIBUTOS, STATUS, PERÍCIAS E PROFICIÊNCIAS, EQUIPAMENTOS)'},
-    {tag:'fix',text:'Versão exibida em config: v1.0 → v3.7.6 (estática + dinâmica via SW)'},
-    {tag:'fix',text:'Notificações forçadas em cinza neutro (não tinge mais com cor do tema)'},
-    {tag:'fix',text:'Save metadata version: 1.0 → 3.7.6'}
-  ]},
-  {version:'v2.0.2',date:'2026-04-29',title:'Fixes de UI: swatches, save list e atributos estáticos',items:[
-    {tag:'fix',text:'Color swatches da paleta voltam a ser círculos perfeitos (aspect-ratio:1 + flex:0 0 30px — antes deformavam em ovais quando o flex container apertava)'},
-    {tag:'fix',text:'Lista de fichas salvas: botões de ação (▲ ✎ ✕) viram ícones quadrados de 36px em vez de stretchar full-width pelo modal-btn em mobile'},
-    {tag:'change',text:'Atributos não giram mais com drag — agora são estáticos. Tap em cada tank ainda abre o modal'},
-    {tag:'change',text:'Removida hint "arraste pra girar" dos atributos'}
-  ]},
-  {version:'v2.0.1',date:'2026-04-29',title:'Fixes de drag mobile no inventário',items:[
-    {tag:'fix',text:'touch-action:none nos cells do inventário — permite drag em mobile sem o browser interceptar o gesto pra scroll'},
-    {tag:'fix',text:'setPointerCapture no pointerdown — garante que pointermove continua chegando mesmo se o dedo sai da cell durante o drag'},
-    {tag:'fix',text:'Botão rotate não bloqueia mais o drag de items (pointer events ajustados)'},
-    {tag:'fix',text:'sync-assets.sh tolera biblioteca.html/calendario.html ausente sem quebrar build'}
-  ]},
-  {version:'v2.0',date:'2026-04-29',title:'Sistema de armas + munição + inventário polido',items:[
-    {tag:'feat',text:'Catálogo completo de armas: 9 pistolas (Beretta 92, Glock 17, Sig P226, Colt 1911, HK USP, Walther PPK, CZ 75, Desert Eagle, M4-22), 2 revólveres (Colt + padrão), 1 rifle (Assault Rifle 04), 7 heavy (Benalli M4, M240, Machine Gun, RPG, Shotgun 01-03), 1 melee (Faca)'},
-    {tag:'feat',text:'18 munições com SVG: 308, 32 Auto, 376, 38x55, 404 Jeffery, 44 Rem Mag, 450 Bushmaster, 45 GAP, 4 Buck, 50 BMG, 7.62×32, 7.62×54R, 8mm Kurt, BB Shot, Bird Shot, M962, RPG Rocket, Slug'},
-    {tag:'feat',text:'Cada arma tem 4 SVGs pré-rotacionados (0°/90°/180°/-90°) — rotação swappa iconWpn pra variant correspondente, rendering perfeito em qualquer ângulo'},
-    {tag:'feat',text:'Sistema de calibre (_CALIBER): mapeia armas e munições por caliber identifier (9mm, .45acp, .380, .50ae, .44mag, .22, 12ga, 7.62×32, 7.62×54, rpg-rocket)'},
-    {tag:'feat',text:'Drag-drop munição em arma: enche pente primeiro, depois reserva (cap 5×mag), excesso permanece na caixa. Mismatch shake animation'},
-    {tag:'feat',text:'Modal munição clicável: mostra calibre, pente, reserva, lista compatíveis com qty no inventário (border verde nas que possui)'},
-    {tag:'feat',text:'Auto-init ammoMax: armas existentes sem ammoMax pegam do wpnEntry automaticamente'},
-    {tag:'feat',text:'SVG trim runtime: getBBox + viewBox=bbox tight, cache + pre-warm (requestIdleCallback)'},
-    {tag:'feat',text:'Damage steps display: badge +Np (verde positivo, vermelho negativo) no detail panel mostrando passos do dano base'},
-    {tag:'feat',text:'Service Worker network-first universal — atualizações refletem sem limpar cache'},
-    {tag:'change',text:'Inventário: posIdx persiste em zona expandida quando colapsa (item oculto, reaparece ao expandir)'},
-    {tag:'change',text:'Botão expand: cadeado vermelho tremendo + pulse vermelho nas cells com item bloqueando colapso'},
-    {tag:'change',text:'Drag preview/ghost cantos quadrados (border-radius:0)'},
-    {tag:'change',text:'Toasts de rotação removidos (90°/0° não notifica mais)'},
-    {tag:'change',text:'Rotação só via botão circular embaixo do item (long-press removido pra não conflitar com drag)'},
-    {tag:'fix',text:'Drag de items grandes: top-left footprint calculado corretamente (não cell sob cursor)'},
-    {tag:'fix',text:'Overlay alinhado por px exatos via getBoundingClientRect (sem fração 1px do CSS Grid)'},
-    {tag:'fix',text:'Dashboard usa _wpnBaseEntry: weapon mostra sempre rotação 0° na widget independente de variant em uso'},
-    {tag:'fix',text:'Single-cell weapons rotacionam visualmente nos 4 ângulos cardinais'},
-    {tag:'fix',text:'Item rotation: refuse + shake quando não cabe em nenhum slot (antes silenciava)'},
-    {tag:'feat',text:'SVGs slots de vestuário redesenhados: capacete viseira, óculos, amuleto, peitoral, calça, bota'},
-    {tag:'feat',text:'weapon-test.html: ferramenta de teste com 5 categorias (Assault, Pistol, Revolver, Heavy, Melee, Ammo) + filtro landscape/portrait + 3 escalas de cell'}
-  ]},
-  {version:'v1.0',date:'2026-04-29',title:'Reset de versão — Revisão completa: tema único, calendário, pastas no dashboard',items:[
-    {tag:'feat',text:'Novo calendário de RPG (calendario.html) com mês/agenda, eventos tipados, atalhos de teclado e import/export JSON'},
-    {tag:'feat',text:'Quick Access bar no dashboard: pasta de salvamentos, biblioteca, calendário e atualizador OTA visíveis direto na home'},
-    {tag:'feat',text:'Novo ícone do app unificando Eclipse Moon + Eclipse Star (crescente lunar com estrela em fusão luminosa)'},
-    {tag:'feat',text:'Botão Calendário no menu lateral, substituindo o seletor de tema (tema escuro permanente)'},
-    {tag:'change',text:'Tema claro removido por completo (UI, toggles e meta-tag). Sistema agora opera só no escuro.'},
-    {tag:'change',text:'Catálogo de armas zerado e ícones removidos — aguardando novo padrão visual; placeholder leve para qualquer img remanescente'},
-    {tag:'change',text:'Auto-update: SW agora notifica clientes ao ativar nova versão e cacheia o calendário'},
-    {tag:'change',text:'Biblioteca v0.22 alinhada ao app: animação de entrada nos cards, atalhos / J K, respeito a reduce-motion'},
-    {tag:'fix',text:'Profile: botão de tema substituído por atalho do Calendário; opção “Ícones de armas” removida'},
-    {tag:'feat',text:'Layout do shell: topbar vira barra cinza separada; content area como card com cantos superiores arredondados e sombra sutil'}
-  ]},
-  {version:'v1.9',date:'2026-04-27',title:'Onboarding redesenhado, paleta magenta e RE4 inventory',items:[
-    {tag:'feat',text:'Paleta global brand: lime → magenta #fe1455 (light theme com tons cream-rosé harmônicos)'},
-    {tag:'feat',text:'Onboarding redesenhado: card cinza escuro #1f1f23, fundo escuro com glow magenta, mosaico SVG SMIL (rounded squares aleatórios)'},
-    {tag:'feat',text:'5 modos de blink no mosaico (data-pattern): random/sync/rows/cols/radial — quadrados piscam em sincronia diferente sem mover'},
-    {tag:'feat',text:'Step 3 final do onboarding: card 3D draggable + Save/Share/Voltar/Aceitar'},
-    {tag:'feat',text:'Validação nome obrigatório com push animation: botão recoil + mensagem desliza pra esquerda'},
-    {tag:'feat',text:'Inventário RE4: case 10×7 landscape, expand chevron (+3 rows toggle), posIdx persiste posição ao expandir'},
-    {tag:'feat',text:'Long-press 1.5s rotaciona item (4 estados visuais 0/90/180/270, swap gw↔gh)'},
-    {tag:'feat',text:'Custom item image (PNG/JPG/WebP/SVG) via FileReader+canvas resize 320px, persiste base64 + export SVG/PNG'},
-    {tag:'feat',text:'Detail panel direito: dano/alcance crítico/alcance/peso/qtd/valor/durabilidade bar + botões circulares (equipar/imagem/descartar/exportar)'},
-    {tag:'feat',text:'Equipped mark: mãozinha lime + glow border quando arma equipada; dashboard CONSUMÍVEIS → EQUIPADOS'},
-    {tag:'feat',text:'Profile char: nome/idade/gênero/altura/peso/ocupação/conceito/lema editáveis com persist localStorage'},
-    {tag:'feat',text:'Topbar profile click direto pro perfil (sem dropdown); Salvar/Importar/Limpar ficha + Alternar tema migrados pro tab Config'},
-    {tag:'ui',text:'Status bar 6→8px, valores zerados não mostram texto'},
-    {tag:'ui',text:'Pill mobile vertical com bg translucido, dashboard auto-expand-collapse 2s, glow contido'},
-    {tag:'ui',text:'Item modal limpo: removida side panel Largura/Altura/Qtd/Peso/Valor/Durabilidade (hidden inputs com defaults)'},
-    {tag:'ui',text:'Tema dark/light: cells, frame, detail panel adaptam; weapon SVGs com filter suave (não harsh black/white)'},
-    {tag:'ui',text:'Passados reduzido aos 4 do capítulo PASSADO da biblioteca (Articulador/Atirador/Artesão/Bombeiro)'},
-  ]},
-  {version:'v1.8',date:'2026-04-25',title:'Limpeza profunda, update sheet e widgets Android',items:[
-    {tag:'fix',text:'Removido módulo android-python (Kivy/buildozer, ~11.8k linhas) — Capacitor e Android nativo cobrem distribuição'},
-    {tag:'fix',text:'Purga massiva de CSS morto: blocos inteiros de inv-panel/case/main/ctrl + suitcase + re4-* + wg-* widgets + mini-block + personality-* + ficha-combat-* + credit-asset-* + chl-* + detail-* + dual-card + attr-arch-* + tab-header-* + ~100 classes órfãs'},
-    {tag:'fix',text:'Keyframes mortos apagados (vattr-*, anim-slide-*, icon-draw/shine/spin-slow, pulse-draw, anim-pop-in, anim-slide-down, anim-pulse-flash, anim-wiggle, book-page-detach, book-cover-open, wg-dice-pop, suitcase-pulse/hint)'},
-    {tag:'fix',text:'Stubs e funções JS não chamadas removidos (openGenericModal, escapeHtml, setText, playSfxConsume, switchToTab, openSistemasMenu) + setInterval morto de relógio UTC'},
-    {tag:'feat',text:'Update sheet redesenhado estilo bottom-sheet approval: ícone do app + badge escudo, título/domínio, card descritivo, linha versão atual ↔ nova, botões pílula'},
-    {tag:'feat',text:'Notificação OS (Notification API) quando SW detecta update; sem mais auto-apply silencioso'},
-    {tag:'feat',text:'sw.js v113 + pre-cache dos logos Eclipse (moon/star) pra offline total'},
-    {tag:'ui',text:'Widgets Android Dice + Shortcut refeitos: header ECLIPSE mono, número 64sp com glow, botões pílula, cantos widget_bg 22dp'},
-    {tag:'ui',text:'Biblioteca reader: entrada em C-arc (page-c-arc) só na abertura/troca de capítulo, sem replay no subflip; transição entre sub-páginas instantânea'},
-    {tag:'feat',text:'Bump Android v5.1→v5.2 (vc 31→32), buildozer 5.1→5.2'},
-    {tag:'feat',text:'Atributos: 12 pts base (cap 5). No nv 10: +2 pts (total 14) e cap sobe pra 6'},
-    {tag:'feat',text:'Padronização siglas: HP→PV, ESF→PE, FOC→PF, DET→PD, NEU→NR (tooltips com nome completo). SKILL_COST_STATUSES + QA_TARGETS + preview generator atualizados'},
-    {tag:'feat',text:'Onboarding inicial completo: card editável (nome/assinatura), 14 cores + 5 padrões + 5 variações de layout, 3D flip frente/verso com logo Eclipse no verso, auto-detect tema sistema'},
-    {tag:'feat',text:'Pista de corrida quadrada animada na aba Veículos (3 carros, offset-path)'},
-  ]},
-  {version:'v1.7',date:'2026-04-21',title:'Proporção áurea, gerador de ficha automática e novo ícone Esforço',items:[
-    {tag:'feat',text:'Gerador de ficha automática (perfil e admin) — slider de nível 1-20, preview em tempo real, gera linhagem/arquétipo/passado/caminho/atributos/status/perícias/habilidades/feitiços (se classe mágica)'},
-    {tag:'feat',text:'Escala HP/status/XP proporcional ao nível: HP = 30 + 8×nv (+2 se Guerreiro), Esforço/Foco = 10 + 3×nv, Determinação = 5 + 2×nv, XP progride 1.2^nv'},
-    {tag:'feat',text:'Habilidades filtradas por fase e classe do arquétipo: nv<4 só fase I, nv 4-9 fases I+II, nv≥10 todas'},
-    {tag:'feat',text:'Feitiços gerados se arquétipo Místico ou caminho Arcanista (1-6 spells com raridade escalada)'},
-    {tag:'ui',text:'Golden ratio (φ=1.618) aplicado globalmente: tokens de espaçamento 6/10/16/26/42/68/110, font-scale xs/sm/md/lg/xl/2xl, aspect-ratio áurea no hero de veículos'},
-    {tag:'ui',text:'Profile avatar 68px, status cards 16px padding, sidebar-btn 42px — todos alinhados à escala phi'},
-    {tag:'ui',text:'Ícone de Esforço substituído: chama fluída (flame) no lugar da mão/punho antiga — trocado em QA_TARGETS, status list, attribute panel e skill catalog'},
-  ]},
-  {version:'v1.6',date:'2026-04-21',title:'Remoção da IA, ícones brancos animados, veículos expandidos e polimento geral',items:[
-    {tag:'feat',text:'Quadrado Telemetria em Veículos: rodagem (km), combustível, best lap e temperatura do motor'},
-    {tag:'feat',text:'Modo Corrida BETA — modal com score, top speed, 0→100 e simulação de volta (atualiza km/fuel/best lap)'},
-    {tag:'feat',text:'Perfil: avatar do personagem atualiza automaticamente o botão de Perfil no topbar e o nome do topbar'},
-    {tag:'ui',text:'Ícones globais brancos + animações (pulse na aba ativa, wiggle no hover do topbar, float nos links do perfil, draw-in nas perícias)'},
-    {tag:'ui',text:'Companheiros redesenhado: tema noturno estrelado (camada de partículas), cards com hover translúcido azul-neon'},
-    {tag:'ui',text:'Implantes com wrap cohesivo: radial vermelho sutil + borda temática substituindo fundo preto puro'},
-    {tag:'ui',text:'Light theme para Companheiros, Implantes e Telemetria'},
-    {tag:'remove',text:'Sistema IA totalmente removido: drawer Alt+I, badge no perfil, select-to-ask, botão "Perguntar à IA" na biblioteca e comando de busca'},
-    {tag:'remove',text:'Perfil: consolidou Importar/Limpar ficha no menu Admin (reduzindo 6 atalhos para 3)'},
-    {tag:'remove',text:'Perfil: segundo botão "Editar" em Detalhes do Personagem (toggle único unificado)'},
-    {tag:'fix',text:'Stubs no-op para openIaDrawer/closeIaDrawer/iaEnqueue mantêm retro-compat sem exibir UI'},
-  ]},
-  {version:'v1.5',date:'2026-04-21',title:'Áudio, IA assistente, Biblioteca integrada e update banner',items:[
-    {tag:'feat',text:'Banner de atualização com barra de progresso — notifica nova versão e instala ao clicar (mobile-safe)'},
-    {tag:'feat',text:'14 sons procedurais (WebAudio): moeda ao depositar, dano/cura ao editar HP, level-up, crítico em rolagem, whoosh ao descartar item'},
-    {tag:'feat',text:'Select-to-ask: destaque trechos no app e pergunte à IA com botão flutuante'},
-    {tag:'feat',text:'Drawer IA (Alt+I) — textarea, 14 tópicos clicáveis, detecção de pergunta vaga, fila com badge'},
-    {tag:'feat',text:'Biblioteca integrada como aba (iframe lazy) com bridge postMessage — botão "Perguntar à IA" dentro do reader envia capítulo pra fila'},
-    {tag:'ui',text:'Veículos compacto: colunas mais estreitas, breakpoint 1100-1400 reorganiza right panel em linha horizontal'},
-    {tag:'ui',text:'Tema claro WCAG-compliant, meta theme-color dinâmico'},
-    {tag:'ui',text:'Link de Biblioteca no perfil abre aba embutida'},
-    {tag:'fix',text:'Banner de update respeita safe-area e botões empilham em mobile vertical'},
-  ]},
-  {version:'v1.4',date:'2026-04-18',title:'Habilidades por origem, perfil reorganizado e polimentos',items:[
-    {tag:'feat',text:'Botão "+" circular dentro de Linhagem/Arquétipo/Passado/Caminho (só em modo editar) abre modal de Nova Habilidade'},
-    {tag:'feat',text:'Modal Nova Habilidade: header colorido por origem (ciano/roxo/amarelo/lime), stepper de custo, preview ao vivo "5 FOC por uso"'},
-    {tag:'feat',text:'Seletor "Drena de" no custo: Vitalidade / Esforço / Foco / Determinação / Neural (Córtex fora)'},
-    {tag:'feat',text:'Modal de Crédito redesenhado: header por tipo (verde/vermelho/azul), pills rápidos 10/50/100/500/1000, preview do saldo após operação'},
-    {tag:'feat',text:'Animações temáticas nos ícones dos atributos de veículo ao passar o dedo/mouse (Velocidade, Aceleração, Manuseio, Frenagem, Nitro, Blindagem)'},
-    {tag:'feat',text:'Ícone de Aceleração desenha em loop como monitor de batimento cardíaco'},
-    {tag:'feat',text:'Botão de tema (lua/sol) no topbar, acessível sem scroll'},
-    {tag:'feat',text:'Bloco Log no perfil abaixo de Estatísticas, com histórico versionado'},
-    {tag:'ui',text:'Linhagem/Arquétipo/Passado/Caminho movidos para o card Detalhes do Personagem'},
-    {tag:'ui',text:'Data de Criação removida do perfil'},
-    {tag:'ui',text:'Proficiência usa pill "Não possui" em vez de travessão'},
-    {tag:'ui',text:'Scrollbar invisível globalmente (rolagem continua funcionando)'},
-    {tag:'ui',text:'Sidebar do perfil sticky e cards com espaçamento uniforme'},
-    {tag:'fix',text:'Campo Telefone vazio agora tem mesma largura do Fuso Horário'},
-    {tag:'fix',text:'Custo da habilidade não sobrepõe mais o botão de usar'},
-    {tag:'fix',text:'Barra inferior de navegação realmente fixa no mobile (transform do body criava containing block)'},
-    {tag:'fix',text:'Botões circulares não viram ovais (aspect-ratio:1/1 global)'},
-    {tag:'fix',text:'Saves antigos com Nível=20 e Estágio=20 sem XP são tratados como default e zeram'},
-  ]},
-  {version:'v1.3',date:'2026-04-18',title:'Tela cheia, UI polida e remoção do inventário',items:[
-    {tag:'feat',text:'Modo tela cheia imersivo por padrão — barra do sistema oculta, revela com swipe'},
-    {tag:'feat',text:'Área de Atualizações (este painel) no topo, para acompanhar novidades'},
-    {tag:'feat',text:'Autosave em IndexedDB como backup do localStorage'},
-    {tag:'ui',text:'Blindagem global de círculos — nenhum botão redondo vira oval'},
-    {tag:'ui',text:'Polimento geral: topbar com blur, cards com hover suave, raios consistentes'},
-    {tag:'fix',text:'Módulo de inventário removido para ser reconstruído do zero em código limpo'},
-  ]},
-  {version:'v1.2',date:'2026-04-18',title:'Ficha Eclipse — autosave e proteção contra recarga',items:[
-    {tag:'feat',text:'Rebrand: ficha.dexport → Ficha Eclipse em todos os lugares'},
-    {tag:'feat',text:'Autosave a cada 8s, ao minimizar e antes de fechar o app'},
-    {tag:'feat',text:'Restauração automática da ficha ao abrir o app'},
-    {tag:'feat',text:'Confirmação nativa antes de recarregar; Ctrl+R e F5 pedem confirmação extra'},
-    {tag:'fix',text:'Pull-to-refresh desabilitado (overscroll-behavior-y:contain)'},
-  ]},
-  {version:'v1.1',date:'2026-04-18',title:'Correções mobile e tela vertical',items:[
-    {tag:'fix',text:'Integridade, HP e Base iniciam zerados'},
-    {tag:'fix',text:'Tooltip de atributos funciona no toque'},
-    {tag:'fix',text:'Mensagem "Bem-vindo, aventureiro" visível no mobile/tablet'},
-    {tag:'fix',text:'iOS não transforma mais "0" em link de telefone'},
-    {tag:'ui',text:'Crédito, XP, grade e veículo em 1 coluna no vertical'},
-    {tag:'ui',text:'Quadradinhos de status reformulados (mini-cards)'},
-    {tag:'ui',text:'Entalhe do celular respeitado + botão de alternar tela cheia'},
-    {tag:'feat',text:'Splash animada na abertura do app'},
-  ]},
-  {version:'v1.0',date:'2026-04-17',title:'Release inicial',items:[
-    {tag:'feat',text:'Ficha RPG completa: atributos, status, perícias, veículos, crédito'},
-    {tag:'feat',text:'PWA instalável com ícone lightning'},
-    {tag:'feat',text:'Service worker com cache offline'},
   ]},
 ];
 if(typeof renderProfileLog==='function')try{renderProfileLog()}catch(_){}
@@ -29722,6 +29526,8 @@ window._advShowDetail=function(field,item){
       }
     }
   }
+  // Picker minimalista — só nome/desc curta + confirmar. Detalhes (perícias/habilidades)
+  // aparecem na aba Progresso > Habilidades após confirmar. Long-press na habilidade abre full.
   body.innerHTML=`
     <div class="adv-detail">
       <div class="adv-detail-head">
@@ -29732,12 +29538,8 @@ window._advShowDetail=function(field,item){
         </div>
       </div>
       <div class="adv-detail-section">
-        <div class="adv-detail-section-title">Descrição</div>
-        <div class="adv-detail-desc">${esc(item.desc)}</div>
+        <div class="adv-detail-desc" style="margin-top:4px">${esc(item.desc)}</div>
       </div>
-      ${periChips?`<div class="adv-detail-section"><div class="adv-detail-section-title">Perícias automáticas</div><div class="adv-detail-peris">${periChips}</div></div>`:''}
-      ${slotsHtml}
-      ${habHtml}
     </div>
     <div class="modal-btns">
       <button type="button" class="modal-btn secondary" id="adv-detail-back">← Voltar</button>
@@ -32169,20 +31971,17 @@ document.addEventListener('pointerout',e=>{
     usage(){try{let n=0;for(const k of Object.keys(localStorage)){const v=localStorage.getItem(k);n+=k.length+(v?v.length:0)}return n}catch(e){return 0}}
   };
 
-  // ═══ 2. Auto-backup shadow (3 últimas snapshots a cada 10min) ═══
+  // ═══ 2. Auto-backup shadow (apenas 1 snapshot — sempre apaga o antigo antes) ═══
   const BACKUP_KEY_PREFIX='eclipse_autobackup_';
-  const MAX_BACKUPS=3;
+  const MAX_BACKUPS=1;
   function makeBackup(){
     if(!has(window.collectAllData))return;
     const data=safe(()=>window.collectAllData(),'collectAllData');
     if(!data)return;
-    const now=Date.now();
-    const key=BACKUP_KEY_PREFIX+now;
-    const ok=SS.setJSON(key,data);
-    if(!ok)return;
-    // Trim antigos
-    const all=SS.keys().filter(k=>k.startsWith(BACKUP_KEY_PREFIX)).sort();
-    while(all.length>MAX_BACKUPS){SS.del(all.shift())}
+    // Apaga TODOS antigos primeiro — fica só o novo
+    SS.keys().filter(k=>k.startsWith(BACKUP_KEY_PREFIX)).forEach(k=>SS.del(k));
+    const key=BACKUP_KEY_PREFIX+Date.now();
+    SS.setJSON(key,data);
   }
   function listBackups(){
     return SS.keys().filter(k=>k.startsWith(BACKUP_KEY_PREFIX)).sort().reverse().map(k=>{
@@ -32462,8 +32261,22 @@ document.addEventListener('pointerout',e=>{
   // ═══ 14. Inicialização ═══
   function init(){
     safe(attachTabTracker,'tab-tracker');
-    // Backup automático: 10 minutos
-    setInterval(()=>safe(makeBackup,'autobackup'),10*60*1000);
+    // Backup automático: dispara quando app entra em segundo plano OU após alteração (debounced 4s)
+    document.addEventListener('visibilitychange',()=>{
+      if(document.hidden)safe(makeBackup,'autobackup-hidden');
+    });
+    window.addEventListener('pagehide',()=>safe(makeBackup,'autobackup-pagehide'));
+    // Hook em autosaveNow: depois de cada save, agenda backup debounced 4s
+    let _bkpDebounce=null;
+    const _origAutosave=window.autosaveNow;
+    if(typeof _origAutosave==='function'){
+      window.autosaveNow=function(){
+        const r=_origAutosave.apply(this,arguments);
+        clearTimeout(_bkpDebounce);
+        _bkpDebounce=setTimeout(()=>safe(makeBackup,'autobackup-change'),4000);
+        return r;
+      };
+    }
     // Primeiro backup 30s após load (espera tudo settling)
     setTimeout(()=>safe(makeBackup,'autobackup-init'),30000);
     // Restaura última aba se sessionStorage tem
@@ -32894,7 +32707,7 @@ document.addEventListener('pointerout',e=>{
     const sub=document.getElementById('cfg-bkp-sub');
     if(!sub)return;
     const n=window.eclipseExt.listBackups().length;
-    sub.textContent=(n===0?'Nenhum backup ainda':n+' backup'+(n>1?'s':''))+' · auto a cada 10 min';
+    sub.textContent=(n===0?'Nenhum backup ainda':n+' backup'+(n>1?'s':''))+' · em background ou após alteração';
   }
 
   // ═══ 3. Backup list modal ═══
@@ -33565,15 +33378,24 @@ document.addEventListener('pointerout',e=>{
   window.cancelAnimationFrame=function(id){_rafQueue.delete(id)};
 
   // ─── B. Frame jank detector — long task warn ───
+  // Ring buffer fixo de 60 frames (~480B). frameMon pausa quando hidden pra economizar CPU/memory.
   let _lastFrameT=performance.now();
-  const _frameTimes=[];
-  _origRaf(function frameMon(t){
+  const _frameTimes=new Float32Array(60);
+  let _frameIdx=0;
+  function _frameMon(t){
+    if(document.visibilityState!=='visible'){
+      // Re-arma quando voltar; não consome frames em background
+      const onVis=()=>{if(document.visibilityState==='visible'){document.removeEventListener('visibilitychange',onVis);_lastFrameT=performance.now();_origRaf(_frameMon)}};
+      document.addEventListener('visibilitychange',onVis);
+      return;
+    }
     const dt=t-_lastFrameT;
     _lastFrameT=t;
-    _frameTimes.push(dt);
-    if(_frameTimes.length>60)_frameTimes.shift();
-    _origRaf(frameMon);
-  });
+    _frameTimes[_frameIdx]=dt;
+    _frameIdx=(_frameIdx+1)%60;
+    _origRaf(_frameMon);
+  }
+  _origRaf(_frameMon);
   window.__perfFrameTimes=_frameTimes;
 
   // ─── C. Long task observer — flagua mainthread blocks >50ms ───
@@ -33613,15 +33435,74 @@ document.addEventListener('pointerout',e=>{
   // ─── G. (skipped — clearing queue mata HUD/animations legítimas) ───
 
   // ─── H. Force GPU layer cleanup periódico — remove will-change órfãos ───
+  // 10s → 30s reduz scans + libera GPU memory menos frequente (cost vs benefit)
   setInterval(()=>{
+    if(document.visibilityState!=='visible')return;
     document.querySelectorAll('[style*="will-change"]').forEach(el=>{
       if(!el.matches(':hover')&&!el.classList.contains('is-animating')&&!el.classList.contains('is-dragging')){
         el.style.willChange='';
       }
     });
-  },10000);
+  },30000);
 
-  console.log('[fps] stabilizer ativo: rAF coalesce + frame budget + jank monitor');
+  // ─── I. Memory reclaim agressivo em background — pause heavy work, libera caches ───
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState!=='hidden')return;
+    try{
+      // 1. Pausa todas anims via play-state na raiz (já tinha, reforça)
+      document.body.style.animationPlayState='paused';
+      // 2. Limpa cache de imagens decoded em <img> off-screen (libera GPU memory)
+      document.querySelectorAll('img[loading="lazy"],img:not([src])').forEach(img=>{
+        if(!img.complete)return;
+        const r=img.getBoundingClientRect();
+        if(r.top>innerHeight*2||r.bottom<-innerHeight){const s=img.src;img.removeAttribute('src');img.dataset.lazyRestore=s}
+      });
+      // 3. Limpa will-change órfãos (libera GPU layers)
+      document.querySelectorAll('[style*="will-change"]').forEach(el=>{el.style.willChange=''});
+      // 4. Trim _frameTimes (já fixo, mas zera por garantia)
+      if(window.__perfFrameTimes&&window.__perfFrameTimes.fill)window.__perfFrameTimes.fill(0);
+    }catch(_){}
+  });
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState!=='visible')return;
+    try{
+      document.body.style.animationPlayState='';
+      // Restaura imagens removidas
+      document.querySelectorAll('img[data-lazy-restore]').forEach(img=>{
+        if(!img.src){img.src=img.dataset.lazyRestore;delete img.dataset.lazyRestore}
+      });
+    }catch(_){}
+  });
+
+  // ─── K. Memory-pressure listener (Chrome) — reclaim ANTES de OOM ───
+  // navigator.memory.pressure (origin trial) ou performance.memory polling como fallback.
+  function _reclaim(){
+    try{
+      document.querySelectorAll('img[loading="lazy"]').forEach(img=>{
+        if(!img.complete)return;
+        const r=img.getBoundingClientRect();
+        if(r.top>innerHeight*1.5||r.bottom<-innerHeight*0.5){const s=img.src;if(s){img.removeAttribute('src');img.dataset.lazyRestore=s}}
+      });
+      document.querySelectorAll('[style*="will-change"]').forEach(el=>{el.style.willChange=''});
+      // Drop offscreen canvas/video src
+      document.querySelectorAll('video[autoplay]:not([data-keep])').forEach(v=>{const r=v.getBoundingClientRect();if(r.top>innerHeight||r.bottom<0)v.pause()});
+    }catch(_){}
+  }
+  // Poll heap a cada 30s; se >70% do limite, reclaim
+  if(performance&&performance.memory){
+    setInterval(()=>{
+      if(document.visibilityState!=='visible')return;
+      const used=performance.memory.usedJSHeapSize;
+      const lim=performance.memory.jsHeapSizeLimit;
+      if(lim&&used/lim>0.7)_reclaim();
+    },30000);
+  }
+  // API navigator.scheduling pressure (Chrome 119+)
+  if('memory' in navigator && typeof navigator.memory.addEventListener==='function'){
+    try{navigator.memory.addEventListener('pressure',(e)=>{if(e.level==='moderate'||e.level==='critical')_reclaim()})}catch(_){}
+  }
+
+  console.log('[fps] stabilizer ativo: rAF coalesce + frame budget + jank monitor + memory reclaim + pressure listener');
 })();
 </script>
 
@@ -33924,16 +33805,17 @@ body[data-perf-anim-tabswitch="off"] .sidebar-btn[data-tab].nav-anim svg{animati
   }
   requestAnimationFrame(detectRefresh);
 
-  // Memory display
+  // Memory display — 2s → 5s (HUD update, sem ganho prático em refresh rápido)
   if(performance.memory&&memEl){
     setInterval(()=>{
+      if(document.visibilityState!=='visible')return;
       const used=performance.memory.usedJSHeapSize/1048576;
       const lim=performance.memory.jsHeapSizeLimit/1048576;
       memEl.textContent=Math.round(used)+'M';
       memEl.title='Heap '+used.toFixed(1)+'/'+Math.round(lim)+'MB';
       const pct=used/lim;
       memEl.style.color=pct>.85?'#f87171':pct>.65?'#fbbf24':'';
-    },2000);
+    },5000);
   } else if(memEl) memEl.textContent='n/a';
   // ─── Long-task observer (CPU stalls) ───
   let _longTaskCount=0,_longTaskMs=0;
@@ -33948,11 +33830,12 @@ body[data-perf-anim-tabswitch="off"] .sidebar-btn[data-tab].nav-anim svg{animati
   if(jankEl){
     const _origJank=jankEl.textContent;
     setInterval(()=>{
+      if(document.visibilityState!=='visible')return;
       const upS=Math.max(1,(performance.now()-sessionStart)/1000);
       const cpuPct=Math.min(100,(_longTaskMs/(upS*1000))*100);
       jankEl.textContent=jankCount+' / '+_longTaskCount+' LT';
       jankEl.title='Jank frames | Long-tasks: '+_longTaskCount+' ('+_longTaskMs.toFixed(0)+'ms, ~'+cpuPct.toFixed(1)+'% CPU)';
-    },2000);
+    },5000);
   }
 
   // ─── HUD → abre Configurações > App e rola até bloco Performance ───
