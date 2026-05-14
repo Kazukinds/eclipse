@@ -10307,7 +10307,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.49</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.50</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -28036,9 +28036,12 @@ function _hideSplash(){
     });
   }catch(_){ }
 }
-window.addEventListener('load',()=>{requestAnimationFrame(()=>setTimeout(_hideSplash,200))});
-// Fallback: se 'load' demorar (recursos lentos), some em 4s
-setTimeout(()=>{if(document.documentElement.classList.contains('app-booting'))_hideSplash()},4000);
+// Hide imediato — não espera 'load' (que aguarda CDN overlayscrollbars/Lottie).
+// rAF garante uma pintura inicial; setTimeout 120ms suaviza fade.
+// Não espera deferred scripts → ganha 1-3s no cold start.
+requestAnimationFrame(()=>setTimeout(_hideSplash,120));
+// Fallback: garantia se algo travar
+setTimeout(()=>{if(document.documentElement.classList.contains('app-booting'))_hideSplash()},2500);
 
 // ═══ AUTOSAVE (localStorage) + CONFIRMAR RECARGA ═══
 const AUTOSAVE_KEY='ficha-eclipse-save';
