@@ -846,7 +846,7 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .card-title{font-size:16px;font-weight:600}
 .card-actions{display:flex;gap:6px}
-.card-action-btn{width:30px;height:30px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dim);transition:all .2s}
+.card-action-btn{width:32px;height:32px;min-width:32px;min-height:32px;max-width:32px;max-height:32px;flex:0 0 32px;aspect-ratio:1/1;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dim);transition:all .2s;box-sizing:border-box;padding:0}
 .card-action-btn:hover{color:var(--text-secondary);border-color:var(--border-light);background:var(--bg-hover)}
 .card-action-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
 .see-all{font-size:12px;font-weight:600;color:var(--magenta);text-transform:uppercase;letter-spacing:.5px;cursor:pointer;background:none;border:none;font-family:inherit;transition:all var(--transition-fast);padding:2px 0}
@@ -2366,12 +2366,12 @@ html.no-radius,html.no-radius *{border-radius:0!important}
 #tab-profile .profile-hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:color-mix(in srgb,var(--lime) 14%,transparent);border:1px solid color-mix(in srgb,var(--lime) 40%,transparent);color:var(--lime);font-size:12px;font-weight:700;margin-top:6px}
 #tab-profile .profile-hero-badge svg{width:13px;height:13px;fill:currentColor;stroke:none}
 #tab-profile .profile-stats-card{background:var(--bg-card-inner);border:1px solid var(--border);border-radius:18px;padding:16px 8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;margin:6px 16px 14px;box-shadow:var(--shadow-sm)}
-#tab-profile .profile-stat-cell{display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 4px;position:relative}
+#tab-profile .profile-stat-cell{display:flex;flex-direction:column-reverse;align-items:center;gap:8px;padding:0 4px;position:relative}
 #tab-profile .profile-stat-cell + .profile-stat-cell::before{content:none}
-#tab-profile .profile-stat-cell .stat-label{font-size:12px;color:var(--text-dim);font-weight:500}
-#tab-profile .profile-stat-cell .stat-value{display:flex;align-items:center;gap:6px;font-size:18px;font-weight:800;color:var(--text-primary)}
-#tab-profile .profile-stat-cell .stat-icon{width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-#tab-profile .profile-stat-cell .stat-icon svg{width:20px;height:20px}
+#tab-profile .profile-stat-cell .stat-label{font-size:11px;color:var(--text-dim);font-weight:500;letter-spacing:.1px}
+#tab-profile .profile-stat-cell .stat-value{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--text-primary);letter-spacing:-.4px}
+#tab-profile .profile-stat-cell .stat-icon{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+#tab-profile .profile-stat-cell .stat-icon svg{width:22px;height:22px}
 #tab-profile .profile-block{margin:0 16px 14px}
 #tab-profile .profile-block-head{display:flex;align-items:center;justify-content:space-between;padding:0 4px 10px}
 #tab-profile .profile-block-title{font-size:15px;font-weight:700;color:var(--text-primary);margin:0}
@@ -2391,19 +2391,19 @@ html.no-radius,html.no-radius *{border-radius:0!important}
 #tab-profile .ach-tile-label.locked{color:var(--text-dim)}
 #tab-profile .ach-tile-label svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.2}
 #tab-profile .profile-metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-#tab-profile .metric-card{background:var(--bg-card-inner);border:1px solid var(--border);border-radius:16px;padding:14px 12px;display:flex;flex-direction:column;gap:6px;min-height:104px;transition:border-color .2s}
+#tab-profile .metric-card{background:var(--bg-card-inner);border:1px solid var(--border);border-radius:18px;padding:14px 14px 16px;display:flex;flex-direction:column;gap:4px;min-height:112px;transition:border-color .2s;justify-content:space-between}
 #tab-profile .metric-card:hover{border-color:var(--border-light)}
-#tab-profile .metric-card-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:2px}
-#tab-profile .metric-card-icon svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#tab-profile .metric-card-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:4px;aspect-ratio:1/1;flex:0 0 32px}
+#tab-profile .metric-card-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 #tab-profile .metric-card-icon.green{background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--green)}
 #tab-profile .metric-card-icon.purple{background:color-mix(in srgb,var(--purple) 18%,transparent);color:var(--purple)}
 #tab-profile .metric-card-icon.red{background:color-mix(in srgb,var(--red) 18%,transparent);color:var(--red)}
 #tab-profile .metric-card-icon.magenta{background:var(--magenta-bg-strong);color:var(--magenta)}
 #tab-profile .metric-card-icon.blue{background:color-mix(in srgb,var(--blue) 18%,transparent);color:var(--blue)}
 #tab-profile .metric-card-icon.yellow{background:color-mix(in srgb,var(--yellow) 18%,transparent);color:var(--yellow)}
-#tab-profile .metric-card-label{font-size:11px;color:var(--text-dim);font-weight:500}
-#tab-profile .metric-card-value{font-size:18px;font-weight:800;color:var(--text-primary);outline:none;line-height:1.2;min-height:22px;border-radius:4px;transition:box-shadow .15s}
-#tab-profile .metric-card-value:empty::before{content:attr(data-ph);color:var(--text-dim);font-weight:500;font-style:italic;font-size:13px;opacity:.7}
+#tab-profile .metric-card-label{font-size:12px;color:var(--text-dim);font-weight:500}
+#tab-profile .metric-card-value{font-size:24px;font-weight:800;color:var(--text-primary);outline:none;line-height:1.15;min-height:30px;border-radius:4px;transition:box-shadow .15s;letter-spacing:-.3px}
+#tab-profile .metric-card-value:empty::before{content:attr(data-ph);color:var(--text-dim);font-weight:500;font-style:normal;font-size:13px;opacity:.55}
 #tab-profile .profile-hero-name:empty::before{content:none}
 #tab-profile .metric-card-value[contenteditable="true"]:focus{box-shadow:none;background:color-mix(in srgb,var(--magenta) 8%,transparent)}
 /* Polish mobile profile baseado no mockup CalTracker */
@@ -6310,9 +6310,11 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   .re4-case{max-width:100%}
   .peri-cat-grid{grid-template-columns:1fr}
   .pericia-list-flat{max-height:none}
-  button,.sidebar-btn,.card-action-btn,.toggle-pill,.filter-pill,[onclick]{min-height:40px;touch-action:manipulation}
+  button,.sidebar-btn,.toggle-pill,.filter-pill,[onclick]{min-height:40px;touch-action:manipulation}
+  /* card-action-btn fica 36x36 mobile (não 40) — preserva quadrado */
+  .card-action-btn{width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;max-width:36px!important;max-height:36px!important;flex:0 0 36px!important;aspect-ratio:1/1!important;padding:0!important;box-sizing:border-box!important;border-radius:8px!important}
   /* Botões circulares mantêm proporção 1:1 e não viram ovais */
-  .xp-gear,.attr-gear,.size-gear,.dual-gear,.veh-cfg-btn,.topbar-icon-btn,.topbar-profile-btn,.modal-close,.register-close,.item-gear-float,.account-badge,.account-avatar,.skill-use,.skill-del,.biblio-reader-close,.save-toast-close,.update-banner-close,.toast-close,.biblio-subbtn,.skill-icon-btn,.mc-swatch,.minical-nav,.minical-day,.equip-slot,.equip-clear-btn,.equip-conjunto-toggle,.card-action-btn{min-height:auto!important;aspect-ratio:1/1!important}
+  .xp-gear,.attr-gear,.size-gear,.dual-gear,.veh-cfg-btn,.topbar-icon-btn,.topbar-profile-btn,.modal-close,.register-close,.item-gear-float,.account-badge,.account-avatar,.skill-use,.skill-del,.biblio-reader-close,.save-toast-close,.update-banner-close,.toast-close,.biblio-subbtn,.skill-icon-btn,.mc-swatch,.minical-nav,.minical-day,.equip-slot,.equip-clear-btn,.equip-conjunto-toggle{min-height:auto!important;aspect-ratio:1/1!important}
   .equip-conjunto-btn{min-height:auto!important;aspect-ratio:auto!important}
   /* Toolbar progress: força quadrado 36x36 mobile */
   .skill-icon-btn{width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;flex:0 0 36px!important;padding:0!important;box-sizing:border-box!important}
@@ -10226,7 +10228,6 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
         <div class="profile-block-head">
           <h3 class="profile-block-title">Métricas</h3>
         </div>
-        <p class="profile-fill-hint">Toque em qualquer campo para preencher</p>
         <div class="profile-metrics-grid">
           <div class="metric-card">
             <div class="metric-card-icon green"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="21"/><line x1="3" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="21" y2="12"/></svg></div>
