@@ -6448,31 +6448,57 @@ body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-ins
   .content{padding:0!important;background:transparent!important}
   .tab-content.active:not(#tab-dashboard)::-webkit-scrollbar{width:0;display:none}
 }
-/* ═══════════ APP SPLASH / INTRO ═══════════ */
+/* ═══════════ APP SPLASH / INTRO — Lunar Breathe (dotmatrix) ═══════════ */
 .app-splash{
   position:fixed;inset:0;z-index:99999;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;
-  background:#0a0a0d;
+  background:radial-gradient(ellipse at center,#15101a 0%,#0a0a0d 60%);
   opacity:1;pointer-events:all;
   transition:opacity .3s ease, visibility 0s linear .3s;
 }
 .app-splash.gone{opacity:0;visibility:hidden;pointer-events:none;display:none}
 html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-banner{display:none!important}
-.app-splash .splash-logo{width:96px;height:96px;filter:drop-shadow(0 0 24px rgba(var(--magenta-rgb),.35))}
+.app-splash .splash-core{position:relative;width:200px;height:200px;display:flex;align-items:center;justify-content:center}
+.app-splash .splash-logo{width:96px;height:96px;filter:drop-shadow(0 0 24px rgba(var(--magenta-rgb),.45));animation:splash-breathe 2.6s ease-in-out infinite;z-index:2;position:relative}
+.app-splash .splash-ring{
+  position:absolute;left:50%;top:50%;
+  width:96px;height:96px;
+  margin:-48px 0 0 -48px;
+  border-radius:50%;
+  border:1.5px solid rgba(var(--magenta-rgb),.55);
+  opacity:0;
+  animation:splash-lunar 2.6s cubic-bezier(.16,.84,.44,1) infinite;
+  pointer-events:none;
+}
+.app-splash .splash-ring:nth-child(2){animation-delay:.6s;border-color:rgba(var(--magenta-rgb),.4)}
+.app-splash .splash-ring:nth-child(3){animation-delay:1.2s;border-color:rgba(var(--magenta-rgb),.28)}
+@keyframes splash-lunar{
+  0%{transform:scale(.6);opacity:0}
+  15%{opacity:.9}
+  100%{transform:scale(2.2);opacity:0}
+}
+@keyframes splash-breathe{
+  0%,100%{transform:scale(1);filter:drop-shadow(0 0 18px rgba(var(--magenta-rgb),.35))}
+  50%{transform:scale(1.06);filter:drop-shadow(0 0 32px rgba(var(--magenta-rgb),.6))}
+}
+@media (prefers-reduced-motion:reduce){
+  .app-splash .splash-ring,.app-splash .splash-logo{animation:none!important}
+}
 .app-fade-in{animation:app-fade-in .25s ease-out both}
 @keyframes app-fade-in{0%{opacity:0}100%{opacity:1}}
 @media (prefers-reduced-motion:reduce){.app-fade-in{animation:none}}
 
 /* ═══════════ MOBILE VERTICAL REFINEMENTS ═══════════ */
 @media (max-width:640px) and (orientation:portrait){
-  /* Welcome visível — pequena linha acima do nome */
-  .topbar-welcome{display:flex;flex-direction:column;align-items:center;gap:2px;padding:2px 0}
+  /* Welcome visível — pequena linha acima do nome (alinhado à esquerda) */
+  .topbar-welcome{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:2px;padding:2px 0}
   .topbar-welcome small{display:block;font-size:11px;letter-spacing:.4px;color:var(--text-secondary);text-transform:none}
   .topbar-welcome h2{font-size:17px;font-weight:700;color:var(--text-primary);letter-spacing:-.2px}
 
   /* Topbar compacta + respira o notch */
   .topbar{padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px;gap:8px}
-  .topbar-actions{justify-content:center;margin-left:0}
+  .topbar-row-1{justify-content:space-between!important;align-items:center;gap:10px}
+  .topbar-actions{justify-content:flex-end;margin-left:auto;flex-shrink:0}
 
   /* Header XP/Estagio empilhado — botões verticais à direita */
   .xp-card{grid-template-columns:1fr auto!important;grid-template-rows:auto auto!important;gap:14px 12px!important;padding:16px!important;position:relative;align-items:center!important}
@@ -9119,7 +9145,12 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
 </script>
 <noscript><div style="position:fixed;inset:0;background:#0a0a0b;color:#e4e4e7;display:flex;align-items:center;justify-content:center;padding:24px;font-family:system-ui,sans-serif;text-align:center;z-index:99999"><div><h1 style="color:#bef264;margin:0 0 12px;font-size:22px">JavaScript necessário</h1><p style="margin:0;font-size:14px;line-height:1.6;max-width:380px">Ficha Eclipse precisa de JavaScript ativado para funcionar. Habilite nas configurações do navegador e recarregue.</p></div></div></noscript>
 <div class="app-splash" id="app-splash" aria-hidden="true">
-  <div class="eclipse-logo splash-logo"><span class="el-moon"></span><span class="el-star"></span></div>
+  <div class="splash-core">
+    <span class="splash-ring"></span>
+    <span class="splash-ring"></span>
+    <span class="splash-ring"></span>
+    <div class="eclipse-logo splash-logo"><span class="el-moon"></span><span class="el-star"></span></div>
+  </div>
 </div>
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-grip" id="sidebar-grip"></div>
