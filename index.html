@@ -868,9 +868,11 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .dash-wpn-widget{position:relative;width:100%;aspect-ratio:1/1;max-width:220px;margin:0 auto;display:flex;align-items:center;justify-content:center;background:transparent;overflow:visible}
 .dash-wpn-svg-fallback{color:rgba(255,255,255,.7);cursor:pointer}
 /* Hunt: Showdown style weapon HUD — usa todo espaço disponível */
-.dash-hunt-widget{position:relative;width:100%;display:flex;justify-content:center;align-items:center;padding:6px;min-height:240px;overflow:hidden;box-sizing:border-box}
+.dash-hunt-widget{position:relative;width:100%;display:flex;justify-content:center;align-items:center;padding:6px;min-height:160px;overflow:hidden;box-sizing:border-box}
 .dash-hunt-widget.single{justify-content:center;align-items:center}
-.dash-hunt-widget.dual{min-height:240px;justify-content:center;align-items:center;gap:8px}
+.dash-hunt-widget.dual{min-height:200px;justify-content:center;align-items:center;gap:8px}
+.dash-hunt-empty{min-height:140px!important;padding:4px!important}
+.dash-hunt-empty .dhc-circle{width:130px!important;height:130px!important}
 .dhc-circle{position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:transform .15s}
 .dhc-circle:hover{transform:scale(1.04)}
 /* Layout: par centralizado horizontal, sec offset top */
@@ -10593,7 +10595,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.72</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.73</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -28726,6 +28728,9 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.73',date:'2026-05-15',title:'Empty hand widget encolhido em TODAS viewports',items:[
+    {tag:'fix',text:'Fix anterior (v3.8.72) era portrait-only. Em landscape void preto continuava. Min-height global 240px→160px + .dash-hunt-empty 130px diâmetro universal.'}
+  ]},
   {version:'v3.8.72',date:'2026-05-15',title:'Dash hunt empty hand — encolhido em portrait',items:[
     {tag:'fix',text:'Empty hand circle widget (sem arma equipada) era 200px diâmetro + min-height 240px → void preto enorme entre topbar e XP bar. Reduzido pra 130px + min-height 140px em portrait.'}
   ]},
