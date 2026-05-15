@@ -10587,7 +10587,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.68</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.69</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -28720,6 +28720,11 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.69',date:'2026-05-15',title:'Fullscreen immersive restaurado no APK Capacitor',items:[
+    {tag:'fix',text:'MainActivity Capacitor (build-app/android) era só BridgeActivity vazio — sem flags immersive. StatusBar + NavBar apareciam no APK gerado.'},
+    {tag:'fix',text:'Adicionado _enterImmersive() com SYSTEM_UI_FLAG_FULLSCREEN | HIDE_NAVIGATION | IMMERSIVE_STICKY. Reaplica em onResume + onWindowFocusChanged.'},
+    {tag:'fix',text:'StatusBar/NavBar transparent + layoutInDisplayCutoutMode SHORT_EDGES (notch respected).'}
+  ]},
   {version:'v3.8.68',date:'2026-05-15',title:'Boot ultra-rápido — SW + pipeline + Capacitor splash',items:[
     {tag:'perf',text:'SW HTML strategy network-first→stale-while-revalidate. Boot 2+ retorna cache instant, atualiza em bg.'},
     {tag:'perf',text:'SW skipWaiting() no install — ativa imediato sem fase waiting. −200-500ms pós-update.'},
