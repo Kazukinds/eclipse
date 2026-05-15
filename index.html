@@ -6727,6 +6727,9 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
 
   /* Chart-area mais baixo em portrait — evita void preto enorme com gráfico vazio */
   .dash-grid .chart-area,.chart-area{height:140px!important}
+  /* Dash hunt widget vazio (empty hand) — encolhe em portrait pra não criar void */
+  .dash-hunt-widget,.dash-hunt-widget.dual{min-height:140px!important;padding:4px!important}
+  .dash-hunt-empty .dhc-circle{width:130px!important;height:130px!important}
 
   /* Crédito — uma coluna, valores menores, sem círculo gigante */
   .credit-top{padding:18px 16px;border-radius:14px}
@@ -10590,7 +10593,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.71</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.72</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -28723,6 +28726,9 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.72',date:'2026-05-15',title:'Dash hunt empty hand — encolhido em portrait',items:[
+    {tag:'fix',text:'Empty hand circle widget (sem arma equipada) era 200px diâmetro + min-height 240px → void preto enorme entre topbar e XP bar. Reduzido pra 130px + min-height 140px em portrait.'}
+  ]},
   {version:'v3.8.71',date:'2026-05-15',title:'Chart-area menor em portrait — sem void preto enorme',items:[
     {tag:'fix',text:'Evolução card chart-area era 280px em portrait → grande área preta quando XP=0 (sem dados pra plotar). Reduzido pra 140px.'}
   ]},
