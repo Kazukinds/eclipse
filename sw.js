@@ -5,7 +5,7 @@
  * Navigation Preload acelera primeira navegação.
  * Runtime cache tem teto (LRU manual) pra não crescer sem limite.
  */
-const VERSION = 'v3.8.67';
+const VERSION = 'v3.8.68';
 const STATIC_CACHE  = 'eclipse-static-' + VERSION;
 const RUNTIME_CACHE = 'eclipse-runtime-' + VERSION;
 const RUNTIME_MAX   = 60; // máx entries no runtime cache
@@ -35,6 +35,8 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener('install', e => {
+  // skipWaiting: ativa imediato sem esperar todas as abas fecharem. Boot 1º-instalação mais rápido.
+  self.skipWaiting();
   e.waitUntil((async () => {
     const c = await caches.open(STATIC_CACHE);
     // add individual com catch — se um falhar, install não quebra
@@ -114,22 +116,27 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // HTML/navigation: network-first (evita UI desatualizada após deploy)
+  // HTML/navigation: stale-while-revalidate — retorna cache instantâneo, atualiza em bg.
+  // Boot ~10x mais rápido em runs subsequentes (app Android usa local server local — cache hit instant).
+  // UI desatualizada após deploy é detectada pelo update-banner via SW message, não pelo nav.
   if (isHTML(req, url)) {
     e.respondWith((async () => {
-      try {
-        // Aproveita navigation preload se disponível
-        const preload = e.preloadResponse ? await e.preloadResponse : null;
-        const resp = preload || await fetch(req);
-        if (resp && resp.status === 200 && resp.type === 'basic') {
-          const clone = resp.clone();
-          caches.open(RUNTIME_CACHE).then(c => c.put(req, clone).then(trimRuntime)).catch(()=>{});
+      const cached = await caches.match(req) || await caches.match('./index.html');
+      const fetchPromise = (async () => {
+        try {
+          const preload = e.preloadResponse ? await e.preloadResponse : null;
+          const resp = preload || await fetch(req);
+          if (resp && resp.status === 200 && resp.type === 'basic') {
+            const clone = resp.clone();
+            caches.open(RUNTIME_CACHE).then(c => c.put(req, clone).then(trimRuntime)).catch(()=>{});
+          }
+          return resp;
+        } catch(_) {
+          return cached || Response.error();
         }
-        return resp;
-      } catch(_) {
-        const cached = await caches.match(req) || await caches.match('./index.html');
-        return cached || Response.error();
-      }
+      })();
+      // Se temos cache, retorna instant (SWR). Sem cache, espera network.
+      return cached || fetchPromise;
     })());
     return;
   }

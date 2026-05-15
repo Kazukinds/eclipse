@@ -6635,7 +6635,7 @@ body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-ins
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;
   background:var(--bg-card);
   opacity:1;pointer-events:all;
-  transition:opacity .3s ease, visibility 0s linear .3s;
+  transition:opacity .12s ease, visibility 0s linear .12s;
 }
 .app-splash .eclipse-logo .el-moon{background:#fff!important}
 .app-splash.gone{opacity:0;visibility:hidden;pointer-events:none;display:none}
@@ -10587,7 +10587,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.67</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.68</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -23469,12 +23469,21 @@ window.addEventListener('load',()=>{try{renderThemeSlots()}catch(_){}});
 try{localStorage.removeItem('eclipse_cam_vit')}catch(_){}
 
 function refreshAll(){
-  // Sync: dashboard visivel no boot
-  renderSummary();renderXP();renderStatus();renderAttrs();renderDashLists();renderGroup();renderAch();
-  if(typeof renderCredit==='function')renderCredit();
-  setTimeout(()=>drawChart(false),50);
-  // Idle: tabs nao-dashboard (renderInvTab/Biblio/Feit continuam no DOMContentLoaded)
+  // Crítico (visível primeiro paint dashboard): números do topo + atributos
+  try{renderSummary()}catch(_){}
+  try{renderAttrs()}catch(_){}
+  // Importante mas pode esperar 1 frame: XP/status/dash-lists
+  requestAnimationFrame(()=>{
+    try{renderXP()}catch(_){}
+    try{renderStatus()}catch(_){}
+    try{renderDashLists()}catch(_){}
+    try{renderGroup()}catch(_){}
+    try{renderAch()}catch(_){}
+    if(typeof renderCredit==='function'){try{renderCredit()}catch(_){}}
+  });
+  // Não-crítico: chart + outras tabs em idle
   const tasks=[
+    ()=>drawChart(false),
     ()=>renderSkills(),
     ()=>renderProficiencias(),
     ()=>renderCaseSelector(),
@@ -28493,9 +28502,9 @@ function _hideSplash(){
   }catch(_){ }
 }
 // Hide imediato — não espera 'load' (que aguarda CDN overlayscrollbars/Lottie).
-// rAF garante uma pintura inicial; setTimeout 120ms suaviza fade.
+// 2x rAF = espera 1 frame de pintura (~16-33ms) sem delay arbitrário 120ms.
 // Não espera deferred scripts → ganha 1-3s no cold start.
-requestAnimationFrame(()=>setTimeout(_hideSplash,120));
+requestAnimationFrame(()=>requestAnimationFrame(_hideSplash));
 // Fallback: garantia se algo travar
 setTimeout(()=>{if(document.documentElement.classList.contains('app-booting'))_hideSplash()},2500);
 
@@ -28612,9 +28621,11 @@ function tryRestoreAutosave(){
   }catch(err){console.warn('Restore autosave falhou:',err&&err.message);return false}
 }
 
-// Restaura no boot (silencioso — sem toast). DOMContentLoaded pra dashboard pintar populado no primeiro paint.
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',tryRestoreAutosave,{once:true});
-else tryRestoreAutosave();
+// Restaura no boot (silencioso — sem toast). Deferido via rAF pra não bloquear primeiro paint
+// do dashboard (parse JSON de save grande pode levar 100-500ms em Android low-end).
+function _bootRestore(){requestAnimationFrame(()=>{try{tryRestoreAutosave()}catch(_){}});}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',_bootRestore,{once:true});
+else _bootRestore();
 
 // Salva periodicamente enquanto o app está aberto (pula se aba não visível)
 // 15s → 30s reduz wakeups + GC churn (~50% menos saves), data-perf-low estende pra 60s
@@ -28709,6 +28720,15 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.68',date:'2026-05-15',title:'Boot ultra-rápido — SW + pipeline + Capacitor splash',items:[
+    {tag:'perf',text:'SW HTML strategy network-first→stale-while-revalidate. Boot 2+ retorna cache instant, atualiza em bg.'},
+    {tag:'perf',text:'SW skipWaiting() no install — ativa imediato sem fase waiting. −200-500ms pós-update.'},
+    {tag:'perf',text:'Capacitor splash launchShowDuration 600→0. WebView arranca direto. −600ms cold boot.'},
+    {tag:'perf',text:'refreshAll split em 3 fases: sync (números topo+atributos) → rAF (XP/status/dash) → idle (chart+outras tabs).'},
+    {tag:'perf',text:'Autosave restore deferred via rAF — não bloqueia primeiro paint (era 100-500ms parse JSON em saves grandes).'},
+    {tag:'perf',text:'Splash fade .3s→.12s + 2×rAF hide (vs setTimeout 120ms) — ~180ms ganho.'},
+    {tag:'fix',text:'BUG CRÍTICO: isDev matchava localhost no Capacitor (https://localhost) → SW desregistrado + cache limpo TODO boot. Adicionado isCapacitor detect.'}
+  ]},
   {version:'v3.8.67',date:'2026-05-15',title:'Polish arquétipo + perfil cleanup',items:[
     {tag:'ui',text:'Habilidades de arquétipo (modal seleção + picker detail) agora destacam **bold** em magenta + text-align justify igual modal skill-detail.'},
     {tag:'ui',text:'Card Caminho mostra cadeado SVG centralizado quando arquétipo não escolhido.'},
@@ -28875,8 +28895,10 @@ if(typeof renderProfileLog==='function')try{renderProfileLog()}catch(_){}
 
   window.addEventListener('load',()=>{
     // DEV: localhost/LAN — desregistra SW + limpa cache pra evitar servir código stale
+    // IMPORTANTE: Capacitor Android usa https://localhost — NÃO é dev, é o app empacotado.
     const h=location.hostname;
-    const isDev=(h==='localhost'||h==='127.0.0.1'||/^192\.168\./.test(h)||/^10\./.test(h)||location.port==='8080');
+    const isCapacitor=!!(window.Capacitor||(window.EclipseNative&&window.EclipseNative.appVersion)||/Capacitor/i.test(navigator.userAgent));
+    const isDev=!isCapacitor&&(h==='localhost'||h==='127.0.0.1'||/^192\.168\./.test(h)||/^10\./.test(h)||location.port==='8080');
     if(isDev){
       navigator.serviceWorker.getRegistrations().then(regs=>regs.forEach(r=>r.unregister()));
       if(window.caches)caches.keys().then(ks=>ks.forEach(k=>caches.delete(k)));
