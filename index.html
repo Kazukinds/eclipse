@@ -6725,6 +6725,9 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
   .dash-grid{grid-template-columns:1fr!important;gap:12px!important}
   .card{padding:14px!important}
 
+  /* Chart-area mais baixo em portrait — evita void preto enorme com gráfico vazio */
+  .dash-grid .chart-area,.chart-area{height:140px!important}
+
   /* Crédito — uma coluna, valores menores, sem círculo gigante */
   .credit-top{padding:18px 16px;border-radius:14px}
   .credit-top::before{width:120px;height:120px;top:-60px;right:-60px;opacity:.6}
@@ -10587,7 +10590,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.70</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.71</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -28720,6 +28723,9 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.71',date:'2026-05-15',title:'Chart-area menor em portrait — sem void preto enorme',items:[
+    {tag:'fix',text:'Evolução card chart-area era 280px em portrait → grande área preta quando XP=0 (sem dados pra plotar). Reduzido pra 140px.'}
+  ]},
   {version:'v3.8.70',date:'2026-05-15',title:'Edge-to-edge real — barra preta inferior eliminada',items:[
     {tag:'fix',text:'Barra preta debaixo do conteúdo no APK: flags legadas SYSTEM_UI_FLAG_* mantinham safe-area-inset reservado pra nav bar mesmo escondida.'},
     {tag:'fix',text:'Migrado pra WindowCompat.setDecorFitsSystemWindows(false) + WindowInsetsControllerCompat.hide(systemBars). WebView ocupa altura total.'},

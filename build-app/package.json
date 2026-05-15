@@ -1,6 +1,6 @@
 {
   "name": "ficha-eclipse-app",
-  "version": "3.8.70",
+  "version": "3.8.71",
   "description": "Ficha Eclipse — wrapper Android/iOS via Capacitor",
   "private": true,
   "scripts": {
