@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android Auto Backup + transferência D2D (Android 12+).
+     Inclui WebView localStorage (app_webview) — onde o app guarda ficha/tema/inventário —
+     que o backup padrão EXCLUI. Caches ficam de fora. -->
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="sharedpref" path="." />
+        <include domain="database" path="." />
+        <include domain="file" path="." />
+        <include domain="external" path="." />
+        <include domain="root" path="app_webview" />
+        <exclude domain="root" path="cache" />
+        <exclude domain="root" path="code_cache" />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="sharedpref" path="." />
+        <include domain="database" path="." />
+        <include domain="file" path="." />
+        <include domain="external" path="." />
+        <include domain="root" path="app_webview" />
+        <exclude domain="root" path="cache" />
+        <exclude domain="root" path="code_cache" />
+    </device-transfer>
+</data-extraction-rules>

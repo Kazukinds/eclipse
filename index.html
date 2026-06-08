@@ -377,11 +377,11 @@ body:has(.biblio-reader.show) .sidebar{opacity:0;pointer-events:none;visibility:
 .sidebar-btn[data-tab="inventory"] svg,.sidebar-btn[data-tab="inventory"] svg path,
 .sidebar-btn[data-tab="progress"] svg,.sidebar-btn[data-tab="progress"] svg path,
 .sidebar-gear svg,.sidebar-gear svg path,
-.sidebar-gear-desktop svg,.sidebar-gear-desktop svg path{fill:currentColor!important;stroke:none!important}
+.sidebar-gear-desktop svg,.sidebar-gear-desktop svg path{fill:none!important;stroke:currentColor!important}
 .notif-wrap .topbar-icon-btn,.topbar-profile-btn,.topbar-cal-btn{color:var(--text-dim)!important}
 .notif-wrap .topbar-icon-btn svg,.notif-wrap .topbar-icon-btn svg path,
 .topbar-profile-btn svg,.topbar-profile-btn svg path,
-.topbar-cal-btn svg,.topbar-cal-btn svg path{fill:var(--text-dim)!important;stroke:none!important;color:var(--text-dim)!important}
+.topbar-cal-btn svg,.topbar-cal-btn svg path{fill:none!important;stroke:var(--text-dim)!important;stroke-width:2!important;color:var(--text-dim)!important}
 .sidebar-btn[data-tab="feiticos"].active svg,.sidebar-btn[data-tab="feiticos"].active svg path,
 .sidebar-btn[data-tab="credit"].active svg,.sidebar-btn[data-tab="credit"].active svg path,
 .sidebar-btn[data-tab="dashboard"].active svg,.sidebar-btn[data-tab="dashboard"].active svg path,
@@ -390,13 +390,13 @@ body:has(.biblio-reader.show) .sidebar{opacity:0;pointer-events:none;visibility:
 .sidebar-btn[data-tab="inventory"].active svg,.sidebar-btn[data-tab="inventory"].active svg path,
 .sidebar-btn[data-tab="progress"].active svg,.sidebar-btn[data-tab="progress"].active svg path,
 .sidebar-gear.active svg,.sidebar-gear.active svg path,
-.sidebar-gear-desktop.active svg,.sidebar-gear-desktop.active svg path{fill:#0a0a0c!important}
+.sidebar-gear-desktop.active svg,.sidebar-gear-desktop.active svg path{stroke:#0a0a0c!important;fill:none!important}
 .sidebar-pin-radial-item[data-tab="feiticos"] svg,.sidebar-pin-radial-item[data-tab="feiticos"] svg path,
 .sidebar-pin-radial-item[data-tab="credit"] svg,.sidebar-pin-radial-item[data-tab="credit"] svg path,
 .sidebar-pin-radial-item[data-tab="dashboard"] svg,.sidebar-pin-radial-item[data-tab="dashboard"] svg path,
 .sidebar-pin-radial-item[data-tab="biblioteca"] svg,.sidebar-pin-radial-item[data-tab="biblioteca"] svg path,
 .sidebar-pin-radial-item[data-tab="pericias"] svg,.sidebar-pin-radial-item[data-tab="pericias"] svg path,
-.sidebar-pin-radial-item[data-tab="inventory"] svg,.sidebar-pin-radial-item[data-tab="inventory"] svg path{fill:currentColor!important;stroke:none!important}
+.sidebar-pin-radial-item[data-tab="inventory"] svg,.sidebar-pin-radial-item[data-tab="inventory"] svg path{fill:none!important;stroke:currentColor!important}
 .sidebar-btn.active::before{display:none}
 .sidebar-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .sidebar::before{display:none}
@@ -472,6 +472,25 @@ body:has(.sidebar.open) .main-wrapper *{pointer-events:none}
 .topbar-profile-btn #topbar-profile-avatar{width:100%;height:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;border-radius:50%}
 .topbar-profile-btn #topbar-profile-avatar svg{width:18px;height:18px}
 .topbar-profile-btn:hover{border-color:var(--magenta);box-shadow:0 0 0 2px color-mix(in srgb,var(--magenta) 25%,transparent)}
+/* ═══ GLASS (liquid) — controles flutuantes. Gated p/ GPU boa; cai pra sólido em perf-low/sem suporte. ═══ */
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  body:not([data-perf-low]) .topbar-icon-btn,
+  body:not([data-perf-low]) .topbar-profile-btn{
+    background:color-mix(in srgb,var(--bg-card) 48%,transparent);
+    -webkit-backdrop-filter:blur(12px) saturate(1.7);backdrop-filter:blur(12px) saturate(1.7);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 1px rgba(0,0,0,.22),0 4px 14px rgba(0,0,0,.22);
+  }
+  [data-theme="light"] body:not([data-perf-low]) .topbar-icon-btn,
+  [data-theme="light"] body:not([data-perf-low]) .topbar-profile-btn{
+    background:color-mix(in srgb,#fff 55%,transparent);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 1px rgba(15,15,20,.08),0 4px 14px rgba(15,15,20,.1);
+  }
+  body:not([data-perf-low]) .profile-menu{
+    background:color-mix(in srgb,var(--bg-card) 72%,transparent);
+    -webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.12),var(--shadow-lg);
+  }
+}
 .save-wrap{position:relative}
 .notif-wrap{position:relative}
 .pwa-install-btn{color:var(--magenta)!important;border-color:var(--magenta-dim)!important;background:var(--magenta-bg)!important;animation:pwa-pulse 2.5s ease-in-out infinite}
@@ -696,7 +715,7 @@ body:has(.sidebar.open) .main-wrapper *{pointer-events:none}
 .save-toast-status{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--magenta);flex-shrink:0}
 .save-toast-status svg{width:14px;height:14px;background:var(--magenta);color:#0a0a0f;border-radius:50%;padding:2px}
 .save-toast-bar{height:4px;background:var(--bg-input);border-radius:2px;overflow:hidden;position:relative}
-.save-toast-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--magenta),var(--cyan));border-radius:2px;box-shadow:0 0 8px color-mix(in srgb,var(--magenta) 45%,transparent);transition:width 1s cubic-bezier(.4,0,.2,1)}
+.save-toast-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--magenta),var(--cyan));background:linear-gradient(90deg in oklch,var(--magenta),var(--cyan));border-radius:2px;box-shadow:0 0 8px color-mix(in srgb,var(--magenta) 45%,transparent);transition:width 1s cubic-bezier(.4,0,.2,1)}
 .save-toast-bar-fill.full{width:100%}
 .save-toast-bar-fill::after{content:"";position:absolute;top:0;right:0;height:100%;width:30%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);animation:sti-shimmer 1s linear infinite}
 .save-toast-bar-fill.full::after{display:none}
@@ -839,7 +858,7 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 
 .item-list-section{grid-row:auto;max-height:420px;overflow:hidden;display:flex;flex-direction:column}
 /* Esconde card Inventário do dashboard quando ambas listas estão vazias */
-.dash-grid .item-list-section:has(#dash-weapons:empty):has(#dash-consumables:empty){display:none}
+/* Inventário vazio volta a aparecer (layout antigo: Inventário topo-esq + Evolução topo-meio) — não esconde */
 .item-list-section .item-list{flex:0 1 auto;overflow-y:auto;min-height:0}
 .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm);transition:border-color .2s}
 .card.card-square{border-radius:4px}
@@ -947,6 +966,10 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .chart-time-pill:hover{color:var(--text-secondary)}
 .chart-time-pill.active{background:var(--magenta);color:#09090b}
 .dash-grid .chart-area{height:280px}
+/* Evolução vazia: card continua visível (descobrível) mas sem o void preto do gráfico */
+#evolucao-card.evo-empty .chart-area,#evolucao-card.evo-empty .chart-time-pills,#evolucao-card.evo-empty .toggle-pills{display:none!important}
+#evolucao-card.evo-empty .card-header{margin-bottom:0;border-bottom:none}
+#evolucao-card.evo-empty::after{content:"Sem progressão ainda. Ganhe XP pra ver o gráfico de evolução.";display:block;color:var(--text-dim);font-size:12.5px;line-height:1.45;padding:12px 2px 2px}
 .dash-grid .item-list-section{max-height:520px;gap:14px;overflow:hidden;display:flex;flex-direction:column}
 .dash-grid .item-list-section .item-list{flex:1 1 auto;overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-color:var(--border-light) transparent}
 .dash-grid .item-list-section .item-list::-webkit-scrollbar{width:6px}
@@ -2132,7 +2155,7 @@ body.eclipse-is-master::after{content:"MESTRE";position:fixed;bottom:8px;right:8
 .elemento-quiz-head{margin-bottom:16px}
 .elemento-quiz-step{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);font-weight:600;margin-bottom:8px}
 .elemento-quiz-prog{height:4px;background:var(--bg-input);border-radius:2px;overflow:hidden}
-.elemento-quiz-prog-fill{height:100%;background:linear-gradient(90deg,var(--magenta),var(--purple));transition:width .3s ease}
+.elemento-quiz-prog-fill{height:100%;background:linear-gradient(90deg,var(--magenta),var(--purple));background:linear-gradient(90deg in oklch,var(--magenta),var(--purple));transition:width .3s ease}
 .elemento-quiz-q{font-size:17px;font-weight:600;color:var(--text-primary);margin-bottom:18px;line-height:1.4}
 .elemento-quiz-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
 .elemento-quiz-opt{padding:14px 16px;background:var(--bg-input);border:1.5px solid var(--border);border-radius:12px;color:var(--text-primary);font-family:inherit;font-size:14px;line-height:1.4;cursor:pointer;text-align:left;transition:all .18s;font-weight:500}
@@ -2380,14 +2403,18 @@ html.no-radius,html.no-radius *{border-radius:0!important}
    Cada variante (purple/green/locked) embed SVG completo com paleta própria. */
 #tab-profile .ach-tile-shape{position:relative;width:72px;height:72px;display:flex;align-items:center;justify-content:center;transition:transform .15s;background-position:center;background-size:contain;background-repeat:no-repeat}
 #tab-profile .ach-tile:hover .ach-tile-shape{transform:scale(1.05)}
-#tab-profile .ach-tile-shape > svg{position:relative;z-index:2;width:28px;height:28px;fill:#fff;stroke:none;color:#fff;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}
+#tab-profile .ach-tile-shape > svg:not(.ach-hept-bg){position:relative;z-index:2;width:28px;height:28px;fill:#fff;stroke:none;color:#fff;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}
+/* Heptágono inline (crisp, sem serrilhado do background-image rasterizado) — cobre o bg */
+#tab-profile .ach-tile-shape > svg.ach-hept-bg{position:absolute;inset:0;width:100%;height:100%;z-index:1;display:block;pointer-events:none}
+/* Mata o background-image jagged (inline svg crisp já desenha o heptágono) */
+#tab-profile .ach-tile-shape{background-image:none!important}
 /* Purple variant — paleta violet (#a78bfa → #6d28d9) */
 #tab-profile .ach-tile-shape.purple{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-3 -3 130 132' shape-rendering='geometricPrecision'><defs><radialGradient id='g' cx='61.36' cy='63.05' r='56.2' gradientUnits='userSpaceOnUse'><stop offset='0' stop-color='%238b5cf6'/><stop offset='0.69' stop-color='%237c3aed'/><stop offset='1' stop-color='%236d28d9'/></radialGradient></defs><path fill='%23c4b5fd' d='M122.961 73.2987L114.161 31.7987C113.261 27.9987 110.461 24.3987 107.361 22.5987L68.861 1.7987C64.961 -0.401304 59.561 -0.601303 55.261 1.2987L16.061 21.8987C12.661 23.5987 9.66096 27.2987 8.86096 31.0987L0.260958 72.5987C-0.439042 75.9987 0.260958 81.1987 2.46096 84.1987L28.861 120.399C31.061 123.199 35.261 125.299 38.961 125.299L83.761 125.199C87.461 125.199 91.961 123.099 93.961 120.399L120.661 84.9987C122.861 82.0987 123.661 77.1987 122.961 73.2987Z'/><path fill='%23a78bfa' d='M121.562 72.9985L114.062 32.0985C113.362 28.4985 110.762 24.9985 107.662 22.8985L69.162 1.99854C65.562 -0.101462 60.1621 -0.401462 56.3621 1.19854L16.2621 21.9985C13.0621 23.5985 10.1621 27.1985 9.26205 30.7985L0.262053 72.8985C-0.437947 76.0985 0.362054 81.0985 2.26205 83.9985L28.9621 119.999C30.8621 122.699 35.1621 124.699 38.6621 124.699L83.562 124.599C87.062 124.599 91.3621 122.599 93.2621 119.999L119.862 84.7985C121.962 81.9985 122.562 77.1985 121.562 72.9985Z'/><path fill='%239370e6' d='M119.759 73.2986L111.259 32.8986C110.559 29.5986 108.559 26.3986 105.459 24.8986L66.9594 4.69856C63.8594 3.09856 59.5594 2.69856 55.6594 4.49856L17.5594 24.7986C14.4594 26.2986 12.3594 29.4986 11.6594 32.7986L2.95937 73.4986C2.35937 76.2986 2.95938 80.4986 4.75938 82.9986L30.8594 117.699C32.5594 120.199 35.9594 121.999 39.3594 121.999H83.0594C86.3594 121.999 89.8594 120.599 91.8594 117.999L117.859 83.6986C119.759 81.3986 120.459 76.7986 119.759 73.2986Z'/><path fill='url(%23g)' d='M114.761 74.1986L106.161 35.0986C105.561 32.5986 103.661 29.6986 101.261 28.4986L66.5614 9.99858C64.0614 8.49858 59.7614 8.19858 56.6614 9.69858L21.6614 28.3986C19.2614 29.5986 17.0614 32.6986 16.5614 34.9986L7.86143 73.9986C7.36143 76.3986 8.16143 79.8986 9.46143 81.4986L33.6614 114.199C34.9614 116.099 38.0614 117.799 41.4614 117.799H81.0614C83.8614 117.799 87.0614 116.399 88.6614 114.499L113.361 81.6986C114.761 79.8986 115.061 76.3986 114.761 74.1986Z'/></svg>")}
 /* Green variant — paleta emerald (#6ee7b7 → #047857) */
 #tab-profile .ach-tile-shape.green{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-3 -3 130 132' shape-rendering='geometricPrecision'><defs><radialGradient id='g' cx='61.36' cy='63.05' r='56.2' gradientUnits='userSpaceOnUse'><stop offset='0' stop-color='%2334d399'/><stop offset='0.69' stop-color='%2310b981'/><stop offset='1' stop-color='%23059669'/></radialGradient></defs><path fill='%236ee7b7' d='M122.961 73.2987L114.161 31.7987C113.261 27.9987 110.461 24.3987 107.361 22.5987L68.861 1.7987C64.961 -0.401304 59.561 -0.601303 55.261 1.2987L16.061 21.8987C12.661 23.5987 9.66096 27.2987 8.86096 31.0987L0.260958 72.5987C-0.439042 75.9987 0.260958 81.1987 2.46096 84.1987L28.861 120.399C31.061 123.199 35.261 125.299 38.961 125.299L83.761 125.199C87.461 125.199 91.961 123.099 93.961 120.399L120.661 84.9987C122.861 82.0987 123.661 77.1987 122.961 73.2987Z'/><path fill='%2334d399' d='M121.562 72.9985L114.062 32.0985C113.362 28.4985 110.762 24.9985 107.662 22.8985L69.162 1.99854C65.562 -0.101462 60.1621 -0.401462 56.3621 1.19854L16.2621 21.9985C13.0621 23.5985 10.1621 27.1985 9.26205 30.7985L0.262053 72.8985C-0.437947 76.0985 0.362054 81.0985 2.26205 83.9985L28.9621 119.999C30.8621 122.699 35.1621 124.699 38.6621 124.699L83.562 124.599C87.062 124.599 91.3621 122.599 93.2621 119.999L119.862 84.7985C121.962 81.9985 122.562 77.1985 121.562 72.9985Z'/><path fill='%2310b981' d='M119.759 73.2986L111.259 32.8986C110.559 29.5986 108.559 26.3986 105.459 24.8986L66.9594 4.69856C63.8594 3.09856 59.5594 2.69856 55.6594 4.49856L17.5594 24.7986C14.4594 26.2986 12.3594 29.4986 11.6594 32.7986L2.95937 73.4986C2.35937 76.2986 2.95938 80.4986 4.75938 82.9986L30.8594 117.699C32.5594 120.199 35.9594 121.999 39.3594 121.999H83.0594C86.3594 121.999 89.8594 120.599 91.8594 117.999L117.859 83.6986C119.759 81.3986 120.459 76.7986 119.759 73.2986Z'/><path fill='url(%23g)' d='M114.761 74.1986L106.161 35.0986C105.561 32.5986 103.661 29.6986 101.261 28.4986L66.5614 9.99858C64.0614 8.49858 59.7614 8.19858 56.6614 9.69858L21.6614 28.3986C19.2614 29.5986 17.0614 32.6986 16.5614 34.9986L7.86143 73.9986C7.36143 76.3986 8.16143 79.8986 9.46143 81.4986L33.6614 114.199C34.9614 116.099 38.0614 117.799 41.4614 117.799H81.0614C83.8614 117.799 87.0614 116.399 88.6614 114.499L113.361 81.6986C114.761 79.8986 115.061 76.3986 114.761 74.1986Z'/></svg>")}
 /* Locked — paleta gray (cor original do SVG) */
 #tab-profile .ach-tile-shape.locked{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-3 -3 130 132' shape-rendering='geometricPrecision'><defs><radialGradient id='g' cx='61.36' cy='63.05' r='56.2' gradientUnits='userSpaceOnUse'><stop offset='0' stop-color='%23D4D4D4'/><stop offset='0.69' stop-color='%23C6C6C6'/><stop offset='1' stop-color='%23BDBDBD'/></radialGradient></defs><path fill='%23ffffff' d='M122.961 73.2987L114.161 31.7987C113.261 27.9987 110.461 24.3987 107.361 22.5987L68.861 1.7987C64.961 -0.401304 59.561 -0.601303 55.261 1.2987L16.061 21.8987C12.661 23.5987 9.66096 27.2987 8.86096 31.0987L0.260958 72.5987C-0.439042 75.9987 0.260958 81.1987 2.46096 84.1987L28.861 120.399C31.061 123.199 35.261 125.299 38.961 125.299L83.761 125.199C87.461 125.199 91.961 123.099 93.961 120.399L120.661 84.9987C122.861 82.0987 123.661 77.1987 122.961 73.2987Z'/><path fill='%23F6F6F6' d='M121.562 72.9985L114.062 32.0985C113.362 28.4985 110.762 24.9985 107.662 22.8985L69.162 1.99854C65.562 -0.101462 60.1621 -0.401462 56.3621 1.19854L16.2621 21.9985C13.0621 23.5985 10.1621 27.1985 9.26205 30.7985L0.262053 72.8985C-0.437947 76.0985 0.362054 81.0985 2.26205 83.9985L28.9621 119.999C30.8621 122.699 35.1621 124.699 38.6621 124.699L83.562 124.599C87.062 124.599 91.3621 122.599 93.2621 119.999L119.862 84.7985C121.962 81.9985 122.562 77.1985 121.562 72.9985Z'/><path fill='%23E6E6E6' d='M119.759 73.2986L111.259 32.8986C110.559 29.5986 108.559 26.3986 105.459 24.8986L66.9594 4.69856C63.8594 3.09856 59.5594 2.69856 55.6594 4.49856L17.5594 24.7986C14.4594 26.2986 12.3594 29.4986 11.6594 32.7986L2.95937 73.4986C2.35937 76.2986 2.95938 80.4986 4.75938 82.9986L30.8594 117.699C32.5594 120.199 35.9594 121.999 39.3594 121.999H83.0594C86.3594 121.999 89.8594 120.599 91.8594 117.999L117.859 83.6986C119.759 81.3986 120.459 76.7986 119.759 73.2986Z'/><path fill='url(%23g)' d='M114.761 74.1986L106.161 35.0986C105.561 32.5986 103.661 29.6986 101.261 28.4986L66.5614 9.99858C64.0614 8.49858 59.7614 8.19858 56.6614 9.69858L21.6614 28.3986C19.2614 29.5986 17.0614 32.6986 16.5614 34.9986L7.86143 73.9986C7.36143 76.3986 8.16143 79.8986 9.46143 81.4986L33.6614 114.199C34.9614 116.099 38.0614 117.799 41.4614 117.799H81.0614C83.8614 117.799 87.0614 116.399 88.6614 114.499L113.361 81.6986C114.761 79.8986 115.061 76.3986 114.761 74.1986Z'/></svg>");opacity:.55;filter:grayscale(1)}
-#tab-profile .ach-tile-shape.locked > svg{fill:rgba(0,0,0,.22);stroke:none;color:rgba(0,0,0,.22);opacity:1;filter:none}
+#tab-profile .ach-tile-shape.locked > svg:not(.ach-hept-bg){fill:rgba(0,0,0,.22);stroke:none;color:rgba(0,0,0,.22);opacity:1;filter:none}
 #tab-profile .ach-tile-label{font-size:11px;color:var(--text-secondary);font-weight:600;text-align:center;display:inline-flex;align-items:center;gap:4px;line-height:1.2}
 #tab-profile .ach-tile-label.locked{color:var(--text-dim)}
 #tab-profile .ach-tile-label svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.2}
@@ -2482,9 +2509,10 @@ html.no-radius,html.no-radius *{border-radius:0!important}
 #tab-profile .profile-desktop-hero .profile-hero-back,#tab-profile .profile-desktop-hero .profile-hero-action{top:18px}
 #tab-profile .profile-desktop-hero .profile-hero-action{right:auto;left:18px}
 #tab-profile .profile-desktop-hero .profile-hero-back{display:none}
-#tab-profile .profile-desktop-body{display:grid;grid-template-columns:minmax(280px,1.1fr) minmax(280px,1fr) minmax(280px,1fr) minmax(140px,180px);gap:12px;align-items:stretch}
-#tab-profile .profile-desktop-body > *{height:100%}
-#tab-profile .profile-desktop-slot{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;min-height:480px;box-shadow:var(--shadow-sm)}
+#tab-profile .profile-desktop-body{display:grid;grid-template-columns:minmax(300px,1.3fr) minmax(280px,1.1fr) minmax(240px,1fr);gap:12px;align-items:start}
+#tab-profile .profile-desktop-slot{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;min-height:0;box-shadow:var(--shadow-sm)}
+/* Sistema: 2+ colunas sempre (evita quadrado full-width gigante) + sem esticar altura */
+#tab-profile .profile-desktop-slot-system .profile-detail-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));align-items:start;align-content:start;margin-bottom:0}
 #tab-profile .profile-desktop-slot-system{display:flex;flex-direction:column;gap:14px;min-height:0}
 #tab-profile .profile-desktop-slot-system .profile-subsect-title{margin:0 0 4px}
 #tab-profile .profile-desktop-aside{display:flex;flex-direction:column;gap:14px;position:sticky;top:12px}
@@ -4162,7 +4190,7 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .book-cover-3d{
   position:absolute;inset:0;
   background:var(--env-c,#3a47cf);
-  border-radius:4px 12px 12px 4px;
+  border-radius:14px;
   display:flex;flex-direction:column;justify-content:space-between;
   padding:24px 22px 24px 18px;color:#fff;
   box-shadow:
@@ -4184,7 +4212,7 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 }
 .book-cover-3d-inner{
   position:absolute;inset:0;background:linear-gradient(135deg,#f5f1e6,#e8e3d4);
-  border-radius:12px 4px 4px 12px;
+  border-radius:14px;
   transform:rotateY(180deg);backface-visibility:hidden;
 }
 .book-cover-top{display:flex;align-items:flex-start;justify-content:space-between}
@@ -4253,13 +4281,19 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
   color:rgba(255,255,255,.55);cursor:pointer;
   font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;
   letter-spacing:.04em;text-transform:uppercase;
-  transition:all .2s;white-space:nowrap;max-width:none;
-  flex-shrink:0;
+  transition:background .35s cubic-bezier(.4,0,.2,1),color .35s cubic-bezier(.4,0,.2,1),border-color .35s,box-shadow .35s cubic-bezier(.4,0,.2,1),padding .35s cubic-bezier(.4,0,.2,1);
+  white-space:nowrap;max-width:none;flex-shrink:0;
 }
-[data-theme="light"] .biblio-subpage-dot{background:rgba(26,24,37,.04);border-color:rgba(26,24,37,.12);color:rgba(26,24,37,.6)}
+[data-theme="light"] .biblio-subpage-dot{background:rgba(26,24,37,.04);border-color:rgba(26,24,37,.12);color:rgba(26,24,37,.85)}
 .biblio-subpage-dot:hover{color:#fff;border-color:var(--env-c,#3a47cf)}
 [data-theme="light"] .biblio-subpage-dot:hover{color:#1a1825}
-.biblio-subpage-dot.active{background:var(--env-c,#3a47cf);border-color:var(--env-c,#3a47cf);color:#fff}
+.biblio-subpage-dot.active{background:var(--env-c,#3a47cf);border-color:var(--env-c,#3a47cf);color:#fff;padding:0 15px;box-shadow:0 2px 12px color-mix(in srgb,var(--env-c,#3a47cf) 45%,transparent)}
+/* ═══ SCROLL-DOTS (shadcn) — dots de progresso p/ carrosséis scroll-snap; largura+cor por --dot-progress ═══ */
+.scroll-dots{display:flex;gap:7px;align-items:center;justify-content:center;padding:10px 4px 2px;flex-wrap:nowrap}
+.scroll-dot{height:7px;width:calc(7px + 16px * var(--dot-progress,0));border-radius:99px;border:none;padding:0;cursor:pointer;flex-shrink:0;
+  background:color-mix(in srgb,var(--accent,var(--magenta,#84cc16)) calc(var(--dot-progress,0) * 100%),color-mix(in srgb,var(--text-dim,#888) 45%,transparent));
+  transition:width .12s linear,background .12s linear}
+.scroll-dot:hover{filter:brightness(1.15)}
 .biblio-subpage-controls{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .biblio-subbtn{
   width:30px;height:30px;border-radius:8px;
@@ -4272,7 +4306,7 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .biblio-subbtn[disabled]{opacity:.3;cursor:not-allowed}
 .biblio-subbtn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .biblio-subpage-counter{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.5);text-transform:uppercase;min-width:48px;text-align:center}
-[data-theme="light"] .biblio-subpage-counter{color:rgba(26,24,37,.5)}
+[data-theme="light"] .biblio-subpage-counter{color:rgba(26,24,37,.78)}
 
 .biblio-reader-nav{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -4296,7 +4330,7 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
   font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
   color:rgba(255,255,255,.5);text-transform:uppercase;
 }
-[data-theme="light"] .biblio-nav-counter{color:rgba(26,24,37,.5)}
+[data-theme="light"] .biblio-nav-counter{color:rgba(26,24,37,.78)}
 
 /* Page flip transition */
 .biblio-reader-panel-body.flip-out{
@@ -4510,7 +4544,7 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
   letter-spacing:.16em;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;
   text-align:center;
 }
-[data-theme="light"] .biblio-reader-panel-head .sub{color:rgba(26,24,37,.55)}
+[data-theme="light"] .biblio-reader-panel-head .sub{color:rgba(26,24,37,.72)}
 .biblio-reader-close{
   width:34px;height:34px;border-radius:8px;
   background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
@@ -4766,10 +4800,10 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
   margin-bottom:4px;padding-left:14px;position:relative;line-height:1.45;
 }
 .biblio-reader-panel-body li::before{content:none}
-.biblio-reader-panel-body p{margin:0 0 18px;line-height:1.7;text-align:left;text-align-last:left;font-size:15px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.05);hyphens:none;-webkit-hyphens:none;word-spacing:normal}
-.biblio-reader-panel-body p:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0}
+.biblio-reader-panel-body p{margin:0 0 16px;line-height:1.7;text-align:left;text-align-last:left;font-size:15px;hyphens:none;-webkit-hyphens:none;word-spacing:normal}
+.biblio-reader-panel-body p:last-child{margin-bottom:0}
 .biblio-reader-panel-body h2+p,.biblio-reader-panel-body h3+p,.biblio-reader-panel-body h4+p{padding-top:0}
-[data-theme="light"] .biblio-reader-panel-body p{border-bottom:1px solid rgba(0,0,0,.06)}
+[data-theme="light"] .biblio-reader-panel-body p{border-bottom:none}
 .biblio-reader-panel-body li{text-align:left}
 .biblio-reader-panel-body b,.biblio-reader-panel-body strong{color:color-mix(in srgb,var(--env-c,#c8f542) 78%,#fff);font-weight:700;text-shadow:none}
 [data-theme="light"] .biblio-reader-panel-body b,[data-theme="light"] .biblio-reader-panel-body strong{color:#1a1825}
@@ -5382,11 +5416,11 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
 /* <strong> e <b> destacados no reader — sem fundo, só cor */
 .biblio-page-slide strong,
 .biblio-page-slide b{
-  color:var(--env-c,#fff);font-weight:700;
+  color:color-mix(in srgb,var(--env-c,#fff) 55%,#fff);font-weight:700;
   background:none;padding:0;border-radius:0;
 }
 [data-theme="light"] .biblio-page-slide strong,
-[data-theme="light"] .biblio-page-slide b{background:none}
+[data-theme="light"] .biblio-page-slide b{color:color-mix(in srgb,var(--env-c,#000) 62%,#1a1825);background:none}
 
 /* Reader body — leitura clara, alinhamento esquerda, espaçamento uniforme */
 .biblio-reader-panel-body{font-family:'Lato',system-ui,sans-serif;font-size:13.5px;line-height:1.6;hyphens:none !important;-webkit-hyphens:none !important;word-spacing:normal}
@@ -5399,7 +5433,7 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
 /* Tudo em left, sem quebra de palavras */
 .biblio-reader-panel-body p,.biblio-reader-panel-body h2,.biblio-reader-panel-body h3,.biblio-reader-panel-body h4,
 .biblio-reader-panel-body li,.biblio-reader-panel-body td,.biblio-reader-panel-body th{text-align:left !important;text-align-last:left !important;hyphens:none !important;-webkit-hyphens:none !important;word-break:normal;overflow-wrap:break-word}
-.biblio-reader-panel-body p{font-size:15.5px;line-height:1.7;margin:0 0 16px;text-align:left !important;text-align-last:left !important;hyphens:none !important;-webkit-hyphens:none !important;word-break:normal;overflow-wrap:break-word;color:rgba(255,255,255,.86)}
+.biblio-reader-panel-body p{font-size:16.5px;line-height:1.72;margin:0 0 16px;text-align:left !important;text-align-last:left !important;hyphens:none !important;-webkit-hyphens:none !important;word-break:normal;overflow-wrap:break-word;color:rgba(255,255,255,.86)}
 /* Power card: parágrafos com strong como primeiro filho viram cards rounded */
 .biblio-reader-panel-body p:has(> strong:first-child){
   border:1px solid var(--border,rgba(255,255,255,.1));
@@ -5735,12 +5769,12 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
 [data-theme="light"] .biblio-reader-panel-body p > strong:first-child,
 [data-theme="light"] .biblio-reader-panel-body p > b:first-child{text-shadow:none}
 .biblio-reader-panel-body ul{margin:0 0 16px;padding:0;list-style:none;text-align:left !important}
-.biblio-reader-panel-body li{font-size:15.5px;line-height:1.65;margin:0 0 8px;text-align:left !important;text-align-last:left !important;padding-left:0}
+.biblio-reader-panel-body li{font-size:16.5px;line-height:1.65;margin:0 0 8px;text-align:left !important;text-align-last:left !important;padding-left:0}
 .biblio-reader-panel-body li:last-child{margin-bottom:0}
 /* H2/H3/H4 estilo livro RPG: Montserrat ExtraBold + bullet ◆ + cor do capítulo */
 .biblio-reader-panel-body h2{
   font-family:'Montserrat',sans-serif;
-  font-size:20px;font-weight:800;color:var(--env-c,#fff);
+  font-size:20px;font-weight:800;color:color-mix(in srgb,var(--env-c,#fff) 52%,#fff);
   margin:28px 0 14px;letter-spacing:.14em;text-transform:uppercase;
   text-align:left !important;padding:0;border:none;
   display:block;white-space:normal;
@@ -5764,14 +5798,14 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   transform:rotate(45deg);margin-right:9px;vertical-align:middle;
   box-shadow:none;
 }
-.biblio-reader-panel-body h4{font-family:'Montserrat',sans-serif;font-size:13px;letter-spacing:.2em;text-align:left !important;margin:18px 0 8px;color:color-mix(in srgb,var(--env-c,#3a47cf) 75%,#fff);text-transform:uppercase;font-weight:700}
+.biblio-reader-panel-body h4{font-family:'Montserrat',sans-serif;font-size:13px;letter-spacing:.1em;text-align:left !important;margin:18px 0 8px;color:color-mix(in srgb,var(--env-c,#3a47cf) 75%,#fff);text-transform:uppercase;font-weight:700}
 /* OVERRIDE FORTE — vence regras posteriores que possam pegar primeiro no cascade */
 .biblio-reader-panel-body,.biblio-reader-panel-body p,.biblio-reader-panel-body li,.biblio-page-slide,.biblio-page-slide p,.biblio-page-slide li{font-family:'Lato','Source Sans Pro',system-ui,sans-serif !important}
 .biblio-reader-panel-body h2,.biblio-reader-panel-body h3,.biblio-reader-panel-body h4,
 .biblio-page-slide h2,.biblio-page-slide h3,.biblio-page-slide h4,
 .biblio-reader-panel-head h2{font-family:'Montserrat',system-ui,sans-serif !important}
-.biblio-reader-panel-body h2{font-weight:800 !important;letter-spacing:.16em !important;font-size:16px !important}
-.biblio-reader-panel-body h3{font-weight:700 !important;letter-spacing:.14em !important;font-size:13px !important}
+.biblio-reader-panel-body h2{font-weight:800 !important;letter-spacing:.08em !important;font-size:16px !important}
+.biblio-reader-panel-body h3{font-weight:700 !important;letter-spacing:.06em !important;font-size:14px !important}
 .biblio-reader-panel-head h2{font-weight:800 !important;font-size:24px !important;letter-spacing:.04em !important}
 .biblio-reader-panel-body p > strong:first-child{font-family:inherit !important;font-weight:700 !important;text-transform:none !important;letter-spacing:normal !important;font-size:inherit !important}
 .biblio-page-slide h2.peri-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -5781,7 +5815,8 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
 .biblio-reader-panel-body table tbody td,.biblio-reader-panel-body table tbody td *{font-family:'Lato','Source Sans Pro',system-ui,sans-serif !important;font-style:normal !important;font-size:14px !important;font-weight:500 !important;letter-spacing:.01em}
 .biblio-reader-panel-body h4 + p,.biblio-reader-panel-body h4 + ul,.biblio-reader-panel-body h4 + table{margin-top:0}
 .biblio-reader-panel-body table{font-size:14.5px;text-align:left;margin:6px 0 16px;width:100%}
-.biblio-reader-panel-body i,.biblio-reader-panel-body em{color:var(--text-dim);font-style:normal;font-size:.92em;letter-spacing:.2px;white-space:nowrap}
+.biblio-reader-panel-body i,.biblio-reader-panel-body em{font-style:italic;font-size:1em;color:rgba(255,255,255,.74);letter-spacing:normal;white-space:normal}
+[data-theme="light"] .biblio-reader-panel-body i,[data-theme="light"] .biblio-reader-panel-body em{color:rgba(26,24,37,.74)}
 
 /* ═══ INSIGHT PANEL — widgets preenchendo espaço vazio ═══ */
 .biblio-insight{
@@ -5893,6 +5928,10 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   .biblio-reader.stage-2 .biblio-reader-panel{height:100%;max-height:100%;flex:1 1 auto;transform:translateX(0)!important}
   .biblio-reader.stage-2 .biblio-reader-panel-head{padding-top:4px}
   .biblio-reader.stage-2 .biblio-reader-panel-body{flex:1 1 auto;min-height:0;overflow-y:auto}
+  /* Nav inferior do leitor: não estoura em portrait — quebra + botões flexíveis */
+  .biblio-reader-nav{flex-wrap:wrap;gap:8px}
+  .biblio-nav-btn{flex:1 1 auto;min-width:0;justify-content:center;padding:9px 10px}
+  .biblio-sub-inline-nav{order:3;flex:1 0 100%;justify-content:center}
   /* Background opaco evita bleed da biblioteca atrás */
   .biblio-reader.stage-2{background:#06060c!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
   [data-theme="light"] .biblio-reader.stage-2{background:#e8e4dc!important}
@@ -5932,7 +5971,7 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
 .ub-app-icon img{width:100%;height:100%;object-fit:cover;display:block}
 .ub-shield-badge{
   position:absolute;right:-4px;bottom:-4px;width:30px;height:30px;border-radius:50%;
-  background:linear-gradient(135deg,#3b82f6,#22d3ee);
+  background:linear-gradient(135deg,#3b82f6,#22d3ee);background:linear-gradient(135deg in oklch,#3b82f6,#22d3ee);
   border:2px solid #111114;
   display:flex;align-items:center;justify-content:center;color:#fff;
   box-shadow:0 4px 12px rgba(59,130,246,.5);
@@ -5962,7 +6001,7 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
 .update-banner.installing .ub-progress{display:block}
 .ub-progress-fill{
   height:100%;width:0%;border-radius:999px;
-  background:linear-gradient(90deg,#3b82f6,#22d3ee);
+  background:linear-gradient(90deg,#3b82f6,#22d3ee);background:linear-gradient(90deg in oklch,#3b82f6,#22d3ee);
   transition:width .3s ease;position:relative;overflow:hidden;
   box-shadow:0 0 10px rgba(59,130,246,.5);
 }
@@ -6303,12 +6342,14 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   /* Engrenagem — mesmo estilo que os primários (44x44) */
   .sidebar-gear{
     width:44px!important;height:44px!important;
-    background:transparent;color:var(--text-secondary);
+    background:transparent;color:var(--text-primary);
     border-radius:999px;display:flex;align-items:center;justify-content:center;
     transition:none!important;
   }
   .sidebar-gear:hover,.sidebar-gear:active{background:color-mix(in srgb,var(--text-primary) 8%,transparent);color:var(--text-primary)}
   .sidebar-gear svg{width:22px;height:22px;stroke-width:2.2;transition:none}
+  /* Engrenagem da pill: força cor clara (estava caindo pro cinza/text-secondary) */
+  .sidebar-gear,.sidebar-gear svg,.sidebar-gear svg path{stroke:var(--text-primary)!important;color:var(--text-primary)!important;opacity:1!important}
   /* Tabs primários ganham altura/largura uniforme + ícone padronizado */
   .sidebar-btn[data-mp],.sidebar-btn[data-tab="inventory"]{
     width:44px!important;height:44px;
@@ -6483,6 +6524,8 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   /* Botões circulares mantêm proporção 1:1 e não viram ovais */
   .xp-gear,.attr-gear,.size-gear,.dual-gear,.veh-cfg-btn,.topbar-icon-btn,.topbar-profile-btn,.modal-close,.register-close,.item-gear-float,.account-badge,.account-avatar,.skill-use,.skill-del,.biblio-reader-close,.save-toast-close,.update-banner-close,.toast-close,.biblio-subbtn,.skill-icon-btn,.mc-swatch,.minical-nav,.minical-day,.equip-slot,.equip-clear-btn,.equip-conjunto-toggle{min-height:auto!important;aspect-ratio:1/1!important}
   .equip-conjunto-btn{min-height:auto!important;aspect-ratio:auto!important}
+  /* Leitor: close do header + setas de subpágina com alvo de toque 40px (antes 34/30px) */
+  .biblio-reader-close,.biblio-subbtn{width:40px!important;height:40px!important;min-height:40px!important}
   /* Toolbar progress: força quadrado 36x36 mobile */
   .skill-icon-btn{width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;flex:0 0 36px!important;padding:0!important;box-sizing:border-box!important}
   .pc-tools-sep{flex-shrink:0;flex-grow:0}
@@ -6978,11 +7021,13 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
     max-width:calc(100vw - 24px)!important;
     padding:6px 8px!important;
     display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;
-    background:color-mix(in srgb,var(--bg-card) 55%,transparent)!important;
-    -webkit-backdrop-filter:blur(18px) saturate(160%)!important;backdrop-filter:blur(18px) saturate(160%)!important;
-    border:1px solid var(--border-light)!important;
+    /* Efeito vidro (liquid glass): translúcido + blur/saturate + borda clara + highlight no topo.
+       Em perf-low a regra body[data-perf-low] .sidebar (transparente) vence → sem barra em GPU fraca. */
+    background:color-mix(in srgb,var(--bg-card) 34%,transparent)!important;
+    -webkit-backdrop-filter:blur(20px) saturate(1.8)!important;backdrop-filter:blur(20px) saturate(1.8)!important;
+    border:1px solid rgba(255,255,255,.14)!important;
     border-radius:999px!important;
-    box-shadow:0 4px 12px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05)!important;
+    box-shadow:0 8px 28px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 1px rgba(0,0,0,.18)!important;
     z-index:250;overflow:visible!important
   }
   .sidebar .sidebar-nav{flex-direction:row!important;display:flex!important;width:auto!important;height:auto!important;align-items:center;justify-content:center;gap:4px;padding:0;overflow-x:auto;scrollbar-width:none}
@@ -8506,7 +8551,7 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 [data-theme="light"] .ota-desc{color:rgba(26,24,37,.72)}
 .ota-progress{height:8px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin-bottom:8px;display:none}
 .ota-modal.downloading .ota-progress{display:block}
-.ota-progress-fill{height:100%;background:linear-gradient(90deg,var(--magenta),var(--cyan));width:0%;transition:width .2s;box-shadow:0 0 8px color-mix(in srgb,var(--magenta) 50%,transparent)}
+.ota-progress-fill{height:100%;background:linear-gradient(90deg,var(--magenta),var(--cyan));background:linear-gradient(90deg in oklch,var(--magenta),var(--cyan));width:0%;transition:width .2s;box-shadow:0 0 8px color-mix(in srgb,var(--magenta) 50%,transparent)}
 .ota-pct{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.65);margin-bottom:14px;display:none;letter-spacing:.14em}
 .ota-modal.downloading .ota-pct{display:block}
 .ota-modal.downloading .ota-actions{display:none}
@@ -9379,7 +9424,7 @@ body[data-perf-low] *,body[data-perf-low] *::before,body[data-perf-low] *::after
 </style>
 </head>
 <body class="app-fade-in">
-<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><symbol id="ach-orb-icon" viewBox="0 0 866 1058"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M437 2.395L430.5 4.674L427 6.595L423.5 8.517L419 11.675L414.5 14.832L408.375 21.166L402.251 27.5L394.32 37.557L386.389 47.615L377.371 60.057L368.354 72.5L360.26 84.597L352.166 96.694L344.201 109.184L336.237 121.674L330.265 131.587L324.292 141.5L312.315 162L300.338 182.5L296.029 190.5L291.72 198.5L290.992 199.5L290.265 200.5L285.499 209.5L280.732 218.5L279.464 219.866L278.197 221.232L269.848 214.434L261.5 207.635L253.413 202.36L245.325 197.086L238.498 193.926L231.671 190.766L228.586 189.807L225.5 188.848L220 187.46L214.5 186.071L203.399 186.036L192.298 186L189.399 186.875L186.5 187.751L181 189.009L175.5 190.268L171.5 192.275L167.5 194.282L161.821 198.129L156.143 201.977L149.434 208.739L142.725 215.5L133.255 226.5L123.784 237.5L114.034 250.5L104.284 263.5L96.29 275.5L88.297 287.5L82.519 297L76.742 306.5L71.731 315.5L66.719 324.5L60.445 337L54.172 349.5L50.976 356.5L47.78 363.5L42.814 375.5L37.848 387.5L35.342 394L32.837 400.5L28.363 414L23.889 427.5L22.339 433L20.79 438.5L17.861 449.5L14.931 460.5L12.896 469.5L10.86 478.5L8.905 489L6.95 499.5L5.887 506.5L4.824 513.5L3.922 520.5L3.019 527.5L1.522 543.5L0.0250015 559.5L0.012001 591.789L0 624.079L0.981003 633.789L1.962 643.5L3.049 652L4.135 660.5L5.099 667L6.063 673.5L7.113 679L8.162 684.5L9 688.5L9.838 692.5L11.077 698.5L12.316 704.5L14.752 714L17.188 723.5L17.973 727L18.758 730.5L22.318 742L25.878 753.5L29.548 763.5L33.217 773.5L33.728 775.765L34.239 778.03L35.119 778.574L36 779.118V780.57V782.022L38 786.511L40 791L42 795.489L44 799.978V800.58V801.181L51.895 817.341L59.79 833.5L65.73 844L71.669 854.5L74.95 860L78.231 865.5L87.734 879.5L97.238 893.5L104.337 902.5L111.436 911.5L118.631 920.068L125.827 928.636L139.578 942.451L153.33 956.267L165.911 966.664L178.491 977.062L189.496 984.895L200.5 992.727L212 999.737L223.5 1006.75L237.5 1013.79L251.5 1020.83L264.465 1025.99L277.43 1031.16L284.465 1033.5L291.5 1035.84L302 1038.82L312.5 1041.8L325 1044.86L337.5 1047.92L348 1049.97L358.5 1052.02L364 1052.97L369.5 1053.92L373.281 1054.51L377.062 1055.1L390.781 1056.55L404.5 1058L435.789 1058L467.079 1058L476.789 1056.99L486.5 1055.97L498 1054.4L509.5 1052.83L524 1049.93L538.5 1047.04L546 1045.1L553.5 1043.16L559.5 1041.53L565.5 1039.91L575.5 1036.52L585.5 1033.12L591.418 1030.99L597.336 1028.86L607.818 1024.39L618.3 1019.91L634.4 1011.8L650.5 1003.68L662.5 996.214L674.5 988.743L682.5 983.156L690.5 977.569L699.5 970.613L708.5 963.657L719.005 954.458L729.51 945.259L741.62 932.73L753.73 920.202L765.629 905.351L777.528 890.5L785.635 878.5L793.741 866.5L799.694 856.5L805.648 846.5L813.779 830.4L821.91 814.3L826.582 803.4L831.254 792.5L832.038 790L832.821 787.5L835.986 779L839.151 770.5L842.148 761L845.145 751.5L847.159 744L849.174 736.5L851.513 727L853.853 717.5L855.512 709.5L857.172 701.5L858.038 696L858.904 690.5L859.986 684.171L861.069 677.842L862.065 670.171L863.061 662.5L864.519 647L865.976 631.5L865.985 600.5L865.994 569.5L864.528 554.5L863.061 539.5L861.965 531.5L860.868 523.5L859.99 516.981L859.113 510.462L857.572 502.481L856.031 494.5L855.015 489.75L854 485L852.953 480.25L851.906 475.5L849.377 465.5L846.848 455.5L845.017 448.5L843.187 441.5L839.994 431.5L836.8 421.5L836.259 419.5L835.718 417.5L830.82 404L825.922 390.5L824.041 386L822.159 381.5L816.466 368L810.772 354.5L802.478 337.352L794.183 320.204L786.457 306.352L778.732 292.5L772.247 281.5L765.762 270.5L753.131 251.518L740.5 232.537L728.318 216.318L716.135 200.099L706.364 188.3L696.592 176.5L686.089 164.5L675.587 152.5L653.043 129.95L630.5 107.4L619 97.381L607.5 87.363L601 81.901L594.5 76.439L584.5 68.432L574.5 60.424L565 53.386L555.5 46.347L542.5 37.271L529.5 28.195L516.5 19.986L503.5 11.777L496 8.071L488.5 4.365L484 3.066L479.5 1.767L476.601 0.882999L473.702 0L458.601 0.059L443.5 0.117001L437 2.395ZM445 574.546L450.5 575.238L454.5 576.79L458.5 578.343L463 581.307L467.5 584.271L478.5 595.432L489.5 606.593L495.5 613.453L501.5 620.313L507.874 627.907L514.247 635.5L518.253 640.883L522.259 646.266L529.88 657.433L537.5 668.601L538.724 670.55L539.949 672.5L543.301 678.256L546.654 684.013L547.41 683.256L548.167 682.5L547.846 683.5L547.526 684.5L555.128 700L562.73 715.5L567.115 728.5L571.5 741.5L572.256 741.835L573.012 742.171L572.523 742.962L572.035 743.753L573.442 748.627L574.849 753.5L575.903 761L576.957 768.5L578.07 777.163L579.182 785.825L578.018 799.163L576.854 812.5L574.847 822.379L572.84 832.258L569.993 841.189L567.145 850.12L566.281 851.31L565.417 852.5L564.1 856.5L562.784 860.5L561.174 863L559.565 865.5L556.687 871L553.809 876.5L548.234 884.5L542.659 892.5L540.579 894.895L538.5 897.29L530.973 904.895L523.446 912.5L520.473 914.963L517.5 917.426L511.5 921.526L505.5 925.627L499.155 929.338L492.811 933.048L485.155 935.936L477.5 938.825L470.5 940.892L463.5 942.959L457.566 943.979L451.633 945H437.127H422.62L416.56 943.922L410.5 942.844L401.531 940.341L392.562 937.837L381.531 932.476L370.5 927.116L364 922.366L357.5 917.615L353.528 914.058L349.556 910.5L344.22 904.842L338.884 899.183L333.781 892.842L328.678 886.5L325.474 881.5L322.27 876.5L317.567 867L312.865 857.5L311.553 855L310.241 852.5L306.72 842L303.2 831.5L301.174 821.5L299.148 811.5L297.954 799.744L296.76 787.989L297.958 774.744L299.156 761.5L299.998 757.5L300.839 753.5L302.035 747.5L303.231 741.5L307.649 728.033L312.067 714.567L318.626 701.033L325.185 687.5L332.757 675L340.329 662.5L344.424 657L348.519 651.5L350.268 649L352.018 646.5L355.259 642.344L358.5 638.188L362.85 632.844L367.199 627.5L378.85 615.059L390.5 602.618L392.423 601.059L394.346 599.5L398.923 595.18L403.5 590.86L411.091 585.096L418.682 579.332L423.223 577.134L427.763 574.936L432.132 574.089L436.5 573.241L438 573.548L439.5 573.855L445 574.546Z"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><symbol id="ach-orb-icon" viewBox="0 0 866 1058"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M437 2.395L430.5 4.674L427 6.595L423.5 8.517L419 11.675L414.5 14.832L408.375 21.166L402.251 27.5L394.32 37.557L386.389 47.615L377.371 60.057L368.354 72.5L360.26 84.597L352.166 96.694L344.201 109.184L336.237 121.674L330.265 131.587L324.292 141.5L312.315 162L300.338 182.5L296.029 190.5L291.72 198.5L290.992 199.5L290.265 200.5L285.499 209.5L280.732 218.5L279.464 219.866L278.197 221.232L269.848 214.434L261.5 207.635L253.413 202.36L245.325 197.086L238.498 193.926L231.671 190.766L228.586 189.807L225.5 188.848L220 187.46L214.5 186.071L203.399 186.036L192.298 186L189.399 186.875L186.5 187.751L181 189.009L175.5 190.268L171.5 192.275L167.5 194.282L161.821 198.129L156.143 201.977L149.434 208.739L142.725 215.5L133.255 226.5L123.784 237.5L114.034 250.5L104.284 263.5L96.29 275.5L88.297 287.5L82.519 297L76.742 306.5L71.731 315.5L66.719 324.5L60.445 337L54.172 349.5L50.976 356.5L47.78 363.5L42.814 375.5L37.848 387.5L35.342 394L32.837 400.5L28.363 414L23.889 427.5L22.339 433L20.79 438.5L17.861 449.5L14.931 460.5L12.896 469.5L10.86 478.5L8.905 489L6.95 499.5L5.887 506.5L4.824 513.5L3.922 520.5L3.019 527.5L1.522 543.5L0.0250015 559.5L0.012001 591.789L0 624.079L0.981003 633.789L1.962 643.5L3.049 652L4.135 660.5L5.099 667L6.063 673.5L7.113 679L8.162 684.5L9 688.5L9.838 692.5L11.077 698.5L12.316 704.5L14.752 714L17.188 723.5L17.973 727L18.758 730.5L22.318 742L25.878 753.5L29.548 763.5L33.217 773.5L33.728 775.765L34.239 778.03L35.119 778.574L36 779.118V780.57V782.022L38 786.511L40 791L42 795.489L44 799.978V800.58V801.181L51.895 817.341L59.79 833.5L65.73 844L71.669 854.5L74.95 860L78.231 865.5L87.734 879.5L97.238 893.5L104.337 902.5L111.436 911.5L118.631 920.068L125.827 928.636L139.578 942.451L153.33 956.267L165.911 966.664L178.491 977.062L189.496 984.895L200.5 992.727L212 999.737L223.5 1006.75L237.5 1013.79L251.5 1020.83L264.465 1025.99L277.43 1031.16L284.465 1033.5L291.5 1035.84L302 1038.82L312.5 1041.8L325 1044.86L337.5 1047.92L348 1049.97L358.5 1052.02L364 1052.97L369.5 1053.92L373.281 1054.51L377.062 1055.1L390.781 1056.55L404.5 1058L435.789 1058L467.079 1058L476.789 1056.99L486.5 1055.97L498 1054.4L509.5 1052.83L524 1049.93L538.5 1047.04L546 1045.1L553.5 1043.16L559.5 1041.53L565.5 1039.91L575.5 1036.52L585.5 1033.12L591.418 1030.99L597.336 1028.86L607.818 1024.39L618.3 1019.91L634.4 1011.8L650.5 1003.68L662.5 996.214L674.5 988.743L682.5 983.156L690.5 977.569L699.5 970.613L708.5 963.657L719.005 954.458L729.51 945.259L741.62 932.73L753.73 920.202L765.629 905.351L777.528 890.5L785.635 878.5L793.741 866.5L799.694 856.5L805.648 846.5L813.779 830.4L821.91 814.3L826.582 803.4L831.254 792.5L832.038 790L832.821 787.5L835.986 779L839.151 770.5L842.148 761L845.145 751.5L847.159 744L849.174 736.5L851.513 727L853.853 717.5L855.512 709.5L857.172 701.5L858.038 696L858.904 690.5L859.986 684.171L861.069 677.842L862.065 670.171L863.061 662.5L864.519 647L865.976 631.5L865.985 600.5L865.994 569.5L864.528 554.5L863.061 539.5L861.965 531.5L860.868 523.5L859.99 516.981L859.113 510.462L857.572 502.481L856.031 494.5L855.015 489.75L854 485L852.953 480.25L851.906 475.5L849.377 465.5L846.848 455.5L845.017 448.5L843.187 441.5L839.994 431.5L836.8 421.5L836.259 419.5L835.718 417.5L830.82 404L825.922 390.5L824.041 386L822.159 381.5L816.466 368L810.772 354.5L802.478 337.352L794.183 320.204L786.457 306.352L778.732 292.5L772.247 281.5L765.762 270.5L753.131 251.518L740.5 232.537L728.318 216.318L716.135 200.099L706.364 188.3L696.592 176.5L686.089 164.5L675.587 152.5L653.043 129.95L630.5 107.4L619 97.381L607.5 87.363L601 81.901L594.5 76.439L584.5 68.432L574.5 60.424L565 53.386L555.5 46.347L542.5 37.271L529.5 28.195L516.5 19.986L503.5 11.777L496 8.071L488.5 4.365L484 3.066L479.5 1.767L476.601 0.882999L473.702 0L458.601 0.059L443.5 0.117001L437 2.395ZM445 574.546L450.5 575.238L454.5 576.79L458.5 578.343L463 581.307L467.5 584.271L478.5 595.432L489.5 606.593L495.5 613.453L501.5 620.313L507.874 627.907L514.247 635.5L518.253 640.883L522.259 646.266L529.88 657.433L537.5 668.601L538.724 670.55L539.949 672.5L543.301 678.256L546.654 684.013L547.41 683.256L548.167 682.5L547.846 683.5L547.526 684.5L555.128 700L562.73 715.5L567.115 728.5L571.5 741.5L572.256 741.835L573.012 742.171L572.523 742.962L572.035 743.753L573.442 748.627L574.849 753.5L575.903 761L576.957 768.5L578.07 777.163L579.182 785.825L578.018 799.163L576.854 812.5L574.847 822.379L572.84 832.258L569.993 841.189L567.145 850.12L566.281 851.31L565.417 852.5L564.1 856.5L562.784 860.5L561.174 863L559.565 865.5L556.687 871L553.809 876.5L548.234 884.5L542.659 892.5L540.579 894.895L538.5 897.29L530.973 904.895L523.446 912.5L520.473 914.963L517.5 917.426L511.5 921.526L505.5 925.627L499.155 929.338L492.811 933.048L485.155 935.936L477.5 938.825L470.5 940.892L463.5 942.959L457.566 943.979L451.633 945H437.127H422.62L416.56 943.922L410.5 942.844L401.531 940.341L392.562 937.837L381.531 932.476L370.5 927.116L364 922.366L357.5 917.615L353.528 914.058L349.556 910.5L344.22 904.842L338.884 899.183L333.781 892.842L328.678 886.5L325.474 881.5L322.27 876.5L317.567 867L312.865 857.5L311.553 855L310.241 852.5L306.72 842L303.2 831.5L301.174 821.5L299.148 811.5L297.954 799.744L296.76 787.989L297.958 774.744L299.156 761.5L299.998 757.5L300.839 753.5L302.035 747.5L303.231 741.5L307.649 728.033L312.067 714.567L318.626 701.033L325.185 687.5L332.757 675L340.329 662.5L344.424 657L348.519 651.5L350.268 649L352.018 646.5L355.259 642.344L358.5 638.188L362.85 632.844L367.199 627.5L378.85 615.059L390.5 602.618L392.423 601.059L394.346 599.5L398.923 595.18L403.5 590.86L411.091 585.096L418.682 579.332L423.223 577.134L427.763 574.936L432.132 574.089L436.5 573.241L438 573.548L439.5 573.855L445 574.546Z"/></symbol><symbol id="ach-hept-purple" viewBox="-3 -3 130 132"><radialGradient id="achgp" cx="61.36" cy="63.05" r="56.2" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#8b5cf6"/><stop offset="0.69" stop-color="#7c3aed"/><stop offset="1" stop-color="#6d28d9"/></radialGradient><path fill="#c4b5fd" d="M122.961 73.2987L114.161 31.7987C113.261 27.9987 110.461 24.3987 107.361 22.5987L68.861 1.7987C64.961 -0.401304 59.561 -0.601303 55.261 1.2987L16.061 21.8987C12.661 23.5987 9.66096 27.2987 8.86096 31.0987L0.260958 72.5987C-0.439042 75.9987 0.260958 81.1987 2.46096 84.1987L28.861 120.399C31.061 123.199 35.261 125.299 38.961 125.299L83.761 125.199C87.461 125.199 91.961 123.099 93.961 120.399L120.661 84.9987C122.861 82.0987 123.661 77.1987 122.961 73.2987Z"/><path fill="#a78bfa" d="M121.562 72.9985L114.062 32.0985C113.362 28.4985 110.762 24.9985 107.662 22.8985L69.162 1.99854C65.562 -0.101462 60.1621 -0.401462 56.3621 1.19854L16.2621 21.9985C13.0621 23.5985 10.1621 27.1985 9.26205 30.7985L0.262053 72.8985C-0.437947 76.0985 0.362054 81.0985 2.26205 83.9985L28.9621 119.999C30.8621 122.699 35.1621 124.699 38.6621 124.699L83.562 124.599C87.062 124.599 91.3621 122.599 93.2621 119.999L119.862 84.7985C121.962 81.9985 122.562 77.1985 121.562 72.9985Z"/><path fill="#9370e6" d="M119.759 73.2986L111.259 32.8986C110.559 29.5986 108.559 26.3986 105.459 24.8986L66.9594 4.69856C63.8594 3.09856 59.5594 2.69856 55.6594 4.49856L17.5594 24.7986C14.4594 26.2986 12.3594 29.4986 11.6594 32.7986L2.95937 73.4986C2.35937 76.2986 2.95938 80.4986 4.75938 82.9986L30.8594 117.699C32.5594 120.199 35.9594 121.999 39.3594 121.999H83.0594C86.3594 121.999 89.8594 120.599 91.8594 117.999L117.859 83.6986C119.759 81.3986 120.459 76.7986 119.759 73.2986Z"/><path fill="url(#achgp)" d="M114.761 74.1986L106.161 35.0986C105.561 32.5986 103.661 29.6986 101.261 28.4986L66.5614 9.99858C64.0614 8.49858 59.7614 8.19858 56.6614 9.69858L21.6614 28.3986C19.2614 29.5986 17.0614 32.6986 16.5614 34.9986L7.86143 73.9986C7.36143 76.3986 8.16143 79.8986 9.46143 81.4986L33.6614 114.199C34.9614 116.099 38.0614 117.799 41.4614 117.799H81.0614C83.8614 117.799 87.0614 116.399 88.6614 114.499L113.361 81.6986C114.761 79.8986 115.061 76.3986 114.761 74.1986Z"/></symbol><symbol id="ach-hept-green" viewBox="-3 -3 130 132"><radialGradient id="achgg" cx="61.36" cy="63.05" r="56.2" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#34d399"/><stop offset="0.69" stop-color="#10b981"/><stop offset="1" stop-color="#059669"/></radialGradient><path fill="#6ee7b7" d="M122.961 73.2987L114.161 31.7987C113.261 27.9987 110.461 24.3987 107.361 22.5987L68.861 1.7987C64.961 -0.401304 59.561 -0.601303 55.261 1.2987L16.061 21.8987C12.661 23.5987 9.66096 27.2987 8.86096 31.0987L0.260958 72.5987C-0.439042 75.9987 0.260958 81.1987 2.46096 84.1987L28.861 120.399C31.061 123.199 35.261 125.299 38.961 125.299L83.761 125.199C87.461 125.199 91.961 123.099 93.961 120.399L120.661 84.9987C122.861 82.0987 123.661 77.1987 122.961 73.2987Z"/><path fill="#34d399" d="M121.562 72.9985L114.062 32.0985C113.362 28.4985 110.762 24.9985 107.662 22.8985L69.162 1.99854C65.562 -0.101462 60.1621 -0.401462 56.3621 1.19854L16.2621 21.9985C13.0621 23.5985 10.1621 27.1985 9.26205 30.7985L0.262053 72.8985C-0.437947 76.0985 0.362054 81.0985 2.26205 83.9985L28.9621 119.999C30.8621 122.699 35.1621 124.699 38.6621 124.699L83.562 124.599C87.062 124.599 91.3621 122.599 93.2621 119.999L119.862 84.7985C121.962 81.9985 122.562 77.1985 121.562 72.9985Z"/><path fill="#10b981" d="M119.759 73.2986L111.259 32.8986C110.559 29.5986 108.559 26.3986 105.459 24.8986L66.9594 4.69856C63.8594 3.09856 59.5594 2.69856 55.6594 4.49856L17.5594 24.7986C14.4594 26.2986 12.3594 29.4986 11.6594 32.7986L2.95937 73.4986C2.35937 76.2986 2.95938 80.4986 4.75938 82.9986L30.8594 117.699C32.5594 120.199 35.9594 121.999 39.3594 121.999H83.0594C86.3594 121.999 89.8594 120.599 91.8594 117.999L117.859 83.6986C119.759 81.3986 120.459 76.7986 119.759 73.2986Z"/><path fill="url(#achgg)" d="M114.761 74.1986L106.161 35.0986C105.561 32.5986 103.661 29.6986 101.261 28.4986L66.5614 9.99858C64.0614 8.49858 59.7614 8.19858 56.6614 9.69858L21.6614 28.3986C19.2614 29.5986 17.0614 32.6986 16.5614 34.9986L7.86143 73.9986C7.36143 76.3986 8.16143 79.8986 9.46143 81.4986L33.6614 114.199C34.9614 116.099 38.0614 117.799 41.4614 117.799H81.0614C83.8614 117.799 87.0614 116.399 88.6614 114.499L113.361 81.6986C114.761 79.8986 115.061 76.3986 114.761 74.1986Z"/></symbol><symbol id="ach-hept-locked" viewBox="-3 -3 130 132"><radialGradient id="achgl" cx="61.36" cy="63.05" r="56.2" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#D4D4D4"/><stop offset="0.69" stop-color="#C6C6C6"/><stop offset="1" stop-color="#BDBDBD"/></radialGradient><path fill="#ffffff" d="M122.961 73.2987L114.161 31.7987C113.261 27.9987 110.461 24.3987 107.361 22.5987L68.861 1.7987C64.961 -0.401304 59.561 -0.601303 55.261 1.2987L16.061 21.8987C12.661 23.5987 9.66096 27.2987 8.86096 31.0987L0.260958 72.5987C-0.439042 75.9987 0.260958 81.1987 2.46096 84.1987L28.861 120.399C31.061 123.199 35.261 125.299 38.961 125.299L83.761 125.199C87.461 125.199 91.961 123.099 93.961 120.399L120.661 84.9987C122.861 82.0987 123.661 77.1987 122.961 73.2987Z"/><path fill="#F6F6F6" d="M121.562 72.9985L114.062 32.0985C113.362 28.4985 110.762 24.9985 107.662 22.8985L69.162 1.99854C65.562 -0.101462 60.1621 -0.401462 56.3621 1.19854L16.2621 21.9985C13.0621 23.5985 10.1621 27.1985 9.26205 30.7985L0.262053 72.8985C-0.437947 76.0985 0.362054 81.0985 2.26205 83.9985L28.9621 119.999C30.8621 122.699 35.1621 124.699 38.6621 124.699L83.562 124.599C87.062 124.599 91.3621 122.599 93.2621 119.999L119.862 84.7985C121.962 81.9985 122.562 77.1985 121.562 72.9985Z"/><path fill="#E6E6E6" d="M119.759 73.2986L111.259 32.8986C110.559 29.5986 108.559 26.3986 105.459 24.8986L66.9594 4.69856C63.8594 3.09856 59.5594 2.69856 55.6594 4.49856L17.5594 24.7986C14.4594 26.2986 12.3594 29.4986 11.6594 32.7986L2.95937 73.4986C2.35937 76.2986 2.95938 80.4986 4.75938 82.9986L30.8594 117.699C32.5594 120.199 35.9594 121.999 39.3594 121.999H83.0594C86.3594 121.999 89.8594 120.599 91.8594 117.999L117.859 83.6986C119.759 81.3986 120.459 76.7986 119.759 73.2986Z"/><path fill="url(#achgl)" d="M114.761 74.1986L106.161 35.0986C105.561 32.5986 103.661 29.6986 101.261 28.4986L66.5614 9.99858C64.0614 8.49858 59.7614 8.19858 56.6614 9.69858L21.6614 28.3986C19.2614 29.5986 17.0614 32.6986 16.5614 34.9986L7.86143 73.9986C7.36143 76.3986 8.16143 79.8986 9.46143 81.4986L33.6614 114.199C34.9614 116.099 38.0614 117.799 41.4614 117.799H81.0614C83.8614 117.799 87.0614 116.399 88.6614 114.499L113.361 81.6986C114.761 79.8986 115.061 76.3986 114.761 74.1986Z"/></symbol></svg>
 <script>
 (function(){try{
   const manual=localStorage.getItem('eclipse_perf_mode');
@@ -9429,18 +9474,18 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
   <div class="sidebar-grip" id="sidebar-grip"></div>
   <div class="sidebar-logo"><div class="eclipse-logo sidebar-logo-img"><span class="el-moon"></span><span class="el-star"></span></div></div>
   <nav class="sidebar-nav">
-    <button class="sidebar-btn active" data-tab="dashboard" data-mp="1" title="Dashboard"><svg viewBox="-35 -19 659 659" fill="currentColor" fill-rule="evenodd" stroke="none"><path d="M272.871 2.218c-14.161 3.696-26.188 10.277-40.404 22.111-13.427 11.177-119.208 98.422-127.096 104.826-38.268 31.065-74.393 61.721-78.575 66.68-13.26 15.721-21.58 32.79-25.312 51.925-1.507 7.724-1.633 22.186-1.382 158.5C.36 546.819.49 556.634 2.16 562.199c4.875 16.236 10.298 25.299 22.175 37.061 9.514 9.421 19.12 15.157 32.056 19.142l8.979 2.766 48.807.364c32.417.242 51.223-.007 56-.74 15.181-2.331 27.719-11.467 34.004-24.777l3.189-6.755.553-62 .552-62 2.71-8.807c4.894-15.907 11.544-26.555 23.936-38.327 11.393-10.822 26.197-18.606 40.843-21.477 9.664-1.894 32.006-1.633 39.906.466 30.436 8.087 52.246 28.51 62.097 58.145 2.307 6.939 2.332 7.537 2.911 69 .565 59.931.655 62.189 2.701 67.652 2.922 7.805 3.915 9.484 8.631 14.601 5.525 5.994 11.032 9.646 18.743 12.43 6.399 2.311 6.559 2.317 58.417 2.317 59.161 0 59.924-.08 75.913-7.911 20.32-9.954 35.252-28.023 42.216-51.089 1.707-5.653 1.832-14.583 2.151-154.5.248-109.042.031-150.493-.82-156-2.538-16.435-9.684-33.845-19.595-47.739-7.406-10.382-14.785-17.627-34.173-33.551a9960.63 9960.63 0 0 1-30.95-25.527c-6.837-5.675-26.226-21.617-43.087-35.428a55119.34 55119.34 0 0 1-36.217-29.682 7008.992 7008.992 0 0 0-15-12.276 60427.821 60427.821 0 0 1-36.938-30.202C333.799 5.389 324.654.911 296.871.14c-12.995-.36-15.486-.145-24 2.078Z"/></svg><span class="sidebar-label">Dashboard</span></button>
-    <button class="sidebar-btn" data-tab="progress" title="Progresso"><svg viewBox="-23 -44 796 796" fill="currentColor" fill-rule="evenodd" stroke="none"><path d="M159.888.864c-8.33 2.543-15.897 8.954-20.144 17.065-2.258 4.313-2.369 5.517-2.667 29-.182 14.336-.721 24.915-1.298 25.5-.599.607-14.831 1.223-36.189 1.567-33.097.533-35.621.703-42.202 2.85-29.716 9.691-49.991 32.129-56.049 62.028-1.357 6.699-1.529 14.965-1.188 57.193.367 45.306.568 50.102 2.449 58.362 4.62 20.288 14.155 42.023 25.438 57.982 8.22 11.628 25.847 29.21 37.867 37.772 17.701 12.608 42.277 23.386 63.224 27.728 9.941 2.06 31.945 3.998 45.759 4.029 4.675.011 8.95.35 9.5.754.55.404 4.375 5.233 8.5 10.73 9.039 12.045 27.526 31.352 38.5 40.206 18.538 14.958 41.74 27.79 62.64 34.645 13.067 4.285 15.813 5.676 20.269 10.263 6.56 6.754 6.707 8.054 6.382 56.187l-.291 43.035-3.006 4.334c-1.968 2.838-4.879 5.285-8.43 7.085l-5.423 2.75-23.07.017c-26.647.02-32.907.97-45.071 6.838-15.709 7.578-26.739 18.482-34.031 33.643-5.494 11.422-6.832 18.717-6.88 37.502-.038 15.085.154 16.929 2.234 21.5 2.864 6.293 8.234 11.904 14.677 15.336l5 2.664h157c131.328 0 157.785-.228 161.803-1.395 5.738-1.666 13.823-8.56 16.997-14.492 1.999-3.737 2.229-5.819 2.527-22.788.37-21.152-.464-26.209-6.395-38.765-6.916-14.642-19.142-26.747-33.932-33.593-11.718-5.425-18.658-6.467-43.081-6.467-25.025 0-28.041-.585-34.069-6.604-6.318-6.308-6.546-8.374-6.172-55.896.356-45.383.142-43.851 7.184-51.335 4.052-4.307 6.614-5.596 19.498-9.81 20.588-6.735 44.287-19.845 62.64-34.654 10.974-8.854 29.461-28.161 38.5-40.206 4.125-5.497 7.864-10.263 8.308-10.59.444-.327 9.087-.894 19.206-1.259 30.555-1.104 51.065-5.841 73.986-17.087 43.478-21.333 73.642-57.571 85.503-102.721 4.591-17.477 5.203-27.372 4.749-76.838-.441-48.157-.444-48.185-6.443-62.448-7.606-18.086-24.589-34.902-42.98-42.559-13.056-5.435-17.632-5.957-52.457-5.976-24.364-.013-31.87-.309-32.683-1.29-.658-.792-1.176-10.504-1.373-25.75-.315-24.369-.328-24.499-3.011-29.585-3.661-6.94-11.677-13.979-18.084-15.882-4.468-1.327-30.88-1.5-218.153-1.424-117.187.047-214.193.43-215.568.85ZM136.953 196.43c.557 56.217.602 57.206 3.249 72 1.477 8.25 4.498 21.659 6.715 29.797 2.217 8.139 3.739 15.269 3.383 15.846-1.644 2.659-23.03-3.591-35.412-10.349-21.429-11.696-38.781-31.905-45.478-52.966-3.816-11.997-4.522-21.581-4.522-61.34 0-36.451.037-37.138 2.25-41.518 1.238-2.45 3.789-5.476 5.669-6.726 3.391-2.254 3.673-2.271 33.5-2.008l30.081.264.565 57Zm541.562-54.77c6.559 4.679 6.524 4.365 6.129 54.539l-.357 45.231-2.562 7.656c-9.009 26.921-29.636 48.751-56.24 59.519-10.183 4.122-22.363 6.959-23.781 5.541-.695-.695-.196-3.848 1.561-9.869 3.694-12.658 7.262-28.209 9.257-40.347 1.452-8.838 1.781-19.366 2.074-66.5.191-30.8.553-56.581.805-57.292.362-1.026 6.588-1.232 30.222-1 28.953.284 29.85.353 32.892 2.522Z"/></svg><span class="sidebar-label">Progresso</span></button>
-    <button class="sidebar-btn" data-tab="credit" title="Crédito"><svg viewBox="-20 -42 703 703" fill="currentColor" fill-rule="evenodd" stroke="none"><path d="M169.523 1.012c-19.909 3.318-37.139 18.27-43.608 37.841-2.625 7.944-2.637 8.123-2.637 39.518v31.536l234.25-.252 234.25-.252.277-31c.274-30.706.253-31.077-2.247-39.135C583.72 19.64 565.68 4.024 545.586.99c-8.836-1.334-368.047-1.312-376.063.023ZM72.969 54.996c-8.41 1.23-21.48 5.99-30.29 11.028C23.551 76.966 8.944 96.476 2.717 119.403l-2.717 10 .002 212.5c.001 198.048.118 212.942 1.726 219 6.761 25.467 24.235 45.265 47.094 53.356 3.826 1.355 8.429 2.766 10.23 3.138 1.8.371 124.65.681 273 .689l269.726.014 8.5-2.686c24.853-7.853 42.475-26.135 50.132-52.011l2.368-8v-342l-2.256-8.464c-7.125-26.732-24.36-44.788-50.9-53.325l-6.844-2.201-251.5-.505c-231.213-.464-251.742-.638-254.5-2.154-4.753-2.614-8.438-6.498-10.525-11.097-1.8-3.966-1.933-6.878-1.953-43.004l-.022-38.75-2.75.123c-1.513.066-5.364.503-8.559.97Zm463.269 274.97c14.17 2.299 29.083 13.605 35.438 26.864 14.065 29.349-1.501 63.043-32.826 71.055-9.455 2.418-12.234 2.482-21.646.502-25.907-5.449-43.443-30.888-39.118-56.748 2.722-16.282 13.534-30.79 27.888-37.422 11.263-5.204 18.299-6.192 30.264-4.251Z"/></svg><span class="sidebar-label">Crédito</span></button>
-    <button class="sidebar-btn" data-tab="pericias" title="Treinamento"><svg viewBox="-152 -27 952 952" fill="currentColor" fill-rule="evenodd" stroke="none"><path d="M211.356.252c-54.241 5.07-103.072 27.953-141.527 66.325-41.88 41.788-66.108 96.151-69.528 156-1.194 20.892 2.022 46.252 8.569 67.568 6.994 22.772 35.117 81.609 53.11 111.111l3.768 6.18-10.196 15.32c-29.75 44.702-46.6 90.139-53.26 143.625-7.59 60.938 3.818 126.229 32.08 183.615 24.739 50.228 59.934 91.94 100.484 119.09 22.778 15.251 50.46 24.9 78.567 27.386 15.166 1.342 211.68 1.45 226.744.125 25.052-2.203 49.938-9.927 71.216-22.101 18.268-10.452 44.686-33.616 63.92-56.047 42.465-49.523 70.49-116.883 76.68-184.309 1.68-18.294.567-58.742-2.094-76.063-5.853-38.114-13.149-62.189-28.544-94.196-8.255-17.164-14.86-28.69-25.855-45.122l-7.574-11.317 2.325-3.683c4.012-6.356 21.042-38.025 28.965-53.865 19.73-39.441 28.477-63.85 32.185-89.817 1.917-13.418 1.875-43.263-.08-58.199-9.057-69.181-46.415-129.33-103.407-166.492-20.309-13.243-40.857-22.255-64.635-28.349C455.117-.178 463.173.197 332.856.03c-64.625-.083-119.3.018-121.5.223Zm230.058 117.802c24.825 4.027 46.118 15.155 64.264 33.586 23.308 23.675 34.188 52.24 32.88 86.327-.919 23.985-5.261 38.56-20.436 68.61-5.693 11.275-10.963 21.115-11.711 21.866-1.147 1.154-2.811.513-10.707-4.126-41.259-24.24-85.525-38.757-134.848-44.224-15.583-1.728-49.394-1.985-65.5-.5-47.755 4.406-95.198 19.689-137.318 44.235-5.743 3.346-10.676 5.622-11.126 5.131-1.798-1.964-15.403-28.293-19.509-37.755-4.811-11.085-8.726-23.835-11.049-35.974-1.974-10.319-1.948-32.062.053-42.606 9.42-49.659 50.229-88.562 99.625-94.973 3.478-.451 53.574-.876 111.324-.943 88.005-.103 106.466.115 114.058 1.346Z"/></svg><span class="sidebar-label">Treinamento</span></button>
-    <button class="sidebar-btn" data-tab="biblioteca" title="Biblioteca"><svg viewBox="-25 -6 213 213" fill="currentColor" fill-rule="evenodd" stroke="none"><path d="M15.973 1.612C10.464 3.306 4.617 8.634 1.835 14.495.062 18.231-.027 22.447.005 100.462c.028 72.472.215 82.461 1.61 85.667 3.62 8.33 10.215 13.214 19.506 14.446l5.145.683V0l-2.75.07c-1.513.038-4.907.732-7.543 1.542ZM45.266 100.5V201l49.25-.01 49.25-.01 5-2.367c2.75-1.303 6.44-3.886 8.199-5.741 6.614-6.971 6.303-2.393 6.279-92.59-.021-77.162-.126-82.01-1.856-85.821-2.695-5.933-10.157-12.088-16.233-13.391C142.01.395 122.635 0 92.717 0h-47.45v100.5Zm89.706-30.25c4.09 4.092 3.881 9.943-.495 13.852L131.234 87H77.113l-2.924-2.923c-4.768-4.768-3.86-12.391 1.852-15.543 2.266-1.251 7.223-1.464 29.454-1.269l26.729.235 2.748 2.75Z"/></svg><span class="sidebar-label">Biblioteca</span></button>
-    <button class="sidebar-btn" data-tab="inventory" title="Inventário"><svg viewBox="-9 -17 316 316" fill="currentColor" fill-rule="evenodd" stroke="none"><path d="M99.589.604c-5.38 1.371-9.084 3.882-14.747 10-7.041 7.604-7.753 10.648-7.753 33.148v16.951h-8v222h159V60.76l-3.25-.839-3.25-.839-.242-7.439c-.398-12.22-2.191-30.633-3.256-33.435-1.283-3.373-10.286-12.895-14.915-15.774-3.571-2.22-3.808-2.232-52.087-2.413-26.675-.1-49.85.163-51.5.583Zm90.708 28.315c3.125 2.048 3.476 3.638 4.318 19.534l.649 12.25h-93.335l.616-10.25c.925-15.374 1.449-18.359 3.736-21.267l2.09-2.657 39.654.337c35.427.301 39.934.52 42.272 2.053ZM19.974 62.083c-6.623 2.366-12.419 7.53-17.309 15.421L0 81.804l.294 90.2c.231 70.671.573 90.827 1.577 93.099 2.117 4.786 9.211 12.55 13.601 14.883 3.627 1.928 5.992 2.231 19.867 2.541l15.75.352V60.703l-13.75.044c-8.596.027-15.105.528-17.365 1.336Zm226.115 109.62v111l14.75-.022c12.112-.018 15.465-.348 18.75-1.845 5.825-2.656 10.337-6.814 14.674-13.523l3.826-5.92V83.013l-3.823-5.905c-4.443-6.862-9.867-11.905-15.612-14.515-3.334-1.514-6.627-1.85-18.315-1.868l-14.25-.022v111Z"/></svg><span class="sidebar-label">Inventário</span></button>
-    <button class="sidebar-btn" data-tab="feiticos" title="Feitiços"><svg viewBox="-47 -14 473 473" fill="currentColor" fill-rule="evenodd" stroke="none"><path d="M179.948.501c-40.244 2.195-80.315 17.558-110.5 42.363-37.6 30.9-62.838 77.014-68.52 125.203-1.9 16.109-.779 43.002 2.433 58.333 6.405 30.57 20.761 60.08 40.913 84.095 4.23 5.041 9.985 11.228 12.79 13.75l5.1 4.586h255.623l5.478-5.007c14.191-12.97 31.939-37.876 40.256-56.493 4.71-10.541 10.394-28.42 13.001-40.894 3.462-16.56 4.395-44.885 2.029-61.606-6.203-43.846-25.439-81.334-57.766-112.579C289.52 22.034 249.972 4.566 204.455.87 197.416.3 190.26-.086 188.553.016c-1.708.102-5.58.32-8.605.485Zm50.78 66.58c.563.688 2.629 5.24 4.59 10.114 10.964 27.259 31.448 47.315 59.462 58.219 10.935 4.257 11.797 8.419 2.465 11.897-9.872 3.678-24.061 11.665-31.964 17.991-12.696 10.162-22.999 24.32-29.858 41.029-4.433 10.798-5.086 11.688-8.291 11.301-2.117-.256-3.026-1.641-6.105-9.301-11.876-29.538-32.305-49.633-61.605-60.596-8.737-3.268-9.555-8.441-1.732-10.949 6.574-2.107 20.871-9.578 27.82-14.537 15.411-10.996 27.192-26.422 35.421-46.376 1.668-4.046 3.535-7.96 4.148-8.699 1.4-1.687 4.303-1.735 5.649-.093Zm71.925 131c.523.688 1.75 3.412 2.727 6.055 2.721 7.363 11.346 16.032 20.177 20.28 4.04 1.943 7.625 3.985 7.966 4.537.929 1.502-2.39 4.678-5.63 5.39-4.606 1.012-14.302 7.848-17.718 12.493-1.739 2.366-4.152 6.688-5.361 9.605-3.586 8.652-6.139 8.333-10.331-1.291-3.834-8.8-11.054-16.02-19.854-19.854-9.282-4.043-9.933-6.951-2.218-9.898 10.166-3.882 19.698-13.33 22.626-22.425 1.486-4.618 2.705-6.142 4.911-6.142.965 0 2.183.563 2.705 1.25ZM73.448 365.856c-11.049.731-14.6 1.775-22 6.465-6.546 4.15-11.124 9.481-14.698 17.119-9.3 19.876-.192 44.148 20.195 53.809l6.503 3.082h253l6.775-3.209c7.443-3.526 15.511-10.99 18.758-17.357 11.812-23.153 1.264-49.355-23.533-58.455-4.733-1.737-11.134-1.842-120-1.975-63.25-.077-119.5.157-125 .521Z"/></svg><span class="sidebar-label">Feitiços</span></button>
+    <button class="sidebar-btn active" data-tab="dashboard" data-mp="1" title="Dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg><span class="sidebar-label">Dashboard</span></button>
+    <button class="sidebar-btn" data-tab="progress" title="Progresso"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg><span class="sidebar-label">Progresso</span></button>
+    <button class="sidebar-btn" data-tab="credit" title="Crédito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg><span class="sidebar-label">Crédito</span></button>
+    <button class="sidebar-btn" data-tab="pericias" title="Treinamento"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.4 14.4 9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/><path d="m21.5 21.5-1.4-1.4"/><path d="M3.9 3.9 2.5 2.5"/><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/></svg><span class="sidebar-label">Treinamento</span></button>
+    <button class="sidebar-btn" data-tab="biblioteca" title="Biblioteca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg><span class="sidebar-label">Biblioteca</span></button>
+    <button class="sidebar-btn" data-tab="inventory" title="Inventário"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg><span class="sidebar-label">Inventário</span></button>
+    <button class="sidebar-btn" data-tab="feiticos" title="Feitiços"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg><span class="sidebar-label">Feitiços</span></button>
     <button class="sidebar-btn sidebar-more" id="sidebar-more-btn" type="button" title="Menu radial" aria-label="Abrir menu de navegação" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg><span class="sidebar-label">Menu</span></button>
-    <button class="sidebar-btn sidebar-gear" id="sidebar-gear-btn" type="button" title="Configurações (segurar para trocar atalho)" aria-label="Configurações" onclick="switchToConfig()"><svg viewBox="-17 -16 559 559" fill="currentColor" fill-rule="evenodd" stroke="none"><path d="M246.771.407c-15.985.795-22.965 2.954-29.739 9.198-6.632 6.113-8.808 10.758-12.22 26.09-4.527 20.337-9.271 27.567-21.921 33.407-4.747 2.192-7.018 2.592-14.62 2.575-10.019-.021-10.31-.127-26.5-9.67-5.225-3.078-11.659-6.136-14.298-6.794-6.261-1.562-16.992-.694-22.779 1.84-5.582 2.446-24.225 18.403-32.423 27.752-17.134 19.54-20.5 25.615-20.5 37 0 8.363 2.175 13.933 9.943 25.469 7.643 11.349 9.057 15.191 9.057 24.619 0 8.643-2.21 15.336-7.1 21.512-3.845 4.854-13.561 11.454-18.2 12.362-17.351 3.399-26.17 5.983-30.5 8.937-5.614 3.832-10.618 10.874-12.696 17.871C.2 239.564-.666 265.411.572 283.433c.908 13.221 1.312 15.295 4.126 21.192 3.244 6.796 8.484 12.197 14.697 15.145 1.878.891 9.149 2.881 16.159 4.423 7.01 1.542 14.695 3.798 17.077 5.013 5.75 2.934 12.848 10.158 15.196 15.467 5.957 13.466 4.506 23.377-5.69 38.87-8.432 12.814-10.366 17.778-10.366 26.611 0 5.848.513 7.867 3.488 13.74 6.695 13.214 35.77 42.427 48.797 49.028 3.236 1.64 7.488 2.809 11.344 3.118 10.961.88 14.077-.136 28.446-9.272 14.381-9.145 20.295-11.199 29.212-10.142 10.042 1.189 21.261 8.509 26.161 17.068 1.286 2.246 3.729 10.054 5.428 17.351 4.214 18.093 7.924 24.687 16.821 29.901 7.882 4.619 13.574 5.372 41.038 5.428 26.202.054 33.592-.716 40.487-4.218 10.142-5.15 14.494-12.245 19.147-31.207 1.841-7.503 4.452-15.396 5.923-17.907 7.091-12.099 21.751-18.521 36.186-15.853 4.751.879 8.365 2.716 18.633 9.474 10.838 7.133 13.697 8.55 19.162 9.502 14.566 2.537 23.278-1.826 44.633-22.348 14.914-14.332 24.421-26.346 26.954-34.063 1.177-3.585 2.14-8.002 2.14-9.815 0-6.184-3.153-13.928-9.996-24.55-8.102-12.577-10.518-19.704-9.689-28.585.741-7.926 3.573-14.364 8.829-20.066 6.408-6.952 11.377-9.351 26.146-12.624 7.265-1.61 15.113-3.842 17.438-4.96 5.698-2.74 12.665-10.718 15.434-17.674 2.181-5.479 2.271-6.875 2.287-35.702.016-28.867-.069-30.213-2.25-35.647-4.12-10.269-13.876-18.661-23.699-20.388-14.569-2.562-23.983-5.465-29.057-8.96-10.396-7.16-14.872-15.738-14.872-28.505 0-9.972 1.238-13.26 10.004-26.571 6.287-9.546 7.968-13.506 8.983-21.153.749-5.649-1.203-13.816-4.782-20.007-7.519-13.006-37.757-42.59-48.713-47.658-3.686-1.705-6.495-2.111-14.611-2.111h-10.048l-11.952 7.116c-14.643 8.718-17.775 9.81-28.049 9.787-6.857-.015-8.991-.456-13.945-2.88-6.254-3.06-13.328-9.436-15.825-14.266-.842-1.628-3.145-9.44-5.119-17.358-1.974-7.92-4.485-16.256-5.581-18.526-4.486-9.293-13.881-15.64-25.609-17.297C281.612.013 262.784-.39 246.771.407Zm38.47 174.875c15.583 4.182 27.148 10.705 38.892 21.935 11.731 11.218 21.254 26.861 25.717 42.246 2.669 9.197 3.732 31.334 1.988 41.353-5.405 31.037-27.113 57.352-57.242 69.389-20.929 8.362-44.583 7.768-66.468-1.667-51.79-22.33-70.516-86.931-39.133-135.005 13.148-20.142 32.402-33.583 56.299-39.302 10.534-2.521 28.39-2.052 39.947 1.051Z"/></svg><span class="sidebar-label">Config</span></button>
+    <button class="sidebar-btn sidebar-gear" id="sidebar-gear-btn" type="button" title="Configurações (segurar para trocar atalho)" aria-label="Configurações" onclick="switchToConfig()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg><span class="sidebar-label">Config</span></button>
   </nav>
   <div class="sidebar-bottom">
-    <button class="sidebar-btn sidebar-gear-desktop" type="button" title="Configurações" aria-label="Configurações" onclick="switchToConfig()"><svg viewBox="-17 -16 559 559" fill="currentColor" fill-rule="evenodd" stroke="none"><path d="M246.771.407c-15.985.795-22.965 2.954-29.739 9.198-6.632 6.113-8.808 10.758-12.22 26.09-4.527 20.337-9.271 27.567-21.921 33.407-4.747 2.192-7.018 2.592-14.62 2.575-10.019-.021-10.31-.127-26.5-9.67-5.225-3.078-11.659-6.136-14.298-6.794-6.261-1.562-16.992-.694-22.779 1.84-5.582 2.446-24.225 18.403-32.423 27.752-17.134 19.54-20.5 25.615-20.5 37 0 8.363 2.175 13.933 9.943 25.469 7.643 11.349 9.057 15.191 9.057 24.619 0 8.643-2.21 15.336-7.1 21.512-3.845 4.854-13.561 11.454-18.2 12.362-17.351 3.399-26.17 5.983-30.5 8.937-5.614 3.832-10.618 10.874-12.696 17.871C.2 239.564-.666 265.411.572 283.433c.908 13.221 1.312 15.295 4.126 21.192 3.244 6.796 8.484 12.197 14.697 15.145 1.878.891 9.149 2.881 16.159 4.423 7.01 1.542 14.695 3.798 17.077 5.013 5.75 2.934 12.848 10.158 15.196 15.467 5.957 13.466 4.506 23.377-5.69 38.87-8.432 12.814-10.366 17.778-10.366 26.611 0 5.848.513 7.867 3.488 13.74 6.695 13.214 35.77 42.427 48.797 49.028 3.236 1.64 7.488 2.809 11.344 3.118 10.961.88 14.077-.136 28.446-9.272 14.381-9.145 20.295-11.199 29.212-10.142 10.042 1.189 21.261 8.509 26.161 17.068 1.286 2.246 3.729 10.054 5.428 17.351 4.214 18.093 7.924 24.687 16.821 29.901 7.882 4.619 13.574 5.372 41.038 5.428 26.202.054 33.592-.716 40.487-4.218 10.142-5.15 14.494-12.245 19.147-31.207 1.841-7.503 4.452-15.396 5.923-17.907 7.091-12.099 21.751-18.521 36.186-15.853 4.751.879 8.365 2.716 18.633 9.474 10.838 7.133 13.697 8.55 19.162 9.502 14.566 2.537 23.278-1.826 44.633-22.348 14.914-14.332 24.421-26.346 26.954-34.063 1.177-3.585 2.14-8.002 2.14-9.815 0-6.184-3.153-13.928-9.996-24.55-8.102-12.577-10.518-19.704-9.689-28.585.741-7.926 3.573-14.364 8.829-20.066 6.408-6.952 11.377-9.351 26.146-12.624 7.265-1.61 15.113-3.842 17.438-4.96 5.698-2.74 12.665-10.718 15.434-17.674 2.181-5.479 2.271-6.875 2.287-35.702.016-28.867-.069-30.213-2.25-35.647-4.12-10.269-13.876-18.661-23.699-20.388-14.569-2.562-23.983-5.465-29.057-8.96-10.396-7.16-14.872-15.738-14.872-28.505 0-9.972 1.238-13.26 10.004-26.571 6.287-9.546 7.968-13.506 8.983-21.153.749-5.649-1.203-13.816-4.782-20.007-7.519-13.006-37.757-42.59-48.713-47.658-3.686-1.705-6.495-2.111-14.611-2.111h-10.048l-11.952 7.116c-14.643 8.718-17.775 9.81-28.049 9.787-6.857-.015-8.991-.456-13.945-2.88-6.254-3.06-13.328-9.436-15.825-14.266-.842-1.628-3.145-9.44-5.119-17.358-1.974-7.92-4.485-16.256-5.581-18.526-4.486-9.293-13.881-15.64-25.609-17.297C281.612.013 262.784-.39 246.771.407Zm38.47 174.875c15.583 4.182 27.148 10.705 38.892 21.935 11.731 11.218 21.254 26.861 25.717 42.246 2.669 9.197 3.732 31.334 1.988 41.353-5.405 31.037-27.113 57.352-57.242 69.389-20.929 8.362-44.583 7.768-66.468-1.667-51.79-22.33-70.516-86.931-39.133-135.005 13.148-20.142 32.402-33.583 56.299-39.302 10.534-2.521 28.39-2.052 39.947 1.051Z"/></svg><span class="sidebar-label">Config</span></button>
+    <button class="sidebar-btn sidebar-gear-desktop" type="button" title="Configurações" aria-label="Configurações" onclick="switchToConfig()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg><span class="sidebar-label">Config</span></button>
     <button class="sidebar-btn sidebar-theme-btn" type="button" title="Alternar tema" aria-label="Alternar tema" onclick="toggleTheme()"><svg class="theme-ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="theme-ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/><line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/></svg><span class="sidebar-label">Tema</span></button>
   </div>
 </aside>
@@ -9479,7 +9524,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
       <div class="topbar-welcome"><small>Bem-vindo,</small><h2 id="topbar-welcome-name">Aventureiro</h2></div>
       <div class="topbar-actions">
         <div class="notif-wrap">
-          <button class="topbar-icon-btn" data-tip="Notificações" onclick="toggleNotif()" aria-label="Notificações"><svg viewBox="-170.5 -115 767 767" fill="currentColor" fill-rule="evenodd" stroke="none"><path d="M200.378 1.371c-12.821 3.524-24.081 12.385-29.578 23.276-1.712 3.391-3.113 6.784-3.113 7.54 0 2.315-3.183 4.321-10.5 6.616-19.333 6.064-43.562 20.715-60.03 36.302-16.869 15.963-26.633 29.384-36.475 50.135-6.499 13.702-8.834 20.366-12.657 36.13l-2.667 11-.68 65.5c-.726 69.95-.675 69.232-6.08 86-4.679 14.511-15.993 34.149-26.74 46.412-12.52 14.286-15.16 30.009-7.755 46.186 3.823 8.35 14.234 18.258 23.084 21.968l7 2.934 174.921.269c115.678.178 176.81-.076 180.5-.75 25.395-4.64 41.878-30.869 34.033-54.156-2.421-7.185-3.935-9.723-9.701-16.258-10.298-11.671-20.71-29.548-26.087-44.791-5.952-16.871-6.166-19.633-6.167-79.674 0-30.052-.467-59.557-1.037-65.567-1.921-20.258-6.48-36.568-15.469-55.346-12.992-27.139-31.013-48.296-56.108-65.873-9.675-6.777-31.581-17.73-41.522-20.763-5.545-1.69-7.655-2.844-8.545-4.668-.651-1.333-2.371-5.01-3.824-8.173C249.757 13.81 236.93 3.71 223.888.98c-6.907-1.447-17.465-1.27-23.51.391ZM141.36 469.53c-1.609 1.61-.472 11.342 2.235 19.117 3.929 11.289 8.305 18.285 16.668 26.647 15.353 15.354 33.674 22.263 56.434 21.283 18.783-.81 33.849-7.096 47.411-19.782 11.659-10.907 20.152-27.692 20.781-41.071l.298-6.354-71.577-.257c-39.367-.141-71.879.047-72.25.417Z"/></svg><span class="notif-badge" id="notif-badge"></span></button>
+          <button class="topbar-icon-btn" data-tip="Notificações" onclick="toggleNotif()" aria-label="Notificações"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg><span class="notif-badge" id="notif-badge"></span></button>
           <div class="notif-dropdown" id="notif-dropdown">
             <div class="notif-header"><h4>Notificações</h4><span class="notif-count" id="notif-count">0 novas</span></div>
             <div class="notif-list" id="notif-list"></div>
@@ -9487,7 +9532,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
           </div>
         </div>
         <div class="minical-wrap">
-          <button class="topbar-icon-btn topbar-cal-btn" data-tip="Calendário" onclick="toggleMiniCal()" aria-label="Calendário"><svg viewBox="-167.5 -157 1047 1047" fill="currentColor" fill-rule="evenodd" stroke="none"><path d="M175.994 1.168c-9.886 2.666-19.054 10.345-23.292 19.51-2.102 4.546-2.137 5.543-2.137 60.123v55.5l2.663 5.046c13.586 25.738 51.846 25.498 64.567-.404l2.77-5.642.292-51.81c.324-57.264.125-59.59-5.822-68.234-8.253-11.995-24.739-17.945-39.041-14.09ZM518.811.824c-10.667 2.692-20.146 10.334-24.598 19.829l-2.648 5.648v54.5c0 54.178.013 54.528 2.218 59.306 1.221 2.643 4.687 7.215 7.704 10.16 18.577 18.138 51.031 11.106 59.184-12.824 1.225-3.593 1.415-13.077 1.177-58.714l-.283-54.428-2.958-5.34c-3.791-6.845-11.836-14.158-18.12-16.473C534.606.322 524.02-.492 518.811.824ZM72.799 82.376c-16.499 3-31.422 10.585-43.963 22.346-9.714 9.109-15.455 17.019-21.211 29.227C.19 149.716-.073 152.28.01 208.26c.04 26.927.429 49.315.865 49.751.436.436 160.52.68 355.741.541l354.949-.251.259-49.868c.245-46.933.142-50.365-1.743-58.302-6.268-26.392-24.572-48.874-49.516-60.819-15.221-7.287-19.875-8.011-51.5-8.011h-27.5l-.549 29.5c-.605 32.565-.849 34.011-7.609 45.22-6.116 10.139-18.418 19.002-30.884 22.249-7.54 1.964-23.33 1.976-30.827.023-16.697-4.349-28.959-15.14-35.784-31.492-2.171-5.204-2.324-7.117-2.821-35.5l-.526-30h-233l-.523 29.5c-.481 27.149-.697 29.966-2.709 35.348-5.93 15.865-18.133 26.973-35.2 32.04-7.118 2.113-23.281 2.127-31.424.028-13.353-3.443-26.612-13.499-32.113-24.356-5.886-11.615-5.868-11.492-6.469-43.06l-.562-29.5-25-.17c-17.856-.12-27.219.236-32.766 1.245ZM.518 288.062c-.266.695-.363 83.158-.214 183.252l.27 181.987 2.267 7.315c5.128 16.548 14.266 31.19 27.135 43.481 13.346 12.745 27.534 20.777 45.039 25.494l9.55 2.574 271 .068 271 .068 9-2.344c35.859-9.337 63.649-36.015 73.713-70.761l2.287-7.895v-364l-355.281-.251C70.71 286.848.908 287.046.518 288.062Zm205.512 84.274c1.905 1.12 4.38 3.595 5.5 5.5 1.952 3.324 2.035 5.042 2.035 42.14 0 37.502-.063 38.759-2.062 41.438-1.134 1.52-3.304 3.691-4.822 4.825-2.659 1.987-4.156 2.072-40.938 2.329-42.653.298-42.767.282-47.408-6.665-2.264-3.388-2.27-3.507-2.263-42.5.006-36.357.136-39.299 1.856-41.907 2.165-3.284 5.209-5.574 8.956-6.737 1.474-.458 19.106-.748 39.181-.645 34.727.178 36.668.286 39.965 2.222Zm190.93-.035c1.868 1.1 4.343 3.27 5.5 4.823 2.056 2.758 2.105 3.733 2.105 42.177 0 38.187-.061 39.435-2.062 42.115-1.134 1.519-3.304 3.689-4.822 4.823-2.657 1.985-4.17 2.072-40.438 2.339-37.488.276-37.701.266-42.178-2-8.034-4.065-7.997-3.848-7.998-46.559-.002-40.073.14-41.323 5.238-46.02 1.374-1.265 3.795-2.7 5.379-3.187 1.585-.487 19.306-.801 39.381-.698 34.516.177 36.685.296 39.895 2.187Zm191 0c1.868 1.1 4.343 3.27 5.5 4.823 2.056 2.758 2.105 3.732 2.105 42.176 0 38.187-.061 39.435-2.062 42.115-1.134 1.52-3.304 3.69-4.822 4.824-2.657 1.985-4.17 2.072-40.438 2.339-37.507.276-37.698.267-42.104-2-8.118-4.176-8.074-3.925-8.074-46.544 0-40.088.142-41.338 5.24-46.035 1.374-1.265 3.795-2.7 5.379-3.187 1.585-.487 19.306-.801 39.381-.698 34.516.177 36.685.296 39.895 2.187ZM206.681 542.363c1.518 1.134 3.688 3.305 4.822 4.825 2.001 2.681 2.062 3.93 2.062 42.116 0 38.363-.053 39.423-2.092 42.175-1.151 1.552-3.58 3.835-5.398 5.072-3.285 2.236-3.548 2.25-41.208 2.25-41.512 0-41.049.061-46.183-6.041l-2.619-3.112v-39.776c0-39.605.01-39.789 2.25-43.072 1.238-1.812 3.825-4.139 5.75-5.17 3.274-1.753 5.968-1.856 41.678-1.601 36.777.262 38.279.348 40.938 2.334Zm191 0c1.518 1.134 3.688 3.304 4.822 4.823 2.001 2.679 2.062 3.93 2.062 41.938 0 38.801-.021 39.211-2.233 42.767-4.299 6.913-5.061 7.019-47.945 6.697-36.803-.277-38.28-.362-41-2.358-6.252-4.588-6.319-5.087-6.32-46.945-.002-43.425-.062-43.077 8.072-47.261 4.406-2.267 4.597-2.276 42.104-2 36.268.267 37.781.354 40.438 2.339Zm191 0c1.518 1.134 3.688 3.304 4.822 4.822 1.986 2.658 2.072 4.164 2.339 40.938.276 38.025.268 38.196-2 42.604-4.179 8.123-3.898 8.074-46.761 8.072-41.305-.001-41.863-.077-46.445-6.32-1.997-2.721-2.081-4.191-2.355-41.279-.27-36.565-.186-38.678 1.707-42.957 1.556-3.518 2.929-4.931 6.284-6.468 4.06-1.86 6.335-1.953 41.971-1.72 36.294.237 37.78.322 40.438 2.308Z"/></svg></button>
+          <button class="topbar-icon-btn topbar-cal-btn" data-tip="Calendário" onclick="toggleMiniCal()" aria-label="Calendário"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></button>
           <div class="minical-dropdown" id="minical-dropdown">
             <div class="minical-head">
               <div class="minical-head-left">
@@ -9535,7 +9580,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
           </div>
         </div>
         <div class="profile-menu-wrap">
-          <button class="topbar-icon-btn topbar-profile-btn" id="topbar-profile-btn" data-tip="Perfil" title="Perfil" aria-label="Perfil" onclick="switchToProfile()"><span id="topbar-profile-avatar"><svg viewBox="-125 -89.5 597 597" fill="currentColor" fill-rule="evenodd" stroke="none"><path d="M159.896.65C125.881 5.909 96.93 28.726 84.229 60.287c-2.06 5.122-4.507 12.805-5.434 17.074-2.216 10.195-2.24 30.192-.048 40.003 8.041 35.988 35.475 64.683 71.149 74.42 11.379 3.106 36.372 3.124 47.724.034 59.178-16.106 90.218-80.645 64.837-134.81-7.173-15.304-17.595-28.327-30.453-38.05-8.012-6.058-24.087-13.755-34.108-16.331-9.257-2.38-28.814-3.397-38-1.977Zm-9.593 217.486c-38.288 5.227-73.798 22.231-101.248 48.485-16.528 15.808-26.534 29.275-36.957 49.737-3.015 5.92-6.962 15.038-8.77 20.263C.398 345.077.032 347.33 0 357.121c-.03 8.942.41 12.374 2.348 18.346 4.842 14.908 17.113 28.918 31.62 36.099 12.963 6.416 5.771 6.12 141.526 5.824l123.401-.269 6.276-2.35c15.208-5.697 28.475-17.621 35.212-31.65 5.173-10.773 6.395-17.051 5.769-29.645-.412-8.284-1.162-12.155-3.752-19.355-15.415-42.866-48.477-79.026-91.231-99.78-30.435-14.774-67.602-20.745-100.867-16.205Z"/></svg></span></button>
+          <button class="topbar-icon-btn topbar-profile-btn" id="topbar-profile-btn" data-tip="Perfil" title="Perfil" aria-label="Perfil" onclick="switchToProfile()"><span id="topbar-profile-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span></button>
         </div>
       </div>
     </div>
@@ -10239,32 +10284,32 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             <div class="profile-subsect-title">Informações Pessoais</div>
             <div class="profile-detail-grid" id="profile-personal-fields">
               <div class="metric-card">
-                <div class="metric-card-icon magenta"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                <div class="metric-card-icon magenta"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></div>
                 <div class="metric-card-label">Nome</div>
                 <div class="metric-card-value" id="pf-charname" contenteditable="true" data-key="charname" data-ph="Personagem"></div>
               </div>
               <div class="metric-card">
-                <div class="metric-card-icon blue"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                <div class="metric-card-icon blue"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg></div>
                 <div class="metric-card-label">Apelido</div>
                 <div class="metric-card-value" id="pf-nick" contenteditable="true" data-key="userNick" data-ph="Como te chamam"></div>
               </div>
               <div class="metric-card">
-                <div class="metric-card-icon purple"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></div>
+                <div class="metric-card-icon purple"><svg viewBox="0 0 24 24"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/></svg></div>
                 <div class="metric-card-label">Idade</div>
                 <div class="metric-card-value" id="pf-age" contenteditable="true" data-key="age" data-ph="Sua idade"></div>
               </div>
               <div class="metric-card">
-                <div class="metric-card-icon yellow"><svg viewBox="0 0 24 24"><circle cx="10" cy="14" r="5"/><line x1="14" y1="10" x2="20" y2="4"/><polyline points="15 4 20 4 20 9"/></svg></div>
+                <div class="metric-card-icon yellow"><svg viewBox="0 0 24 24"><path d="M10 20h4"/><path d="M12 16v6"/><path d="M17 2h4v4"/><path d="m21 2-5.46 5.46"/><circle cx="12" cy="11" r="5"/></svg></div>
                 <div class="metric-card-label">Gênero</div>
                 <div class="metric-card-value" id="pf-gender" contenteditable="true" data-key="gender" data-ph="Como se identifica"></div>
               </div>
               <div class="metric-card">
-                <div class="metric-card-icon red"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><polyline points="7 8 3 12 7 16"/><polyline points="17 8 21 12 17 16"/></svg></div>
+                <div class="metric-card-icon red"><svg viewBox="0 0 24 24"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg></div>
                 <div class="metric-card-label">Altura</div>
                 <div class="metric-card-value" id="pf-height" contenteditable="true" data-key="height" data-ph="1.70 m"></div>
               </div>
               <div class="metric-card">
-                <div class="metric-card-icon green"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="21"/><line x1="3" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="21" y2="12"/></svg></div>
+                <div class="metric-card-icon green"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><path d="M6.5 8a2 2 0 0 0-1.905 1.46L2.1 18.5A2 2 0 0 0 4 21h16a2 2 0 0 0 1.925-2.54L19.4 9.5A2 2 0 0 0 17.48 8Z"/></svg></div>
                 <div class="metric-card-label">Peso</div>
                 <div class="metric-card-value" id="pf-weight" contenteditable="true" data-key="weight" data-ph="70 kg"></div>
               </div>
@@ -10308,15 +10353,15 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="profile-ach-grid" id="profile-ach-preview">
               <div class="ach-tile">
-                <div class="ach-tile-shape purple"><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
+                <div class="ach-tile-shape purple"><svg class="ach-hept-bg" viewBox="-3 -3 130 132"><use href="#ach-hept-purple"/></svg><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
                 <div class="ach-tile-label">Início</div>
               </div>
               <div class="ach-tile">
-                <div class="ach-tile-shape green"><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
+                <div class="ach-tile-shape green"><svg class="ach-hept-bg" viewBox="-3 -3 130 132"><use href="#ach-hept-green"/></svg><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
                 <div class="ach-tile-label">Primeira ação</div>
               </div>
               <div class="ach-tile">
-                <div class="ach-tile-shape locked"><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
+                <div class="ach-tile-shape locked"><svg class="ach-hept-bg" viewBox="-3 -3 130 132"><use href="#ach-hept-locked"/></svg><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
                 <div class="ach-tile-label locked"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Bloqueado</div>
               </div>
             </div>
@@ -10337,8 +10382,6 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
           </div>
         </aside>
 
-        <!-- Slot empty far-right — placeholder narrow -->
-        <div class="profile-desktop-slot" aria-hidden="true"></div>
       </div>
     </div>
     <!-- ═══ MOBILE VIEW (Android app + portrait phones) ═══ -->
@@ -10377,15 +10420,15 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
         </div>
         <div class="profile-ach-grid" id="profile-ach-preview-m">
           <div class="ach-tile">
-            <div class="ach-tile-shape purple"><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
+            <div class="ach-tile-shape purple"><svg class="ach-hept-bg" viewBox="-3 -3 130 132"><use href="#ach-hept-purple"/></svg><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
             <div class="ach-tile-label">Início</div>
           </div>
           <div class="ach-tile">
-            <div class="ach-tile-shape green"><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
+            <div class="ach-tile-shape green"><svg class="ach-hept-bg" viewBox="-3 -3 130 132"><use href="#ach-hept-green"/></svg><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
             <div class="ach-tile-label">Primeira ação</div>
           </div>
           <div class="ach-tile">
-            <div class="ach-tile-shape locked"><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
+            <div class="ach-tile-shape locked"><svg class="ach-hept-bg" viewBox="-3 -3 130 132"><use href="#ach-hept-locked"/></svg><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
             <div class="ach-tile-label locked"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Bloqueado</div>
           </div>
         </div>
@@ -10397,32 +10440,32 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
         </div>
         <div class="profile-metrics-grid">
           <div class="metric-card">
-            <div class="metric-card-icon green"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="21"/><line x1="3" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="21" y2="12"/></svg></div>
+            <div class="metric-card-icon green"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><path d="M6.5 8a2 2 0 0 0-1.905 1.46L2.1 18.5A2 2 0 0 0 4 21h16a2 2 0 0 0 1.925-2.54L19.4 9.5A2 2 0 0 0 17.48 8Z"/></svg></div>
             <div class="metric-card-label">Peso</div>
             <div class="metric-card-value" id="pf-weight-m" contenteditable="true" data-key="weight" data-ph="Ex: 70 kg"></div>
           </div>
           <div class="metric-card">
-            <div class="metric-card-icon red"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><polyline points="7 8 3 12 7 16"/><polyline points="17 8 21 12 17 16"/></svg></div>
+            <div class="metric-card-icon red"><svg viewBox="0 0 24 24"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg></div>
             <div class="metric-card-label">Altura</div>
             <div class="metric-card-value" id="pf-height-m" contenteditable="true" data-key="height" data-ph="Ex: 1.70 m"></div>
           </div>
           <div class="metric-card">
-            <div class="metric-card-icon purple"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></div>
+            <div class="metric-card-icon purple"><svg viewBox="0 0 24 24"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/></svg></div>
             <div class="metric-card-label">Idade</div>
             <div class="metric-card-value" id="pf-age-m" contenteditable="true" data-key="age" data-ph="Sua idade"></div>
           </div>
           <div class="metric-card">
-            <div class="metric-card-icon magenta"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="metric-card-icon magenta"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></div>
             <div class="metric-card-label">Nome</div>
             <div class="metric-card-value" id="pf-charname-m" contenteditable="true" data-key="charname" data-ph="Personagem" style="font-size:14px"></div>
           </div>
           <div class="metric-card">
-            <div class="metric-card-icon blue"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div class="metric-card-icon blue"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg></div>
             <div class="metric-card-label">Apelido</div>
             <div class="metric-card-value" id="pf-nick-m" contenteditable="true" data-key="userNick" data-ph="Como te chamam" style="font-size:14px"></div>
           </div>
           <div class="metric-card">
-            <div class="metric-card-icon yellow"><svg viewBox="0 0 24 24"><circle cx="10" cy="14" r="5"/><line x1="14" y1="10" x2="20" y2="4"/><polyline points="15 4 20 4 20 9"/></svg></div>
+            <div class="metric-card-icon yellow"><svg viewBox="0 0 24 24"><path d="M10 20h4"/><path d="M12 16v6"/><path d="M17 2h4v4"/><path d="m21 2-5.46 5.46"/><circle cx="12" cy="11" r="5"/></svg></div>
             <div class="metric-card-label">Gênero</div>
             <div class="metric-card-value" id="pf-gender-m" contenteditable="true" data-key="gender" data-ph="Identidade" style="font-size:14px"></div>
           </div>
@@ -10443,37 +10486,60 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
       </details>
     </div>
     <style>
-    /* Hide-flash: instantâneo via media query (antes do JS escolher) */
-    @media (max-width:768px) and (orientation:portrait){
-      #tab-profile .profile-desktop-view{display:none!important}
-    }
-    @media (min-width:769px) and (orientation:landscape),(min-width:769px){
-      #tab-profile .profile-mobile-view{display:none!important}
-    }
-    body.profile-mobile-mode .profile-desktop-view,
-    body.profile-desktop-mode .profile-mobile-view{display:none!important}
+    /* Visibilidade do perfil decidida 100% por JS (body class). Sem media query
+       de viewport — antes ela escondia a única view presente após rotacionar = branco. */
+    body.profile-mobile-mode #tab-profile .profile-desktop-view,
+    body.profile-desktop-mode #tab-profile .profile-mobile-view{display:none!important}
     </style>
     <script>
-    /* Pick view: mobile pra Android app ou portrait estreito; senão desktop. Remove o outro pra evitar IDs duplicados. */
+    /* Pick view: mobile pra Android app ou portrait estreito; senão desktop.
+       Re-avalia em resize/orientationchange. (Antes rodava só no load e removia a
+       outra view -> ao girar, a media query escondia a sobrevivente = perfil em branco.) */
     (function(){
-      try{
-        const sec=document.getElementById('tab-profile');if(!sec)return;
-        const ua=navigator.userAgent||'';
-        const isAndroidApp=!!window.EclipseNative||!!window.Capacitor||!!window.cordova;
-        const isAndroidUA=/Android/i.test(ua);
-        const isPortraitNarrow=window.matchMedia&&window.matchMedia('(max-width:768px) and (orientation:portrait)').matches;
-        const useMobile=isAndroidApp||isAndroidUA||isPortraitNarrow;
-        const desktop=sec.querySelector('.profile-desktop-view');
-        const mobile=sec.querySelector('.profile-mobile-view');
-        if(useMobile){
-          if(desktop)desktop.remove();
-          document.body.classList.add('profile-mobile-mode');
-          if(mobile)mobile.querySelectorAll('[id$="-m"]').forEach(el=>{el.id=el.id.slice(0,-2)});
-        } else {
-          if(mobile)mobile.remove();
-          document.body.classList.add('profile-desktop-mode');
+      const sec=document.getElementById('tab-profile');if(!sec)return;
+      const ua=navigator.userAgent||'';
+      const isAndroidApp=!!window.EclipseNative||!!window.Capacitor||!!window.cordova;
+      const isAndroidUA=/Android/i.test(ua);
+      // Cache do markup original das duas views (mobile ainda com IDs sufixados -m)
+      let tplD=null,tplM=null;
+      const d0=sec.querySelector('.profile-desktop-view');
+      const m0=sec.querySelector('.profile-mobile-view');
+      if(d0)tplD=d0.outerHTML;
+      if(m0)tplM=m0.outerHTML;
+      let cur=null;
+      function wantMobile(){
+        // Decide por orientação/largura, NÃO por UA — senão Android deitado fica preso no layout vertical.
+        const w=window.innerWidth||0,h=window.innerHeight||0;
+        const portrait=h>=w;
+        if(!portrait)return w<700;   // paisagem: layout largo (adapta ao horizontal), salvo telas minúsculas
+        return w<=820;               // retrato: vertical em celular/tablet estreito; largo em janela grande
+      }
+      function apply(){
+        const mob=wantMobile();
+        const next=mob?'m':'d';
+        if(next===cur)return;            // só troca quando cruza o breakpoint
+        cur=next;
+        sec.querySelectorAll('.profile-desktop-view,.profile-mobile-view').forEach(el=>el.remove());
+        document.body.classList.toggle('profile-mobile-mode',mob);
+        document.body.classList.toggle('profile-desktop-mode',!mob);
+        const html=mob?tplM:tplD;
+        if(html){
+          const tmp=document.createElement('div');tmp.innerHTML=html;
+          const view=tmp.firstElementChild;
+          if(view){
+            sec.insertBefore(view,sec.firstChild);
+            // Mobile usa IDs sufixados -m; remove sufixo pra renderProfile (mira IDs canônicos) achar
+            if(mob)view.querySelectorAll('[id$="-m"]').forEach(el=>{el.id=el.id.slice(0,-2)});
+          }
         }
-      }catch(_){}
+        try{if(typeof window._bindProfileCharFields==='function')window._bindProfileCharFields()}catch(_){}
+        try{if(typeof renderProfile==='function')renderProfile()}catch(_){}
+      }
+      try{apply()}catch(_){}
+      let t=null;
+      const onChange=()=>{clearTimeout(t);t=setTimeout(()=>{try{apply()}catch(_){}},150)};
+      window.addEventListener('resize',onChange,{passive:true});
+      window.addEventListener('orientationchange',onChange,{passive:true});
     })();
     </script>
     </section>
@@ -11091,15 +11157,19 @@ window.addEventListener('DOMContentLoaded',()=>{
   const KEY='eclipse_profile_char';
   function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(_){return{}}}
   function save(d){try{localStorage.setItem(KEY,JSON.stringify(d))}catch(_){}}
-  document.addEventListener('DOMContentLoaded',()=>{
+  // Bind idempotente — re-chamável após troca de view do perfil (mobile<->desktop re-injeta o DOM)
+  window._bindProfileCharFields=function(){
     const data=load();
     document.querySelectorAll('.profile-field-val[contenteditable][data-key],.metric-card-value[contenteditable][data-key]').forEach(el=>{
       const k=el.dataset.key;
-      if(data[k])el.textContent=data[k];
+      if(data[k]&&!el.textContent.trim())el.textContent=data[k];
+      if(el.dataset.pfbound)return;
+      el.dataset.pfbound='1';
       el.addEventListener('input',()=>{const d=load();d[k]=el.textContent.trim();save(d)});
       el.addEventListener('blur',()=>{const d=load();d[k]=el.textContent.trim();save(d)});
     });
-  });
+  };
+  document.addEventListener('DOMContentLoaded',()=>window._bindProfileCharFields());
 })();
 
 // ═══ LOTTIE INTEGRATION ═══
@@ -18675,7 +18745,9 @@ function renderXP(){
   const evoCard=document.getElementById('evolucao-card');
   if(evoCard){
     const hasData=playerLevel>0||playerXP>0||playerStage>0||stageXP>0||(Array.isArray(xpLog)&&xpLog.length>0);
-    evoCard.style.display=hasData?'':'none';
+    // NÃO esconde o card (usuário perdia a Progressão de vista) — colapsa pro estado vazio compacto
+    evoCard.classList.toggle('evo-empty',!hasData);
+    evoCard.style.display='';
   }
 }
 function addXP(amount,desc){
@@ -22405,11 +22477,14 @@ function openBiblioImport(){
     refreshList();
     if(typeof renderBiblioGrid==='function')renderBiblioGrid();
   });
+  ov._refresh=refreshList;
   refreshList();
 }
 window._impDelete=function(i){
   const books=_impBooks();books.splice(i,1);_impSaveBooks(books);
-  document.querySelectorAll('#imp-list')[0]&&document.querySelectorAll('#imp-list')[0].closest('.lout-overlay').querySelector('#imp-pick').click();
+  // Re-renderiza a lista no lugar (antes: clicava no #imp-pick e abria o seletor de arquivos do SO)
+  const _ov=document.querySelector('.lout-overlay');
+  if(_ov&&typeof _ov._refresh==='function')_ov._refresh();
   if(typeof renderBiblioGrid==='function')renderBiblioGrid();
   toast&&toast('Livro removido');
 };
@@ -24876,7 +24951,8 @@ function renderBiblioGrid(){
     ico:'<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19.5a.5.5 0 0 1 .5.5v15a.5.5 0 0 1-.5.5H6.5a2.5 2.5 0 0 0 0 5H20"/>',
     body:b.html||'<p>Conteúdo não disponível.</p>',_imported:true
   }));
-  let items=BIBLIO_DATA.concat(_imported).filter(x=>{
+  // Dedupe: entradas importadas que foram empurradas em BIBLIO_DATA ao abrir não duplicam (a lista _imported já as fornece)
+  let items=BIBLIO_DATA.filter(x=>!x._imported).concat(_imported).filter(x=>{
     if(f==='fav')return _biblioBookmarks.has(x.id);
     if(f!=='all'&&x.cat!==f)return false;
     return true;
@@ -24896,7 +24972,7 @@ function renderBiblioGrid(){
   if(_biblioLayout==='list'){
     el.innerHTML=items.map((x,i)=>{
       const isBm=_biblioBookmarks.has(x.id)?' bookmarked':'';
-      return `<div class="biblio-env${isBm}" data-c="${x.c}" data-bid="${x.id}" style="--i:${i};--env-c:${BIBLIO_ENV_COLORS[x.c]||'#3a47cf'}" onclick="openBiblioChapter('${x.id}')">
+      return `<div class="biblio-env${isBm}" data-c="${x.c}" data-bid="${x.id}" style="--i:${i};--env-c:${BIBLIO_ENV_COLORS[x.c]||'#3a47cf'}" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openBiblioChapter('${x.id}')}" onclick="openBiblioChapter('${x.id}')">
         <div class="biblio-cover">
           <div class="biblio-cover-top"><span class="biblio-cover-icon">${_biblioIcoWrap(x.ico,{sw:'2.2'})}</span></div>
         </div>
@@ -24910,7 +24986,7 @@ function renderBiblioGrid(){
   }else{
     el.innerHTML=items.map((x,i)=>{
       const isBm=_biblioBookmarks.has(x.id)?' bookmarked':'';
-      return `<div class="biblio-env${isBm}" data-c="${x.c}" data-bid="${x.id}" style="--i:${i}" onclick="openBiblioChapter('${x.id}')">
+      return `<div class="biblio-env${isBm}" data-c="${x.c}" data-bid="${x.id}" style="--i:${i}" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openBiblioChapter('${x.id}')}" onclick="openBiblioChapter('${x.id}')">
         <div class="biblio-sleeve"><span class="biblio-sleeve-side">${sideTxt[x.cat]||'CLASSIFIED'}</span></div>
         <div class="biblio-cover">
           <div class="biblio-cover-top">
@@ -27650,7 +27726,7 @@ window.openBiblioTOC=function(){
         <button type="button" class="biblio-toc-close" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
       <div class="biblio-toc-list">
-        ${items.map((it,i)=>`<button type="button" class="biblio-toc-item" data-i="${i}">
+        ${items.map((it,i)=>`<button type="button" class="biblio-toc-item${it.subIdx===_biblioSubIdx?' active':''}" data-i="${i}">
           <span class="biblio-toc-num">${String(i+1).padStart(2,'0')}</span>
           <span class="biblio-toc-text">${it.title}</span>
         </button>`).join('')}
@@ -27688,6 +27764,9 @@ window.openBiblioTOC=function(){
 };
 
 window.openBiblioChapter=function(id){
+  // Cancela um fechamento em andamento (reabrir durante a animação de close) e limpa o lock de troca
+  clearTimeout(window._biblioCloseT);window._biblioSwapLock=false;
+  var _rd=document.getElementById('biblio-reader');if(_rd)_rd.classList.remove('closing');
   // Imported books: id starts with 'imp_'
   if(typeof id==='string'&&id.startsWith('imp_')&&typeof _impBooks==='function'){
     const b=_impBooks().find(x=>x.id===id);if(!b)return;
@@ -27909,6 +27988,8 @@ window.biblioReaderNav=function(dir){
   const head=document.getElementById('br-panel-title').parentElement;
   const book=document.getElementById('biblio-reader-book');
   if(!r||!body||!book)return;
+  if(window._biblioSwapLock)return;          // evita troca de capítulo reentrante (clique rápido prev/next)
+  window._biblioSwapLock=true;
   // 1) FECHA: painel desliza pra fora, livro fecha capa e voa pro lado
   body.classList.add('flip-out');head.classList.add('flip-out');
   book.classList.add('book-swap-out',dir>0?'to-left':'to-right');
@@ -27922,13 +28003,15 @@ window.biblioReaderNav=function(dir){
     book.classList.add('book-swap-in',dir>0?'from-right':'from-left');
     requestAnimationFrame(()=>{
       setTimeout(()=>{
+        // Se o leitor foi fechado no meio da troca, aborta (não reabre stage-2 num leitor fechado)
+        if(!r.classList.contains('show')){window._biblioSwapLock=false;return}
         // 3) ABRE: livro posiciona e stage-2 reabre capa/página
         book.classList.remove('book-swap-in','from-left','from-right');
         r.classList.remove('stage-1','book-swapping');r.classList.add('stage-2','intro-arc');
         setTimeout(()=>r.classList.remove('intro-arc'),900);
         body.classList.remove('flip-out');head.classList.remove('flip-out');
         body.classList.add('flip-in');head.classList.add('flip-in');
-        setTimeout(()=>{body.classList.remove('flip-in');head.classList.remove('flip-in')},550);
+        setTimeout(()=>{body.classList.remove('flip-in');head.classList.remove('flip-in');window._biblioSwapLock=false},550);
       },60);
     });
   },560);
@@ -27942,7 +28025,10 @@ window.biblioSubNav=function(dir){
   _biblioSubAnim(()=>{_biblioSubIdx=next;_biblioUpdateSlide()});
 };
 window.biblioGotoSub=function(i){
-  if(i===_biblioSubIdx)return;
+  // Bounds: índice fora do range (ex: subIdx velho da TOC após mudar conteúdo) quebraria _biblioUpdateSlide
+  const ch=BIBLIO_DATA[_biblioReaderIdx];
+  const n=ch?_biblioGetSubPages(ch).length:0;
+  if(typeof i!=='number'||i<0||i>=n||i===_biblioSubIdx)return;
   _biblioSubAnim(()=>{_biblioSubIdx=i;_biblioUpdateSlide()});
 };
 function _biblioFlipAnim(applyFn){
@@ -27962,6 +28048,9 @@ function _biblioFlipAnim(applyFn){
 document.addEventListener('keydown',e=>{
   const r=document.getElementById('biblio-reader');
   if(!r||!r.classList.contains('stage-2'))return;
+  // Não sequestra setas quando o foco está num campo editável (ex: busca de poder dentro do leitor)
+  const a=document.activeElement;
+  if(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.isContentEditable))return;
   if(e.key==='ArrowLeft'){biblioSubNav(-1);e.preventDefault()}
   else if(e.key==='ArrowRight'){biblioSubNav(1);e.preventDefault()}
   else if(e.key==='PageUp'){biblioReaderNav(-1);e.preventDefault()}
@@ -28004,8 +28093,20 @@ window.closeBiblioReader=function(){
   const r=document.getElementById('biblio-reader');
   if(!r)return;
   const book=document.getElementById('biblio-reader-book');
+  clearTimeout(window._biblioCloseT);
+  // Reseta estado transitório de animação (troca/flip) pra próxima abertura começar limpa
+  const _resetTransient=()=>{
+    r.classList.remove('book-swapping','intro-arc');
+    const body=document.getElementById('br-panel-body');
+    const head=document.getElementById('br-panel-title')?document.getElementById('br-panel-title').parentElement:null;
+    if(body)body.classList.remove('flip-in','flip-out');
+    if(head)head.classList.remove('flip-in','flip-out');
+    if(book)book.classList.remove('flipping','book-swap-in','book-swap-out','to-left','to-right','from-left','from-right');
+    window._biblioSwapLock=false;
+  };
   if(window.matchMedia('(prefers-reduced-motion:reduce)').matches||!book){
     r.classList.remove('show','stage-1','stage-2','closing');
+    _resetTransient();
     document.body.style.overflow='';
     _biblioReaderCh=null;
     return;
@@ -28015,9 +28116,10 @@ window.closeBiblioReader=function(){
   r.classList.remove('stage-2');r.classList.add('stage-1');
   book.classList.remove('book-swap-in','book-swap-out','to-left','to-right','from-left','from-right');
   book.classList.add('book-falling');
-  setTimeout(()=>{
+  window._biblioCloseT=setTimeout(()=>{
     r.classList.remove('show','stage-1','stage-2','closing');
     book.classList.remove('book-falling');
+    _resetTransient();
     document.body.style.overflow='';
     _biblioReaderCh=null;
   },900);
@@ -35076,6 +35178,167 @@ body[data-perf-anim-tabswitch="off"] .sidebar-btn[data-tab].nav-anim svg{animati
   // ═══ Init ═══
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootTrade,{once:true});
   else bootTrade();
+})();
+</script>
+
+<style>
+/* Sortable dash-grid */
+.dcard-handle{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;margin-right:6px;border-radius:7px;background:transparent;border:none;color:var(--text-dim);cursor:grab;opacity:.5;transition:opacity .15s,color .15s,background .15s;touch-action:none;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.dcard-handle:hover{opacity:1;color:var(--text-secondary);background:var(--bg-hover)}
+.dcard-handle:active{cursor:grabbing}
+.card.dcard-dragging{opacity:.92;box-shadow:0 18px 50px rgba(0,0,0,.5);z-index:20;position:relative;transform:scale(1.015)}
+/* mantém título à esquerda mesmo com o handle (senão space-between espalha) */
+.card-header:has(.dcard-handle) .card-title{margin-right:auto}
+body[data-perf-low] .dcard-handle{display:none}
+</style>
+<script>
+/* ═══ FEATURES NOVAS (vanilla, sem dependência, gated por perf/reduced-motion) ═══
+   1) Arc fly-to (Motion-style) + orb de XP   2) scrollDots (shadcn)   3) Sortable dash-grid (portal_labs) */
+(function(){
+  'use strict';
+  function reduce(){try{return window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches}catch(_){return false}}
+
+  /* 1) ARC FLY-TO — clone A→B em curva (bezier quadrático) via rAF */
+  function arcFlyTo(from,to,opts){
+    opts=opts||{};
+    if(!from||!to||reduce())return Promise.resolve();
+    var a=from.getBoundingClientRect(), b=to.getBoundingClientRect();
+    if(!opts.node && !a.width && !a.height)return Promise.resolve();
+    var x0=a.left+a.width/2, y0=a.top+a.height/2, x1=b.left+b.width/2, y1=b.top+b.height/2;
+    var dur=opts.duration||650, strength=opts.strength!=null?opts.strength:.5, dir=opts.direction==='ccw'?-1:1;
+    var dx=x1-x0, dy=y1-y0, dist=Math.hypot(dx,dy)||1, nx=-dy/dist, ny=dx/dist;
+    var cx=(x0+x1)/2 + nx*dist*strength*dir, cy=(y0+y1)/2 + ny*dist*strength*dir;
+    var node=opts.node||document.createElement('div');
+    node.style.position='fixed';node.style.left='0';node.style.top='0';node.style.zIndex='99998';node.style.pointerEvents='none';node.style.willChange='transform,opacity';
+    node.style.transform='translate(-50%,-50%) translate('+x0+'px,'+y0+'px)';node.style.opacity='1';
+    document.body.appendChild(node);
+    var start=null;
+    return new Promise(function(resolve){
+      function frame(t){
+        if(start==null)start=t;
+        var p=Math.min(1,(t-start)/dur), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2, mt=1-e;
+        var x=mt*mt*x0+2*mt*e*cx+e*e*x1, y=mt*mt*y0+2*mt*e*cy+e*e*y1, sc=opts.node?1:(1-.35*e);
+        node.style.transform='translate(-50%,-50%) translate('+x+'px,'+y+'px) scale('+sc+')';
+        node.style.opacity=String(p<.85?1:(1-(p-.85)/.15));
+        if(p<1)requestAnimationFrame(frame); else{if(!opts.keep)node.remove();resolve()}
+      }
+      requestAnimationFrame(frame);
+    });
+  }
+  window.arcFlyTo=arcFlyTo;
+  function xpOrb(amount){
+    if(reduce())return;
+    var target=document.getElementById('topbar-profile-btn')||document.querySelector('.topbar-actions')||document.querySelector('.topbar');
+    if(!target)return;
+    var orb=document.createElement('div');orb.textContent='+'+(amount||0)+' XP';
+    orb.style.cssText='font:800 12px/1 "JetBrains Mono",monospace;color:#0a0a0d;background:var(--magenta,#84cc16);padding:6px 11px;border-radius:99px;box-shadow:0 4px 16px rgba(0,0,0,.35),0 0 0 2px color-mix(in srgb,var(--magenta,#84cc16) 30%,transparent);white-space:nowrap;display:flex;align-items:center';
+    var src={getBoundingClientRect:function(){return {left:window.innerWidth/2,top:window.innerHeight*.62,width:0,height:0}}};
+    arcFlyTo(src,target,{node:orb,duration:720,strength:.55,direction:'cw'});
+  }
+  window.xpOrb=xpOrb;
+  function hookAddXP(){
+    if(typeof window.addXP==='function' && !window.addXP.__arcHooked){
+      var orig=window.addXP;
+      window.addXP=function(amount){var r=orig.apply(this,arguments);try{if(amount>0)xpOrb(amount)}catch(_){}return r};
+      window.addXP.__arcHooked=true;
+    }
+  }
+
+  /* 2) SCROLL-DOTS (shadcn --dot-progress) */
+  function scrollDots(scrollEl,dotsEl,opts){
+    if(!scrollEl||!dotsEl)return; opts=opts||{};
+    var slides=opts.slides||Array.prototype.slice.call(scrollEl.children);
+    if(slides.length<2){dotsEl.style.display='none';return}
+    dotsEl.style.display='';dotsEl.innerHTML='';
+    var dots=slides.map(function(s,i){
+      var d=document.createElement('button');d.type='button';d.className='scroll-dot';
+      d.addEventListener('click',function(){slides[i].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'})});
+      dotsEl.appendChild(d);return d;
+    });
+    function upd(){
+      var c=scrollEl.scrollLeft+scrollEl.clientWidth/2;
+      slides.forEach(function(s,i){
+        var center=s.offsetLeft+s.offsetWidth/2, dd=Math.abs(c-center)/Math.max(1,s.offsetWidth);
+        dots[i].style.setProperty('--dot-progress',Math.max(0,Math.min(1,1-dd)).toFixed(3));
+      });
+    }
+    var raf=null;
+    scrollEl.addEventListener('scroll',function(){if(raf)return;raf=requestAnimationFrame(function(){raf=null;upd()})},{passive:true});
+    upd();
+  }
+  window.scrollDots=scrollDots; // helper reusável p/ carrosséis scroll-snap (auto-attach removido: .biblio-grid-flow nunca era aplicado)
+
+  /* 3) SORTABLE dash-grid — FLIP + háptico + persist */
+  var SKEY='eclipse_dash_order', drag=null;
+  function cardKey(card){var t=card.querySelector('.card-title');return (t?t.textContent.trim():'')||card.id||''}
+  function gridCards(grid){return Array.prototype.slice.call(grid.children).filter(function(c){return c.classList&&c.classList.contains('card')})}
+  function saveOrder(grid){try{localStorage.setItem(SKEY,JSON.stringify(gridCards(grid).map(cardKey)))}catch(_){}}
+  function applyOrder(grid){
+    var saved;try{saved=JSON.parse(localStorage.getItem(SKEY)||'null')}catch(_){saved=null}
+    if(!saved||!saved.length)return;
+    saved.forEach(function(k){var card=gridCards(grid).filter(function(c){return cardKey(c)===k})[0];if(card)grid.appendChild(card)});
+  }
+  function flip(grid,mutate){
+    var cards=gridCards(grid), first={};
+    cards.forEach(function(c){first[cardKey(c)]=c.getBoundingClientRect()});
+    mutate();
+    cards.forEach(function(c){
+      var f=first[cardKey(c)];if(!f)return;
+      var l=c.getBoundingClientRect(), dx=f.left-l.left, dy=f.top-l.top;
+      if(!dx&&!dy)return;
+      c.style.transition='none';c.style.transform='translate('+dx+'px,'+dy+'px)';
+      requestAnimationFrame(function(){
+        c.style.transition='transform .32s cubic-bezier(.2,.8,.2,1)';c.style.transform='';
+        var clr=function(){c.style.transition='';c.style.transform='';c.removeEventListener('transitionend',clr)};
+        c.addEventListener('transitionend',clr);
+      });
+    });
+  }
+  function makeDashSortable(grid){
+    if(!grid||grid.__sortable)return;grid.__sortable=true;
+    gridCards(grid).forEach(function(card){
+      var head=card.querySelector('.card-header');if(!head||head.querySelector('.dcard-handle'))return;
+      var h=document.createElement('button');h.type='button';h.className='dcard-handle';h.title='Arraste pra reordenar';h.setAttribute('aria-label','Reordenar card');
+      h.innerHTML='<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+      head.insertBefore(h,head.firstChild);
+      h.addEventListener('pointerdown',function(e){startDrag(e,grid,card)});
+    });
+  }
+  function startDrag(e,grid,card){
+    e.preventDefault();e.stopPropagation();
+    drag={grid:grid,card:card};
+    card.classList.add('dcard-dragging');
+    try{e.target.setPointerCapture(e.pointerId)}catch(_){}
+    try{if(navigator.vibrate)navigator.vibrate(8)}catch(_){}
+    window.addEventListener('pointermove',onMove,{passive:false});
+    window.addEventListener('pointerup',endDrag,{once:true});
+    window.addEventListener('pointercancel',endDrag,{once:true});
+  }
+  function onMove(e){
+    if(!drag)return;e.preventDefault();
+    var grid=drag.grid, card=drag.card, el=document.elementFromPoint(e.clientX,e.clientY);
+    var over=el&&el.closest?el.closest('.card'):null;
+    if(!over||over===card||over.parentNode!==grid)return;
+    var r=over.getBoundingClientRect(), after=(e.clientY-r.top)>r.height/2||(e.clientX-r.left)>r.width/2;
+    flip(grid,function(){after?grid.insertBefore(card,over.nextSibling):grid.insertBefore(card,over)});
+    try{if(navigator.vibrate)navigator.vibrate(5)}catch(_){}
+  }
+  function endDrag(){
+    if(!drag)return;
+    drag.card.classList.remove('dcard-dragging');
+    saveOrder(drag.grid);
+    window.removeEventListener('pointermove',onMove);
+    drag=null;
+  }
+
+  /* Init */
+  function init(){
+    try{hookAddXP()}catch(_){}
+    try{var grid=document.querySelector('.dash-grid');if(grid){applyOrder(grid);makeDashSortable(grid)}}catch(_){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
+  setTimeout(function(){try{hookAddXP()}catch(_){}},1500);
 })();
 </script>
 

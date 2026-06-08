@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android Auto Backup (Android 11 e anteriores).
+     Inclui WebView localStorage (app_webview) — dados do app — que o backup padrão EXCLUI. -->
+<full-backup-content>
+    <include domain="sharedpref" path="." />
+    <include domain="database" path="." />
+    <include domain="file" path="." />
+    <include domain="external" path="." />
+    <include domain="root" path="app_webview" />
+    <exclude domain="root" path="cache" />
+    <exclude domain="root" path="code_cache" />
+</full-backup-content>
