@@ -21,7 +21,8 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Window w = getWindow();
-        w.setStatusBarColor(Color.TRANSPARENT);
+        // Barra de status VISÍVEL com fundo cinza; conteúdo abaixo dela (não atrás).
+        w.setStatusBarColor(Color.parseColor("#26262B"));
         w.setNavigationBarColor(Color.TRANSPARENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
@@ -29,8 +30,9 @@ public class MainActivity extends BridgeActivity {
                         WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
             } catch (Exception ignored) {}
         }
-        // Edge-to-edge: content draws behind status/nav bars + nav bar não reserva espaço.
-        WindowCompat.setDecorFitsSystemWindows(w, false);
+        // Conteúdo reserva espaço da barra de status (fica abaixo). Só a nav bar
+        // continua imersiva escondida (ver _enterImmersive).
+        WindowCompat.setDecorFitsSystemWindows(w, true);
         _enterImmersive();
     }
 
@@ -42,15 +44,15 @@ public class MainActivity extends BridgeActivity {
             if (ctrl != null) {
                 ctrl.setSystemBarsBehavior(
                         WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
-                ctrl.hide(WindowInsetsCompat.Type.systemBars());
+                // Esconde só a nav bar (de baixo); barra de status fica visível.
+                ctrl.hide(WindowInsetsCompat.Type.navigationBars());
             } else {
-                // Fallback flags legadas
+                // Fallback flags legadas — sem FULLSCREEN, então status bar fica visível.
                 w.getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_FULLSCREEN
                                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
             }
         } catch (Exception ignored) {}

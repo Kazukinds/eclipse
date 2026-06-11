@@ -10666,7 +10666,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.75</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.77</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -28841,6 +28841,12 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.77',date:'2026-06-11',title:'Ícone novo + barra de status cinza + dashboard fixo',items:[
+    {tag:'feat',text:'Ícone do app redesenhado: degradê magenta→preto + eclipse branco angulado (adaptive — mascara pra qualquer formato de celular).'},
+    {tag:'feat',text:'Barra de status do celular agora visível com fundo cinza; conteúdo abaixo dela. Nav bar segue oculta.'},
+    {tag:'fix',text:'Dashboard fixo: card Evolução vazio mantém altura constante (não empurra/reorganiza os outros cards).'},
+    {tag:'fix',text:'Card da biblioteca: removida borda branca serrilhada no contorno (sleeve atrás da capa).'}
+  ]},
   {version:'v3.8.75',date:'2026-05-15',title:'Esconde cards vazios no dashboard (Inventário + Evolução)',items:[
     {tag:'fix',text:'Inventário card: CSS :has hide quando ambas listas (dash-weapons + dash-consumables) vazias.'},
     {tag:'fix',text:'Evolução card: renderXP esconde quando sem dados (level=0, XP=0, stage=0, xpLog vazio). Reaparece auto quando ganha XP.'}
