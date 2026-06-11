@@ -206,7 +206,7 @@ body[data-perf-low] .biblio-env{opacity:1!important;transform:none!important}
 .item-rotate-btn,.item-equip-mark,.item-gear-float,
 .rarity-dot,.skill-icon-btn,.skill-use,.skill-del,
 .pwa-install-btn,.save-toast-close,.toast-close,.modal-close,
-.register-close,.biblio-reader-close,.biblio-subbtn,
+.register-close,.biblio-reader-close,.biblio-subbtn,.biblio-sub-arrow,
 .update-banner-close,.account-badge,.account-avatar,
 .cselect-arrow,.notif-close,.sidebar-gear-desktop,
 .palette-swatch,.palette-custom,.palette-custom-dot,.theme-swatch,.color-dot,
@@ -966,10 +966,10 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .chart-time-pill:hover{color:var(--text-secondary)}
 .chart-time-pill.active{background:var(--magenta);color:#09090b}
 .dash-grid .chart-area{height:280px}
-/* Evolução vazia: card continua visível (descobrível) mas sem o void preto do gráfico */
-#evolucao-card.evo-empty .chart-area,#evolucao-card.evo-empty .chart-time-pills,#evolucao-card.evo-empty .toggle-pills{display:none!important}
-#evolucao-card.evo-empty .card-header{margin-bottom:0;border-bottom:none}
-#evolucao-card.evo-empty::after{content:"Sem progressão ainda. Ganhe XP pra ver o gráfico de evolução.";display:block;color:var(--text-dim);font-size:12.5px;line-height:1.45;padding:12px 2px 2px}
+/* Evolução vazia: mantém a MESMA altura do card cheio (não colapsa nem empurra os outros cards) — só troca o gráfico pela mensagem */
+#evolucao-card.evo-empty .chart-canvas,#evolucao-card.evo-empty .chart-time-pills{visibility:hidden}
+#evolucao-card.evo-empty .chart-area{display:flex;align-items:center;justify-content:center}
+#evolucao-card.evo-empty .chart-area::after{content:"Sem progressão ainda. Ganhe XP pra ver o gráfico de evolução.";color:var(--text-dim);font-size:12.5px;line-height:1.45;text-align:center;padding:0 14px;max-width:260px}
 .dash-grid .item-list-section{max-height:520px;gap:14px;overflow:hidden;display:flex;flex-direction:column}
 .dash-grid .item-list-section .item-list{flex:1 1 auto;overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-color:var(--border-light) transparent}
 .dash-grid .item-list-section .item-list::-webkit-scrollbar{width:6px}
@@ -2403,7 +2403,7 @@ html.no-radius,html.no-radius *{border-radius:0!important}
    Cada variante (purple/green/locked) embed SVG completo com paleta própria. */
 #tab-profile .ach-tile-shape{position:relative;width:72px;height:72px;display:flex;align-items:center;justify-content:center;transition:transform .15s;background-position:center;background-size:contain;background-repeat:no-repeat}
 #tab-profile .ach-tile:hover .ach-tile-shape{transform:scale(1.05)}
-#tab-profile .ach-tile-shape > svg:not(.ach-hept-bg){position:relative;z-index:2;width:28px;height:28px;fill:#fff;stroke:none;color:#fff;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}
+#tab-profile .ach-tile-shape > svg:not(.ach-hept-bg){position:relative;z-index:2;width:28px;height:28px;transform:translateY(2px);fill:#fff;stroke:none;color:#fff;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}
 /* Heptágono inline (crisp, sem serrilhado do background-image rasterizado) — cobre o bg */
 #tab-profile .ach-tile-shape > svg.ach-hept-bg{position:absolute;inset:0;width:100%;height:100%;z-index:1;display:block;pointer-events:none}
 /* Mata o background-image jagged (inline svg crisp já desenha o heptágono) */
@@ -3986,7 +3986,7 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
   display:flex;align-items:flex-start;justify-content:flex-end;
   padding:14px 12px;
   box-shadow:0 6px 18px rgba(0,0,0,.08),inset 0 0 0 1px #ececee;
-  transform:translateX(0) translateY(0) rotate(0) scale(.94);
+  transform:translateX(8%) translateY(0) rotate(0) scale(.85);
   transition:transform .55s cubic-bezier(.2,.8,.2,1),box-shadow .4s;
   z-index:1;transform-origin:left center;
 }
@@ -4386,13 +4386,13 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 /* Botão TOC + close no header do reader */
 .biblio-reader-head-actions{display:flex;align-items:center;gap:8px}
 .biblio-reader-toc{
-  width:36px;height:36px;flex-shrink:0;aspect-ratio:1/1;border-radius:50%;
+  width:28px;height:28px;flex-shrink:0;aspect-ratio:1/1;border-radius:50%;
   background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
   color:rgba(255,255,255,.8);cursor:pointer;padding:0;
   display:inline-flex;align-items:center;justify-content:center;
   transition:all .2s var(--ease-tactile);
 }
-.biblio-reader-toc svg{width:16px;height:16px;stroke-width:2}
+.biblio-reader-toc svg{width:14px;height:14px;stroke-width:2}
 .biblio-reader-toc:hover{background:color-mix(in srgb,var(--env-c,#3a47cf) 22%,transparent);border-color:var(--env-c,#3a47cf);color:#fff;transform:scale(1.06)}
 [data-theme="light"] .biblio-reader-toc{background:rgba(26,24,37,.06);border-color:rgba(26,24,37,.14);color:#1a1825}
 
@@ -4518,7 +4518,7 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
   padding:0;border:none;position:relative;
 }
 .biblio-reader-panel-head > div:first-child{grid-column:1 / -1;text-align:center;width:100%}
-.biblio-reader-panel-head .biblio-reader-head-actions{position:absolute;top:0;right:0;z-index:2}
+.biblio-reader-panel-head .biblio-reader-head-actions{position:absolute;top:-2px;left:0;display:flex;gap:6px;z-index:2}
 .biblio-reader-panel-head h2{
   font-family:'Montserrat',system-ui,sans-serif;font-size:24px;font-weight:800;font-style:normal !important;
   color:#fff;margin:0;letter-spacing:.04em;line-height:1.1;text-transform:uppercase;
@@ -4546,14 +4546,14 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 }
 [data-theme="light"] .biblio-reader-panel-head .sub{color:rgba(26,24,37,.72)}
 .biblio-reader-close{
-  width:34px;height:34px;border-radius:8px;
+  width:28px;height:28px;border-radius:8px;
   background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
   color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;
   flex-shrink:0;transition:all .2s;
 }
 [data-theme="light"] .biblio-reader-close{background:rgba(26,24,37,.06);border-color:rgba(26,24,37,.16);color:#1a1825}
 .biblio-reader-close:hover{background:rgba(255,80,100,.2);border-color:#f87171;color:#fff}
-.biblio-reader-close svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.biblio-reader-close svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 
 /* Linha/traço decorativo */
 .biblio-reader-divider{
@@ -6524,8 +6524,11 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   /* Botões circulares mantêm proporção 1:1 e não viram ovais */
   .xp-gear,.attr-gear,.size-gear,.dual-gear,.veh-cfg-btn,.topbar-icon-btn,.topbar-profile-btn,.modal-close,.register-close,.item-gear-float,.account-badge,.account-avatar,.skill-use,.skill-del,.biblio-reader-close,.save-toast-close,.update-banner-close,.toast-close,.biblio-subbtn,.skill-icon-btn,.mc-swatch,.minical-nav,.minical-day,.equip-slot,.equip-clear-btn,.equip-conjunto-toggle{min-height:auto!important;aspect-ratio:1/1!important}
   .equip-conjunto-btn{min-height:auto!important;aspect-ratio:auto!important}
-  /* Leitor: close do header + setas de subpágina com alvo de toque 40px (antes 34/30px) */
-  .biblio-reader-close,.biblio-subbtn{width:40px!important;height:40px!important;min-height:40px!important}
+  /* Leitor: close do header reduzido (28px); setas de subpágina mantêm alvo 40px */
+  .biblio-reader-close{width:28px!important;height:28px!important;min-height:28px!important}
+  .biblio-reader-toc{width:28px!important;height:28px!important;min-height:28px!important}
+  .biblio-subbtn{width:40px!important;height:40px!important;min-height:40px!important}
+  .biblio-sub-arrow{width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;flex:0 0 40px!important;aspect-ratio:1/1!important}
   /* Toolbar progress: força quadrado 36x36 mobile */
   .skill-icon-btn{width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;flex:0 0 36px!important;padding:0!important;box-sizing:border-box!important}
   .pc-tools-sep{flex-shrink:0;flex-grow:0}
