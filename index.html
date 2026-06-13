@@ -1984,9 +1984,20 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .inv-pager .inv-pg-ind{min-width:46px;text-align:center;font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--text-secondary);font-variant-numeric:tabular-nums}
 /* Vertical: a grade pagina via transform; o frame corta o overflow; paginador flutua acima do dock */
 @media(orientation:portrait){
-  #tab-inventory .re4-case-frame{overflow:hidden}
-  #tab-inventory .inv-grid{transition:transform .35s cubic-bezier(.34,1.2,.5,1)}
-  #tab-inventory .inv-pager{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;z-index:120;margin:0;padding:7px 12px;border-radius:18px;background:rgba(18,18,22,.94);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);box-shadow:0 10px 30px rgba(0,0,0,.55)}
+  /* Impede a grade (larga) de esticar o card/layout além da viewport */
+  #tab-inventory{overflow-x:hidden}
+  #tab-inventory .re4-shell,#tab-inventory .re4-body,#tab-inventory .re4-case-pane,#tab-inventory .re4-case,#tab-inventory .re4-case-nav,#tab-inventory .re4-case-frame{min-width:0;max-width:100vw}
+  /* Grade rola na HORIZONTAL dentro do card; toolbar fixa (sticky) durante a rolagem */
+  #tab-inventory .re4-case-frame{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none}
+  #tab-inventory .re4-case-frame::-webkit-scrollbar{height:0;width:0;display:none}
+  #tab-inventory .re4-case-topbar{position:sticky;left:0;z-index:6}
+  #tab-inventory .inv-grid{transition:none}
+  /* Paginador removido no modo rolagem */
+  #tab-inventory .inv-pager{display:none !important}
+  /* Scrollbar custom no topo-direito (rolagem horizontal) */
+  #tab-inventory .inv-hscroll{position:absolute;top:20px;right:12px;width:min(34%,150px);height:5px;border-radius:4px;background:rgba(255,255,255,.06);border:none;z-index:30;cursor:pointer;touch-action:none}
+  #tab-inventory .inv-hscroll-thumb{height:100%;border-radius:4px;background:var(--magenta);min-width:20px;cursor:grab}
+  #tab-inventory .inv-hscroll-thumb:active{cursor:grabbing}
 }
 .re4-case-frame{position:relative;background:var(--bg-card-inner,#1a1a1f);border:1px solid var(--border,#3a3a40);border-radius:14px;padding:0;box-shadow:none;width:100%;margin:0;display:block;overflow:hidden}
 [data-theme="light"] .re4-case-frame{background:linear-gradient(160deg,#f5f5f7 0%,#eaeaee 60%,#dcdce2 100%);border-color:#cbcbd2}
@@ -2723,6 +2734,15 @@ input[type="number"]{-moz-appearance:textfield}
 .modal:has(.item-form-compact){width:560px;max-width:92vw;aspect-ratio:1/1;height:auto;max-height:92vh;overflow:hidden!important}
 .modal:has(.item-form-compact)>#modal-body{flex:1;min-height:0;overflow:hidden}
 @media(max-width:600px){.modal:has(.item-form-compact){aspect-ratio:auto;height:auto;max-height:92vh}}
+/* ── Item modal em ROLAGEM (todas as páginas empilhadas, sem passos) ── */
+.modal:has(.item-form-compact.item-scroll){aspect-ratio:auto !important;height:auto !important;overflow:visible !important}
+.modal:has(.item-form-compact.item-scroll)>#modal-body{overflow:hidden auto !important}
+.item-form-compact.item-scroll{height:auto}
+.item-form-compact.item-scroll .item-pages{display:block;height:auto;flex:none;min-height:0;overflow:visible}
+.item-form-compact.item-scroll .item-page{display:flex;height:auto;animation:none;margin:0}
+.item-form-compact.item-scroll .item-page.ip-hide{display:none}
+.item-form-compact.item-scroll .item-page + .item-page{margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.item-form-compact.item-scroll .item-page-extra{flex:none}
 .item-hdr-pager{display:flex;align-items:center;gap:8px;margin-right:10px}
 .item-inline-pager{display:flex;align-items:center;gap:8px;flex:1}
 .item-form-compact .modal-btns{display:flex;align-items:center;gap:10px}
@@ -3823,23 +3843,28 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 
 /* ═══ CENTRALIZED MODALS (mobile vertical) ═══ */
 @media(max-width:640px) and (orientation:portrait){
-  .modal-overlay{align-items:center !important;justify-content:center !important;padding:16px !important}
+  /* Vertical: modais em TELA CHEIA (preenchem a tela toda) */
+  .modal-overlay{align-items:stretch !important;justify-content:stretch !important;padding:0 !important}
   .modal{
+    box-sizing:border-box !important;
     width:100% !important;max-width:100% !important;
-    max-height:calc(100dvh - 32px) !important;
-    border-radius:18px !important;
-    padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px)) 18px !important;
-    transform:translateY(20px) scale(.96) !important;
-    transition:transform .32s cubic-bezier(.2,.8,.2,1) !important;
-    box-shadow:0 20px 50px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.04) !important;
+    height:100dvh !important;max-height:100dvh !important;min-height:100dvh !important;
+    border-radius:0 !important;
+    padding:calc(16px + env(safe-area-inset-top,0px)) 18px calc(16px + env(safe-area-inset-bottom,0px)) 18px !important;
+    transform:translateY(18px) !important;
+    transition:transform .3s cubic-bezier(.2,.8,.2,1) !important;
+    box-shadow:none !important;
     position:relative;
   }
-  .modal-overlay.open .modal{transform:translateY(0) scale(1) !important}
+  .modal-overlay.open .modal{transform:translateY(0) !important}
+  /* Conter o conteúdo na largura da tela (controles content-box estavam vazando à direita) */
+  .modal #modal-body{overflow-x:hidden !important}
+  .modal #modal-body,.modal input,.modal select,.modal textarea,.modal .form-group,.modal .form-row,.modal .item-form-split{box-sizing:border-box !important;max-width:100% !important}
   .modal-header{position:sticky;top:0;background:var(--bg-card);padding:4px 0 10px;margin:-4px 0 12px;border-bottom:1px solid var(--border);z-index:2}
-  .modal-btns{position:sticky;bottom:0;background:var(--bg-card);padding:16px 0 0;margin:12px 0 0;border-top:none;z-index:2}
+  .modal-btns{position:sticky;bottom:0;background:var(--bg-card);padding:16px 0 calc(env(safe-area-inset-bottom,0px));margin:12px 0 0;border-top:none;z-index:2}
   [data-theme="light"] .modal-header,[data-theme="light"] .modal-btns{background:var(--bg-card)}
-  /* Keyboard-aware shift via JS sets --kb */
-  body.kb-open .modal-overlay{align-items:flex-start !important;padding-top:max(16px,calc(50dvh - var(--modal-h,200px)/2 - var(--kb,0px)/2)) !important}
+  /* Tela cheia: teclado não empurra o modal — input rola dentro do #modal-body */
+  body.kb-open .modal-overlay{align-items:stretch !important;justify-content:stretch !important;padding:0 !important;padding-top:0 !important}
   /* Register overlay centralizado */
   .register-overlay{align-items:center !important;justify-content:center !important;padding:16px !important}
   .register-panel{
@@ -3848,15 +3873,9 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
     width:100% !important;max-width:100% !important;
     padding-bottom:env(safe-area-inset-bottom,0px) !important;
   }
-  /* App-confirm centralizado */
+  /* App-confirm: card compacto centralizado */
   .app-confirm-overlay{align-items:center !important;justify-content:center !important;padding:16px !important}
-  .app-confirm-box{
-    width:100% !important;max-width:100% !important;
-    border-radius:18px !important;
-    padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px)) 20px !important;
-    transform:translateY(20px) scale(.96) !important;
-  }
-  .app-confirm-overlay.open .app-confirm-box{transform:translateY(0) scale(1) !important}
+  .app-confirm-box{width:100% !important;max-width:420px !important;height:auto !important;max-height:calc(100dvh - 32px) !important;border-radius:18px !important}
 }
 [data-theme="light"] .toast{background:var(--bg-card);border-color:var(--magenta-dim);color:var(--magenta-dim)}
 [data-theme="light"] .sidebar-btn.active{color:#0a0a0c!important}
@@ -6886,7 +6905,7 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
 [class*="-x-btn"],[class*="btn-x"],[class*="-square-btn"],
 [class*="-del"],[class*="-add"]:not(.add-nav-btn):not(.pericia-add-btn):not(.mc-add-btn):not(.minical-add-row):not(.hab-picker-add):not(.sklib-add-btn):not(.ficha-tag-add):not(.rid-add-pulse):not(.skill-add-btn),
 [class*="-swap"]:not(.elemento-swap-orb),
-[class*="-confirm"]:not(.app-confirm-icon):not(.arq-slot-confirm):not(.arch-confirm-btn):not(.app-confirm-btn):not(.clear-sheet-confirm-row):not(.arch-confirm-box):not(.lin-confirm),
+[class*="-confirm"]:not(.app-confirm-icon):not(.arq-slot-confirm):not(.arch-confirm-btn):not(.app-confirm-btn):not(.clear-sheet-confirm-row):not(.arch-confirm-box):not(.lin-confirm):not(.app-confirm-box):not(.app-confirm-head):not(.app-confirm-msg):not(.app-confirm-actions),
 [aria-label*="Fechar"],[aria-label*="Close"],[title^="Fechar"],
 .sidebar-btn,.topbar-icon-btn,.notif-icon,
 .profile-avatar,.profile-hero-back,.profile-hero-action,
@@ -10730,7 +10749,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.78</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.79</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -17165,13 +17184,15 @@ window._invLayout=function(){
     const dfloor=v=>Math.max(1,Math.floor(v*dpr))/dpr;
     const padCss=gapCss; // borda externa = mesma espessura das linhas internas
     const innerW=Math.max(80,frame.clientWidth-margin*2);
-    const availH=Math.max(160,window.innerHeight-fTop-topbarH-16-margin*2-12);
+    const availH=Math.max(160,window.innerHeight-fTop-topbarH-24-margin*2-12);
     const cellW=(innerW-padCss*2-(gridCols-1)*gapCss)/gridCols;
     const cellH=(availH-padCss*2-(gridRows-1)*gapCss)/gridRows;
     const cell=Math.max(18,dfloor(Math.min(cellW,cellH)));
     const gw=gridCols*cell+(gridCols-1)*gapCss+padCss*2;
     const gh=gridRows*cell+(gridRows-1)*gapCss+padCss*2;
     const side=Math.max(margin,dfloor((frame.clientWidth-gw)/2));
+    // Toolbar alinhada à borda esquerda da grade + respiro vertical
+    if(topbar)topbar.style.margin='12px 0 12px '+side+'px';
     g.style.aspectRatio='auto';
     g.style.padding=padCss+'px';
     g.style.gap=gapCss+'px';
@@ -17182,25 +17203,24 @@ window._invLayout=function(){
     g.style.margin=margin+'px '+side+'px';
     g.style.transform='';
     if(pager)pager.style.display='none';
+    const sbL=document.getElementById('inv-hscroll');if(sbL)sbL.style.display='none';
     _invPage=0;
     return;
   }
-  // Vertical: célula limitada pela ALTURA (todas as linhas cabem); colunas paginam.
-  // Mesma regra de linhas iguais: célula/gap snapados ao pixel de dispositivo.
+  // Vertical: ROLAGEM horizontal (todas as colunas), sem páginas. Toolbar fixa.
+  // Linhas iguais: célula/gap snapados ao pixel de dispositivo.
   const dpr=window.devicePixelRatio||1;
   const gapCss=Math.max(1,Math.round(gap*dpr))/dpr;
   const dfloor=v=>Math.max(1,Math.floor(v*dpr))/dpr;
   const dock=document.getElementById('sidebar');
   const dockH=(dock&&getComputedStyle(dock).position==='fixed')?Math.min(dock.offsetHeight,110):0;
-  const pagerH=50;
-  const bottomReserve=dockH+pagerH+26;
-  const availH=Math.max(140,window.innerHeight-fTop-topbarH-bottomReserve);
+  const availH=Math.max(140,window.innerHeight-fTop-topbarH-(dockH+24));
   const padCss=gapCss; // borda externa = mesma espessura das linhas internas
+  // célula quadrada limitada pela ALTURA → todas as linhas cabem; colunas rolam na horizontal
   let cell=dfloor((availH-padCss*2-(gridRows-1)*gapCss)/gridRows);
-  cell=Math.max(28,Math.min(cell,76));
-  const pageCols=Math.max(1,Math.min(gridCols,Math.floor((availW+gapCss)/(cell+gapCss))));
-  const pages=Math.max(1,Math.ceil(gridCols/pageCols));
-  _invPage=Math.max(0,Math.min(_invPage,pages-1));
+  cell=Math.max(28,Math.min(cell,80));
+  _invPage=0;
+  if(topbar)topbar.style.margin='10px 0 10px 12px';
   g.style.aspectRatio='auto';
   g.style.height='';g.style.margin='';
   g.style.padding=padCss+'px';
@@ -17208,14 +17228,38 @@ window._invLayout=function(){
   g.style.gridTemplateColumns=`repeat(${gridCols},${cell}px)`;
   g.style.gridTemplateRows=`repeat(${gridRows},${cell}px)`;
   g.style.width=(gridCols*cell+(gridCols-1)*gapCss+padCss*2)+'px';
-  g.style.transform=`translateX(-${_invPage*pageCols*(cell+gapCss)}px)`;
-  if(pager){
-    pager.style.display=pages>1?'flex':'none';
-    pager.style.bottom=(dockH+14)+'px';
-    const ind=document.getElementById('inv-pager-ind');if(ind)ind.textContent=(_invPage+1)+'/'+pages;
-    const pv=document.getElementById('inv-pg-prev'),nx=document.getElementById('inv-pg-next');
-    if(pv)pv.disabled=_invPage<=0;if(nx)nx.disabled=_invPage>=pages-1;
+  g.style.transform='';
+  if(pager)pager.style.display='none';
+  // Scrollbar horizontal custom no topo-direito (substitui a barra nativa de baixo)
+  const nav=g.closest('.re4-case-nav')||frame.parentElement;
+  let sb=document.getElementById('inv-hscroll');
+  if(!sb&&nav){
+    sb=document.createElement('div');sb.id='inv-hscroll';sb.className='inv-hscroll';
+    sb.innerHTML='<div class="inv-hscroll-thumb"></div>';
+    nav.appendChild(sb);
+    const thumb=sb.querySelector('.inv-hscroll-thumb');
+    let drag=false,sx=0,sl=0;
+    const move=ev=>{if(!drag)return;const tr=sb.clientWidth-thumb.offsetWidth;const max=frame.scrollWidth-frame.clientWidth;const ratio=tr>0?max/tr:0;frame.scrollLeft=sl+(ev.clientX-sx)*ratio;};
+    const up=()=>{drag=false;document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',up);};
+    thumb.addEventListener('pointerdown',ev=>{drag=true;sx=ev.clientX;sl=frame.scrollLeft;document.addEventListener('pointermove',move);document.addEventListener('pointerup',up);ev.preventDefault();ev.stopPropagation();});
+    sb.addEventListener('pointerdown',ev=>{if(ev.target!==sb)return;const r=sb.getBoundingClientRect();const p=Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width));frame.scrollLeft=p*(frame.scrollWidth-frame.clientWidth);});
+    frame.addEventListener('scroll',()=>{if(window._invSyncHScroll)window._invSyncHScroll();},{passive:true});
   }
+  // Alinha a scrollbar verticalmente ao centro da toolbar
+  if(sb&&topbar&&nav){
+    const nr=nav.getBoundingClientRect(),tr=topbar.getBoundingClientRect();
+    sb.style.top=Math.max(8,Math.round(tr.top-nr.top+tr.height/2-sb.offsetHeight/2))+'px';
+  }
+  window._invSyncHScroll=function(){
+    const bar=document.getElementById('inv-hscroll');if(!bar)return;
+    const th=bar.querySelector('.inv-hscroll-thumb');const sw=frame.scrollWidth,cw=frame.clientWidth;
+    if(sw<=cw+2){bar.style.display='none';return}
+    bar.style.display='block';
+    const trackW=bar.clientWidth;const tw=Math.max(20,Math.round(trackW*cw/sw));
+    const left=Math.round((trackW-tw)*(frame.scrollLeft/(sw-cw)));
+    th.style.width=tw+'px';th.style.transform='translateX('+left+'px)';
+  };
+  requestAnimationFrame(()=>{if(window._invSyncHScroll)window._invSyncHScroll();if(sb&&topbar&&nav){const nr=nav.getBoundingClientRect(),tr=topbar.getBoundingClientRect();sb.style.top=Math.max(8,Math.round(tr.top-nr.top+tr.height/2-sb.offsetHeight/2))+'px';}});
 };
 window._invPageGo=function(d){_invPage+=d;if(window._invLayout)window._invLayout()};
 // Resize/rotação: se as dimensões da grade mudam, reconstrói; senão só re-layout (paginação)
@@ -20575,102 +20619,39 @@ function openModal(type,eid){
     };
     window._initItemPager=function(){
       const wrap=document.querySelector('.item-form-compact');if(!wrap)return;
-      // Hook all inputs/selects pra updates live
+      // Hook inputs/selects pra preview ao vivo
       wrap.querySelectorAll('input,select,textarea').forEach(el=>{
         el.addEventListener('input',()=>window._updateItemPreview&&window._updateItemPreview());
         el.addEventListener('change',()=>window._updateItemPreview&&window._updateItemPreview());
       });
       window._updateItemPreview();
-      // Remove header pager se existir
+      // ROLAGEM: empilha todas as páginas (sem passos/pager)
+      wrap.classList.add('item-scroll');
+      const bottomPager=document.getElementById('item-pager');
+      if(bottomPager)bottomPager.style.display='none';
+      const oldInline=wrap.querySelector('.item-inline-pager');
+      if(oldInline)oldInline.remove();
       const modalHeader=document.querySelector('#modal-overlay .modal-header,.modal .modal-header');
       const oldHdrPager=modalHeader?.querySelector('.item-hdr-pager');
       if(oldHdrPager)oldHdrPager.remove();
-      // Pager inline nos modal-btns (linha do Cancelar) — esquerda/dir do botão
-      const modalBtns=wrap.querySelector('.modal-btns');
-      const oldInlinePager=modalBtns?.querySelector('.item-inline-pager');
-      if(oldInlinePager)oldInlinePager.remove();
-      if(modalBtns){
-        const inline=document.createElement('div');
-        inline.className='item-inline-pager';
-        inline.innerHTML=`<button type="button" class="item-hdr-arrow" id="item-hdr-prev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button><div class="item-hdr-dots" id="item-hdr-dots"></div><button type="button" class="item-hdr-arrow" id="item-hdr-next" aria-label="Próximo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>`;
-        modalBtns.insertBefore(inline,modalBtns.firstChild);
-      }
-      const bottomPager=document.getElementById('item-pager');
-      if(bottomPager)bottomPager.style.display='none';
-      const dotsEl=document.getElementById('item-hdr-dots')||document.getElementById('item-pager-dots');
-      const prevBtn=document.getElementById('item-hdr-prev')||document.getElementById('item-prev');
-      const nextBtn=document.getElementById('item-hdr-next')||document.getElementById('item-next');
-      const saveBtn=document.getElementById('item-save-btn');
-      let cur=1;
-      const isWeaponCat=()=>{
-        const c=document.getElementById('m-icat')?.value;
-        return ['armaBranca','armaFogo','arma','arma-fogo','explosivo'].indexOf(c)>=0;
-      };
-      const visiblePages=()=>{
+      // Mostra/esconde a página de arma conforme a categoria
+      const isWeaponCat=()=>['armaBranca','armaFogo','arma','arma-fogo','explosivo'].indexOf(document.getElementById('m-icat')?.value)>=0;
+      window._itemPagerSync=()=>{
         const wpn=isWeaponCat();
-        return Array.from(wrap.querySelectorAll('.item-page')).filter(p=>{
+        wrap.querySelectorAll('.item-page').forEach(p=>{
           const only=p.dataset.only;
-          return !only||(only==='weapon'&&wpn);
+          p.classList.toggle('ip-hide', !!only && !(only==='weapon'&&wpn));
         });
       };
-      const renderDots=()=>{
-        const pages=visiblePages();
-        dotsEl.innerHTML=pages.map((p,i)=>{
-          const idx=i+1;const cls=idx===cur?'active':(idx<cur?'done':'');
-          return `<span class="reg-pager-dot ${cls}" data-go="${idx}"></span>`;
-        }).join('');
-        dotsEl.querySelectorAll('.reg-pager-dot').forEach(d=>{
-          d.addEventListener('click',()=>go(parseInt(d.dataset.go,10)));
-        });
-      };
-      const ensureHead=()=>{};
-      let _lastDir='fwd';
-      const showPage=()=>{
-        const pages=visiblePages();
-        wrap.querySelectorAll('.item-page').forEach(p=>{p.classList.remove('active','dir-fwd','dir-bwd')});
-        const target=pages[cur-1];
-        if(target){target.classList.add('active',_lastDir==='bwd'?'dir-bwd':'dir-fwd');ensureHead(target,cur,pages.length)}
-        prevBtn.disabled=cur<=1;
-        const isLast=cur>=pages.length;
-        const submitSvg='<polyline points="20 6 9 17 4 12"/>';
-        const nextSvg='<polyline points="9 18 15 12 9 6"/>';
-        nextBtn.classList.toggle('submit',isLast);
-        nextBtn.querySelector('svg').innerHTML=isLast?submitSvg:nextSvg;
-        nextBtn.title=isLast?'Adicionar item':'Próximo';
-        const bn=document.getElementById('item-next');
-        if(bn&&bn!==nextBtn){bn.querySelector('svg').innerHTML=isLast?submitSvg:nextSvg;bn.title=isLast?'Adicionar item':'Próximo'}
-        saveBtn.style.display='none';
-        renderDots();
-      };
-      const go=n=>{
-        const pages=visiblePages();
-        const next=Math.max(1,Math.min(pages.length,n));
-        _lastDir=next>=cur?'fwd':'bwd';
-        cur=next;
-        showPage();
-      };
-      prevBtn.onclick=()=>go(cur-1);
-      const advance=()=>{
-        const pages=visiblePages();
-        if(cur>=pages.length){saveBtn.click()}else{go(cur+1)}
-      };
-      nextBtn.onclick=advance;
-      const bottomNextBtn=document.getElementById('item-next');
-      if(bottomNextBtn&&bottomNextBtn!==nextBtn){bottomNextBtn.onclick=advance}
+      window._itemPagerSync();
+      // Botão Confirmar salva direto
       const confirmBtn=document.getElementById('item-confirm-btn');
+      const saveBtn=document.getElementById('item-save-btn');
+      if(saveBtn)saveBtn.style.display='none';
       if(confirmBtn){
-        confirmBtn.onclick=advance;
-        const _syncConfirmLabel=()=>{
-          const pages=visiblePages();
-          confirmBtn.textContent=cur>=pages.length?'Adicionar':'Próximo';
-        };
-        // observa mudanças no nextBtn pra sincronizar label
-        const _obs=new MutationObserver(_syncConfirmLabel);
-        _obs.observe(nextBtn,{attributes:true,attributeFilter:['title','class']});
-        _syncConfirmLabel();
+        confirmBtn.textContent='Confirmar';
+        confirmBtn.onclick=()=>{ if(typeof saveItem==='function')saveItem(); else if(saveBtn)saveBtn.click(); };
       }
-      window._itemPagerSync=()=>{const pages=visiblePages();if(cur>pages.length)cur=pages.length;showPage()};
-      showPage();
     };
     window._swapItemSize=function(){
       const gw=document.getElementById('m-igw'),gh=document.getElementById('m-igh');
@@ -29011,6 +28992,12 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.79',date:'2026-06-13',title:'Mochila com rolagem + modal de item rolável + fix confirmação',items:[
+    {tag:'feat',text:'Mochila vertical: rolagem horizontal (todas as colunas), toolbar fixa e scrollbar custom no topo-direito; horizontal mostra 26×10 completo.'},
+    {tag:'feat',text:'Modal de Adicionar Item agora rola numa página só (sem passos) com botão Confirmar.'},
+    {tag:'fix',text:'Diálogos de confirmação não esticam mais (aspect-ratio 1/1 vazando de seletor amplo deixava a caixa quadrada/tela cheia).'},
+    {tag:'fix',text:'Modais em tela cheia no vertical; toolbar do inventário alinhada à grade.'}
+  ]},
   {version:'v3.8.78',date:'2026-06-13',title:'Ícones preenchidos + mochila redesenhada + polish',items:[
     {tag:'feat',text:'Ícones da dock/menu preenchidos (sólidos): home, troféu, carteira, halter, biblioteca, maleta, brilho, engrenagem, sol/lua.'},
     {tag:'feat',text:'Mochila: grade 26×10. Horizontal mostra tudo; vertical divide em páginas (setas ‹ ›). Linhas iguais em qualquer escala/DPR, bordas uniformes.'},
