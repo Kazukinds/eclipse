@@ -351,7 +351,7 @@ body:has(.biblio-reader.show) .sidebar{opacity:0;pointer-events:none;visibility:
 [data-theme="light"] .theme-ic-moon{display:none}
 [data-theme="light"] .theme-ic-sun{display:inline-block}
 .sidebar-nav{display:flex;flex-direction:column;gap:4px;flex:1;width:100%}
-.sidebar-section-label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-dim);padding:0 12px;margin:16px 0 8px;opacity:0;transform:translateX(-6px);transition:opacity .3s ease .15s,transform .35s cubic-bezier(.2,.8,.2,1) .12s;height:0;overflow:hidden}
+.sidebar-section-label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-secondary);padding:0 12px;margin:16px 0 8px;opacity:0;transform:translateX(-6px);transition:opacity .3s ease .15s,transform .35s cubic-bezier(.2,.8,.2,1) .12s;height:0;overflow:hidden}
 .sidebar.open .sidebar-section-label{opacity:.7;transform:translateX(0);height:auto;margin:24px 0 4px}
 .sidebar-section-label:first-child{margin-top:0}
 .sidebar.open .sidebar-section-label:first-child{margin-top:0}
@@ -368,7 +368,7 @@ body:has(.biblio-reader.show) .sidebar{opacity:0;pointer-events:none;visibility:
 .sidebar.open .sidebar-label{opacity:1;transform:translateX(0)}
 .sidebar-btn:hover{background:var(--bg-hover);color:var(--text-secondary)}
 .sidebar-btn.active{background:var(--magenta);color:#0a0a0c}
-.sidebar-btn.active svg{stroke:#0a0a0c}
+.sidebar-btn.active svg{fill:#0a0a0c;stroke:#0a0a0c}
 .sidebar-btn[data-tab="feiticos"] svg,.sidebar-btn[data-tab="feiticos"] svg path,
 .sidebar-btn[data-tab="credit"] svg,.sidebar-btn[data-tab="credit"] svg path,
 .sidebar-btn[data-tab="dashboard"] svg,.sidebar-btn[data-tab="dashboard"] svg path,
@@ -377,7 +377,7 @@ body:has(.biblio-reader.show) .sidebar{opacity:0;pointer-events:none;visibility:
 .sidebar-btn[data-tab="inventory"] svg,.sidebar-btn[data-tab="inventory"] svg path,
 .sidebar-btn[data-tab="progress"] svg,.sidebar-btn[data-tab="progress"] svg path,
 .sidebar-gear svg,.sidebar-gear svg path,
-.sidebar-gear-desktop svg,.sidebar-gear-desktop svg path{fill:none!important;stroke:currentColor!important}
+.sidebar-gear-desktop svg,.sidebar-gear-desktop svg path{fill:currentColor!important;stroke:none!important}
 .notif-wrap .topbar-icon-btn,.topbar-profile-btn,.topbar-cal-btn{color:var(--text-dim)!important}
 .notif-wrap .topbar-icon-btn svg,.notif-wrap .topbar-icon-btn svg path,
 .topbar-profile-btn svg,.topbar-profile-btn svg path,
@@ -390,15 +390,20 @@ body:has(.biblio-reader.show) .sidebar{opacity:0;pointer-events:none;visibility:
 .sidebar-btn[data-tab="inventory"].active svg,.sidebar-btn[data-tab="inventory"].active svg path,
 .sidebar-btn[data-tab="progress"].active svg,.sidebar-btn[data-tab="progress"].active svg path,
 .sidebar-gear.active svg,.sidebar-gear.active svg path,
-.sidebar-gear-desktop.active svg,.sidebar-gear-desktop.active svg path{stroke:#0a0a0c!important;fill:none!important}
+.sidebar-gear-desktop.active svg,.sidebar-gear-desktop.active svg path{fill:#0a0a0c!important;stroke:none!important}
 .sidebar-pin-radial-item[data-tab="feiticos"] svg,.sidebar-pin-radial-item[data-tab="feiticos"] svg path,
 .sidebar-pin-radial-item[data-tab="credit"] svg,.sidebar-pin-radial-item[data-tab="credit"] svg path,
 .sidebar-pin-radial-item[data-tab="dashboard"] svg,.sidebar-pin-radial-item[data-tab="dashboard"] svg path,
 .sidebar-pin-radial-item[data-tab="biblioteca"] svg,.sidebar-pin-radial-item[data-tab="biblioteca"] svg path,
 .sidebar-pin-radial-item[data-tab="pericias"] svg,.sidebar-pin-radial-item[data-tab="pericias"] svg path,
-.sidebar-pin-radial-item[data-tab="inventory"] svg,.sidebar-pin-radial-item[data-tab="inventory"] svg path{fill:none!important;stroke:currentColor!important}
+.sidebar-pin-radial-item[data-tab="inventory"] svg,.sidebar-pin-radial-item[data-tab="inventory"] svg path{fill:currentColor!important;stroke:none!important}
 .sidebar-btn.active::before{display:none}
 .sidebar-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+/* Ícones preenchidos: home (dashboard) + tema (sol/lua). Vence os fill:none!important acima. */
+.sidebar-btn[data-tab="dashboard"] svg,.sidebar-btn[data-tab="dashboard"] svg path,
+.sidebar-pin-radial-item[data-tab="dashboard"] svg,.sidebar-pin-radial-item[data-tab="dashboard"] svg path,
+.sidebar-theme-btn svg,.sidebar-theme-btn svg path{fill:currentColor!important;stroke:none!important}
+.sidebar-btn[data-tab="dashboard"].active svg,.sidebar-btn[data-tab="dashboard"].active svg path{fill:#0a0a0c!important;stroke:none!important}
 .sidebar::before{display:none}
 [data-theme="light"] .sidebar::before{display:none}
 .sidebar-bottom{margin-top:auto;display:flex;flex-direction:column;gap:4px;align-items:center;padding-top:24px;position:relative}
@@ -415,7 +420,7 @@ body:has(.biblio-reader.show) .sidebar{opacity:0;pointer-events:none;visibility:
 .main-wrapper{margin-left:72px;flex:1;display:flex;flex-direction:column;min-height:100vh;background:var(--bg-sidebar);transition:filter .3s,opacity .3s}
 body:has(.sidebar.open) .main-wrapper{filter:brightness(.55) blur(.5px);pointer-events:none}
 body:has(.sidebar.open) .main-wrapper *{pointer-events:none}
-.topbar{padding:14px 28px 18px;display:flex;flex-direction:column;align-items:stretch;gap:12px;background:transparent;position:sticky;top:0;z-index:50}
+.topbar{padding:8px 28px 8px;display:flex;flex-direction:column;align-items:stretch;gap:8px;background:transparent;position:sticky;top:0;z-index:50}
 .topbar-row{display:flex;align-items:center;gap:14px;width:100%}
 .topbar-row-1{justify-content:space-between}
 .topbar-row-2 .topbar-search{flex:1;max-width:none;width:100%}
@@ -474,17 +479,7 @@ body:has(.sidebar.open) .main-wrapper *{pointer-events:none}
 .topbar-profile-btn:hover{border-color:var(--magenta);box-shadow:0 0 0 2px color-mix(in srgb,var(--magenta) 25%,transparent)}
 /* ═══ GLASS (liquid) — controles flutuantes. Gated p/ GPU boa; cai pra sólido em perf-low/sem suporte. ═══ */
 @supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  body:not([data-perf-low]) .topbar-icon-btn,
-  body:not([data-perf-low]) .topbar-profile-btn{
-    background:color-mix(in srgb,var(--bg-card) 48%,transparent);
-    -webkit-backdrop-filter:blur(12px) saturate(1.7);backdrop-filter:blur(12px) saturate(1.7);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 1px rgba(0,0,0,.22),0 4px 14px rgba(0,0,0,.22);
-  }
-  [data-theme="light"] body:not([data-perf-low]) .topbar-icon-btn,
-  [data-theme="light"] body:not([data-perf-low]) .topbar-profile-btn{
-    background:color-mix(in srgb,#fff 55%,transparent);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 1px rgba(15,15,20,.08),0 4px 14px rgba(15,15,20,.1);
-  }
+  /* Topbar icons: sem vidro — sólido + borda (base .topbar-icon-btn) */
   body:not([data-perf-low]) .profile-menu{
     background:color-mix(in srgb,var(--bg-card) 72%,transparent);
     -webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);
@@ -705,6 +700,7 @@ body:has(.sidebar.open) .main-wrapper *{pointer-events:none}
 .save-name-field input{flex:1;background:transparent;border:none;padding:10px 12px;color:var(--text-primary);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none}
 .save-ext{padding:0 12px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;border-left:1px solid var(--border);background:var(--bg-card-inner);align-self:stretch;display:flex;align-items:center}
 .save-toast{position:fixed;bottom:28px;right:28px;background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius);padding:14px 34px 14px 16px;min-width:300px;max-width:380px;box-shadow:var(--shadow-lg);transform:translateY(80px);opacity:0;transition:transform .28s cubic-bezier(.4,0,.2,1),opacity .28s ease;z-index:500;display:flex;align-items:center;gap:14px}
+@media(max-width:400px){.save-toast{min-width:0;width:calc(100vw - 24px);max-width:none;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}}
 .save-toast.show{transform:translateY(0);opacity:1}
 .save-toast-icon{position:relative;width:44px;height:52px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .save-toast-icon .sti-paper{position:absolute;inset:0;background:color-mix(in srgb,var(--text-dim) 12%,transparent);border:1px solid color-mix(in srgb,var(--text-dim) 22%,transparent);border-radius:6px;clip-path:polygon(0 0,72% 0,100% 22%,100% 100%,0 100%)}
@@ -774,6 +770,8 @@ body:has(.sidebar.open) .main-wrapper *{pointer-events:none}
 .save-opt-danger:hover{background:var(--red-dim)!important;color:var(--red)!important}
 .content{padding:14px 18px;flex:1;background:var(--bg-body);border-top-left-radius:22px;border-top-right-radius:22px;box-shadow:0 -1px 0 rgba(255,255,255,.04) inset,0 -8px 20px -10px rgba(0,0,0,.35)}
 [data-theme="light"] .content{box-shadow:0 -1px 0 rgba(0,0,0,.04) inset,0 -10px 24px -14px rgba(15,15,20,.18)}
+/* Perfil: remove a faixa preta (painel .content) — deixa só o layout + linha do topo */
+.content:has(#tab-profile.active){background:transparent;border-radius:0;box-shadow:none;border-top:1px solid var(--border)}
 .tab-content{display:none}.tab-content.active{display:block}
 /* Global icon style — outline grosso, cantos arredondados (estilo Phosphor/Iconoir) */
 svg{stroke-linecap:round;stroke-linejoin:round}
@@ -874,7 +872,14 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .toggle-pills{display:flex;background:var(--bg-input);border-radius:20px;padding:2px;gap:2px;position:relative;overflow:hidden}
 .toggle-pill{padding:5px 14px;font-size:11px;font-weight:600;font-family:inherit;border:none;border-radius:16px;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:color .3s,text-shadow .3s;background:transparent;color:var(--text-dim);position:relative;z-index:2}
 .toggle-pill.active{color:#09090b}
-.toggle-pills .toggle-slider{position:absolute;top:2px;bottom:2px;border-radius:16px;transition:left .35s cubic-bezier(.4,0,.2,1),width .35s cubic-bezier(.4,0,.2,1),background .35s,box-shadow .35s;z-index:1;pointer-events:none}
+/* Pill ativo dá um leve pop ao trocar */
+.toggle-pill.active{animation:togglePillPop .34s var(--ease-tactile,cubic-bezier(.34,1.56,.64,1))}
+@keyframes togglePillPop{0%{transform:scale(.9)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
+/* Slider desliza com mola (overshoot) entre XP/Crédito */
+.toggle-pills .toggle-slider{position:absolute;top:2px;bottom:2px;border-radius:16px;transition:left .4s cubic-bezier(.34,1.4,.5,1),width .4s cubic-bezier(.34,1.4,.5,1),background .3s ease,box-shadow .3s ease;z-index:1;pointer-events:none;will-change:left,width}
+/* Squash sutil no momento da troca */
+.toggle-pills .toggle-slider.pop{animation:toggleSliderPop .4s cubic-bezier(.34,1.4,.5,1)}
+@keyframes toggleSliderPop{0%{transform:scaleY(1)}40%{transform:scaleY(.84)}100%{transform:scaleY(1)}}
 
 /* ═══ ITEM LIST ═══ */
 .item-list-group-label{font-size:11px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
@@ -967,9 +972,16 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .chart-time-pill.active{background:var(--magenta);color:#09090b}
 .dash-grid .chart-area{height:280px}
 /* Evolução vazia: mantém a MESMA altura do card cheio (não colapsa nem empurra os outros cards) — só troca o gráfico pela mensagem */
-#evolucao-card.evo-empty .chart-canvas,#evolucao-card.evo-empty .chart-time-pills{visibility:hidden}
-#evolucao-card.evo-empty .chart-area{display:flex;align-items:center;justify-content:center}
-#evolucao-card.evo-empty .chart-area::after{content:"Sem progressão ainda. Ganhe XP pra ver o gráfico de evolução.";color:var(--text-dim);font-size:12.5px;line-height:1.45;text-align:center;padding:0 14px;max-width:260px}
+/* Evolução vazia: interface de progressão completa no lugar do gráfico (canvas escondido, altura mantida) */
+.evo-empty-panel{display:none}
+#evolucao-card.evo-empty .chart-canvas{display:none}
+#evolucao-card.evo-empty .chart-time-pills{visibility:hidden}
+#evolucao-card.evo-empty .evo-empty-panel{display:flex;flex-direction:column;justify-content:center;gap:7px;position:absolute;inset:0;padding:14px 20px;box-sizing:border-box}
+.evo-empty-panel .evo-ep-lvl{font-size:12px;color:var(--text-secondary);font-weight:600}
+.evo-empty-panel .evo-ep-lvl b{color:var(--text-primary);font-weight:800;font-size:15px}
+.evo-empty-panel .evo-ep-meta{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;color:var(--text-secondary);font-family:'JetBrains Mono',monospace;flex-wrap:wrap}
+.evo-empty-panel .evo-ep-meta span:last-child{color:var(--text-secondary);opacity:.7}
+.evo-empty-panel .evo-ep-hint{margin:1px 0 0;font-size:11px;color:var(--text-secondary);opacity:.75;line-height:1.35}
 .dash-grid .item-list-section{max-height:520px;gap:14px;overflow:hidden;display:flex;flex-direction:column}
 .dash-grid .item-list-section .item-list{flex:1 1 auto;overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-color:var(--border-light) transparent}
 .dash-grid .item-list-section .item-list::-webkit-scrollbar{width:6px}
@@ -1161,7 +1173,7 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .inv-cell.occupied,.inv-cell.multi-origin{touch-action:none}
 .item-overlay{touch-action:none}
 body.inv-dragging-active .inv-cell{transition:none}
-.inv-cell:hover{background:transparent;box-shadow:inset 0 0 0 9999px rgba(180,200,255,.025)}
+.inv-cell:hover{background:#131318;box-shadow:none}
 body.inv-dragging-active .inv-cell:hover{border-color:transparent;background:#1a1a1f;box-shadow:none}
 body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .inv-cell:hover .item-icon svg{transform:none}
@@ -1235,7 +1247,7 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .overflow-icon .rarity-dot{position:absolute;top:3px;right:3px;width:5px;height:5px}
 .overflow-info{flex:1;min-width:0}
 .overflow-name{font-size:12px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.overflow-meta{font-size:10px;color:var(--text-dim);margin-top:2px;font-family:'JetBrains Mono',monospace}
+.overflow-meta{font-size:10px;color:var(--text-secondary);margin-top:2px;font-family:'JetBrains Mono',monospace}
 .overflow-list.drag-over{outline:2px dashed var(--magenta);outline-offset:-4px;background:var(--magenta-bg)}
 .overflow-item{user-select:none}
 .overflow-item.drag-hint{cursor:grab}
@@ -1522,6 +1534,12 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .re4-shell>.re4-body>.re4-right{display:none}
 .re4-case-pane{display:block;width:100%;min-width:0;max-width:560px;margin:0;position:relative}
 @media(max-width:980px){.re4-case-pane{max-width:none!important}}
+/* Landscape/desktop: grade expande (limitada pela altura). Pane encolhe na grade pra seta colar na borda direita. */
+@media(min-width:981px){
+  #tab-inventory .re4-shell{max-width:none;width:100%}
+  .re4-shell>.re4-body>.re4-case-pane{flex:1 1 auto;width:100%;max-width:none;align-self:flex-start}
+  #tab-inventory .re4-case-topbar{margin:8px 0 8px 10px}
+}
 .re4-item-detail{display:none!important}
 .re4-item-detail::before{display:none}
 .re4-item-detail .rid-actions{display:none!important}
@@ -1923,11 +1941,11 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .re4-item-detail .rid-icon .rarity-dot{position:absolute;top:3px;right:3px;width:6px;height:6px;border-radius:50%}
 .re4-item-detail .rid-title-wrap{flex:1;min-width:0}
 .re4-item-detail .rid-name{font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:2px;white-space:normal;overflow:visible;text-overflow:clip;line-height:1.2;word-break:break-word}
-.re4-item-detail .rid-meta{display:flex;gap:5px;align-items:center;font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+.re4-item-detail .rid-meta{display:flex;gap:5px;align-items:center;font-size:9px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.4px;font-weight:600}
 .re4-item-detail .rid-meta .rid-rarity{padding:1px 6px;border-radius:999px;background:var(--bg-input)}
 .re4-item-detail .rid-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px}
 .re4-item-detail .rid-stat{background:var(--bg-input);border:1px solid var(--border);border-radius:6px;padding:6px 8px}
-.re4-item-detail .rid-stat-label{font-size:8px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:2px}
+.re4-item-detail .rid-stat-label{font-size:8px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:2px}
 .re4-item-detail .rid-stat-value{font-size:13px;font-weight:700;color:var(--text-primary);font-family:'JetBrains Mono',monospace}
 .re4-item-detail .rid-stat-value.dur-bar{position:relative;height:5px;border-radius:3px;background:var(--bg-card);overflow:hidden;font-size:0;margin-top:3px}
 .re4-item-detail .rid-stat-value.dur-bar::after{content:'';position:absolute;top:0;left:0;height:100%;width:var(--dur,100%);background:linear-gradient(90deg,#3b82f6,#60a5fa);border-radius:3px}
@@ -1956,13 +1974,27 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .re4-nav-arrow:active{transform:scale(.94)}
 .re4-nav-arrow:disabled{opacity:.3;cursor:not-allowed;transform:none}
 .re4-nav-arrow svg{width:18px;height:18px}
+/* Paginador da mochila: só aparece no vertical (a grade é dividida em páginas de colunas). */
+.inv-pager{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:10px;padding:0 4px}
+.inv-pager .inv-pg-btn{width:46px;height:38px;border-radius:12px;background:var(--bg-card);border:1px solid var(--border);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.3);transition:transform .18s cubic-bezier(.2,.8,.2,1),background .18s,color .18s,border-color .18s}
+.inv-pager .inv-pg-btn svg{width:20px;height:20px}
+.inv-pager .inv-pg-btn:hover:not(:disabled){background:var(--magenta-bg-strong);border-color:var(--magenta-dim);color:var(--magenta);transform:scale(1.06)}
+.inv-pager .inv-pg-btn:active:not(:disabled){transform:scale(.92)}
+.inv-pager .inv-pg-btn:disabled{opacity:.32;cursor:not-allowed}
+.inv-pager .inv-pg-ind{min-width:46px;text-align:center;font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--text-secondary);font-variant-numeric:tabular-nums}
+/* Vertical: a grade pagina via transform; o frame corta o overflow; paginador flutua acima do dock */
+@media(orientation:portrait){
+  #tab-inventory .re4-case-frame{overflow:hidden}
+  #tab-inventory .inv-grid{transition:transform .35s cubic-bezier(.34,1.2,.5,1)}
+  #tab-inventory .inv-pager{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;z-index:120;margin:0;padding:7px 12px;border-radius:18px;background:rgba(18,18,22,.94);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);box-shadow:0 10px 30px rgba(0,0,0,.55)}
+}
 .re4-case-frame{position:relative;background:var(--bg-card-inner,#1a1a1f);border:1px solid var(--border,#3a3a40);border-radius:14px;padding:0;box-shadow:none;width:100%;margin:0;display:block;overflow:hidden}
 [data-theme="light"] .re4-case-frame{background:linear-gradient(160deg,#f5f5f7 0%,#eaeaee 60%,#dcdce2 100%);border-color:#cbcbd2}
 [data-theme="light"] .re4-top-btn{background:#fff;border-color:#d4d4da;color:#4a4a52}
 [data-theme="light"] .re4-top-btn:hover{border-color:var(--magenta-dim);color:var(--magenta-dim);background:var(--magenta-bg)}
 [data-theme="light"] .inv-grid{background:#e8e8ee}
 [data-theme="light"] .inv-cell{background:#f4f4f7;border-color:rgba(0,0,0,.05)}
-[data-theme="light"] .inv-cell:hover{border-color:rgba(0,0,0,.12);background:#eeeef2}
+[data-theme="light"] .inv-cell:hover{border-color:transparent;background:#e3e3e8;box-shadow:none}
 [data-theme="light"] .inv-cell.occupied{background:linear-gradient(145deg,#fafafc 0%,#ededf2 100%)}
 [data-theme="light"] .item-overlay{background:linear-gradient(145deg,#fafafc 0%,#ededf2 100%);border-color:rgba(0,0,0,.06)}
 [data-theme="light"] .equip-slot{background:#ffffff;border-color:#dcdce2;color:rgba(0,0,0,.4)}
@@ -2046,16 +2078,16 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .inv-card-icon svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
 .inv-card-info{flex:1;min-width:0}
 .inv-card-name{font-size:12px;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.inv-card-meta{display:flex;gap:6px;margin-top:2px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);flex-wrap:wrap}
+.inv-card-meta{display:flex;gap:6px;margin-top:2px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-secondary);flex-wrap:wrap}
 .inv-card-meta .cat{color:var(--text-secondary)}
 .inv-card-meta .rarity{color:var(--ic)}
 .inv-card-dur{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .inv-card-dur-bar{width:40px;height:4px;background:var(--bg-input);border-radius:2px;overflow:hidden}
 .inv-card-dur-fill{height:100%;background:var(--d-c,var(--magenta));transition:width .3s}
-.inv-card-dur-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);min-width:28px;text-align:right}
+.inv-card-dur-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-secondary);min-width:28px;text-align:right}
 .inv-card-qty{display:flex;flex-direction:column;align-items:center;flex-shrink:0;min-width:32px}
 .inv-card-qty-num{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:800;color:var(--magenta)}
-.inv-card-qty-lbl{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px}
+.inv-card-qty-lbl{font-size:9px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px}
 .inv-card-actions{display:flex;gap:4px;flex-shrink:0}
 .inv-card-btn{width:26px;height:26px;border-radius:var(--radius-xs);background:var(--bg-input);border:1px solid var(--border);color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .inv-card-btn:hover{color:var(--text-primary);border-color:var(--border-light)}
@@ -2100,7 +2132,7 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 .credit-log-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2}
 .credit-log-info{flex:1;min-width:0}
 .credit-log-desc{font-size:14px;color:var(--text-primary);font-weight:600}
-.credit-log-date{font-size:11px;color:var(--text-dim);margin-top:2px}
+.credit-log-date{font-size:11px;color:var(--text-secondary);margin-top:2px}
 .credit-log-val{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;flex-shrink:0}
 .credit-log-val.positive{color:var(--green)}
 .credit-log-val.negative{color:var(--red)}
@@ -2397,6 +2429,11 @@ html.no-radius,html.no-radius *{border-radius:0!important}
 #tab-profile .profile-block-link{font-size:13px;color:var(--text-dim);text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:4px;cursor:pointer;background:none;border:none;font-family:inherit;padding:4px 6px}
 #tab-profile .profile-block-link:hover{color:var(--magenta)}
 #tab-profile .profile-block-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+#tab-profile .profile-prog-block .profile-prog-lvl{font-size:12px;color:var(--text-secondary);font-weight:600}
+#tab-profile .profile-prog-block .profile-prog-lvl b{color:var(--text-primary);font-weight:800}
+#tab-profile .profile-prog-block .profile-prog-meta{display:flex;justify-content:space-between;gap:8px;margin-top:8px;font-size:11.5px;color:var(--text-secondary);font-family:'JetBrains Mono',monospace;flex-wrap:wrap}
+#tab-profile .profile-prog-block .profile-prog-rest{color:var(--text-secondary);opacity:.7}
+#tab-profile .profile-prog-block .profile-prog-desc{margin:8px 0 0;font-size:11.5px;color:var(--text-secondary);opacity:.8;line-height:1.4}
 #tab-profile .profile-ach-grid{background:var(--bg-card-inner);border:1px solid var(--border);border-radius:18px;padding:18px 14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 #tab-profile .ach-tile{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer}
 /* Shape do ach-tile: SVG shield com 5 layers (bevel 3D + radial gradient + corner shadow).
@@ -3191,7 +3228,7 @@ input[type="number"]{-moz-appearance:textfield}
 .sk-para{margin:0;font-size:14px;line-height:1.65;color:var(--text-primary);font-weight:500;text-align:left;hyphens:none;font-family:inherit}
 .sk-eff{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:color-mix(in srgb,var(--magenta) 6%,var(--bg-card-inner));border:1px solid var(--magenta-dim);border-radius:8px;border-left:3px solid var(--magenta);cursor:default;transition:transform .25s cubic-bezier(.2,.9,.3,1.1),background .25s,border-color .25s,box-shadow .25s,border-left-width .2s;position:relative;overflow:hidden}
 .sk-eff::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,color-mix(in srgb,var(--magenta) 18%,transparent) 50%,transparent 70%);transform:translateX(-100%);transition:transform .6s cubic-bezier(.2,.9,.3,1);pointer-events:none}
-.sk-eff:hover{transform:translateX(4px) scale(1.01);background:color-mix(in srgb,var(--magenta) 14%,var(--bg-card-inner));border-color:var(--magenta);border-left-width:5px;box-shadow:0 6px 20px color-mix(in srgb,var(--magenta) 28%,transparent),0 0 0 1px color-mix(in srgb,var(--magenta) 30%,transparent)}
+.sk-eff:hover{transform:translateX(4px) scale(1.01);background:color-mix(in srgb,var(--magenta) 14%,var(--bg-card-inner));border-color:var(--magenta);box-shadow:0 6px 20px color-mix(in srgb,var(--magenta) 28%,transparent),0 0 0 1px color-mix(in srgb,var(--magenta) 30%,transparent)}
 .sk-eff:hover::after{transform:translateX(100%)}
 .sk-eff:hover .sk-eff-tag{background:#fff;color:var(--magenta);box-shadow:0 0 12px color-mix(in srgb,var(--magenta) 50%,transparent)}
 .sk-eff:hover .sk-eff-txt{color:var(--text-primary)}
@@ -3829,12 +3866,12 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 [data-theme="light"] .credit-top::before{background:rgba(202,138,4,.06)}
 [data-theme="light"] .summary-bar{background:var(--bg-card)}
 [data-theme="light"] .xp-fill{background:linear-gradient(90deg,#3a3a48,#0a0c12)}
-[data-theme="light"] .toggle-pill.active{color:#fff}
+[data-theme="light"] .toggle-pill.active{color:#0a0a0c}
 [data-theme="light"] .credit-pill.primary{color:#fff}
 [data-theme="light"] .modal-btn.primary{color:#fff}
 [data-theme="light"] .btn-register{color:#fff}
-[data-theme="light"] .chart-time-pill.active{color:#fff}
-[data-theme="light"] .filter-pill.active{color:var(--magenta)}
+[data-theme="light"] .chart-time-pill.active{color:#0a0a0c}
+[data-theme="light"] .filter-pill.active{color:var(--magenta-dim)}
 [data-theme="light"] .inv-cell .item-icon svg{filter:none}
 [data-theme="light"] .badge-icon svg{stroke:var(--text-secondary)}
 [data-theme="light"] .profile-field select option{background:#fff;color:#18181b}
@@ -6093,7 +6130,7 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
 }
 @media(max-width:768px){
   .content{padding:16px}
-  .topbar{padding:12px 16px;gap:12px}
+  .topbar{padding:8px 16px;gap:8px}
   .topbar-search{max-width:100%}
   .topbar-welcome{min-width:auto}
   .pericias-layout{grid-template-columns:1fr !important}
@@ -6205,7 +6242,7 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
 }
 @media(max-width:400px){
   .content{padding:12px 10px}
-  .topbar{padding:10px 12px}
+  .topbar{padding:6px 12px}
   .topbar-welcome h2{font-size:14px}
   .inv-grid{--cell-size:28px}
   .summary-value{font-size:20px}
@@ -6349,7 +6386,8 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   .sidebar-gear:hover,.sidebar-gear:active{background:color-mix(in srgb,var(--text-primary) 8%,transparent);color:var(--text-primary)}
   .sidebar-gear svg{width:22px;height:22px;stroke-width:2.2;transition:none}
   /* Engrenagem da pill: força cor clara (estava caindo pro cinza/text-secondary) */
-  .sidebar-gear,.sidebar-gear svg,.sidebar-gear svg path{stroke:var(--text-primary)!important;color:var(--text-primary)!important;opacity:1!important}
+  .sidebar-gear,.sidebar-gear svg,.sidebar-gear svg path{fill:var(--text-primary)!important;color:var(--text-primary)!important;stroke:none!important;opacity:1!important}
+  #sidebar-gear-btn,#sidebar-gear-btn svg,#sidebar-gear-btn svg *{fill:#fff!important;color:#fff!important;stroke:none!important;opacity:1!important}
   /* Tabs primários ganham altura/largura uniforme + ícone padronizado */
   .sidebar-btn[data-mp],.sidebar-btn[data-tab="inventory"]{
     width:44px!important;height:44px;
@@ -6576,7 +6614,7 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   }
   /* Topbar respeita notch — cresce com altura cutout */
   .topbar{
-    padding-top:calc(14px + env(safe-area-inset-top,0px));
+    padding-top:calc(8px + env(safe-area-inset-top,0px));
     padding-left:calc(28px + env(safe-area-inset-left,0px));
     padding-right:calc(28px + env(safe-area-inset-right,0px));
   }
@@ -6603,7 +6641,7 @@ body[data-cutout="punch"][data-cam-pos="top-center"] .topbar-welcome{margin-top:
 body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-inset-top,0);left:var(--cam-x-offset);width:18px;height:18px;border-radius:50%;background:rgba(255,80,120,.4);transform:translateX(-50%);z-index:99999;pointer-events:none;box-shadow:0 0 12px rgba(255,80,120,.6)}
   @media(max-width:640px) and (orientation:portrait){
     .main-wrapper{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
-    .topbar{padding-top:calc(10px + env(safe-area-inset-top,0px))}
+    .topbar{padding-top:calc(6px + env(safe-area-inset-top,0px))}
   }
   /* Splash + reader também respeitam */
   .app-splash{padding-top:env(safe-area-inset-top,0px)}
@@ -7030,9 +7068,11 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
     -webkit-backdrop-filter:blur(20px) saturate(1.8)!important;backdrop-filter:blur(20px) saturate(1.8)!important;
     border:1px solid rgba(255,255,255,.14)!important;
     border-radius:999px!important;
-    box-shadow:0 8px 28px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 1px rgba(0,0,0,.18)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 1px rgba(0,0,0,.18)!important;
     z-index:250;overflow:visible!important
   }
+  /* Tema claro: pill com fundo levemente escuro (no branco não fica todo vidro/invisível) */
+  [data-theme="light"] .sidebar{background:#22222a!important;border-color:rgba(255,255,255,.10)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
   .sidebar .sidebar-nav{flex-direction:row!important;display:flex!important;width:auto!important;height:auto!important;align-items:center;justify-content:center;gap:4px;padding:0;overflow-x:auto;scrollbar-width:none}
   .sidebar .sidebar-nav::-webkit-scrollbar{display:none}
   .main-wrapper{padding-bottom:0!important;padding-right:0!important}
@@ -8510,16 +8550,16 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .inv-card-icon svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .inv-card-info{min-width:0}
 .inv-card-name{font-size:14px;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.005em}
-.inv-card-meta{display:flex;align-items:center;gap:6px;margin-top:3px;font-size:10px;color:var(--text-dim);letter-spacing:.02em;flex-wrap:wrap}
+.inv-card-meta{display:flex;align-items:center;gap:6px;margin-top:3px;font-size:10px;color:var(--text-secondary);letter-spacing:.02em;flex-wrap:wrap}
 .inv-card-meta .cat{padding:2px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:999px;font-weight:600}
 .inv-card-meta .rarity{padding:2px 8px;background:color-mix(in srgb,var(--ic) 15%,transparent);color:var(--ic);border-radius:999px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
 .inv-card-qty{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
 .inv-card-qty-num{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:800;color:var(--text-primary);line-height:1;letter-spacing:-.02em}
-.inv-card-qty-lbl{font-size:9px;color:var(--text-dim);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+.inv-card-qty-lbl{font-size:9px;color:var(--text-secondary);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
 .inv-card-dur{display:flex;flex-direction:column;gap:3px;min-width:70px}
 .inv-card-dur-bar{width:60px;height:4px;background:var(--bg-input);border-radius:2px;overflow:hidden}
 .inv-card-dur-fill{height:100%;background:var(--d-c,var(--magenta));border-radius:2px;transition:width .3s}
-.inv-card-dur-lbl{font-size:9px;color:var(--text-dim);font-weight:700;text-align:right}
+.inv-card-dur-lbl{font-size:9px;color:var(--text-secondary);font-weight:700;text-align:right}
 .inv-card-actions,.inv-card-btns{display:flex;gap:6px;margin-left:4px;align-items:center}
 .inv-card-desc{font-size:12px;color:var(--text-dim);margin-top:6px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-clamp:2;overflow:hidden}
 .inv-card-btns .inv-card-btn{width:auto;height:28px;border-radius:8px;padding:0 10px;font-size:11px;font-weight:700;letter-spacing:.02em}
@@ -8644,7 +8684,7 @@ img{content-visibility:auto}
 .ritual-side-filt-label{font-size:10px;letter-spacing:.25em;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-weight:600;margin-top:6px}
 .ritual-side-filt{display:flex;flex-direction:column;gap:4px}
 .ritual-filt-pill{padding:9px 14px;font-size:12px;font-weight:500;border:1px solid transparent;background:transparent;color:var(--text-dim);text-align:left;border-radius:8px;cursor:pointer;font-family:inherit;transition:background .15s,color .15s,border-color .15s,padding-left .2s;position:relative;letter-spacing:.01em}
-.ritual-filt-pill:hover{color:var(--text);background:transparent;padding-left:18px}
+.ritual-filt-pill:hover{color:var(--text);background:transparent}
 .ritual-filt-pill:hover::before{content:"";position:absolute;left:8px;top:50%;width:4px;height:4px;border-radius:50%;background:var(--text-dim);transform:translateY(-50%)}
 .ritual-filt-pill.active{background:color-mix(in srgb,var(--ritual-accent) 12%,transparent);color:var(--ritual-accent);border-color:color-mix(in srgb,var(--ritual-accent) 35%,transparent);font-weight:600;padding-left:14px}
 .ritual-filt-pill.active::before{display:none}
@@ -9477,19 +9517,19 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
   <div class="sidebar-grip" id="sidebar-grip"></div>
   <div class="sidebar-logo"><div class="eclipse-logo sidebar-logo-img"><span class="el-moon"></span><span class="el-star"></span></div></div>
   <nav class="sidebar-nav">
-    <button class="sidebar-btn active" data-tab="dashboard" data-mp="1" title="Dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg><span class="sidebar-label">Dashboard</span></button>
-    <button class="sidebar-btn" data-tab="progress" title="Progresso"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg><span class="sidebar-label">Progresso</span></button>
-    <button class="sidebar-btn" data-tab="credit" title="Crédito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg><span class="sidebar-label">Crédito</span></button>
-    <button class="sidebar-btn" data-tab="pericias" title="Treinamento"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.4 14.4 9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/><path d="m21.5 21.5-1.4-1.4"/><path d="M3.9 3.9 2.5 2.5"/><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/></svg><span class="sidebar-label">Treinamento</span></button>
-    <button class="sidebar-btn" data-tab="biblioteca" title="Biblioteca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg><span class="sidebar-label">Biblioteca</span></button>
-    <button class="sidebar-btn" data-tab="inventory" title="Inventário"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg><span class="sidebar-label">Inventário</span></button>
-    <button class="sidebar-btn" data-tab="feiticos" title="Feitiços"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg><span class="sidebar-label">Feitiços</span></button>
+    <button class="sidebar-btn active" data-tab="dashboard" data-mp="1" title="Dashboard"><svg viewBox="0 0 24 24" fill="currentColor" style="fill:currentColor;stroke:none"><path d="M11.03 2.59a1.5 1.5 0 0 1 1.94 0l7.5 6.36a1.5 1.5 0 0 1 .53 1.15V19.5a1.5 1.5 0 0 1-1.5 1.5h-4a1 1 0 0 1-1-1v-5.5a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1V20a1 1 0 0 1-1 1h-4A1.5 1.5 0 0 1 3 19.5v-9.4a1.5 1.5 0 0 1 .53-1.15z"/></svg><span class="sidebar-label">Dashboard</span></button>
+    <button class="sidebar-btn" data-tab="progress" title="Progresso"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6a1 1 0 0 0-1 1v1H4a2 2 0 0 0-2 2 4 4 0 0 0 4 4h.27A6 6 0 0 0 11 15.91V18H8a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-3v-2.09A6 6 0 0 0 17.73 10H18a4 4 0 0 0 4-4 2 2 0 0 0-2-2h-1V3a1 1 0 0 0-1-1ZM5 8a2 2 0 0 1-2-2h2v2Zm16-2a2 2 0 0 1-2 2V6h2Z"/></svg><span class="sidebar-label">Progresso</span></button>
+    <button class="sidebar-btn" data-tab="credit" title="Crédito"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h13a2 2 0 0 0 2-2v-3h-5a3 3 0 0 1 0-6h5V8a2 2 0 0 0-2-2H6a1 1 0 0 1 0-2h11a1 1 0 0 0 0-2H6Zm10 11a1 1 0 0 0 0 2h5v-2h-5Z"/></svg><span class="sidebar-label">Crédito</span></button>
+    <button class="sidebar-btn" data-tab="pericias" title="Treinamento"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 8A1.5 1.5 0 0 0 19 9.5V11h-1V9a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0v-2h1v1.5a1.5 1.5 0 0 0 3 0V13a1 1 0 1 0 0-2V9.5A1.5 1.5 0 0 0 20.5 8ZM3.5 8A1.5 1.5 0 0 0 2 9.5V11a1 1 0 1 0 0 2v1.5a1.5 1.5 0 0 0 3 0V13h1v2a1 1 0 1 0 2 0V9a1 1 0 0 0-2 0v2H5V9.5A1.5 1.5 0 0 0 3.5 8ZM8 11h8v2H8z"/></svg><span class="sidebar-label">Treinamento</span></button>
+    <button class="sidebar-btn" data-tab="biblioteca" title="Biblioteca"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="3.5" y="3" width="3" height="18" rx="1.4"/><rect x="9" y="6" width="3" height="15" rx="1.4"/><rect x="14.8" y="3.4" width="3" height="18" rx="1.4" transform="rotate(11 16.3 12.4)"/></svg><span class="sidebar-label">Biblioteca</span></button>
+    <button class="sidebar-btn" data-tab="inventory" title="Inventário"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 2a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v3h20V8a2 2 0 0 0-2-2h-3V4a2 2 0 0 0-2-2H9Zm0 2h6v2H9V4ZM2 13v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5h-9v1a1 1 0 1 1-2 0v-1H2Z"/></svg><span class="sidebar-label">Inventário</span></button>
+    <button class="sidebar-btn" data-tab="feiticos" title="Feitiços"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.07 2.36a1 1 0 0 1 1.86 0l1.58 6.13a1 1 0 0 0 .72.72l6.13 1.58a1 1 0 0 1 0 1.94l-6.13 1.58a1 1 0 0 0-.72.72l-1.58 6.13a1 1 0 0 1-1.86 0l-1.58-6.13a1 1 0 0 0-.72-.72l-6.13-1.58a1 1 0 0 1 0-1.94l6.13-1.58a1 1 0 0 0 .72-.72l1.58-6.13Z"/><path d="M19 2.5a.5.5 0 0 1 .47.34l.4 1.29 1.29.4a.5.5 0 0 1 0 .94l-1.29.4-.4 1.29a.5.5 0 0 1-.94 0l-.4-1.29-1.29-.4a.5.5 0 0 1 0-.94l1.29-.4.4-1.29A.5.5 0 0 1 19 2.5Z"/></svg><span class="sidebar-label">Feitiços</span></button>
     <button class="sidebar-btn sidebar-more" id="sidebar-more-btn" type="button" title="Menu radial" aria-label="Abrir menu de navegação" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg><span class="sidebar-label">Menu</span></button>
-    <button class="sidebar-btn sidebar-gear" id="sidebar-gear-btn" type="button" title="Configurações (segurar para trocar atalho)" aria-label="Configurações" onclick="switchToConfig()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg><span class="sidebar-label">Config</span></button>
+    <button class="sidebar-btn sidebar-gear" id="sidebar-gear-btn" type="button" title="Configurações (segurar para trocar atalho)" aria-label="Configurações" onclick="switchToConfig()"><svg viewBox="0 0 24 24" fill="currentColor" style="fill:currentColor;stroke:none"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg><span class="sidebar-label">Config</span></button>
   </nav>
   <div class="sidebar-bottom">
-    <button class="sidebar-btn sidebar-gear-desktop" type="button" title="Configurações" aria-label="Configurações" onclick="switchToConfig()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg><span class="sidebar-label">Config</span></button>
-    <button class="sidebar-btn sidebar-theme-btn" type="button" title="Alternar tema" aria-label="Alternar tema" onclick="toggleTheme()"><svg class="theme-ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="theme-ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/><line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/></svg><span class="sidebar-label">Tema</span></button>
+    <button class="sidebar-btn sidebar-gear-desktop" type="button" title="Configurações" aria-label="Configurações" onclick="switchToConfig()"><svg viewBox="0 0 24 24" fill="currentColor" style="fill:currentColor;stroke:none"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg><span class="sidebar-label">Config</span></button>
+    <button class="sidebar-btn sidebar-theme-btn" type="button" title="Alternar tema" aria-label="Alternar tema" onclick="toggleTheme()"><svg class="theme-ic-moon" viewBox="0 0 24 24" fill="currentColor" style="fill:currentColor;stroke:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="theme-ic-sun" viewBox="0 0 24 24" fill="currentColor" style="fill:currentColor;stroke:none"><path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM12 1a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V2a1 1 0 0 1 1-1zm0 19a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1zM4.22 4.22a1 1 0 0 1 1.42 0l.7.7a1 1 0 0 1-1.41 1.42l-.71-.71a1 1 0 0 1 0-1.41zm13.44 13.44a1 1 0 0 1 1.41 0l.71.71a1 1 0 0 1-1.41 1.41l-.71-.7a1 1 0 0 1 0-1.42zM1 12a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1zm19 0a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1zM4.22 19.78a1 1 0 0 1 0-1.42l.71-.7a1 1 0 0 1 1.41 1.41l-.7.71a1 1 0 0 1-1.42 0zM17.66 6.34a1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1-1.41 0z"/></svg><span class="sidebar-label">Tema</span></button>
   </div>
 </aside>
 <!-- Bag/Mochila Modal -->
@@ -9619,7 +9659,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
           <div class="item-list" id="dash-weapons"></div>
           <div class="item-list" id="dash-consumables"></div>
         </div>
-        <div class="card" id="evolucao-card"><div class="card-header"><div class="card-title" id="evolucao-title">Evolução</div><div class="toggle-pills"><button class="toggle-pill active" data-mode="xp">XP</button><button class="toggle-pill" data-mode="credito">Crédito</button></div></div><div class="chart-area"><canvas class="chart-canvas" id="lineChart"></canvas></div><div class="chart-time-pills"><span style="font-size:11px;color:var(--text-dim)" id="chart-info">Sem dados · segure pra trocar XP/Estágio</span></div></div>
+        <div class="card" id="evolucao-card"><div class="card-header"><div class="card-title" id="evolucao-title">Evolução</div><div class="toggle-pills"><button class="toggle-pill active" data-mode="xp">XP</button><button class="toggle-pill" data-mode="credito">Crédito</button></div></div><div class="chart-area"><canvas class="chart-canvas" id="lineChart"></canvas><div class="evo-empty-panel" id="evo-empty-panel"><div class="evo-ep-lvl">Nível <b id="evo-ep-lvl">0</b></div><div class="xp-track"><div class="xp-fill" id="evo-ep-fill" style="width:0;visibility:hidden"></div></div><div class="evo-ep-meta"><span id="evo-ep-xp">0 / 0 XP</span><span id="evo-ep-rest"></span></div><p class="evo-ep-hint">Sem progressão ainda. Ganhe XP pra preencher o gráfico de evolução.</p></div></div><div class="chart-time-pills"><span style="font-size:11px;color:var(--text-dim)" id="chart-info">Sem dados · segure pra trocar XP/Estágio</span></div></div>
 <script>
 (function(){
   let pressTm=null,pressed=false;
@@ -9643,7 +9683,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
       const slider=card?.querySelector('.toggle-slider');
       if(slider){
         slider.style.background=window.chartMode==='estagio'?'#a78bfa':'#84cc16';
-        slider.style.boxShadow=window.chartMode==='estagio'?'0 0 8px rgba(167,139,250,.4)':'0 0 8px rgba(132,204,22,.4)';
+        slider.style.boxShadow='none';
       }
       if(card){card.style.transition='transform .35s cubic-bezier(.2,.9,.2,1.05),filter .35s';card.style.transform='scale(.98)';card.style.filter='brightness(.85)';
         setTimeout(()=>{card.style.transform='';card.style.filter=''},360);
@@ -10177,6 +10217,11 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
                   <script>document.getElementById('btn-add-item').addEventListener('click',()=>{try{openModal('item')}catch(e){console.error(e);alert('Erro: '+e.message)}});document.getElementById('btn-clear-inv').addEventListener('click',()=>{try{clearInventory()}catch(e){console.error(e);alert('Erro: '+e.message)}});document.getElementById('btn-organize-inv').addEventListener('click',()=>{try{organizeInventory()}catch(e){console.error(e);toast&&toast('Erro: '+e.message)}});document.getElementById('btn-toggle-equip').addEventListener('click',()=>{try{window.toggleEquipPanel&&window.toggleEquipPanel()}catch(e){console.error(e)}});</script>
                   <div class="inv-grid" id="inv-grid"></div>
                 </div>
+                <div class="inv-pager" id="inv-pager" style="display:none">
+                  <button class="inv-pg-btn" id="inv-pg-prev" type="button" aria-label="Página anterior" onclick="window._invPageGo&&window._invPageGo(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+                  <span class="inv-pg-ind" id="inv-pager-ind">1/1</span>
+                  <button class="inv-pg-btn" id="inv-pg-next" type="button" aria-label="Próxima página" onclick="window._invPageGo&&window._invPageGo(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+                </div>
               </div>
             </div>
           </div>
@@ -10369,6 +10414,15 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
               </div>
             </div>
           </div>
+          <div class="profile-block profile-prog-block">
+            <div class="profile-block-head">
+              <h3 class="profile-block-title">Progressão</h3>
+              <span class="profile-prog-lvl">Nível <b id="ps-prog-lvl">0</b></span>
+            </div>
+            <div class="xp-track"><div class="xp-fill" id="ps-xp-fill" style="width:0;visibility:hidden"></div></div>
+            <div class="profile-prog-meta"><span id="ps-xp-pct">0 / 0 XP</span><span class="profile-prog-rest" id="ps-xp-rest"></span></div>
+            <p class="profile-prog-desc">Sua evolução até o próximo nível.</p>
+          </div>
           <div class="profile-stats-card profile-stats-card-aside">
             <div class="profile-stat-cell">
               <div class="stat-value"><span class="stat-icon" style="color:var(--magenta)"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><span id="ps-xp">0</span></div>
@@ -10414,6 +10468,16 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
           <div class="stat-value"><span class="stat-icon" style="color:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg></span><span id="ps-ach-m">0</span></div>
           <div class="stat-label">Conquistas</div>
         </div>
+      </div>
+
+      <div class="profile-block profile-prog-block">
+        <div class="profile-block-head">
+          <h3 class="profile-block-title">Progressão</h3>
+          <span class="profile-prog-lvl">Nível <b id="ps-prog-lvl-m">0</b></span>
+        </div>
+        <div class="xp-track"><div class="xp-fill" id="ps-xp-fill-m" style="width:0;visibility:hidden"></div></div>
+        <div class="profile-prog-meta"><span id="ps-xp-pct-m">0 / 0 XP</span><span class="profile-prog-rest" id="ps-xp-rest-m"></span></div>
+        <p class="profile-prog-desc">Sua evolução até o próximo nível.</p>
       </div>
 
       <div class="profile-block">
@@ -10666,7 +10730,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.77</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.78</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -10765,10 +10829,6 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
                 <button type="button" class="palette-swatch bg-swatch" data-bg="rosado" style="background:linear-gradient(135deg,#1c0e16 50%,#fdf2f8 50%)" onclick="applyBgPreset('rosado')" title="Rosado"></button>
                 <button type="button" class="palette-swatch bg-swatch" data-bg="crepusculo" style="background:linear-gradient(135deg,#1a0d1a 50%,#fdf2fa 50%)" onclick="applyBgPreset('crepusculo')" title="Crepúsculo"></button>
                 <button type="button" class="palette-swatch bg-swatch" data-bg="arroxeado" style="background:linear-gradient(135deg,#150d1f 50%,#f5f3ff 50%)" onclick="applyBgPreset('arroxeado')" title="Arroxeado"></button>
-                <button type="button" id="bg-custom-wrap" class="palette-custom bg-custom" title="Cor personalizada" onclick="openBgPicker(this)">
-                  <span class="palette-custom-dot" id="bg-custom-dot"></span>
-                  <svg class="palette-custom-brush" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.07"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg>
-                </button>
               </div>
             </div>
             <div class="cfg-block">
@@ -10800,10 +10860,6 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
                 <button type="button" class="palette-swatch" data-k="ametista" style="background:#a855f7" onclick="applyPalette('ametista')" title="Ametista"></button>
                 <button type="button" class="palette-swatch" data-k="roxo" style="background:#c084fc" onclick="applyPalette('roxo')" title="Roxo"></button>
                 <button type="button" class="palette-swatch" data-k="prata" style="background:#94a3b8" onclick="applyPalette('prata')" title="Prata"></button>
-                <button type="button" id="palette-custom-wrap" class="palette-custom" title="Cor personalizada" onclick="openPalettePicker(this)">
-                  <span class="palette-custom-dot"></span>
-                  <svg class="palette-custom-brush" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.07"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg>
-                </button>
               </div>
             </div>
             <div class="cfg-block">
@@ -14988,7 +15044,7 @@ document.querySelectorAll('.sidebar-btn[data-tab]').forEach(b=>{b.addEventListen
     const items=tabs.map(b=>({
       tab:b.dataset.tab,title:b.title||b.dataset.tab,svg:b.querySelector('svg')?.outerHTML||'',active:b.classList.contains('active'),orig:b
     }));
-    items.push({tab:null,title:'Tema',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',theme:true});
+    items.push({tab:null,title:'Tema',svg:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',theme:true});
     const n=items.length;
     const vw=window.innerWidth,vh=window.innerHeight;
     const itemHalf=22,tipHalfW=90,tipHalfH=22,tipGap=18,edgeMargin=14;
@@ -16973,14 +17029,15 @@ document.addEventListener('keydown',e=>{
     document.removeEventListener('pointermove',_invDragMove);
   }
 });
-// Case progression: grid sempre 14x10, caseLevel desbloqueia area top-left
-const CASE_LEVELS=[
-  {key:'default', label:'Maleta', cols:10, rows:10, total:100}
-];
+// Mochila responsiva: as dimensões preenchem a área disponível.
+// Derivadas dos LADOS da tela (maior/menor) → estáveis em rotação (não mudam cols/rows ao girar).
+const INV_CELL=62; // alvo de px por quadrado (menor = mais quadrados, preenche melhor)
+function _invDims(){return {cols:26,rows:10};} // grade fixa 26x10
+const CASE_LEVELS=[{key:'default', label:'Maleta', cols:10, rows:10, total:100}];
 let caseLevel=0;
 let gridCols=10,gridRows=10;
 
-function unlockArea(){return CASE_LEVELS[caseLevel]||CASE_LEVELS[0]}
+function unlockArea(){const d=_invDims();return {key:'fit',label:'Mochila',cols:d.cols,rows:d.rows,total:d.cols*d.rows}}
 function isCellUnlocked(idx){
   const a=unlockArea();
   const col=idx%a.cols,row=Math.floor(idx/a.cols);
@@ -17068,6 +17125,9 @@ function renderGrid(){
   g.style.display='';
   g.style.setProperty('--cols',gridCols);
   g.style.setProperty('--rows',gridRows);
+  // Propaga dimensões pro pane (custom props herdam pra baixo) → max-width da grade casa com o aspect real
+  const _pane=g.closest('.re4-case-pane');
+  if(_pane){_pane.style.setProperty('--cols',gridCols);_pane.style.setProperty('--rows',gridRows);}
   initGridSlots();
   g.innerHTML='';
   for(let i=0;i<GRID_SIZE;i++)g.appendChild(buildCell(i));
@@ -17077,7 +17137,97 @@ function renderGrid(){
   const btn=document.querySelector('.re4-expand-btn');if(btn)btn.classList.toggle('open',gridRows>10);
   const lbl=document.getElementById('inv-cap-label');if(lbl)lbl.textContent=`${placedCount} / ${ua.total} · ${ua.label}`;
   renderOverflow();
+  if(window._invLayout)window._invLayout();
 }
+// ═══ MOCHILA: layout responsivo ═══
+// Horizontal (landscape): grade completa (todos os quadrados). Vertical (portrait): células maiores,
+// dividida em páginas de colunas; setas ◀▶ no rodapé trocam de página.
+let _invPage=0;
+window._invLayout=function(){
+  const g=document.getElementById('inv-grid');if(!g)return;
+  const frame=g.closest('.re4-case-frame');
+  const pager=document.getElementById('inv-pager');
+  const portrait=window.matchMedia('(orientation:portrait)').matches;
+  const gap=2,pad=2;
+  if(!frame){if(pager)pager.style.display='none';return}
+  const availW=Math.max(0,frame.clientWidth-pad*2);
+  if(availW<40){if(pager)pager.style.display='none';return}
+  const topbar=frame.querySelector('.re4-case-topbar');
+  const topbarH=topbar?topbar.offsetHeight:0;
+  const fTop=frame.getBoundingClientRect().top;
+  if(!portrait){
+    // Horizontal: TODAS as colunas, recuo uniforme nos 4 lados.
+    // Linhas IGUAIS em qualquer zoom/DPR: célula e gap "snapados" ao pixel de dispositivo →
+    // passo (cell+gap) é inteiro em device-px → toda linha tem a mesma fase/espessura.
+    const margin=18;
+    const dpr=window.devicePixelRatio||1;
+    const gapCss=Math.max(1,Math.round(gap*dpr))/dpr;
+    const dfloor=v=>Math.max(1,Math.floor(v*dpr))/dpr;
+    const padCss=gapCss; // borda externa = mesma espessura das linhas internas
+    const innerW=Math.max(80,frame.clientWidth-margin*2);
+    const availH=Math.max(160,window.innerHeight-fTop-topbarH-16-margin*2-12);
+    const cellW=(innerW-padCss*2-(gridCols-1)*gapCss)/gridCols;
+    const cellH=(availH-padCss*2-(gridRows-1)*gapCss)/gridRows;
+    const cell=Math.max(18,dfloor(Math.min(cellW,cellH)));
+    const gw=gridCols*cell+(gridCols-1)*gapCss+padCss*2;
+    const gh=gridRows*cell+(gridRows-1)*gapCss+padCss*2;
+    const side=Math.max(margin,dfloor((frame.clientWidth-gw)/2));
+    g.style.aspectRatio='auto';
+    g.style.padding=padCss+'px';
+    g.style.gap=gapCss+'px';
+    g.style.gridTemplateColumns=`repeat(${gridCols},${cell}px)`;
+    g.style.gridTemplateRows=`repeat(${gridRows},${cell}px)`;
+    g.style.width=gw+'px';
+    g.style.height=gh+'px';
+    g.style.margin=margin+'px '+side+'px';
+    g.style.transform='';
+    if(pager)pager.style.display='none';
+    _invPage=0;
+    return;
+  }
+  // Vertical: célula limitada pela ALTURA (todas as linhas cabem); colunas paginam.
+  // Mesma regra de linhas iguais: célula/gap snapados ao pixel de dispositivo.
+  const dpr=window.devicePixelRatio||1;
+  const gapCss=Math.max(1,Math.round(gap*dpr))/dpr;
+  const dfloor=v=>Math.max(1,Math.floor(v*dpr))/dpr;
+  const dock=document.getElementById('sidebar');
+  const dockH=(dock&&getComputedStyle(dock).position==='fixed')?Math.min(dock.offsetHeight,110):0;
+  const pagerH=50;
+  const bottomReserve=dockH+pagerH+26;
+  const availH=Math.max(140,window.innerHeight-fTop-topbarH-bottomReserve);
+  const padCss=gapCss; // borda externa = mesma espessura das linhas internas
+  let cell=dfloor((availH-padCss*2-(gridRows-1)*gapCss)/gridRows);
+  cell=Math.max(28,Math.min(cell,76));
+  const pageCols=Math.max(1,Math.min(gridCols,Math.floor((availW+gapCss)/(cell+gapCss))));
+  const pages=Math.max(1,Math.ceil(gridCols/pageCols));
+  _invPage=Math.max(0,Math.min(_invPage,pages-1));
+  g.style.aspectRatio='auto';
+  g.style.height='';g.style.margin='';
+  g.style.padding=padCss+'px';
+  g.style.gap=gapCss+'px';
+  g.style.gridTemplateColumns=`repeat(${gridCols},${cell}px)`;
+  g.style.gridTemplateRows=`repeat(${gridRows},${cell}px)`;
+  g.style.width=(gridCols*cell+(gridCols-1)*gapCss+padCss*2)+'px';
+  g.style.transform=`translateX(-${_invPage*pageCols*(cell+gapCss)}px)`;
+  if(pager){
+    pager.style.display=pages>1?'flex':'none';
+    pager.style.bottom=(dockH+14)+'px';
+    const ind=document.getElementById('inv-pager-ind');if(ind)ind.textContent=(_invPage+1)+'/'+pages;
+    const pv=document.getElementById('inv-pg-prev'),nx=document.getElementById('inv-pg-next');
+    if(pv)pv.disabled=_invPage<=0;if(nx)nx.disabled=_invPage>=pages-1;
+  }
+};
+window._invPageGo=function(d){_invPage+=d;if(window._invLayout)window._invLayout()};
+// Resize/rotação: se as dimensões da grade mudam, reconstrói; senão só re-layout (paginação)
+function _invMaybeRelayout(){
+  try{
+    const d=_invDims();
+    if((d.cols!==gridCols||d.rows!==gridRows)&&typeof renderGrid==='function'){renderGrid();return}
+  }catch(_){}
+  if(window._invLayout)window._invLayout();
+}
+window.addEventListener('resize',_invMaybeRelayout);
+window.addEventListener('orientationchange',()=>{setTimeout(_invMaybeRelayout,80)});
 function renderOverflow(){
   const list=document.getElementById('overflow-list'),cnt=document.getElementById('overflow-count');
   for(const it of overflowItems){if(!it.overflowSince)it.overflowSince=Date.now()}
@@ -18751,6 +18901,12 @@ function renderXP(){
     // NÃO esconde o card (usuário perdia a Progressão de vista) — colapsa pro estado vazio compacto
     evoCard.classList.toggle('evo-empty',!hasData);
     evoCard.style.display='';
+    // Painel de progressao do estado vazio (interface completa: Nivel + barra XP)
+    const _epf=document.getElementById('evo-ep-fill');
+    if(_epf){_epf.style.width=xpPct+'%';_epf.style.visibility=xpPct>0?'visible':'hidden'}
+    const _epl=document.getElementById('evo-ep-lvl');if(_epl)_epl.textContent=playerLevel;
+    const _epx=document.getElementById('evo-ep-xp');if(_epx)_epx.textContent=playerXP.toLocaleString()+' / '+xpToNext.toLocaleString()+' XP';
+    const _epr=document.getElementById('evo-ep-rest');if(_epr){const _r=Math.max(0,xpToNext-playerXP);_epr.textContent=(typeof MAX_LEVEL!=='undefined'&&playerLevel>=MAX_LEVEL)?'Nível máx':('faltam '+_r.toLocaleString())}
   }
 }
 function addXP(amount,desc){
@@ -28274,6 +28430,20 @@ function renderProfile(){
   _setN('ps-xp',(typeof playerXP!=='undefined'?playerXP:0).toLocaleString('pt-BR'));
   _setN('ps-lvl',typeof playerLevel!=='undefined'?playerLevel:0);
   _setN('ps-ach',(typeof achievements!=='undefined'?achievements.length:0));
+  // Barra de Progressao (Perfil) — reusa a logica de % de renderXP sem chamar renderXP (que nao tem null-guard em #xp-level-num)
+  (function(){
+    var lv=(typeof playerLevel!=='undefined')?playerLevel:0;
+    var xp=(typeof playerXP!=='undefined')?playerXP:0;
+    var nxt=(typeof xpToNext!=='undefined'&&xpToNext)?xpToNext:0;
+    var pct=(xp>0&&nxt>0)?Math.min(100,xp/nxt*100):0;
+    _setN('ps-prog-lvl',lv);
+    var f=document.getElementById('ps-xp-fill');
+    if(f){f.style.width=pct+'%';f.style.visibility=pct>0?'visible':'hidden';}
+    var p=document.getElementById('ps-xp-pct');
+    if(p)p.textContent=xp.toLocaleString('pt-BR')+' / '+nxt.toLocaleString('pt-BR')+' XP';
+    var r=document.getElementById('ps-xp-rest');
+    if(r){var rest=Math.max(0,nxt-xp);r.textContent=(typeof MAX_LEVEL!=='undefined'&&lv>=MAX_LEVEL)?'Nível máx':('faltam '+rest.toLocaleString('pt-BR'));}
+  })();
   const heroSub=document.getElementById('profile-hero-sub');
   if(heroSub){
     const nick=(profileData&&profileData.userNick)?profileData.userNick:(profileData&&profileData.name?profileData.name:'aventureiro');
@@ -28841,6 +29011,12 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.78',date:'2026-06-13',title:'Ícones preenchidos + mochila redesenhada + polish',items:[
+    {tag:'feat',text:'Ícones da dock/menu preenchidos (sólidos): home, troféu, carteira, halter, biblioteca, maleta, brilho, engrenagem, sol/lua.'},
+    {tag:'feat',text:'Mochila: grade 26×10. Horizontal mostra tudo; vertical divide em páginas (setas ‹ ›). Linhas iguais em qualquer escala/DPR, bordas uniformes.'},
+    {tag:'feat',text:'Toggle XP/Crédito com animação (slider desliza + pop), e re-layout robusto.'},
+    {tag:'fix',text:'Hover do quadrado da mochila escurece (antes clareava). Progressão (Evolução vazio + perfil) com barra de XP.'}
+  ]},
   {version:'v3.8.77',date:'2026-06-11',title:'Ícone novo + barra de status cinza + dashboard fixo',items:[
     {tag:'feat',text:'Ícone do app redesenhado: degradê magenta→preto + eclipse branco angulado (adaptive — mascara pra qualquer formato de celular).'},
     {tag:'feat',text:'Barra de status do celular agora visível com fundo cinza; conteúdo abaixo dela. Nav bar segue oculta.'},
@@ -31473,6 +31649,12 @@ function updateSliderPos(container){
   const active=container.querySelector('.toggle-pill.active');
   const slider=container.querySelector('.toggle-slider');
   if(!active||!slider)return;
+  // Container oculto no momento → offset 0. Tenta de novo no próximo frame sem animar (snap).
+  if(active.offsetWidth===0){
+    const prev=slider.style.transition;slider.style.transition='none';
+    requestAnimationFrame(()=>{updateSliderPos(container);requestAnimationFrame(()=>{slider.style.transition=prev})});
+    return;
+  }
   const mode=active.dataset.mode||'xp';
   let colors=TOGGLE_COLORS[mode]||TOGGLE_COLORS.xp;
   // Override pra estagio quando chartMode=='estagio' e pill xp ativo
@@ -31482,9 +31664,11 @@ function updateSliderPos(container){
   slider.style.left=active.offsetLeft+'px';
   slider.style.width=active.offsetWidth+'px';
   slider.style.background=colors.bg;
-  slider.style.boxShadow=`0 0 8px ${colors.shadow}`;
+  slider.style.boxShadow='none';
 }
 
+// Reposiciona sliders no resize (largura dos pills muda)
+window.addEventListener('resize',()=>{document.querySelectorAll('.toggle-pills').forEach(updateSliderPos)});
 document.querySelectorAll('.toggle-pills').forEach(container=>{
   initToggleSlider(container);
   container.querySelectorAll('.toggle-pill').forEach(btn=>{
@@ -31494,10 +31678,14 @@ document.querySelectorAll('.toggle-pills').forEach(container=>{
       container.querySelectorAll('.toggle-pill').forEach(x=>x.classList.remove('active'));
       btn.classList.add('active');
       const mode=btn.dataset.mode;
+      // Garante slider (caso container estivesse oculto no init → 0px)
+      if(!container.querySelector('.toggle-slider'))initToggleSlider(container);
       // Limpa inline overrides do long-press
       const slider=container.querySelector('.toggle-slider');
       if(slider){slider.style.background='';slider.style.boxShadow=''}
       updateSliderPos(container);
+      // Pop/squash sutil ao trocar
+      if(slider){slider.classList.remove('pop');void slider.offsetWidth;slider.classList.add('pop');}
       if(mode==='xp'){chartMode='xp';drawChart(true)}
       else if(mode==='credito'){chartMode='credito';drawChart(true)}
       else if(mode==='tipo'||mode==='raridade'){donutMode=mode;renderDonut()}
@@ -35343,7 +35531,8 @@ body[data-perf-low] .dcard-handle{display:none}
   /* Init */
   function init(){
     try{hookAddXP()}catch(_){}
-    try{var grid=document.querySelector('.dash-grid');if(grid){applyOrder(grid);makeDashSortable(grid)}}catch(_){}
+    // Layout do dashboard FIXO: drag-to-reorder desativado (sem alça ⠿, sem mover).
+    // applyOrder/makeDashSortable mantidos definidos mas não chamados.
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
   else init();
