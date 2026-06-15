@@ -872,14 +872,16 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .toggle-pills{display:flex;background:var(--bg-input);border-radius:20px;padding:2px;gap:2px;position:relative;overflow:hidden}
 .toggle-pill{padding:5px 14px;font-size:11px;font-weight:600;font-family:inherit;border:none;border-radius:16px;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:color .3s,text-shadow .3s;background:transparent;color:var(--text-dim);position:relative;z-index:2}
 .toggle-pill.active{color:#09090b}
-/* Pill ativo dá um leve pop ao trocar */
-.toggle-pill.active{animation:togglePillPop .34s var(--ease-tactile,cubic-bezier(.34,1.56,.64,1))}
-@keyframes togglePillPop{0%{transform:scale(.9)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
+/* Pill ativo dá um pop elástico ao trocar (texto pula) */
+.toggle-pill.active{animation:togglePillPop .42s var(--ease-tactile,cubic-bezier(.34,1.56,.64,1))}
+@keyframes togglePillPop{0%{transform:scale(.82)}40%{transform:scale(1.14)}65%{transform:scale(.96)}100%{transform:scale(1)}}
+.toggle-pill{transition:color .3s,text-shadow .3s,transform .18s var(--ease-tactile,cubic-bezier(.34,1.56,.64,1))}
+.toggle-pill:active{transform:scale(.9)}
 /* Slider desliza com mola (overshoot) entre XP/Crédito */
-.toggle-pills .toggle-slider{position:absolute;top:2px;bottom:2px;border-radius:16px;transition:left .4s cubic-bezier(.34,1.4,.5,1),width .4s cubic-bezier(.34,1.4,.5,1),background .3s ease,box-shadow .3s ease;z-index:1;pointer-events:none;will-change:left,width}
-/* Squash sutil no momento da troca */
-.toggle-pills .toggle-slider.pop{animation:toggleSliderPop .4s cubic-bezier(.34,1.4,.5,1)}
-@keyframes toggleSliderPop{0%{transform:scaleY(1)}40%{transform:scaleY(.84)}100%{transform:scaleY(1)}}
+.toggle-pills .toggle-slider{position:absolute;top:2px;bottom:2px;border-radius:16px;transition:left .42s cubic-bezier(.34,1.45,.5,1),width .42s cubic-bezier(.34,1.45,.5,1),background .3s ease,box-shadow .3s ease;z-index:1;pointer-events:none;will-change:left,width}
+/* Squash + stretch (juicy) no momento da troca */
+.toggle-pills .toggle-slider.pop{animation:toggleSliderPop .44s cubic-bezier(.34,1.5,.5,1)}
+@keyframes toggleSliderPop{0%{transform:scaleX(.84) scaleY(1.1)}45%{transform:scaleX(1.08) scaleY(.92)}75%{transform:scaleX(.98) scaleY(1.02)}100%{transform:scale(1)}}
 
 /* ═══ ITEM LIST ═══ */
 .item-list-group-label{font-size:11px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
@@ -3843,20 +3845,23 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 
 /* ═══ CENTRALIZED MODALS (mobile vertical) ═══ */
 @media(max-width:640px) and (orientation:portrait){
-  /* Vertical: modais em TELA CHEIA (preenchem a tela toda) */
+  /* Vertical: modais em TELA CHEIA (preenchem a tela). Conteúdo curto rola; longo enche. */
   .modal-overlay{align-items:stretch !important;justify-content:stretch !important;padding:0 !important}
   .modal{
     box-sizing:border-box !important;
     width:100% !important;max-width:100% !important;
     height:100dvh !important;max-height:100dvh !important;min-height:100dvh !important;
-    border-radius:0 !important;
+    border-radius:0 !important;box-shadow:none !important;
     padding:calc(16px + env(safe-area-inset-top,0px)) 18px calc(16px + env(safe-area-inset-bottom,0px)) 18px !important;
     transform:translateY(18px) !important;
     transition:transform .3s cubic-bezier(.2,.8,.2,1) !important;
-    box-shadow:none !important;
     position:relative;
   }
+  .modal>#modal-body{flex:1 1 auto !important;min-height:0 !important}
   .modal-overlay.open .modal{transform:translateY(0) !important}
+  /* Picker de habilidades = TELA CHEIA no vertical */
+  .hab-picker-overlay{padding:0 !important;align-items:stretch !important;justify-content:stretch !important}
+  .hab-picker-modal{width:100% !important;max-width:100% !important;height:100dvh !important;max-height:100dvh !important;border-radius:0 !important}
   /* Conter o conteúdo na largura da tela (controles content-box estavam vazando à direita) */
   .modal #modal-body{overflow-x:hidden !important}
   .modal #modal-body,.modal input,.modal select,.modal textarea,.modal .form-group,.modal .form-row,.modal .item-form-split{box-sizing:border-box !important;max-width:100% !important}
@@ -10433,15 +10438,6 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
               </div>
             </div>
           </div>
-          <div class="profile-block profile-prog-block">
-            <div class="profile-block-head">
-              <h3 class="profile-block-title">Progressão</h3>
-              <span class="profile-prog-lvl">Nível <b id="ps-prog-lvl">0</b></span>
-            </div>
-            <div class="xp-track"><div class="xp-fill" id="ps-xp-fill" style="width:0;visibility:hidden"></div></div>
-            <div class="profile-prog-meta"><span id="ps-xp-pct">0 / 0 XP</span><span class="profile-prog-rest" id="ps-xp-rest"></span></div>
-            <p class="profile-prog-desc">Sua evolução até o próximo nível.</p>
-          </div>
           <div class="profile-stats-card profile-stats-card-aside">
             <div class="profile-stat-cell">
               <div class="stat-value"><span class="stat-icon" style="color:var(--magenta)"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><span id="ps-xp">0</span></div>
@@ -10487,16 +10483,6 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
           <div class="stat-value"><span class="stat-icon" style="color:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg></span><span id="ps-ach-m">0</span></div>
           <div class="stat-label">Conquistas</div>
         </div>
-      </div>
-
-      <div class="profile-block profile-prog-block">
-        <div class="profile-block-head">
-          <h3 class="profile-block-title">Progressão</h3>
-          <span class="profile-prog-lvl">Nível <b id="ps-prog-lvl-m">0</b></span>
-        </div>
-        <div class="xp-track"><div class="xp-fill" id="ps-xp-fill-m" style="width:0;visibility:hidden"></div></div>
-        <div class="profile-prog-meta"><span id="ps-xp-pct-m">0 / 0 XP</span><span class="profile-prog-rest" id="ps-xp-rest-m"></span></div>
-        <p class="profile-prog-desc">Sua evolução até o próximo nível.</p>
       </div>
 
       <div class="profile-block">
@@ -10749,7 +10735,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.79</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.80</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -18941,10 +18927,10 @@ function renderXP(){
   // Esconde Evolução card no dashboard quando sem XP/Stage progress (evita void preto enorme)
   const evoCard=document.getElementById('evolucao-card');
   if(evoCard){
-    const hasData=playerLevel>0||playerXP>0||playerStage>0||stageXP>0||(Array.isArray(xpLog)&&xpLog.length>0);
-    // NÃO esconde o card (usuário perdia a Progressão de vista) — colapsa pro estado vazio compacto
-    evoCard.classList.toggle('evo-empty',!hasData);
+    // Sempre mostra o GRÁFICO (mesmo vazio: grade + linha tracejada via drawChart) em vez do painel de texto.
+    evoCard.classList.remove('evo-empty');
     evoCard.style.display='';
+    try{if(typeof drawChart==='function')requestAnimationFrame(()=>{try{drawChart(false)}catch(_){}});}catch(_){}
     // Painel de progressao do estado vazio (interface completa: Nivel + barra XP)
     const _epf=document.getElementById('evo-ep-fill');
     if(_epf){_epf.style.width=xpPct+'%';_epf.style.visibility=xpPct>0?'visible':'hidden'}
@@ -28992,6 +28978,12 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.80',date:'2026-06-15',title:'Gráfico no EVOLUÇÃO + modais ajustados + animação do toggle',items:[
+    {tag:'feat',text:'Card EVOLUÇÃO mostra o gráfico (grade + linha) mesmo vazio, em vez do painel de texto.'},
+    {tag:'feat',text:'Toggle XP/Crédito com animação mais viva (pop elástico + squash do slider).'},
+    {tag:'feat',text:'Picker de habilidades em tela cheia no vertical.'},
+    {tag:'fix',text:'Modais curtos (ex: Escolher Passado) viram card centralizado que ajusta à altura — sem barra preta vazia; modal de Item segue em tela cheia.'}
+  ]},
   {version:'v3.8.79',date:'2026-06-13',title:'Mochila com rolagem + modal de item rolável + fix confirmação',items:[
     {tag:'feat',text:'Mochila vertical: rolagem horizontal (todas as colunas), toolbar fixa e scrollbar custom no topo-direito; horizontal mostra 26×10 completo.'},
     {tag:'feat',text:'Modal de Adicionar Item agora rola numa página só (sem passos) com botão Confirmar.'},
