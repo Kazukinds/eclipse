@@ -6,7 +6,6 @@
     <include domain="database" path="." />
     <include domain="file" path="." />
     <include domain="external" path="." />
+    <!-- domain="root" inclui só app_webview; cache/code_cache ficam de fora por omissão. -->
     <include domain="root" path="app_webview" />
-    <exclude domain="root" path="cache" />
-    <exclude domain="root" path="code_cache" />
 </full-backup-content>
