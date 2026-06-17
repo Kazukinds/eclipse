@@ -35595,12 +35595,16 @@ body[data-perf-low] .dcard-handle{display:none}
 
 <!-- GRIMORIO embutido (ex preview-feiticos.html): openGrimorio / closeGrimorio -->
 <div id="grimorio-screen" class="grimorio-root" hidden>
-<button class="grim-close" type="button" onclick="closeGrimorio()" aria-label="Fechar Grimório" title="Voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
 <aside class="side" id="grim-sideEl">
+  <div class="side-bar">
+    <button class="grim-close" type="button" onclick="closeGrimorio()" aria-label="Voltar" title="Voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
   <div class="side-head">
     <span class="eclipse-logo" aria-hidden="true"><svg viewBox="0 0 4096 4096"><path class="el-moon" fill-rule="evenodd" d="M 1954 3655.5 L 1942.5 3645 L 1928.5 3582 L 1913.5 3539 L 1911.5 3517 L 1894.5 3467 L 1892.5 3448 L 1884.5 3433 L 1783.5 3055 L 1771 3027.5 L 1738.5 3013 L 1738.5 2999 L 1745.5 2993 L 1757.5 2963 L 1783.5 2919 L 1793.5 2860 L 1785 2859.5 L 1768 2871.5 L 1728 2905.5 L 1655 2955.5 L 1637 2974.5 L 1625 2979.5 L 1609 2977.5 L 1542 2946.5 L 1439 2883.5 L 1425 2885.5 L 1024 3145.5 L 1009 3152.5 L 1001 3150.5 L 999.5 3137 L 1050.5 3010 L 1071.5 2945 L 1100.5 2880 L 1110.5 2845 L 1120.5 2829 L 1175.5 2675 L 1177.5 2656 L 1153.5 2618 L 1151.5 2602 L 1156.5 2582 L 1153 2575.5 L 1136 2575.5 L 825 2619.5 L 807.5 2616 L 807.5 2602 L 841 2579.5 L 897 2529.5 L 999 2450.5 L 1083.5 2373 L 1083.5 2367 L 1062.5 2349 L 1045.5 2317 L 1040.5 2303 L 1043.5 2267 L 1038.5 2257 L 809 2183.5 L 458 2085.5 L 420.5 2070 L 420.5 2061 L 429 2055.5 L 527 2029.5 L 607 2002.5 L 626 2000.5 L 698 1973.5 L 910 1911.5 L 946 1896.5 L 999 1882.5 L 1035 1868.5 L 1043.5 1860 L 1043.5 1816 L 1062.5 1765 L 1079.5 1737 L 1076.5 1725 L 999 1654.5 L 800.5 1495 L 803 1483.5 L 826 1483.5 L 1032 1516.5 L 1061 1516.5 L 1124 1526.5 L 1151 1526.5 L 1153.5 1523 L 1153.5 1487 L 1170.5 1451 L 1168.5 1422 L 1071.5 1179 L 1007.5 999 L 999.5 987 L 994.5 972 L 999 958.5 L 1018 963.5 L 1289 1136.5 L 1427 1216.5 L 1439 1213.5 L 1487 1177.5 L 1583 1132.5 L 1602 1105.5 L 1612 1105.5 L 1684 1163.5 L 1761 1216.5 L 1785 1230.5 L 1793.5 1228 L 1774.5 1162 L 1747.5 1105 L 1745.5 1080 L 1774.5 1054 L 1786.5 1018 L 1805.5 938 L 1834.5 845 L 1836.5 825 L 1853.5 778 L 1855.5 756 L 1863.5 741 L 1884.5 650 L 1892.5 635 L 1894.5 616 L 1911.5 566 L 1932.5 472 L 1940.5 447 L 1948 439.5 L 1955.5 443 L 1964.5 462 L 1993.5 585 L 2027.5 695 L 2089.5 929 L 2097.5 944 L 2125.5 1047 L 2134 1059.5 L 2204 1069.5 L 2259 1086.5 L 2278 1086.5 L 2332 1052.5 L 2348 1035.5 L 2363 1033.5 L 2371.5 1042 L 2385.5 1110 L 2396 1127.5 L 2488 1165.5 L 2514 1180.5 L 2531 1182.5 L 2558 1170.5 L 2983 910.5 L 3007 898.5 L 3015.5 899 L 3013.5 918 L 2859.5 1181 L 2780.5 1331 L 2760.5 1360 L 2720.5 1444 L 2706 1462.5 L 2689 1457.5 L 2620 1394.5 L 2548 1341.5 L 2435 1281.5 L 2365 1252.5 L 2298 1233.5 L 2175 1211.5 L 2031 1211.5 L 1925 1228.5 L 1836 1252.5 L 1758 1284.5 L 1648 1346.5 L 1561 1414.5 L 1500.5 1475 L 1426.5 1568 L 1375.5 1653 L 1334.5 1740 L 1296.5 1862 L 1276.5 1997 L 1279.5 2118 L 1284.5 2134 L 1286.5 2178 L 1305.5 2261 L 1356.5 2404 L 1423.5 2519 L 1493.5 2611 L 1593 2705.5 L 1662 2755.5 L 1709 2782.5 L 1787 2822.5 L 1841 2842.5 L 1973 2873.5 L 2115 2883.5 L 2216 2873.5 L 2314 2854.5 L 2382 2832.5 L 2469 2796.5 L 2526 2765.5 L 2596 2717.5 L 2697 2625.5 L 2712 2623.5 L 2720.5 2632 L 2796.5 2781 L 2806.5 2792 L 2890.5 2945 L 3013.5 3153 L 3015.5 3162 L 3002 3167.5 L 2832 3066.5 L 2534 2900.5 L 2521 2900.5 L 2479 2926.5 L 2401 2960.5 L 2388.5 2980 L 2373.5 3044 L 2368 3051.5 L 2348 3047.5 L 2281 3001.5 L 2264 3001.5 L 2187 3025.5 L 2148 3030.5 L 2128.5 3053 L 2113.5 3084 L 2085.5 3195 L 2060.5 3272 L 2027.5 3409 L 2000.5 3493 L 1974.5 3614 L 1962.5 3650 Z"/><path class="el-star" d="M 2953 2582.5 L 2940.5 2567 L 2919.5 2445 L 2878.5 2300 L 2851.5 2249 L 2822.5 2208 L 2774 2159.5 L 2697 2106.5 L 2591 2065.5 L 2533 2053.5 L 2500.5 2041 L 2507 2033.5 L 2627 2002.5 L 2706 1969.5 L 2776 1923.5 L 2822.5 1877 L 2856.5 1831 L 2883.5 1778 L 2919.5 1646 L 2938.5 1530 L 2945.5 1511 L 2951 1507.5 L 2958.5 1514 L 2963.5 1531 L 2962.5 1544 L 2984.5 1660 L 3015.5 1759 L 3056.5 1829 L 3113 1882.5 L 3159 1911.5 L 3216 1930.5 L 3361 1964.5 L 3375 1971.5 L 3402 1973.5 L 3419 1981.5 L 3448 1983.5 L 3568 2012.5 L 3643 2024.5 L 3674.5 2037 L 3666 2044.5 L 3640 2051.5 L 3296 2125.5 L 3168 2164.5 L 3120 2190.5 L 3054.5 2256 L 3020.5 2319 L 2986.5 2423 L 2962.5 2563 Z"/></svg></span>
     <div class="brand-txt"><h1>Grimório</h1><p>Compêndio de Feitiços</p></div>
-    <button class="side-toggle" id="grim-sideToggle" title="Expandir ou recolher">‹</button>
+    <button class="cart-fab" id="grim-cartFab" data-empty="1" aria-label="Carrinho de feitiços">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2.2l2.3 12.3a1.6 1.6 0 0 0 1.6 1.3h8.7a1.6 1.6 0 0 0 1.6-1.3L21 7H5"/></svg>
+      <span class="cart-count" id="grim-cartCount">0</span>
+    </button>
   </div>
   <div class="ess-list" id="grim-side"></div>
 </aside>
@@ -35612,10 +35616,6 @@ body[data-perf-low] .dcard-handle{display:none}
   <footer id="grim-ft"></footer>
 </main>
 
-<button class="cart-fab" id="grim-cartFab" data-empty="1" aria-label="Carrinho de feitiços">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2.2l2.3 12.3a1.6 1.6 0 0 0 1.6 1.3h8.7a1.6 1.6 0 0 0 1.6-1.3L21 7H5"/></svg>
-  <span class="cart-count" id="grim-cartCount">0</span>
-</button>
 <div class="cart-scrim" id="grim-cartScrim" data-on="0"></div>
 <aside class="cart-drawer" id="grim-cartDrawer" data-on="0" aria-label="Compra de feitiços">
   <div class="cart-head"><span>Compra de Feitiços</span><button class="cart-x" id="grim-cartClose" aria-label="Fechar">✕</button></div>
@@ -35645,110 +35645,78 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root ::-webkit-scrollbar{width:0;height:0;display:none;background:transparent}
   .grimorio-root h1,.grimorio-root h2,.grimorio-root h3,.grimorio-root .ess-name,.grimorio-root .grau-div span,.grimorio-root .tier,.grimorio-root .row-n{font-family:'Inter',system-ui,sans-serif}
 
-  /* botão fechar overlay */
-  .grimorio-root .grim-close{position:fixed;top:18px;right:22px;z-index:9100;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:50%;background:rgba(10,10,10,.85);color:var(--muted);font-size:17px;line-height:1;cursor:pointer;backdrop-filter:blur(6px);transition:.16s}
-  .grimorio-root .grim-close svg{width:18px;height:18px}
-  .grimorio-root .grim-close:hover{color:var(--txt);border-color:var(--acc)}
+  /* ════════════════════════════════════════════════════════════════════
+     GRIMÓRIO — header refeito do zero.
+     Layout: coluna. Topo = painel "interface sobre interface" (.side):
+       linha 1 (.side-bar)  → [← voltar] [logo+marca] ........ [🛒 carrinho]
+       linha 2 (.ess-list)  → pills de essência (scroll-x, nunca cortam)
+     Abaixo = <main> com título grande + toolbar (busca/filtros).
+     Versões horizontal (desktop) e vertical (mobile) tratadas separado.
+     ════════════════════════════════════════════════════════════════════ */
+  .grimorio-root{flex-direction:column!important}
 
-  /* ===== índice / sidebar ===== */
-  .grimorio-root .side{flex:0 0 240px;width:240px;height:100vh;position:sticky;top:0;overflow-y:auto;
-    padding:30px 22px 40px;border-right:1px solid var(--line);background:var(--bg);transition:flex-basis .25s,width .25s,padding .25s}
-  .grimorio-root .side-head{display:flex;align-items:center;gap:11px;padding-bottom:22px;margin-bottom:16px;border-bottom:1px solid var(--line)}
-  .grimorio-root .brand-txt{min-width:0;overflow:hidden}
-  .grimorio-root .brand-txt h1{margin:0;font-size:19px;font-weight:600;letter-spacing:5px;text-transform:uppercase;white-space:nowrap;color:var(--txt)}
-  .grimorio-root .brand-txt p{margin:5px 0 0;color:var(--faint);font-size:8px;letter-spacing:3px;text-transform:uppercase;white-space:nowrap}
-  .grimorio-root .eclipse-logo{flex:0 0 auto;width:30px;height:30px;display:block;color:#fff;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--magenta) 55%,transparent))}
+  /* ---- painel do topo (flutua sobre o root, com borda) ---- */
+  .grimorio-root .side{flex:0 0 auto;width:100%;position:sticky;top:0;z-index:50;
+    display:flex;flex-direction:column;gap:14px;
+    padding:16px 26px 14px;background:#121212;
+    border:0;border-bottom:1px solid var(--line);
+    box-shadow:0 10px 30px -16px rgba(0,0,0,.9)}
+
+  /* linha 1: voltar + marca + carrinho */
+  .grimorio-root .side-bar{display:flex;align-items:center;gap:16px;min-width:0}
+
+  .grimorio-root .grim-close{flex:0 0 auto;width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);border-radius:11px;background:#1a1a1a;color:var(--muted);cursor:pointer;transition:.16s}
+  .grimorio-root .grim-close svg{width:19px;height:19px}
+  .grimorio-root .grim-close:hover{color:var(--txt);border-color:var(--acc);background:#222}
+
+  .grimorio-root .side-head{display:flex;align-items:center;gap:12px;min-width:0;flex:1 1 auto}
+  .grimorio-root .eclipse-logo{flex:0 0 auto;width:26px;height:26px;display:block;color:#fff;filter:drop-shadow(0 0 7px color-mix(in srgb,var(--acc) 55%,transparent))}
   .grimorio-root .eclipse-logo svg{width:100%;height:100%;display:block}
   .grimorio-root .eclipse-logo .el-moon{fill:rgba(255,255,255,.55)}
   .grimorio-root .eclipse-logo .el-star{fill:#fff}
-  .grimorio-root .side-head .eclipse-logo{display:none!important}
-  .grimorio-root .side-toggle{flex:0 0 auto;margin-left:auto;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--line);border-radius:6px;background:none;color:var(--muted);font-size:14px;line-height:1;transition:.18s}
-  .grimorio-root .side-toggle:hover{color:var(--txt);border-color:#3a3a3a}
-  .grimorio-root .ess-list{display:flex;flex-direction:column}
-  /* ═══ Layout: SEM sidebar vertical — essências viram BARRA HORIZONTAL no topo
-     (a "barra da própria interface"), grimório empilha topo+conteúdo ═══ */
-  .grimorio-root{flex-direction:column!important}
-  /* barra de essências: marca (linha 1, com X no canto) + pills que quebram em
-     linhas (flex-wrap) — todas visíveis, sem scroll quebrado, X nunca sobre pill */
-  .grimorio-root .side{flex:0 0 auto!important;width:100%!important;height:auto!important;position:relative!important;
-    z-index:5;border-right:0!important;border-bottom:1px solid var(--line)!important;padding:16px 18px!important;background:var(--bg)!important;
-    display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:12px!important;overflow:visible!important}
-  .grimorio-root .side-head{flex:0 0 auto!important;padding:0 56px 0 0!important;margin:0!important;border:0!important;display:flex!important;align-items:center!important;gap:11px!important}
-  .grimorio-root .side-toggle{display:none!important}
-  .grimorio-root .ess-list{flex-direction:row!important;flex-wrap:nowrap!important;gap:8px!important;align-items:center;width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch}
-  .grimorio-root .ess-list::-webkit-scrollbar{display:none}
-  .grimorio-root .ess{flex:0 0 auto!important}
-  /* MOBILE: seta ← (voltar) no topo-esquerda; marca recua à direita dela; pills largura toda */
-  .grimorio-root .grim-close{position:absolute!important;top:16px!important;left:16px!important;right:auto!important;width:34px!important;height:34px!important;background:transparent!important;border:1px solid var(--line)!important;z-index:20!important}
-  .grimorio-root .side-head{padding-left:46px!important;padding-right:0!important;box-sizing:border-box}
-  .grimorio-root .ess-list{padding-right:0!important;margin-right:0!important;box-sizing:border-box}
-  .grimorio-root .ess{flex:0 0 auto!important;border-left:0!important;border-bottom:2px solid transparent!important;padding:8px 14px!important;border-radius:8px}
-  .grimorio-root .ess::after{display:none!important}
-  .grimorio-root .ess[data-on="1"]{border-left:0!important;border-bottom-color:transparent!important;background:transparent!important}
-  .grimorio-root .ess-count{display:none!important}
-  .grimorio-root .ess-sep{display:none!important}
-  .grimorio-root main{max-width:none!important;padding:36px 48px 100px!important}
-  .grimorio-root .ess-sep-orig{font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--faint);margin:20px 0 6px;padding:0 4px}
-  .grimorio-root .ess{position:relative;display:flex;align-items:center;gap:13px;cursor:pointer;padding:11px 4px 11px 13px;border-left:2px solid transparent;transition:.16s}
-  .grimorio-root .ess::after{content:"";position:absolute;left:13px;right:2px;bottom:0;height:1px;background:var(--line-2)}
+  .grimorio-root .brand-txt{min-width:0}
+  .grimorio-root .brand-txt h1{margin:0;font-size:16px;font-weight:700;letter-spacing:4px;text-transform:uppercase;white-space:nowrap;color:var(--txt)}
+  .grimorio-root .brand-txt p{margin:2px 0 0;color:var(--faint);font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;white-space:nowrap}
+
+  /* ---- pills de essência (linha 2) ---- */
+  .grimorio-root .ess-list{display:flex;flex-direction:row;flex-wrap:wrap;gap:8px;align-items:center;width:100%}
+  .grimorio-root .ess{position:relative;flex:0 0 auto;display:flex;align-items:center;gap:9px;cursor:pointer;
+    padding:8px 15px;border:1px solid var(--line);border-radius:999px;background:#191919;transition:.16s;white-space:nowrap}
+  .grimorio-root .ess::after{display:none}
+  .grimorio-root .ess:hover{border-color:#3a3a3a;background:#1f1f1f}
   .grimorio-root .ess:hover .ess-name{color:var(--txt)}
-  .grimorio-root .ess[data-on="1"]{border-left-color:var(--bc)}
+  .grimorio-root .ess[data-on="1"]{border-color:var(--bc);background:color-mix(in srgb,var(--bc) 16%,#191919)}
   .grimorio-root .ess[data-on="1"] .ess-name{color:var(--bc2)}
-  .grimorio-root .ess-ico{flex:0 0 auto;width:16px;height:16px;display:flex;align-items:center;justify-content:center;color:var(--bc2)}
-  .grimorio-root .ess-ico svg{width:16px;height:16px}
-  .grimorio-root .ess-ico svg{width:18px;height:18px;display:block}
-  .grimorio-root .ess-name{flex:1;min-width:0;font-size:13.5px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .16s}
-  .grimorio-root .ess-count{flex:0 0 auto;font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
-  .grimorio-root .side.collapsed{flex-basis:64px;width:64px;padding-left:9px;padding-right:9px}
-  .grimorio-root .side.collapsed .brand-txt,.grimorio-root .side.collapsed .ess-name,.grimorio-root .side.collapsed .ess-count,.grimorio-root .side.collapsed .ess-sep{display:none}
-  .grimorio-root .side.collapsed .side-head{justify-content:center;flex-direction:column;gap:9px;padding-bottom:14px}
-  .grimorio-root .side.collapsed .side-toggle{margin-left:0}
-  .grimorio-root .side.collapsed .ess{justify-content:center;padding:12px 0;border-left:0}
-  .grimorio-root .side.collapsed .ess::after{display:none}
+  .grimorio-root .ess-ico{flex:0 0 auto;width:15px;height:15px;display:flex;align-items:center;justify-content:center;color:var(--bc2)}
+  .grimorio-root .ess-ico svg{width:15px;height:15px;display:block}
+  .grimorio-root .ess-name{flex:0 0 auto;font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);transition:color .16s}
+  .grimorio-root .ess-count{flex:0 0 auto;font-size:10px;color:var(--faint);font-variant-numeric:tabular-nums}
+  .grimorio-root .ess-sep{display:none}
 
-  /* ===== main ===== */
-  .grimorio-root main{flex:1;min-width:0;padding:46px 60px 120px;max-width:1280px}
-  .grimorio-root .m-head{margin:0 0 26px}
-  .grimorio-root .m-head h2{margin:0;font-size:60px;font-weight:700;letter-spacing:-.5px;line-height:.98;color:var(--acc2);text-transform:uppercase;text-shadow:none}
-  .grimorio-root .m-head .sub{margin:15px 0 0;color:color-mix(in srgb,var(--acc2) 65%,var(--muted));font-size:16px;font-style:italic;letter-spacing:.2px}
-  /* ═══ REAJUSTE COMPACTO — header do grimório menor/mais enxuto ═══ */
-  .grimorio-root main{padding:26px 40px 90px!important}
-  .grimorio-root .side{padding:12px 16px!important;gap:10px!important}
-  .grimorio-root .side-head .brand-txt h1{font-size:15px!important;letter-spacing:3px!important}
-  .grimorio-root .ess{padding:6px 12px!important;border-radius:999px!important}
-  .grimorio-root .ess-name{font-size:11px!important;letter-spacing:.06em!important}
-  .grimorio-root .ess-ico{width:14px!important;height:14px!important}
-  .grimorio-root .ess-ico svg{width:14px!important;height:14px!important}
-  .grimorio-root .m-head{margin:0 0 16px!important}
-  .grimorio-root .m-head h2{font-size:38px!important;line-height:1!important}
-  .grimorio-root .m-head .sub{font-size:14px!important;margin-top:7px!important}
-  .grimorio-root .search{font-size:14px!important;padding:11px 0!important}
-  .grimorio-root .tb-top{border-radius:11px!important}
-  .grimorio-root .grim-filtbtn,.grimorio-root .grim-sort-btn,.grimorio-root .viewtog{font-size:12px!important;padding:0 13px!important}
-  .grimorio-root .cart-fab{width:38px!important;height:38px!important;top:14px!important}
-  .grimorio-root .cart-fab svg{width:18px;height:18px}
-  .grimorio-root .grim-close{width:36px!important;height:36px!important}
-  .grimorio-root .m-head .esp-tag{display:none!important}
+  /* ---- main + título ---- */
+  .grimorio-root main{flex:1;min-width:0;width:100%;max-width:1280px;margin:0 auto;padding:30px 40px 100px;position:relative}
+  .grimorio-root .m-head{margin:0 0 22px;padding:26px 30px;border:1px solid var(--line);border-radius:18px;
+    background:linear-gradient(160deg,#161616,#101010);position:relative;overflow:hidden}
+  .grimorio-root .m-head::before{content:"";position:absolute;inset:0;opacity:.10;
+    background:radial-gradient(110% 130% at 100% 0%,var(--acc) 0%,transparent 60%);pointer-events:none}
+  .grimorio-root .m-head h2{margin:0;font-size:clamp(34px,6vw,52px);font-weight:800;letter-spacing:-1px;line-height:.96;color:var(--acc2);text-transform:uppercase}
+  .grimorio-root .m-head .sub{margin:12px 0 0;color:color-mix(in srgb,var(--acc2) 60%,var(--muted));font-size:15px;font-style:italic;letter-spacing:.2px}
+  .grimorio-root .m-head .esp-tag{display:none}
 
-  /* sobre a essência */
-  .grimorio-root .m-about{margin:0 0 30px;border-top:0;border-bottom:0}
-  /* Duas barras divisórias marcadas: uma sob a barra de essências (topo) e
-     outra fechando o bloco de header (busca/filtros/sobre) antes dos cards */
-  .grimorio-root .side{border-bottom:0!important;background:#202020!important}
-  /* Painel cinza atrás do bloco de header — full-bleed sem vazar preto nas pontas.
-     Usa um ::before absoluto cobrindo a faixa do topo (largura 100% do main). */
-  .grimorio-root main{position:relative}
-  /* Painel cinza ÚNICO e contínuo cobrindo header (título+busca+filtros).
-     Um wrapper visual: m-head e tooldbar grudados (sem gap), bg cinza
-     estendido full-width via ::before lateral em cada um. m-about (Sobre a
-     essência) fica transparente, no fundo preto — sem corte. */
-  .grimorio-root main>.m-head,.grimorio-root main>.toolbar{position:relative;background:#1a1a1a!important;z-index:1;margin:0!important}
-  .grimorio-root main>.m-head{padding:36px 0 16px!important}
-  .grimorio-root main>.toolbar{padding:0 0 18px!important}
-  .grimorio-root main>.m-head::before,.grimorio-root main>.toolbar::before{content:"";position:absolute;top:0;bottom:0;left:-48px;right:-48px;background:#1a1a1a;z-index:-1}
-  .grimorio-root main>.m-about{display:none!important}
-  .grimorio-root main>.m-about::before{content:"";position:absolute;top:0;bottom:0;left:-48px;right:-48px;background:#1a1a1a;z-index:-1}
-  .grimorio-root main{padding-top:0!important}
+  /* ---- sobre a essência ---- */
+  .grimorio-root .m-about{margin:0 0 22px;border:0}
+
+  /* ════ VERTICAL (mobile / estreito) — nada corta, tudo empilha ════ */
+  @media(max-width:720px){
+    .grimorio-root .side{padding:13px 16px 12px;gap:11px}
+    .grimorio-root .brand-txt p{display:none}
+    .grimorio-root .brand-txt h1{font-size:14px;letter-spacing:3px}
+    .grimorio-root .ess-list{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+    .grimorio-root .ess-list::-webkit-scrollbar{display:none}
+    .grimorio-root main{padding:22px 16px 90px;max-width:none}
+    .grimorio-root .m-head{padding:22px 20px;border-radius:14px}
+  }
   .grimorio-root .about-tog{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;padding:15px 2px;background:none;border:0;color:var(--muted);font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase}
   .grimorio-root .about-tog:hover{color:var(--txt)}
   .grimorio-root .about-tog .chev{transition:transform .22s;color:var(--faint);font-size:13px}
@@ -35897,10 +35865,10 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root footer{margin-top:64px;padding:22px 0 0;border-top:1px solid var(--line);color:var(--faint);font-size:11px;letter-spacing:2px;text-transform:uppercase;text-align:left}
 
   /* carrinho */
-  .grimorio-root .cart-fab{position:fixed;right:22px;top:16px;z-index:9120;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--txt);border:1px solid var(--line);background:rgba(10,10,10,.85);backdrop-filter:blur(6px);transition:transform .2s,border-color .2s,color .2s}
+  .grimorio-root .cart-fab{flex:0 0 auto;margin-left:auto;position:relative;width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--txt);border:1px solid var(--line);background:#1a1a1a;transition:transform .2s,border-color .2s,color .2s,background .2s}
   .grimorio-root .cart-fab[data-empty="1"]{color:var(--faint)}
   .grimorio-root .cart-fab:not([data-empty="1"]){border-color:var(--acc);color:var(--acc2)}
-  .grimorio-root .cart-fab:hover{transform:translateY(-2px)}
+  .grimorio-root .cart-fab:hover{border-color:var(--acc);color:var(--acc2);background:#222}
   .grimorio-root .cart-fab svg{width:22px;height:22px}
   .grimorio-root .cart-count{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:20px;background:var(--acc);color:#000;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
   .grimorio-root .cart-fab[data-empty="1"] .cart-count{display:none}
@@ -35932,55 +35900,11 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .toast{position:fixed;left:50%;bottom:34px;z-index:9090;transform:translateX(-50%) translateY(20px);background:var(--txt);color:#000;padding:14px 26px;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 14px 40px -12px rgba(0,0,0,.7);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
   .grimorio-root .toast[data-on="1"]{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  /* mobile */
-  @media(max-width:920px){
-    .grimorio-root{flex-direction:column}
-    .grimorio-root .side{flex:none;width:100%;height:auto;position:static;border-right:0;border-bottom:1px solid var(--line);padding:16px 18px}
-    .grimorio-root .side-head{margin-bottom:12px;padding-bottom:12px}
-    .grimorio-root .side-toggle{display:none}
-    .grimorio-root .ess-list{flex-direction:row;flex-wrap:nowrap;gap:8px;overflow-x:auto;overflow-y:hidden}
-    .grimorio-root .ess{flex:0 0 auto;padding:8px 12px;border-left:0;border-bottom:2px solid transparent}
-    .grimorio-root .ess::after{display:none}
-    .grimorio-root .ess[data-on="1"]{border-left:0;border-bottom-color:var(--bc)}
-    /* X fica no canto da linha da marca (não sobre as pills) */
-    .grimorio-root{position:relative}
-    .grimorio-root .grim-close{position:absolute!important;top:14px!important;right:16px!important}
-    .grimorio-root .side-head{padding-right:52px!important}
-    .grimorio-root .ess-list{padding-right:4px!important}
-    .grimorio-root .ess .ess-name{display:inline!important;font-size:11px;letter-spacing:1px}
-    .grimorio-root .ess .ess-count{display:none}
-    .grimorio-root .ess-sep{display:none}
-    /* vertical: empilha em 2 linhas — marca (cima) + essências rolando (baixo);
-       assim TODAS as essências ficam acessíveis (rolagem horizontal), sem o X sobrepor */
-    .grimorio-root .side{flex-direction:column!important;align-items:stretch!important;gap:12px!important;padding:16px 18px!important;overflow:visible!important}
-    .grimorio-root .side-head{flex:0 0 auto!important;border-right:0!important;padding-right:56px!important;margin:0!important}
-    .grimorio-root .side-head .brand-txt p{display:none}
-    .grimorio-root .ess-list{flex-direction:row!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;gap:8px!important;width:100%!important}
-    .grimorio-root .ess-list::-webkit-scrollbar{display:none}
-    .grimorio-root .ess{flex:0 0 auto!important;gap:7px!important}
-    .grimorio-root main{padding:24px 18px 100px;max-width:none}
-    /* ═══ REDESIGN MOBILE do header do grimório ═══ */
-    /* topbar: marca menor */
-    .grimorio-root .side-head .brand-txt h1{font-size:15px;letter-spacing:3px}
-    /* essências como pills compactas, ativa colorida */
-    .grimorio-root .ess{padding:7px 12px!important;border-radius:999px!important;border-bottom:0!important;background:#1c1c1c!important}
-    .grimorio-root .ess[data-on="1"]{background:color-mix(in srgb,var(--bc) 18%,#1c1c1c)!important}
-    .grimorio-root .ess[data-on="1"] .ess-name{color:var(--bc2)!important}
-    .grimorio-root .ess .ess-name{font-size:11px!important;letter-spacing:.06em!important}
-    .grimorio-root .ess-ico{width:15px!important;height:15px!important}
-    /* título da essência menor + subtítulo compacto */
-    .grimorio-root .m-head{margin:0 0 18px}
-    .grimorio-root .m-head h2{font-size:40px;line-height:1}
-    .grimorio-root .m-head .sub{font-size:14px;margin-top:8px}
-    /* busca + controles */
-    .grimorio-root .search{font-size:15px;padding:12px 0}
-    .grimorio-root .tb-top{border-radius:14px}
-    /* dropdowns com rótulo visível (Grau/Arq), LISTA só ícone */
-    .grimorio-root .grim-dd-btn .dd-k{display:inline!important;font-size:9px}
-    .grimorio-root .grim-dd-btn b{font-size:10px}
+  /* mobile: cards em coluna única (resto do vertical tratado no @media 720px acima) */
+  @media(max-width:720px){
+    .grimorio-root .cards{grid-template-columns:1fr}
     .grimorio-root .tb-row .viewtog{flex:0 0 auto;gap:0;padding:9px 14px}
     .grimorio-root .tb-row .viewtog span{font-size:14px}
-    .grimorio-root .cards{grid-template-columns:1fr}
   }
 </style>
 
@@ -36551,8 +36475,8 @@ function buildSide(){
   const esp=ELEMENTOS.filter(e=>e.tipo==='especial').map(item).join('');
   side.innerHTML=princ+(esp?`<div class="ess-sep">Especial</div>`+esp:'');
   side.querySelectorAll('.ess').forEach(el=>el.onclick=()=>selecionar(el.dataset.id));
-  const sd=document.getElementById('grim-sideEl'),tg=document.getElementById('grim-sideToggle');
-  tg.onclick=()=>{const col=sd.classList.toggle('collapsed');tg.textContent=col?'›':'‹';};
+  const tg=document.getElementById('grim-sideToggle');
+  if(tg){const sd=document.getElementById('grim-sideEl');tg.onclick=()=>{const col=sd.classList.toggle('collapsed');tg.textContent=col?'›':'‹';};}
 }
 
 function selecionar(id){
