@@ -36191,6 +36191,10 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .grim-fdrop .fd-v{color:var(--acc2);font-weight:700}
   .grimorio-root .grim-fdrop .fd-chev{margin-left:auto;transition:transform .2s;color:var(--faint)}
   .grimorio-root .grim-fdrop[open] .fd-chev{transform:rotate(180deg)}
+  /* DESKTOP: chips sempre visíveis inline (details aberto ou não) */
+  .grimorio-root .grim-fdrop>.gfilters,.grimorio-root .grim-fdrop>.cfilters{display:flex!important}
+  .grimorio-root .tb-filters{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  .grimorio-root .tb-filters .tb-fspacer{display:none}
   @media(max-width:640px){
     /* busca em cima; LISTA + Grau + Arquétipo numa linha compacta embaixo */
     .grimorio-root .toolbar{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px}
