@@ -36143,7 +36143,13 @@ body[data-perf-low] .dcard-handle{display:none}
   /* Duas barras divisórias marcadas: uma sob a barra de essências (topo) e
      outra fechando o bloco de header (busca/filtros/sobre) antes dos cards */
   .grimorio-root .side{border-bottom:1px solid rgba(255,255,255,.30)!important}
-  .grimorio-root main>.m-about{border-bottom:1px solid rgba(255,255,255,.30)!important;padding-bottom:2px}
+  /* Painel cinza atrás do bloco de header (título+busca+filtros+sobre) */
+  .grimorio-root main>.m-head,.grimorio-root main>.toolbar,.grimorio-root main>.m-about{
+    background:#1a1a1a!important;margin-left:-48px!important;margin-right:-48px!important;padding-left:48px!important;padding-right:48px!important}
+  .grimorio-root main>.m-head{margin-top:-36px!important;padding-top:36px!important;border-radius:0!important}
+  .grimorio-root main>.m-head{margin-bottom:0!important}
+  .grimorio-root main>.toolbar{margin:0!important;padding-top:0!important;padding-bottom:14px!important}
+  .grimorio-root main>.m-about{margin:0 -48px 30px!important;padding:0 48px 14px!important;border-top:0!important;border-bottom:1px solid rgba(255,255,255,.30)!important}
   .grimorio-root .about-tog{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;padding:15px 2px;background:none;border:0;color:var(--muted);font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase}
   .grimorio-root .about-tog:hover{color:var(--txt)}
   .grimorio-root .about-tog .chev{transition:transform .22s;color:var(--faint);font-size:13px}
