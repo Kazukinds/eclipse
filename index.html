@@ -36095,7 +36095,22 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .side-toggle{flex:0 0 auto;margin-left:auto;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--line);border-radius:6px;background:none;color:var(--muted);font-size:14px;line-height:1;transition:.18s}
   .grimorio-root .side-toggle:hover{color:var(--txt);border-color:#3a3a3a}
   .grimorio-root .ess-list{display:flex;flex-direction:column}
-  .grimorio-root .ess-sep{font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--faint);margin:20px 0 6px;padding:0 4px}
+  /* ═══ Layout: SEM sidebar vertical — essências viram BARRA HORIZONTAL no topo
+     (a "barra da própria interface"), grimório empilha topo+conteúdo ═══ */
+  .grimorio-root{flex-direction:column!important}
+  .grimorio-root .side{flex:0 0 auto!important;width:100%!important;height:auto!important;position:sticky!important;top:0!important;
+    z-index:5;border-right:0!important;border-bottom:1px solid var(--line)!important;padding:14px 22px!important;background:var(--bg)!important;
+    display:flex!important;align-items:center!important;gap:18px!important;overflow-x:auto!important;overflow-y:hidden!important}
+  .grimorio-root .side-head{flex:0 0 auto!important;padding-bottom:0!important;margin-bottom:0!important;border-bottom:0!important;border-right:1px solid var(--line);padding-right:18px!important}
+  .grimorio-root .side-toggle{display:none!important}
+  .grimorio-root .ess-list{flex-direction:row!important;flex-wrap:nowrap!important;gap:4px!important;align-items:center}
+  .grimorio-root .ess{flex:0 0 auto!important;border-left:0!important;border-bottom:2px solid transparent!important;padding:8px 14px!important;border-radius:8px}
+  .grimorio-root .ess::after{display:none!important}
+  .grimorio-root .ess[data-on="1"]{border-left:0!important;border-bottom-color:var(--bc)!important;background:color-mix(in srgb,var(--bc) 10%,transparent)}
+  .grimorio-root .ess-count{display:none!important}
+  .grimorio-root .ess-sep{display:none!important}
+  .grimorio-root main{max-width:none!important;padding:36px 48px 100px!important}
+  .grimorio-root .ess-sep-orig{font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--faint);margin:20px 0 6px;padding:0 4px}
   .grimorio-root .ess{position:relative;display:flex;align-items:center;gap:13px;cursor:pointer;padding:11px 4px 11px 13px;border-left:2px solid transparent;transition:.16s}
   .grimorio-root .ess::after{content:"";position:absolute;left:13px;right:2px;bottom:0;height:1px;background:var(--line-2)}
   .grimorio-root .ess:hover .ess-name{color:var(--txt)}
