@@ -3768,6 +3768,16 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .modal.peri-modal-square{width:min(460px,92vw);max-width:92vw;height:min(680px,90vh);max-height:90vh;aspect-ratio:auto}
 @media (max-width:480px){.modal.peri-modal-square{width:95vw;height:90vh}}
 .modal.peri-modal-square .peri-cat-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+/* ═══ HORIZONTAL/DESKTOP (>=1024px): Catálogo de Perícias EM TELA CHEIA ═══
+   Aproveita toda a largura: modal largo, grade de perícias com muitas
+   colunas, lista alta. (Antes ficava um card estreito centralizado.) */
+@media (min-width:1024px) and (orientation:landscape){
+  .modal.peri-modal-square{width:94vw!important;max-width:1400px!important;height:90vh!important;max-height:90vh!important;padding:28px 32px!important}
+  .modal.peri-modal-square .peri-cat-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))!important;gap:9px!important}
+  .modal.peri-modal-square .peri-cat-wrap{display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:18px 28px!important;align-content:start!important}
+  .modal.peri-modal-square .peri-cat-name{white-space:normal!important} /* nomes inteiros, sem truncar */
+  .modal.peri-modal-square .peri-budget-row{justify-content:flex-start!important;gap:18px!important}
+}
 .peri-cat-wrap{gap:10px!important}
 .peri-cat-wrap::-webkit-scrollbar{width:6px}
 .peri-cat-wrap::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
