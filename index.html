@@ -35884,8 +35884,13 @@ body[data-perf-low] .dcard-handle{display:none}
     .grimorio-root .ess{flex:0 0 auto;padding:8px 12px;border-left:0;border-bottom:2px solid transparent}
     .grimorio-root .ess::after{display:none}
     .grimorio-root .ess[data-on="1"]{border-left:0;border-bottom-color:var(--bc)}
-    .grimorio-root .ess .ess-name,.grimorio-root .ess .ess-count{display:none}
+    .grimorio-root .ess .ess-name{display:inline!important;font-size:11px;letter-spacing:1px}
+    .grimorio-root .ess .ess-count{display:none}
     .grimorio-root .ess-sep{display:none}
+    /* barra rola horizontal e não fica sob o X de fechar */
+    .grimorio-root .side{flex-wrap:nowrap!important;overflow-x:auto!important;padding-right:56px!important}
+    .grimorio-root .ess-list{flex-wrap:nowrap!important}
+    .grimorio-root .ess{gap:7px!important}
     .grimorio-root main{padding:30px 20px 100px;max-width:none}
     .grimorio-root .m-head h2{font-size:42px}
     .grimorio-root .search{font-size:16px}
