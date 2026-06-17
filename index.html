@@ -3733,9 +3733,9 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 #tab-pericias .pericias-layout .pericia-unified::-webkit-scrollbar-thumb,
 #tab-pericias .pericias-layout .prof-card::-webkit-scrollbar-thumb,
 #tab-pericias .pericias-layout .interludio-card::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.pericias-layout .pericia-unified{grid-column:1;grid-row:1/span 2;align-self:stretch}
+.pericias-layout{grid-template-rows:1fr!important}
+.pericias-layout .pericia-unified{grid-column:1;grid-row:1;align-self:stretch}
 .pericias-layout .prof-card{grid-column:2;grid-row:1}
-.pericias-layout .interludio-card{grid-column:2;grid-row:2}
 .pericia-unified{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:border-color .18s}
 .pericia-unified:hover{border-color:var(--border-light)}
 .pericia-unified-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;margin-bottom:12px;border-bottom:1px solid var(--border)}
@@ -3767,7 +3767,7 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .peri-search svg{position:absolute;left:12px;width:14px;height:14px;stroke:var(--text-dim);fill:none;stroke-width:2.2;pointer-events:none}
 .peri-search input{width:100%;box-sizing:border-box;padding:9px 12px 9px 34px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-family:inherit;font-size:12px;outline:none;transition:border-color .2s,box-shadow .2s}
 .peri-search input::placeholder{color:var(--text-dim)}
-.peri-search input:focus{border-color:var(--magenta-dim);box-shadow:0 0 0 3px rgba(var(--magenta-rgb),.10)}
+.peri-search input:focus{border-color:var(--border-light);box-shadow:none}
 .peri-stats{display:flex;align-items:baseline;gap:4px;padding:6px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;flex-shrink:0}
 .peri-stats-num{font-size:16px;font-weight:700;color:var(--magenta)}
 .peri-stats-divider,.peri-stats-total{font-size:12px;color:var(--text-dim)}
@@ -10623,19 +10623,6 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
           <div class="prof-card">
             <div class="prof-card-header"><h4>Proficiências</h4><div class="dual-gear" onclick="openModal('proficiencia')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/></svg></div></div>
             <div class="prof-list" id="prof-list"></div>
-          </div>
-          <div class="interludio-card">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><h4>Treino Semanal</h4><button class="pericia-add-btn" style="font-size:10px;padding:5px 10px" onclick="openTrainLogModal()"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Registrar</button></div>
-            <div class="interludio-chart" id="interludio-chart"></div>
-            <div class="week-pills" id="week-pills"></div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-top:8px"><span id="interludio-day-sum">—</span><span id="interludio-count">0 perícias</span></div>
-            <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
-              <div style="display:flex;gap:12px;font-size:10px;flex-wrap:wrap">
-                <div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:2px;background:var(--magenta)"></div>Treinado (100)</div>
-                <div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:2px;background:var(--blue)"></div>Perito (200)</div>
-                <div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:2px;background:var(--yellow)"></div>Mestre (400)</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
