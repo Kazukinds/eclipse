@@ -3738,12 +3738,12 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 #tab-pericias .pericias-layout .pericia-unified::-webkit-scrollbar-thumb,
 #tab-pericias .pericias-layout .prof-card::-webkit-scrollbar-thumb,
 #tab-pericias .pericias-layout .interludio-card::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.pericias-layout{grid-template-rows:1fr!important}
-.pericias-layout .pericia-unified{grid-column:1;grid-row:1;align-self:stretch}
-.pericias-layout .prof-card{grid-column:2;grid-row:1}
+.pericias-layout{grid-template-rows:1fr!important;align-items:stretch!important}
+.pericias-layout .pericia-unified{grid-column:1;grid-row:1;align-self:stretch;height:100%}
+.pericias-layout .prof-card{grid-column:2;grid-row:1;align-self:stretch;height:100%;overflow-y:auto}
 .pericia-unified{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:border-color .18s}
 .pericia-unified:hover{border-color:var(--border-light)}
-.pericia-unified-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;margin-bottom:12px;border-bottom:1px solid var(--border)}
+.pericia-unified-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;margin:-16px -18px 14px;border-bottom:1px solid var(--border-light);background:color-mix(in srgb,#fff 6%,var(--bg-card-inner));border-radius:var(--radius) var(--radius) 0 0}
 .pericia-unified-header h4{font-size:13px;font-weight:700;color:var(--text-primary);letter-spacing:.2px;display:flex;align-items:center;gap:8px}
 .pericia-unified-header h4::before{content:"";width:3px;height:14px;background:var(--magenta);border-radius:2px}
 .pericia-add-btn{display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--magenta-bg);border:1px solid var(--magenta-dim);border-radius:var(--radius-xs);color:var(--magenta);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;text-transform:uppercase;letter-spacing:.5px}
@@ -4029,7 +4029,7 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .roll-result .roll-verdict{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:8px}
 .prof-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;overflow-y:auto;transition:border-color .18s}
 .prof-card:hover{border-color:var(--border-light)}
-.prof-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.prof-card-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;margin:-16px -18px 14px;border-bottom:1px solid var(--border-light);background:color-mix(in srgb,#fff 6%,var(--bg-card-inner));border-radius:var(--radius) var(--radius) 0 0}
 .prof-card-header h4{font-size:13px;font-weight:700;color:var(--text-primary);letter-spacing:.2px;display:flex;align-items:center;gap:8px}
 .prof-card-header h4::before{content:"";width:3px;height:14px;background:var(--magenta);border-radius:2px}
 .prof-list{display:flex;flex-direction:column;gap:2px;flex:1}
@@ -4178,14 +4178,14 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 
 /* ═══ TOAST / ALERT ═══ */
 /* Notificações (toast) no TOPO + fundo de vidro (glass) */
-.toast{position:fixed;top:calc(18px + env(safe-area-inset-top,0px));right:28px;width:min(420px,calc(100vw - 56px));
+.toast{position:fixed;top:calc(18px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%) translateY(-80px);right:auto;width:min(420px,calc(100vw - 56px));
   background:color-mix(in srgb,var(--bg-card) 62%,transparent);
   -webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);
   border:1px solid color-mix(in srgb,#fff 12%,transparent);border-radius:14px;padding:14px 16px;
   box-shadow:0 12px 32px -10px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.10);
   transform:translateY(-80px);opacity:0;transition:transform .25s ease,opacity .25s ease;z-index:400;
   display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;column-gap:12px;row-gap:2px;align-items:start;color:var(--text-primary);font-size:13px;font-weight:500;will-change:transform,opacity}
-.toast.show{transform:translateY(0);opacity:1}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 /* mantém o vidro do toast mesmo onde o kill global de backdrop-filter atua (mobile/touch) */
 .toast,.save-toast{-webkit-backdrop-filter:blur(18px) saturate(1.6)!important;backdrop-filter:blur(18px) saturate(1.6)!important}
 .toast:not(.show){pointer-events:none!important}
@@ -6680,7 +6680,11 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   /* Abas em altura/coluna preenchem o painel inteiro */
   #tab-pericias.tab-content.active,#tab-progress.tab-content.active,#tab-feiticos.tab-content.active{
     height:calc(100dvh - var(--top-offset,120px) - 36px)!important}
-  .pericias-layout{grid-template-columns:2fr 1.1fr!important;grid-template-rows:1fr 1fr!important}
+  /* cards de Perícias preenchem a altura toda (sem void embaixo) */
+  #tab-pericias .pericias-section{flex:1 1 auto!important;min-height:0!important;display:flex!important;flex-direction:column!important}
+  #tab-pericias .pericias-layout{flex:1 1 auto!important;height:100%!important;min-height:0!important;
+    grid-template-columns:2fr 1.1fr!important;grid-template-rows:1fr!important;align-items:stretch!important}
+  #tab-pericias .pericias-layout .pericia-unified,#tab-pericias .pericias-layout .prof-card{height:100%!important;align-self:stretch!important}
   .dash-grid{grid-template-columns:340px 1fr 300px!important}
   .inv-layout{grid-template-columns:1fr 340px!important}
 }
@@ -7762,7 +7766,8 @@ body{font-feature-settings:"ss01","cv11","calt","liga","kern"}
 .tab-content:not(#tab-biblioteca) .inv-filter-pill.active{background:var(--bg-card);color:var(--magenta);box-shadow:0 1px 3px rgba(0,0,0,.18),0 0 0 1px color-mix(in srgb,var(--magenta) 25%,transparent)}
 
 /* Toast/notification slide */
-.toast,.save-toast{animation:gp-toast-in .35s var(--ease-spring)}
+.save-toast{animation:gp-toast-in .35s var(--ease-spring)}
+/* .toast usa transition (transform centralizado) — sem keyframe que zera o translateX */
 @keyframes gp-toast-in{from{opacity:0;transform:translateY(-20px) scale(.96)}to{opacity:1;transform:none}}
 
 /* Number tick animation (apply .anim-tick class) */
