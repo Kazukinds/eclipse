@@ -35762,7 +35762,7 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .sort-opt{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;padding:9px 12px;border:0;background:none;border-radius:8px;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:background .14s,color .14s}
   .grimorio-root .sort-opt:hover{background:#1f1f1f;color:var(--txt)}
   .grimorio-root .sort-opt[data-on="1"]{color:var(--acc2);font-weight:600;background:color-mix(in srgb,var(--acc) 12%,transparent)}
-  .grimorio-root .sort-opt .sort-chk{flex:0 0 auto;color:var(--acc);font-size:12px}
+  .grimorio-root .sort-arr{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin:0 1px;opacity:.85}
   /* Drawer lateral (oculto até .open) */
   .grimorio-root .grim-filtdrawer{position:fixed;inset:0;z-index:9200;pointer-events:none;visibility:hidden}
   .grimorio-root .grim-filtdrawer.open{pointer-events:auto;visibility:visible}
@@ -36418,7 +36418,8 @@ const toolbar=document.getElementById('grim-toolbar');
 const ft=document.getElementById('grim-ft');
 const side=document.getElementById('grim-side');
 let atual=null,query='',grauF='all',catF='all',viewMode='card',sortMode='az';
-const SORTS={az:'A → Z',za:'Z → A',grau:'Por grau',cat:'Por arquétipo'};
+const ARR='<svg class="sort-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+const SORTS={az:`A ${ARR} Z`,za:`Z ${ARR} A`,grau:'Por grau',cat:'Por arquétipo'};
 
 const DESC={
   carmim:{tag:"Todo poder se paga sangrando",
