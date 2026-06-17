@@ -3772,10 +3772,13 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
    Aproveita toda a largura: modal largo, grade de perícias com muitas
    colunas, lista alta. (Antes ficava um card estreito centralizado.) */
 @media (min-width:1024px) and (orientation:landscape){
-  .modal.peri-modal-square{width:94vw!important;max-width:1400px!important;height:90vh!important;max-height:90vh!important;padding:28px 32px!important}
-  .modal.peri-modal-square .peri-cat-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))!important;gap:9px!important}
-  .modal.peri-modal-square .peri-cat-wrap{display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:18px 28px!important;align-content:start!important}
-  .modal.peri-modal-square .peri-cat-name{white-space:normal!important} /* nomes inteiros, sem truncar */
+  /* Catálogo de Perícias em TELA INTEIRA (100% da viewport, sem margem/cantos) */
+  .modal-overlay.open:has(.peri-modal-square){padding:0!important}
+  .modal.peri-modal-square{width:100vw!important;max-width:100vw!important;height:100vh!important;height:100dvh!important;max-height:100vh!important;max-height:100dvh!important;
+    border-radius:0!important;border:none!important;box-shadow:none!important;padding:32px 40px!important}
+  .modal.peri-modal-square .peri-cat-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))!important;gap:10px!important}
+  .modal.peri-modal-square .peri-cat-wrap{display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:20px 36px!important;align-content:start!important}
+  .modal.peri-modal-square .peri-cat-name{white-space:normal!important} /* nomes inteiros */
   .modal.peri-modal-square .peri-budget-row{justify-content:flex-start!important;gap:18px!important}
 }
 .peri-cat-wrap{gap:10px!important}
