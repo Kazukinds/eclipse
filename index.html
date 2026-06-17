@@ -3714,6 +3714,19 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 #tab-pericias .pericias-layout .pericia-unified,
 #tab-pericias .pericias-layout .prof-card,
 #tab-pericias .pericias-layout .interludio-card{min-height:0;overflow-y:auto;overflow-x:hidden}
+/* PORTRAIT/mobile: empilha em fluxo natural com a aba rolando — sem grid
+   de 2 linhas de altura fixa (que colapsava os cards pra altura 0 e
+   escondia o painel de Perícias). */
+@media (max-width:1024px),(orientation:portrait){
+  #tab-pericias.tab-content.active{height:auto!important;min-height:0!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch}
+  #tab-pericias .pericias-section{flex:0 0 auto!important;overflow:visible!important}
+  /* empilha em 1 coluna, fluxo natural — sem display:grid pra não herdar
+     grid-row/column fixos (pericia-unified tinha row 1/span 2 → sobrepunha). */
+  #tab-pericias .pericias-layout{display:flex!important;flex-direction:column!important;height:auto!important;overflow:visible!important;gap:14px!important}
+  #tab-pericias .pericias-layout .pericia-unified,
+  #tab-pericias .pericias-layout .prof-card,
+  #tab-pericias .pericias-layout .interludio-card{grid-column:auto!important;grid-row:auto!important;overflow:visible!important;height:auto!important;width:100%!important}
+}
 #tab-pericias .pericias-layout .pericia-unified::-webkit-scrollbar,
 #tab-pericias .pericias-layout .prof-card::-webkit-scrollbar,
 #tab-pericias .pericias-layout .interludio-card::-webkit-scrollbar{width:4px}
