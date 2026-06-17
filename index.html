@@ -35731,8 +35731,8 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .tb-top:focus-within::before{color:var(--acc2)}
   .grimorio-root .search{flex:1;min-width:0;padding:13px 0;background:none;border:0;color:var(--txt);font-size:16px;outline:none;font-family:'Inter',sans-serif}
   /* LISTA = botão SEPARADO ao lado do campo de busca */
-  .grimorio-root .tb-row{display:flex;align-items:stretch;gap:10px}
-  .grimorio-root .tb-row .tb-top{flex:1 1 auto}
+  .grimorio-root .tb-row{display:flex;align-items:stretch;gap:10px;min-width:0;flex-wrap:wrap}
+  .grimorio-root .tb-row .tb-top{flex:1 1 220px;min-width:0}
   .grimorio-root .tb-row .viewtog{flex:0 0 auto;margin:0;padding:0 16px;display:flex;align-items:center;gap:8px;
     border:1px solid var(--line);border-radius:12px;background:#161616;color:var(--muted);
     font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:border-color .18s,color .18s}
@@ -35744,7 +35744,7 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .gfilters{display:flex;gap:24px;flex-wrap:wrap}
   .grimorio-root .cfilters{display:flex;gap:20px;flex-wrap:wrap}
   /* ═══ Barra estilo Behance: botão Filtrar + busca + view; filtros num drawer ═══ */
-  .grimorio-root .tb-row{display:flex;align-items:stretch;gap:10px;position:relative;z-index:30}
+  .grimorio-root .tb-row{display:flex;align-items:stretch;gap:10px;position:relative;z-index:30;min-width:0;flex-wrap:wrap}
   .grimorio-root .grim-filtbtn{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:0 16px;cursor:pointer;
     background:#161616;border:1px solid var(--line);border-radius:12px;color:var(--txt);font-family:'Inter',sans-serif;
     font-size:12px;font-weight:600;letter-spacing:.02em;transition:border-color .15s,background .15s;position:relative}
@@ -35789,7 +35789,6 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .gfd-clear{flex:0 0 auto;padding:13px 18px;background:none;border:1px solid var(--line);border-radius:10px;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600}
   .grimorio-root .gfd-apply{flex:1;padding:13px;background:var(--acc);border:0;border-radius:10px;color:#0a0a0a;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:700}
   @media(max-width:640px){
-    .grimorio-root .tb-row{flex-wrap:nowrap}
     .grimorio-root .grim-filtbtn{padding:9px 12px}
     .grimorio-root .tb-row .viewtog{flex:0 0 auto;padding:9px 12px}
   }
