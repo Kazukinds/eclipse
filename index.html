@@ -36065,6 +36065,9 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root,.grimorio-root *{font-family:'Inter',-apple-system,system-ui,sans-serif!important}
   /* ===== container overlay fullscreen ===== */
   #grimorio-screen[hidden]{display:none!important}
+  /* Grimório aberto = tela cheia: esconde a sidebar/topbar do index */
+  body.grimorio-open .sidebar,body.grimorio-open .topbar{display:none!important}
+  #grimorio-screen{z-index:99999}
   .grimorio-root{
     --bg:#000000;--panel:#0a0a0a;--line:rgba(255,255,255,.09);--line-2:rgba(255,255,255,.05);
     --txt:#f4f2f6;--muted:#8c8a92;--faint:#5d5b63;
@@ -37002,10 +37005,12 @@ window.openGrimorio=function(){
   s.hidden=false;
   if(!s.dataset.booted){s.dataset.booted='1'; bootGrimorio(); /* re-boot seguro caso o boot inline tenha sido limpo */ }
   document.body.style.overflow='hidden';
+  document.body.classList.add('grimorio-open'); /* esconde sidebar/topbar do index → tela cheia */
 };
 window.closeGrimorio=function(){
   document.getElementById('grimorio-screen').hidden=true;
   document.body.style.overflow='';
+  document.body.classList.remove('grimorio-open');
 };
 })();
 </script>
