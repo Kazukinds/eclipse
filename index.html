@@ -35965,17 +35965,19 @@ body[data-perf-low] .dcard-handle{display:none}
     .grimorio-root .cart-fab{padding:0 14px}
     .grimorio-root .cart-fab .cart-lbl{display:none}
   }
-  /* ═══ VERTICAL ESTREITO: barra empilha em zonas, busca largura total ═══ */
+  /* ═══ VERTICAL ESTREITO: barra empilha; busca em cima, botões embaixo ═══ */
   @media(max-width:600px){
     .grimorio-root .side{padding:12px 14px 12px;gap:12px}
     .grimorio-root .brand-txt h1{font-size:15px;letter-spacing:2.5px}
-    /* tb-row vira coluna: busca em cima (full), botões embaixo espalhados */
-    .grimorio-root .side-bar .toolbar .tb-row{flex-wrap:wrap;gap:10px}
-    .grimorio-root .side-bar .toolbar .tb-top{order:1;flex:1 1 100%;min-width:0}
-    .grimorio-root .side-bar .toolbar .grim-filtbtn{order:2;flex:1 1 auto;justify-content:center;padding:11px 12px}
-    .grimorio-root .side-bar .toolbar .grim-sort{order:3;flex:1 1 auto}
-    .grimorio-root .side-bar .toolbar .grim-sort-btn{justify-content:center;height:100%;padding:11px 12px}
-    .grimorio-root .side-bar .toolbar .cart-fab{order:4;flex:0 0 auto;padding:11px 16px}
+    /* side-bar: 3 zonas empilhadas — marca / busca / botões */
+    .grimorio-root .side-bar{grid-template-columns:auto 1fr;grid-template-areas:"back brand" "tools tools";gap:12px}
+    /* tb-row em grid próprio: busca full em cima, botões dividindo embaixo */
+    .grimorio-root .side-bar .toolbar .tb-row{display:grid!important;grid-template-columns:1fr auto auto;grid-template-areas:"search search search" "filt sort cart";gap:10px;flex-wrap:nowrap}
+    .grimorio-root .side-bar .toolbar .tb-top{grid-area:search;min-width:0}
+    .grimorio-root .side-bar .toolbar .grim-filtbtn{grid-area:filt;justify-content:center;padding:11px 14px}
+    .grimorio-root .side-bar .toolbar .grim-sort{grid-area:sort}
+    .grimorio-root .side-bar .toolbar .grim-sort-btn{justify-content:center;height:100%;padding:11px 14px}
+    .grimorio-root .side-bar .toolbar .cart-fab{grid-area:cart;padding:11px 16px}
     .grimorio-root .search{padding:12px 0}
   }
 </style>
