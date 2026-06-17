@@ -3777,12 +3777,9 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .peri-cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
 /* ═══ Chip de perícia — redesign: legível, tátil, estados claros ═══ */
 .peri-cat-item{display:flex;align-items:center;gap:9px;padding:10px 11px;background:var(--bg-card-inner);border:1px solid var(--border-light);border-radius:11px;cursor:pointer;transition:transform .16s var(--ease-out-expo,cubic-bezier(.16,1,.3,1)),background .16s,border-color .16s,box-shadow .16s;font-size:12.5px;color:var(--text-primary);font-family:inherit;text-align:left;width:100%;position:relative;overflow:hidden;line-height:1.2}
-.peri-cat-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g-color);opacity:.5;transition:opacity .16s,width .16s}
 .peri-cat-item:hover{border-color:color-mix(in srgb,var(--g-color) 60%,var(--border-light));background:color-mix(in srgb,var(--g-color) 10%,var(--bg-card-inner));transform:translateY(-2px);box-shadow:0 6px 16px -8px color-mix(in srgb,var(--g-color) 60%,transparent)}
-.peri-cat-item:hover::before{opacity:1;width:4px}
 .peri-cat-item:active{transform:translateY(0) scale(.98)}
 .peri-cat-item.added{border-color:var(--g-color);background:color-mix(in srgb,var(--g-color) 18%,var(--bg-card-inner));color:#fff}
-.peri-cat-item.added::before{opacity:1;width:4px}
 .peri-cat-dot{width:8px;height:8px;border-radius:50%;background:var(--g-color);opacity:.7;flex-shrink:0;transition:all .16s;box-shadow:0 0 0 0 var(--g-color)}
 .peri-cat-item:hover .peri-cat-dot{opacity:1}
 .peri-cat-item.added .peri-cat-dot{opacity:1;box-shadow:0 0 8px color-mix(in srgb,var(--g-color) 80%,transparent)}
@@ -3793,7 +3790,6 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .peri-cat-item.added .peri-cat-action{background:var(--g-color);color:#0a0a0a}
 .peri-cat-item.added .peri-cat-action svg{stroke-width:3.4}
 .peri-cat-item.auto{border-color:color-mix(in srgb,var(--yellow) 60%,transparent);background:color-mix(in srgb,var(--yellow) 12%,var(--bg-card-inner));cursor:not-allowed}
-.peri-cat-item.auto::before{background:var(--yellow);opacity:1;width:4px}
 .peri-cat-item.auto .peri-cat-action{background:color-mix(in srgb,var(--yellow) 20%,transparent);color:var(--yellow)}
 .peri-cat-item.auto:hover{transform:none;box-shadow:none}
 .peri-cat-item.blocked{opacity:.42;cursor:not-allowed;filter:grayscale(.5)}
