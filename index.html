@@ -36146,7 +36146,13 @@ body[data-perf-low] .dcard-handle{display:none}
      Usa um ::before absoluto cobrindo a faixa do topo (largura 100% do main). */
   .grimorio-root main{position:relative}
   .grimorio-root main>.m-head,.grimorio-root main>.toolbar,.grimorio-root main>.m-about{position:relative;z-index:1;background:transparent!important}
-  .grimorio-root main::before{content:"";position:absolute;top:0;left:0;right:0;height:var(--grim-head-h,360px);background:#1a1a1a;z-index:0}
+  /* painel cinza cobre só título+busca+filtros; o ::before estende o bg
+     dos elementos exatos (m-head+toolbar) full-width, sem altura fixa que
+     cortava o 'Sobre a essência' no meio. */
+  .grimorio-root main::before{content:"";position:absolute;top:0;left:0;right:0;bottom:auto;height:var(--grim-head-h,0px);background:#1a1a1a;z-index:0;display:none}
+  .grimorio-root main>.m-head,.grimorio-root main>.toolbar{position:relative;background:#1a1a1a!important;z-index:1}
+  .grimorio-root main>.m-head::before,.grimorio-root main>.toolbar::before{content:"";position:absolute;top:0;bottom:0;left:-48px;right:-48px;background:#1a1a1a;z-index:-1}
+  .grimorio-root main>.m-about{background:transparent!important;position:relative;z-index:1}
   .grimorio-root main>.m-head{margin:0 0 18px!important;padding-top:0!important}
   .grimorio-root main>.toolbar{margin:0 0 14px!important}
   .grimorio-root main>.m-about{margin:0 0 30px!important;border-top:0!important;border-bottom:0!important}
