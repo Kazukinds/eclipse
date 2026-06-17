@@ -19560,7 +19560,7 @@ function _elementoOpenSwap(){
   </div>`;
 }
 // Helper público pra trocar pelo perfil
-function abrirTrocaElemento(){
+function openElementSwap(){
   if(typeof profileData!=='object'||!profileData||!profileData.elemento){
     if(typeof openElementoQuiz==='function')openElementoQuiz();
     return;
@@ -19571,12 +19571,12 @@ function abrirTrocaElemento(){
   _elementoOpenSwap();
 }
 window.openElementoQuiz=openElementoQuiz;
-window.abrirTrocaElemento=abrirTrocaElemento;
+window.openElementSwap=openElementSwap;
 
 // Hook: pf-elemento click → troca/abre quiz
 document.addEventListener('click',e=>{
   const el=e.target.closest('#pf-elemento');
-  if(el){if(typeof abrirTrocaElemento==='function')abrirTrocaElemento()}
+  if(el){if(typeof openElementSwap==='function')openElementSwap()}
 });
 
 // Aplica orb conic ao avatar quando elemento despertado (chamado no renderProfileAvatar)
