@@ -36176,6 +36176,9 @@ body[data-perf-low] .dcard-handle{display:none}
     mask:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E")}
   .grimorio-root .tb-top:focus-within::before{color:var(--acc2)}
   .grimorio-root .search{flex:1;min-width:0;padding:13px 0;background:none;border:0;color:var(--txt);font-size:16px;outline:none;font-family:'Inter',sans-serif}
+  /* LISTA dentro do campo de busca, à direita, com divisória */
+  .grimorio-root .tb-top .viewtog{flex:0 0 auto;margin:0;padding:7px 0 7px 14px;border-left:1px solid var(--line);color:var(--muted);font-size:11px;font-weight:700;letter-spacing:1.5px}
+  .grimorio-root .tb-top .viewtog:hover{color:var(--txt)}
   .grimorio-root .search::placeholder{color:var(--faint)}
   .grimorio-root .viewtog{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:6px 2px;background:none;border:0;color:var(--muted);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Inter',system-ui,sans-serif}
   .grimorio-root .viewtog:hover{color:var(--txt)}
@@ -36939,9 +36942,8 @@ function renderToolbar(){
   const cchips=cats.length?`<button class="cchip" data-c="all" ${catF==='all'?'data-on="1"':''}>Todos</button>`+cats.map(c=>`<button class="cchip" data-c="${c}" data-cat="${c}" ${catF===c?'data-on="1"':''}>${c}</button>`).join(''):'';
   const grauLbl=grauF==='all'?'Todos':'Grau '+grauF;
   const catLbl=catF==='all'?'Todos':catF;
-  toolbar.innerHTML=`<div class="tb-top"><input class="search" id="grim-srch" placeholder="Buscar feitiço..." value="${query}"></div>`
+  toolbar.innerHTML=`<div class="tb-top"><input class="search" id="grim-srch" placeholder="Buscar feitiço..." value="${query}"><button class="viewtog" id="grim-viewtog" title="Alternar lista e cards"><span>${viewMode==='list'?'▦':'☰'}</span>${viewMode==='list'?'Cards':'Lista'}</button></div>`
     +`<div class="tb-filters">`
-    +`<button class="viewtog" id="grim-viewtog" title="Alternar lista e cards"><span>${viewMode==='list'?'▦':'☰'}</span>${viewMode==='list'?'Cards':'Lista'}</button>`
     +`<span class="tb-fspacer"></span>`
     +`<details class="grim-fdrop"><summary><span class="fd-k">Grau</span><span class="fd-v">${grauLbl}</span><span class="fd-chev">▾</span></summary><div class="gfilters">${gchips}</div></details>`
     +(cchips?`<details class="grim-fdrop"><summary><span class="fd-k">Arquétipo</span><span class="fd-v">${catLbl}</span><span class="fd-chev">▾</span></summary><div class="cfilters">${cchips}</div></details>`:'')
