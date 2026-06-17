@@ -406,7 +406,7 @@ body:has(.biblio-reader.show) .sidebar{opacity:0;pointer-events:none;visibility:
 .sidebar-more .theme-btn-logo{width:26px;height:26px;flex:0 0 26px;display:block;margin:0 auto}
 .sidebar-more .theme-btn-logo .el-moon,.sidebar-more .theme-btn-logo .el-star{-webkit-mask-size:contain;mask-size:contain}
 /* Lua sólida preta no botão central da pill */
-.sidebar-more .theme-btn-logo .el-moon{background:#000}
+.sidebar-more .theme-btn-logo .el-moon,.sidebar-more .theme-btn-logo .el-star{background:#000}
 /* Eclipse logo — toque/hover reflete luz pela silhueta */
 .eclipse-logo::after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(190,255,140,.9) 50%,transparent 65%);background-size:300% 100%;background-position:-150% 0;mask-image:url(icons/logo-eclipse-moon.svg),url(icons/logo-eclipse-star.svg);mask-size:100% 100%;mask-repeat:no-repeat;mask-mode:alpha;-webkit-mask-image:url(icons/logo-eclipse-moon.svg),url(icons/logo-eclipse-star.svg);-webkit-mask-size:100% 100%;-webkit-mask-repeat:no-repeat;opacity:0;mix-blend-mode:screen;pointer-events:none}
 .eclipse-logo:hover::after,.eclipse-logo:active::after,.sidebar-logo:hover .eclipse-logo::after{animation:el-shine 1.8s cubic-bezier(.4,.6,.4,1)}
