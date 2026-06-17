@@ -35772,6 +35772,19 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .grim-filtbtn:hover{border-color:#3a3a3a;background:#1c1c1c}
   .grimorio-root .grim-filtbtn svg{width:16px;height:16px}
   .grimorio-root .grim-filtbtn .filt-badge{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;padding:0 5px;border-radius:9px;background:var(--acc);color:#0a0a0a;font-size:10px;font-weight:800;margin-left:2px}
+  /* Dropdown Ordenar (estilo Behance "Projetos ▾") */
+  .grimorio-root .grim-sort{position:relative;flex:0 0 auto}
+  .grimorio-root .grim-sort-btn{list-style:none;cursor:pointer;display:flex;align-items:center;gap:7px;height:100%;padding:0 14px;
+    background:#161616;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;white-space:nowrap;transition:border-color .15s}
+  .grimorio-root .grim-sort-btn::-webkit-details-marker{display:none}
+  .grimorio-root .grim-sort-btn:hover,.grimorio-root .grim-sort[open] .grim-sort-btn{border-color:#3a3a3a;color:var(--txt)}
+  .grimorio-root .grim-sort-btn b{color:var(--txt);font-weight:600}
+  .grimorio-root .grim-sort-btn .dd-chev{color:var(--faint);transition:transform .2s}
+  .grimorio-root .grim-sort[open] .dd-chev{transform:rotate(180deg)}
+  .grimorio-root .grim-sort-panel{position:absolute;top:calc(100% + 6px);right:0;min-width:180px;z-index:40;background:#161616;border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 12px 32px -8px rgba(0,0,0,.6);display:flex;flex-direction:column;gap:2px}
+  .grimorio-root .sort-opt{text-align:left;padding:10px 12px;border:0;background:none;border-radius:8px;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;cursor:pointer}
+  .grimorio-root .sort-opt:hover{background:#222;color:var(--txt)}
+  .grimorio-root .sort-opt[data-on="1"]{color:var(--acc2);font-weight:700}
   /* Drawer lateral (oculto até .open) */
   .grimorio-root .grim-filtdrawer{position:fixed;inset:0;z-index:9200;pointer-events:none;visibility:hidden}
   .grimorio-root .grim-filtdrawer.open{pointer-events:auto;visibility:visible}
@@ -35867,7 +35880,7 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root footer{margin-top:64px;padding:22px 0 0;border-top:1px solid var(--line);color:var(--faint);font-size:11px;letter-spacing:2px;text-transform:uppercase;text-align:left}
 
   /* carrinho */
-  .grimorio-root .cart-fab{position:fixed;right:26px;bottom:26px;z-index:9050;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--txt);border:1px solid var(--line);background:#0a0a0a;transition:transform .2s,border-color .2s,color .2s}
+  .grimorio-root .cart-fab{position:fixed;right:22px;top:16px;z-index:9120;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--txt);border:1px solid var(--line);background:rgba(10,10,10,.85);backdrop-filter:blur(6px);transition:transform .2s,border-color .2s,color .2s}
   .grimorio-root .cart-fab[data-empty="1"]{color:var(--faint)}
   .grimorio-root .cart-fab:not([data-empty="1"]){border-color:var(--acc);color:var(--acc2)}
   .grimorio-root .cart-fab:hover{transform:translateY(-2px)}
@@ -36468,7 +36481,8 @@ const elHead=document.getElementById('grim-elHead');
 const toolbar=document.getElementById('grim-toolbar');
 const ft=document.getElementById('grim-ft');
 const side=document.getElementById('grim-side');
-let atual=null,query='',grauF='all',catF='all',viewMode='card';
+let atual=null,query='',grauF='all',catF='all',viewMode='card',sortMode='az';
+const SORTS={az:'A → Z',za:'Z → A',grau:'Por grau',cat:'Por arquétipo'};
 
 const DESC={
   carmim:{tag:"Todo poder se paga sangrando",
@@ -36562,6 +36576,7 @@ function renderToolbar(){
   toolbar.innerHTML=`<div class="tb-row">`
     +`<button class="grim-filtbtn" id="grim-filtbtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>Filtrar${nAtivos?`<span class="filt-badge">${nAtivos}</span>`:''}</button>`
     +`<div class="tb-top"><input class="search" id="grim-srch" placeholder="Buscar feitiço..." value="${query}"></div>`
+    +`<details class="grim-sort"><summary class="grim-sort-btn"><b>${SORTS[sortMode]}</b><span class="dd-chev">▾</span></summary><div class="grim-sort-panel">${Object.entries(SORTS).map(([k,v])=>`<button class="sort-opt" data-s="${k}" ${sortMode===k?'data-on="1"':''}>${v}${sortMode===k?' ✓':''}</button>`).join('')}</div></details>`
     +`<button class="viewtog" id="grim-viewtog" title="Alternar lista e cards"><span>${viewMode==='list'?'▦':'☰'}</span>${viewMode==='list'?'Cards':'Lista'}</button>`
     +`</div>`;
   // Drawer de filtros (oculto até abrir) — seções colapsáveis estilo Behance
@@ -36589,6 +36604,7 @@ function renderToolbar(){
   const s=document.getElementById('grim-srch');
   s.oninput=()=>{query=s.value;render();};
   document.getElementById('grim-viewtog').onclick=()=>{viewMode=viewMode==='list'?'card':'list';renderToolbar();render();};
+  toolbar.querySelectorAll('.sort-opt').forEach(b=>b.onclick=()=>{sortMode=b.dataset.s;renderToolbar();render();});
 }
 
 function render(){
@@ -36602,7 +36618,11 @@ function render(){
     if(!data[g])return;
     let list=data[g].filter(f=>(!q||f.n.toLowerCase().includes(q))&&(catF==='all'||f.cat===catF));
     if(!list.length)return;
-    list=list.slice().sort((x,y)=>x.n.localeCompare(y.n,'pt'));
+    list=list.slice().sort((x,y)=>{
+      if(sortMode==='za')return y.n.localeCompare(x.n,'pt');
+      if(sortMode==='cat')return (x.cat||'').localeCompare(y.cat||'','pt')||x.n.localeCompare(y.n,'pt');
+      return x.n.localeCompare(y.n,'pt'); // az e grau usam A→Z (grau já agrupa por grau)
+    });
     html+=`<div class="grau-div"><span>Grau ${g}</span></div><div class="${wrap}">`+list.map(f=>renderer(f,g)).join('')+'</div>';
     total+=list.length;
   });
