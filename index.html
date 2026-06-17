@@ -3770,8 +3770,8 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .peri-modal-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-shrink:0;padding:3px}
 .peri-search{flex:1;min-width:0;position:relative;display:flex;align-items:center}
 .peri-search svg{position:absolute;left:12px;width:14px;height:14px;stroke:var(--text-dim);fill:none;stroke-width:2.2;pointer-events:none}
-.peri-search input{width:100%;box-sizing:border-box;padding:9px 12px 9px 34px;background:var(--bg-input);border:1px solid var(--border-light);border-radius:var(--radius-sm);color:var(--text-primary);font-family:inherit;font-size:12px;outline:none;transition:border-color .2s,box-shadow .2s}
-.peri-search input:focus,.peri-search input:hover{border-color:var(--border-light)!important;box-shadow:none!important}
+.peri-search input{width:100%;box-sizing:border-box;padding:9px 12px 9px 34px;background:var(--bg-input);border:1px solid var(--border-light);border-radius:var(--radius-sm);color:var(--text-primary);font-family:inherit;font-size:12px;outline:none!important;transition:border-color .2s,box-shadow .2s}
+.peri-search input:focus,.peri-search input:hover,.peri-search input:focus-visible,#peri-search-input:focus,#peri-search-input:focus-visible{border-color:var(--border-light)!important;box-shadow:none!important;outline:0 none!important;outline-offset:0!important}
 .peri-search input::placeholder{color:var(--text-dim)}
 .peri-search input:focus{border-color:var(--border-light);box-shadow:none}
 .peri-stats{display:flex;align-items:baseline;gap:4px;padding:6px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;flex-shrink:0}
@@ -20736,8 +20736,12 @@ function renderProficiencias(){
   const el=document.getElementById('prof-list');if(!el)return;
   const tot=PROF_DATA.reduce((s,c)=>s+c.items.length,0);
   const ok=PROF_DATA.reduce((s,c)=>s+c.items.filter(it=>profState[it.id]).length,0);
-  const summary=`<div class="peri-stat-chips" style="margin-top:0;margin-bottom:10px"><span class="peri-stat-chip"><b>${ok}</b>/${tot} ativas</span></div>`;
-  el.innerHTML=summary+PROF_DATA.map(cat=>{
+  // contador vai pro cabeçalho (em cima), ao lado do título — não na lista
+  const hdr=el.closest('.prof-card')?.querySelector('.prof-card-header');
+  if(hdr){let chip=hdr.querySelector('.prof-count-chip');
+    if(!chip){chip=document.createElement('span');chip.className='peri-stat-chip prof-count-chip';hdr.appendChild(chip)}
+    chip.innerHTML=`<b>${ok}</b>/${tot} ativas`;}
+  el.innerHTML=PROF_DATA.map(cat=>{
     const sect=cat.items.filter(it=>profState[it.id]).length;
     return`<div class="prof-section"><div class="prof-section-label" style="color:${cat.color}">${cat.icon} ${cat.cat}${sect?` <span style="margin-left:auto;color:var(--magenta);font-weight:800">${sect}</span>`:''}</div>${cat.items.map(it=>{
       const has=!!profState[it.id];
