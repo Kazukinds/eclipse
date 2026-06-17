@@ -35772,7 +35772,15 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .grim-dd-panel .gchip,.grimorio-root .grim-dd-panel .cchip{text-align:left;padding:9px 12px;border-bottom:0;border-radius:8px}
   .grimorio-root .grim-dd-panel .gchip:hover,.grimorio-root .grim-dd-panel .cchip:hover{background:#222;color:var(--txt)}
   .grimorio-root .grim-dd-panel .gchip[data-on="1"],.grimorio-root .grim-dd-panel .cchip[data-on="1"]{background:color-mix(in srgb,var(--acc) 16%,transparent);color:var(--acc2)}
-  @media(max-width:640px){.grimorio-root .grim-dd-btn{padding:0 10px;font-size:10px}.grimorio-root .grim-dd-btn .dd-k{display:none}}
+  @media(max-width:640px){
+    .grimorio-root .grim-dd-btn{padding:9px 12px;font-size:10px}.grimorio-root .grim-dd-btn .dd-k{display:none}
+    /* busca em cima (linha cheia); Grau + Arquétipo + LISTA embaixo */
+    .grimorio-root .tb-row{flex-wrap:wrap}
+    .grimorio-root .tb-row .tb-top{flex:1 1 100%;order:0}
+    .grimorio-root .tb-row .grim-dd{order:1}
+    .grimorio-root .tb-row .viewtog{order:2;flex:1 1 auto;justify-content:center;padding:9px 12px;font-size:11px}
+    .grimorio-root .grim-dd-panel{right:auto;left:0}
+  }
   .grimorio-root .gchip,.grimorio-root .cchip{padding:1px 0;background:none;border:0;border-bottom:2px solid transparent;color:var(--faint);font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Inter',system-ui,sans-serif;transition:color .15s}
   .grimorio-root .gchip:hover,.grimorio-root .cchip:hover{color:var(--muted)}
   .grimorio-root .gchip[data-on="1"]{color:var(--txt);border-bottom-color:var(--acc)}
