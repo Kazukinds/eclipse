@@ -3772,14 +3772,29 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
    Aproveita toda a largura: modal largo, grade de perícias com muitas
    colunas, lista alta. (Antes ficava um card estreito centralizado.) */
 @media (min-width:1024px) and (orientation:landscape){
-  /* Catálogo de Perícias em TELA INTEIRA (100% da viewport, sem margem/cantos) */
+  /* Catálogo de Perícias em TELA INTEIRA, SEM rolamento — tudo encaixa */
   .modal-overlay.open:has(.peri-modal-square){padding:0!important}
   .modal.peri-modal-square{width:100vw!important;max-width:100vw!important;height:100vh!important;height:100dvh!important;max-height:100vh!important;max-height:100dvh!important;
-    border-radius:0!important;border:none!important;box-shadow:none!important;padding:32px 40px!important}
-  .modal.peri-modal-square .peri-cat-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))!important;gap:10px!important}
-  .modal.peri-modal-square .peri-cat-wrap{display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:20px 36px!important;align-content:start!important}
-  .modal.peri-modal-square .peri-cat-name{white-space:normal!important} /* nomes inteiros */
+    border-radius:0!important;border:none!important;box-shadow:none!important;padding:24px 36px 18px!important;
+    display:flex!important;flex-direction:column!important;overflow:hidden!important}
+  /* topo compacto pra sobrar altura pra lista */
+  .modal.peri-modal-square .peri-modal-top{margin-bottom:10px!important}
+  .modal.peri-modal-square .peri-budget{margin-bottom:10px!important;padding:10px 14px!important}
   .modal.peri-modal-square .peri-budget-row{justify-content:flex-start!important;gap:18px!important}
+  .modal.peri-modal-square .peri-tabs{margin-bottom:10px!important}
+  /* área das perícias: ocupa o resto da altura, NÃO rola (tudo cabe) */
+  .modal.peri-modal-square .peri-cat-wrap{flex:1 1 auto!important;min-height:0!important;overflow:hidden!important;
+    display:grid!important;grid-template-columns:repeat(2,1fr)!important;grid-auto-rows:1fr!important;gap:12px 36px!important;align-content:stretch!important}
+  /* cada grupo: header + grade que cabe (4 colunas → 8 perícias em 2 linhas) */
+  .modal.peri-modal-square .peri-cat-section{min-height:0!important}
+  .modal.peri-modal-square .peri-cat-grid{grid-template-columns:repeat(4,1fr)!important;gap:8px!important}
+  /* chips compactos pra não estourar a altura */
+  .modal.peri-modal-square .peri-cat-item{padding:8px 10px!important;border-radius:9px!important;font-size:12px!important}
+  .modal.peri-modal-square .peri-cat-name{white-space:nowrap!important}
+  .modal.peri-modal-square .peri-cat-header{padding-bottom:4px!important;margin-bottom:2px!important}
+  /* botão criar + concluir não empurram a lista */
+  .modal.peri-modal-square .peri-create{margin:8px 0 0!important}
+  .modal.peri-modal-square .modal-btns{margin-top:10px!important}
 }
 .peri-cat-wrap{gap:10px!important}
 .peri-cat-wrap::-webkit-scrollbar{width:6px}
