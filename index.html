@@ -36168,8 +36168,14 @@ body[data-perf-low] .dcard-handle{display:none}
   /* toolbar */
   .grimorio-root .toolbar{display:flex;flex-direction:column;gap:18px;margin:0 0 14px}
   .grimorio-root .toolbar:empty{display:none}
-  .grimorio-root .tb-top{display:flex;gap:18px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:6px}
-  .grimorio-root .search{flex:1;min-width:0;padding:8px 2px;background:none;border:0;color:var(--txt);font-size:18px;outline:none;font-family:'Inter',sans-serif}
+  /* Campo de busca — caixa com lupa, borda, arredondada */
+  .grimorio-root .tb-top{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;background:#161616;padding:0 14px;transition:border-color .18s,box-shadow .18s}
+  .grimorio-root .tb-top:focus-within{border-color:color-mix(in srgb,var(--acc) 55%,var(--line));box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 12%,transparent)}
+  .grimorio-root .tb-top::before{content:"";flex:0 0 auto;width:18px;height:18px;background:currentColor;color:var(--faint);
+    -webkit-mask:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+    mask:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E")}
+  .grimorio-root .tb-top:focus-within::before{color:var(--acc2)}
+  .grimorio-root .search{flex:1;min-width:0;padding:13px 0;background:none;border:0;color:var(--txt);font-size:16px;outline:none;font-family:'Inter',sans-serif}
   .grimorio-root .search::placeholder{color:var(--faint)}
   .grimorio-root .viewtog{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:6px 2px;background:none;border:0;color:var(--muted);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Inter',system-ui,sans-serif}
   .grimorio-root .viewtog:hover{color:var(--txt)}
