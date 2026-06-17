@@ -35784,12 +35784,14 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .gfd-sec .gchip,.grimorio-root .gfd-sec .cchip{text-align:left;padding:11px 14px;border-bottom:0!important;border-radius:8px;font-size:13px}
   .grimorio-root .gfd-sec .gchip:hover,.grimorio-root .gfd-sec .cchip:hover{background:#1c1c1c;color:var(--txt)}
   .grimorio-root .gfd-sec .gchip[data-on="1"],.grimorio-root .gfd-sec .cchip[data-on="1"]{background:color-mix(in srgb,var(--acc) 16%,transparent);color:var(--acc2)}
-  /* Essências no drawer: pills coloridas que quebram em linhas */
-  .grimorio-root .gfd-sec .efilters{display:flex;flex-wrap:wrap;gap:8px;padding:0 14px 16px}
-  .grimorio-root .echip{flex:0 0 auto;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:#191919;color:var(--muted);
-    font-family:'Inter',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:.15s}
-  .grimorio-root .echip:hover{border-color:#3a3a3a;color:var(--txt)}
-  .grimorio-root .echip[data-on="1"]{border-color:var(--bc);background:color-mix(in srgb,var(--bc) 18%,#191919);color:var(--bc2)}
+  /* Essências no drawer: lista (igual Grau/Arquétipo) */
+  .grimorio-root .gfd-sec .efilters{display:flex;flex-direction:column;gap:2px;padding:0 14px 16px}
+  .grimorio-root .echip{display:flex;align-items:center;gap:10px;text-align:left;padding:11px 14px;border:0;border-radius:8px;background:none;color:var(--muted);
+    font-family:'Inter',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:.15s}
+  .grimorio-root .echip::before{content:"";flex:0 0 auto;width:9px;height:9px;border-radius:50%;background:var(--bc);opacity:.55;transition:opacity .15s}
+  .grimorio-root .echip:hover{background:#1c1c1c;color:var(--txt)}
+  .grimorio-root .echip[data-on="1"]{background:color-mix(in srgb,var(--bc) 16%,transparent);color:var(--bc2)}
+  .grimorio-root .echip[data-on="1"]::before{opacity:1}
   .grimorio-root .gfd-foot{display:flex;gap:10px;padding:16px 22px;border-top:1px solid var(--line)}
   .grimorio-root .gfd-clear{flex:0 0 auto;padding:13px 18px;background:none;border:1px solid var(--line);border-radius:10px;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600}
   .grimorio-root .gfd-apply{flex:1;padding:13px;background:var(--acc);border:0;border-radius:10px;color:#0a0a0a;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:700}
