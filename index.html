@@ -4042,22 +4042,22 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .prof-card-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;margin:-16px -18px 14px;border-bottom:1px solid rgba(0,0,0,.45);background:color-mix(in srgb,#fff 6%,var(--bg-card-inner));border-radius:var(--radius) var(--radius) 0 0;overflow:visible}
 .prof-card-header h4{font-size:13px;font-weight:700;color:var(--text-primary);letter-spacing:.2px;display:flex;align-items:center;gap:8px}
 .prof-card-header h4::before{display:none}
-.prof-list{display:flex;flex-direction:column;gap:2px;flex:1}
-.prof-section{margin-bottom:8px}
+/* ═══ PROFICIÊNCIAS — lista refeita (minimal, agrupada, toggle claro) ═══ */
+.prof-list{display:flex;flex-direction:column;gap:14px;flex:1}
+.prof-section{display:flex;flex-direction:column;gap:6px;margin:0}
 .prof-section:last-child{margin-bottom:0}
-.prof-section-label{display:flex;align-items:center;gap:6px;font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:4px;padding:4px 6px;background:var(--bg-card-inner);border-radius:4px}
-.prof-section-label svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2}
-.prof-row{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:5px;font-size:11px;color:var(--text-secondary);cursor:pointer;transition:background .15s,border-color .15s,transform .12s;border:1px solid transparent;position:relative}
-.prof-row:hover{background:var(--bg-hover);border-color:var(--border)}
-.prof-row.has{background:linear-gradient(90deg,color-mix(in srgb,var(--magenta) 8%,transparent),transparent);border-color:var(--magenta-dim)}
-.prof-row.has:hover{transform:translateX(2px)}
-.prof-row .prof-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--border);transition:all .15s;box-shadow:none}
-.prof-row.has .prof-dot{background:var(--magenta);box-shadow:0 0 8px color-mix(in srgb,var(--magenta) 60%,transparent)}
-.prof-row .prof-name{flex:1;font-weight:500}
-.prof-row.has .prof-name{color:var(--text-primary);font-weight:600}
-.prof-row .prof-check{display:none;width:14px;height:14px;border-radius:50%;background:var(--magenta);color:#0a0a0a;align-items:center;justify-content:center;flex-shrink:0}
-.prof-row.has .prof-check{display:flex}
-.prof-row .prof-check svg{width:9px;height:9px;stroke:currentColor;stroke-width:3.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.prof-section-label{display:flex;align-items:center;gap:7px;font-size:9.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;font-weight:800;margin:0 0 2px;padding:0 2px 6px;background:none;border-bottom:1px solid var(--border-light)}
+.prof-section-label svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
+.prof-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;font-size:12.5px;color:var(--text-secondary);cursor:pointer;transition:background .15s,transform .12s;background:var(--bg-card-inner);border:1px solid transparent;position:relative}
+.prof-row:hover{background:var(--bg-hover);transform:translateX(2px)}
+.prof-row.has{background:color-mix(in srgb,var(--magenta) 12%,var(--bg-card-inner));border-color:var(--magenta-dim)}
+.prof-row .prof-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:var(--border-light);transition:all .15s}
+.prof-row.has .prof-dot{background:var(--magenta)}
+.prof-row .prof-name{flex:1;font-weight:600}
+.prof-row.has .prof-name{color:#fff}
+.prof-row .prof-check{display:flex;width:20px;height:20px;border-radius:6px;background:transparent;border:1px solid var(--border-light);color:transparent;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.prof-row.has .prof-check{background:var(--magenta);border-color:var(--magenta);color:#0a0a0a}
+.prof-row .prof-check svg{width:11px;height:11px;stroke:currentColor;stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .peri-stat-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;margin-bottom:6px}
 .peri-stat-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.4px;background:var(--bg-input);border:1px solid var(--border);color:var(--text-dim);text-transform:uppercase}
 .peri-stat-chip b{color:var(--text-primary);font-size:11px}
