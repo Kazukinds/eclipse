@@ -35784,6 +35784,12 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .gfd-sec .gchip,.grimorio-root .gfd-sec .cchip{text-align:left;padding:11px 14px;border-bottom:0!important;border-radius:8px;font-size:13px}
   .grimorio-root .gfd-sec .gchip:hover,.grimorio-root .gfd-sec .cchip:hover{background:#1c1c1c;color:var(--txt)}
   .grimorio-root .gfd-sec .gchip[data-on="1"],.grimorio-root .gfd-sec .cchip[data-on="1"]{background:color-mix(in srgb,var(--acc) 16%,transparent);color:var(--acc2)}
+  /* Essências no drawer: pills coloridas que quebram em linhas */
+  .grimorio-root .gfd-sec .efilters{display:flex;flex-wrap:wrap;gap:8px;padding:0 14px 16px}
+  .grimorio-root .echip{flex:0 0 auto;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:#191919;color:var(--muted);
+    font-family:'Inter',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:.15s}
+  .grimorio-root .echip:hover{border-color:#3a3a3a;color:var(--txt)}
+  .grimorio-root .echip[data-on="1"]{border-color:var(--bc);background:color-mix(in srgb,var(--bc) 18%,#191919);color:var(--bc2)}
   .grimorio-root .gfd-foot{display:flex;gap:10px;padding:16px 22px;border-top:1px solid var(--line)}
   .grimorio-root .gfd-clear{flex:0 0 auto;padding:13px 18px;background:none;border:1px solid var(--line);border-radius:10px;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600}
   .grimorio-root .gfd-apply{flex:1;padding:13px;background:var(--acc);border:0;border-radius:10px;color:#0a0a0a;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:700}
@@ -36524,6 +36530,7 @@ function renderToolbar(){
     +`<aside class="gfd-panel">`
     +`<div class="gfd-head"><span>Filtros</span><button class="gfd-x" id="gfd-x" aria-label="Fechar">✕</button></div>`
     +`<div class="gfd-body">`
+    +`<details class="gfd-sec" open><summary>Essência<span class="gfd-chev">▾</span></summary><div class="efilters">${ELEMENTOS.map(e=>`<button class="echip" data-e="${e.id}" style="--bc:${e.cor};--bc2:${e.cor2}" ${atual===e.id?'data-on="1"':''}>${e.nome}</button>`).join('')}</div></details>`
     +`<details class="gfd-sec" open><summary>Grau<span class="gfd-chev">▾</span></summary><div class="gfilters">${gchips}</div></details>`
     +(cchips?`<details class="gfd-sec" open><summary>Arquétipo<span class="gfd-chev">▾</span></summary><div class="cfilters">${cchips}</div></details>`:'')
     +`</div>`
@@ -36536,6 +36543,7 @@ function renderToolbar(){
   drawer.querySelector('#gfd-scrim').onclick=closeDrawer;
   drawer.querySelector('#gfd-apply').onclick=closeDrawer;
   drawer.querySelector('#gfd-clear').onclick=()=>{grauF='all';catF='all';renderToolbar();render();};
+  drawer.querySelectorAll('.echip').forEach(b=>b.onclick=()=>{selecionar(b.dataset.e);document.getElementById('grim-filtdrawer').classList.add('open');});
   drawer.querySelectorAll('.gchip').forEach(b=>b.onclick=()=>{grauF=b.dataset.g;renderToolbar();render();openDrawer();});
   drawer.querySelectorAll('.cchip').forEach(b=>b.onclick=()=>{catF=b.dataset.c;renderToolbar();render();openDrawer();});
   const s=document.getElementById('grim-srch');
