@@ -36145,17 +36145,16 @@ body[data-perf-low] .dcard-handle{display:none}
   /* Painel cinza atrás do bloco de header — full-bleed sem vazar preto nas pontas.
      Usa um ::before absoluto cobrindo a faixa do topo (largura 100% do main). */
   .grimorio-root main{position:relative}
-  .grimorio-root main>.m-head,.grimorio-root main>.toolbar,.grimorio-root main>.m-about{position:relative;z-index:1;background:transparent!important}
-  /* painel cinza cobre só título+busca+filtros; o ::before estende o bg
-     dos elementos exatos (m-head+toolbar) full-width, sem altura fixa que
-     cortava o 'Sobre a essência' no meio. */
-  .grimorio-root main::before{content:"";position:absolute;top:0;left:0;right:0;bottom:auto;height:var(--grim-head-h,0px);background:#1a1a1a;z-index:0;display:none}
-  .grimorio-root main>.m-head,.grimorio-root main>.toolbar{position:relative;background:#1a1a1a!important;z-index:1}
+  /* Painel cinza ÚNICO e contínuo cobrindo header (título+busca+filtros).
+     Um wrapper visual: m-head e tooldbar grudados (sem gap), bg cinza
+     estendido full-width via ::before lateral em cada um. m-about (Sobre a
+     essência) fica transparente, no fundo preto — sem corte. */
+  .grimorio-root main>.m-head,.grimorio-root main>.toolbar{position:relative;background:#1a1a1a!important;z-index:1;margin:0!important}
+  .grimorio-root main>.m-head{padding:36px 0 16px!important}
+  .grimorio-root main>.toolbar{padding:0 0 18px!important}
   .grimorio-root main>.m-head::before,.grimorio-root main>.toolbar::before{content:"";position:absolute;top:0;bottom:0;left:-48px;right:-48px;background:#1a1a1a;z-index:-1}
-  .grimorio-root main>.m-about{background:transparent!important;position:relative;z-index:1}
-  .grimorio-root main>.m-head{margin:0 0 18px!important;padding-top:0!important}
-  .grimorio-root main>.toolbar{margin:0 0 14px!important}
-  .grimorio-root main>.m-about{margin:0 0 30px!important;border-top:0!important;border-bottom:0!important}
+  .grimorio-root main>.m-about{position:relative;z-index:1;background:transparent!important;margin:18px 0 30px!important;border-top:0!important;border-bottom:0!important}
+  .grimorio-root main{padding-top:0!important}
   .grimorio-root .about-tog{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;padding:15px 2px;background:none;border:0;color:var(--muted);font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase}
   .grimorio-root .about-tog:hover{color:var(--txt)}
   .grimorio-root .about-tog .chev{transition:transform .22s;color:var(--faint);font-size:13px}
