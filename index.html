@@ -16272,15 +16272,20 @@ function renderStatus(){
   }
   const s=playerStatus;
   const pairs=[
-    {fill:'st-hp-fill',bonus:'st-hp-bonus',val:'st-hp-val',getV:()=>playerHP,getM:()=>playerHPMax+(playerHPTemp||0),getB:()=>playerHPBonus,getT:()=>playerHPTemp||0},
-    {fill:'st-str-fill',bonus:'st-str-bonus',val:'st-str-val',getV:()=>s.esforco.val,getM:()=>s.esforco.max,getB:()=>s.esforco.bonus||0,getT:()=>s.esforco.temp||0},
-    {fill:'st-foc-fill',bonus:'st-foc-bonus',val:'st-foc-val',getV:()=>s.foco.val,getM:()=>s.foco.max,getB:()=>s.foco.bonus||0,getT:()=>s.foco.temp||0},
-    {fill:'st-det-fill',bonus:'st-det-bonus',val:'st-det-val',getV:()=>s.determinacao.val,getM:()=>s.determinacao.max,getB:()=>s.determinacao.bonus||0,getT:()=>s.determinacao.temp||0},
-    {fill:'st-neu-fill',bonus:'st-neu-bonus',val:'st-neu-val',getV:()=>s.neural.val,getM:()=>s.neural.max,getB:()=>s.neural.bonus||0,getT:()=>s.neural.temp||0},
-    {fill:'st-cor-fill',bonus:'st-cor-bonus',val:'st-cor-val',getV:()=>s.cortex.val,getM:()=>s.cortex.max,getB:()=>s.cortex.bonus||0,getT:()=>s.cortex.temp||0},
+    {key:'hp',fill:'st-hp-fill',bonus:'st-hp-bonus',val:'st-hp-val',getV:()=>playerHP,getM:()=>playerHPMax+(playerHPTemp||0),getB:()=>playerHPBonus,getT:()=>playerHPTemp||0},
+    {key:'str',fill:'st-str-fill',bonus:'st-str-bonus',val:'st-str-val',getV:()=>s.esforco.val,getM:()=>s.esforco.max,getB:()=>s.esforco.bonus||0,getT:()=>s.esforco.temp||0},
+    {key:'foc',fill:'st-foc-fill',bonus:'st-foc-bonus',val:'st-foc-val',getV:()=>s.foco.val,getM:()=>s.foco.max,getB:()=>s.foco.bonus||0,getT:()=>s.foco.temp||0},
+    {key:'det',fill:'st-det-fill',bonus:'st-det-bonus',val:'st-det-val',getV:()=>s.determinacao.val,getM:()=>s.determinacao.max,getB:()=>s.determinacao.bonus||0,getT:()=>s.determinacao.temp||0},
+    {key:'neu',fill:'st-neu-fill',bonus:'st-neu-bonus',val:'st-neu-val',getV:()=>s.neural.val,getM:()=>s.neural.max,getB:()=>s.neural.bonus||0,getT:()=>s.neural.temp||0},
+    {key:'cor',fill:'st-cor-fill',bonus:'st-cor-bonus',val:'st-cor-val',getV:()=>s.cortex.val,getM:()=>s.cortex.max,getB:()=>s.cortex.bonus||0,getT:()=>s.cortex.temp||0},
   ];
+  // Cache dos 18 elementos (fill/bonus/val × 6 barras): resolve 1x e reusa.
+  // Antes eram 18 getElementById por chamada de renderStatus (função quente).
+  const C=renderStatus._refs||(renderStatus._refs={});
   pairs.forEach(p=>{
-    const el=document.getElementById(p.fill),bn=document.getElementById(p.bonus),vl=document.getElementById(p.val);
+    let r=C[p.key];
+    if(!r||!r.el||!r.el.isConnected){r=C[p.key]={el:document.getElementById(p.fill),bn:document.getElementById(p.bonus),vl:document.getElementById(p.val)}}
+    const el=r.el,bn=r.bn,vl=r.vl;
     if(!el)return;
     const v=p.getV(),mRaw=p.getM(),m=mRaw||1,b=p.getB(),t=(p.getT&&p.getT())||0;
     const effMax=m+b;
@@ -16921,6 +16926,10 @@ document.addEventListener('dragover',e=>{
 document.addEventListener('drop',e=>{clearDragHighlight()});
 document.addEventListener('dragend',e=>{dragItemId=null;dragFromIdx=null;clearDragHighlight()})
 
+// Map id→item reconstruído antes de cada varredura do grid. buildCell roda GRID_SIZE×
+// por render; sem o map cada célula fazia inventory.find (O(n)) → O(GRID_SIZE × n).
+let _invIdMap=null;
+function _rebuildInvIdMap(){_invIdMap=new Map();for(const it of inventory)_invIdMap.set(it.id,it)}
 function buildCell(i){
   const cell=document.createElement('div');cell.className='inv-cell';cell.dataset.index=i;
   if(i===0)cell.classList.add('corner-tl');
@@ -16930,7 +16939,7 @@ function buildCell(i){
   const slotVal=gridSlots[i];
   const isCovered=typeof slotVal==='string'&&slotVal.startsWith('_');
   const itemId=isCovered?null:slotVal;
-  const item=itemId?inventory.find(x=>x.id===itemId):null;
+  const item=itemId?(_invIdMap?_invIdMap.get(itemId):inventory.find(x=>x.id===itemId)):null;
   const locked=!isCellUnlocked(i);
 
   if(locked){
@@ -17525,6 +17534,7 @@ function _normalizeAmmoCats(){
   });
 }
 function renderGrid(){
+  _rebuildInvIdMap();
   _normalizeAmmoCats();
   // Defensive: força sincronia GRID_SIZE↔caseLevel (corrige saves antigos)
   const _a=unlockArea();gridCols=_a.cols;gridRows=_a.rows;GRID_SIZE=_a.cols*_a.rows;
@@ -17784,7 +17794,7 @@ function openSuitcaseCustom(){
   body.innerHTML=tabs+`<div class="cust-content">${content}</div><div class="modal-btns"><button class="modal-btn primary" onclick="closeModal()" style="flex:1">Concluir</button></div>`;
   document.getElementById('modal-overlay').classList.add('open');
 }
-function renderGridFromSlots(){const g=document.getElementById('inv-grid');g.innerHTML='';for(let i=0;i<GRID_SIZE;i++)g.appendChild(buildCell(i))}
+function renderGridFromSlots(){_rebuildInvIdMap();const g=document.getElementById('inv-grid');g.innerHTML='';for(let i=0;i<GRID_SIZE;i++)g.appendChild(buildCell(i))}
 
 function clearDetail(){selectedItemId=null;_detailPrevId=null;document.querySelectorAll('.inv-cell').forEach(c=>{c.classList.remove('selected');c.classList.remove('selected-item')});_renderSelectedPreview(null);renderOverflow();renderItemDetail()}
 
@@ -34784,7 +34794,12 @@ body[data-perf-anim-tabswitch="off"] .sidebar-btn[data-tab].nav-anim svg{animati
     }
     rafId=requestAnimationFrame(tickFps);
   }
-  rafId=requestAnimationFrame(tickFps);
+  // O loop só roda com a aba visível. Em background o rAF era throttled mas ainda
+  // acordava a thread sem necessidade (medir FPS de aba escondida não tem sentido).
+  function _startFps(){if(!rafId){lastT=performance.now();lastFrameT=lastT;frames=0;rafId=requestAnimationFrame(tickFps)}}
+  function _stopFps(){if(rafId){cancelAnimationFrame(rafId);rafId=0}}
+  document.addEventListener('visibilitychange',()=>{document.visibilityState==='visible'?_startFps():_stopFps()});
+  if(document.visibilityState==='visible')_startFps();
 
   function updateStats(t){
     if(!hist.length)return;
