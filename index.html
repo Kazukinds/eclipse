@@ -3,6 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5">
+<script>
+/* DEV (localhost/LAN): mata service worker + cache IMEDIATAMENTE, antes de qualquer outro script.
+   Evita deadlock: SW servindo index.html quebrado cacheado → página falha antes do evento 'load'
+   → o unregister que rodava no 'load' nunca executava → tela preta em todo reload. */
+(function(){
+  try{
+    var h=location.hostname;
+    var isCap=!!(window.Capacitor||/Capacitor/i.test(navigator.userAgent));
+    var isDev=!isCap&&(h==='localhost'||h==='127.0.0.1'||/^192\.168\./.test(h)||/^10\./.test(h));
+    if(isDev&&'serviceWorker'in navigator){
+      navigator.serviceWorker.getRegistrations()
+        .then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))})
+        .then(function(){if(window.caches&&caches.keys)return caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k)}))})})
+        .then(function(){
+          if(navigator.serviceWorker.controller&&!sessionStorage.getItem('_swKilled')){
+            sessionStorage.setItem('_swKilled','1');
+            location.reload();
+          }
+        }).catch(function(){});
+    }
+  }catch(_){}
+})();
+</script>
 <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark light">
@@ -27,9 +50,36 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@700;800&family=Playfair+Display:wght@700&family=Cinzel:wght@600&family=Montserrat:wght@600;700;800&family=Lato:wght@400;700&family=Cormorant+Garamond:wght@500;700&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@700;800&family=Playfair+Display:wght@700&family=Cinzel:wght@600&family=Montserrat:wght@600;700;800&family=Lato:wght@400;700&family=Cormorant+Garamond:wght@500;700&display=swap" media="print" onload="this.media='all'">
+<!-- Google Fonts + Lottie carregam via JS DEPOIS do window.load (ver script abaixo) — não bloqueiam o load se o CDN estiver lento/bloqueado (Brave Shields, etc.) -->
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"></noscript>
+<script>
+/* CDN não-crítico carregado após o load → evita "carregamento infinito" quando fonts.googleapis/cdnjs estão bloqueados.
+   App tem fallback de fonte do sistema; Lottie é opcional (guardado por window.lottie). */
+(function(){
+  function injectCDN(){
+    try{
+      // Google Fonts — watchdog: se não carregar em 3.5s (bloqueado/lento), remove → request abortado, spinner não trava, cai pra fonte do sistema.
+      var f=document.createElement('link');f.rel='stylesheet';
+      f.href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@700;800&family=Playfair+Display:wght@700&family=Cinzel:wght@600&family=Montserrat:wght@600;700;800&family=Lato:wght@400;700&family=Cormorant+Garamond:wght@500;700&display=swap';
+      var fDone=false;
+      f.onload=function(){fDone=true};
+      f.onerror=function(){fDone=true;try{f.remove()}catch(_){}};
+      document.head.appendChild(f);
+      setTimeout(function(){if(!fDone){try{f.remove()}catch(_){}}},3500);
+      // Lottie — opcional (guardado por window.lottie); remove se falhar/demorar.
+      var s=document.createElement('script');s.async=true;
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js';
+      s.onerror=function(){try{s.remove()}catch(_){}};
+      document.head.appendChild(s);
+      setTimeout(function(){if(!window.lottie){try{s.remove()}catch(_){}}},5000);
+    }catch(_){}
+  }
+  // injeta 600ms DEPOIS do load assentar → load completa e spinner para antes de qualquer request de CDN
+  function schedule(){ setTimeout(injectCDN,600); }
+  if(document.readyState==='complete')schedule();
+  else window.addEventListener('load',schedule,{once:true});
+})();
+</script>
 <title>Ficha Eclipse</title>
 <style>
 /*
@@ -45,7 +95,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg-body:#000000;--bg-sidebar:#0a0a0a;--bg-card:#171717;--bg-card-inner:#262626;
-  --bg-input:#262626;--bg-hover:#373737;--border:rgba(255,255,255,.05);--border-light:rgba(255,255,255,.10);
+  --bg-input:#262626;--bg-hover:#373737;--border:transparent;--border-light:rgba(255,255,255,.10);
   --magenta:#fe1455;--magenta-dim:#c4103f;--magenta-rgb:254,20,85;--magenta-bg:rgba(var(--magenta-rgb),.10);--magenta-bg-strong:rgba(var(--magenta-rgb),.18);
   --lime:#84cc16;--lime-dim:#65a30d;--lime-rgb:132,204,22;--lime-bg:rgba(var(--lime-rgb),.10);--lime-bg-strong:rgba(var(--lime-rgb),.18);
   --green:#34d399;--green-dim:rgba(52,211,153,.15);--red:#f87171;--red-dim:rgba(248,113,113,.12);
@@ -452,7 +502,7 @@ body:has(.sidebar.open) .main-wrapper *{pointer-events:none}
 .topbar-welcome h2{font-size:16px;font-weight:600}
 .topbar-search{flex:1;max-width:480px;position:relative}
 .topbar-search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--text-dim);fill:none;stroke-width:2}
-.topbar-search input{width:100%;padding:10px 14px 10px 40px;background:var(--bg-card);border:1px solid var(--border);border-radius:40px;color:var(--text-primary);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+.topbar-search input{width:100%;padding:10px 14px 10px 40px;background:var(--bg-card-inner);border:1px solid var(--border-light);border-radius:40px;color:var(--text-primary);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
 .topbar-search input::placeholder{color:var(--text-dim)}
 .topbar-search input:hover{border-color:var(--border-light)}
 .topbar-search input:focus{border-color:var(--magenta-dim);box-shadow:0 0 0 3px rgba(var(--magenta-rgb),.06)}
@@ -481,7 +531,7 @@ body:has(.sidebar.open) .main-wrapper *{pointer-events:none}
 .search-empty strong{color:var(--text-secondary);display:block;margin-bottom:4px;font-size:13px}
 .search-highlight{color:var(--magenta);font-weight:700}
 .topbar-actions{display:flex;gap:8px;margin-left:auto}
-.topbar-icon-btn{width:38px;height:38px;flex-shrink:0;aspect-ratio:1/1;background:var(--bg-card);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:border-color .15s,background .15s}
+.topbar-icon-btn{width:38px;height:38px;flex-shrink:0;aspect-ratio:1/1;background:var(--bg-card-inner);border:1px solid var(--border-light);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:border-color .15s,background .15s}
 .topbar-icon-btn:hover{border-color:var(--border-light);background:var(--bg-hover)}
 .topbar-icon-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2}
 .topbar-profile-btn{padding:0;overflow:hidden;position:relative}
@@ -784,6 +834,22 @@ body:has(.sidebar.open) .main-wrapper *{pointer-events:none}
 /* Perfil: remove a faixa preta (painel .content) — deixa só o layout + linha do topo */
 .content:has(#tab-profile.active){background:transparent;border-radius:0;box-shadow:none;border-top:1px solid var(--border)}
 .tab-content{display:none}.tab-content.active{display:block}
+/* ═══ Transição de aba — entrada suave (fade + slide), NATIVA/GPU, sem lib/CDN.
+   Dispara sozinha ao trocar de aba (switchTab só adiciona .active). NÃO roda no boot
+   (html.app-booting), em perf-low, nem com reduced-motion. opacity+transform = compositado. */
+@keyframes tabEnter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+html:not(.app-booting) .tab-content.active{animation:tabEnter .34s cubic-bezier(.22,.9,.32,1) both}
+@media(prefers-reduced-motion:reduce){.tab-content.active{animation:none!important}}
+body[data-perf-low] .tab-content.active{animation:none!important}
+/* ═══ CORTINA de transição (curtain wipe, estilo motion.dev) — painel varre a tela: cobre → troca aba → revela.
+   pointer-events:none (nunca bloqueia clique). Só anima quando .sweep é adicionado por _pageTransition(). */
+/* visibility:hidden no repouso → o glow magenta/sombra NÃO vaza pra tela (corrige o "rosa do lado"). Só visível durante .sweep. */
+#page-curtain{position:fixed;inset:0;z-index:9996;pointer-events:none;visibility:hidden;transform:translateX(-101%);
+  background:linear-gradient(100deg,#0a0a0a 0%,#161616 55%,#1c1c1c 100%);box-shadow:8px 0 30px rgba(0,0,0,.55)}
+#page-curtain::after{content:"";position:absolute;top:0;right:0;bottom:0;width:4px;background:var(--magenta);
+  box-shadow:0 0 20px 2px color-mix(in srgb,var(--magenta) 70%,transparent)}
+#page-curtain.sweep{visibility:visible;animation:curtainSweep .56s cubic-bezier(.76,0,.24,1) forwards}
+@keyframes curtainSweep{0%{transform:translateX(-101%)}46%{transform:translateX(0)}54%{transform:translateX(0)}100%{transform:translateX(101%)}}
 /* Global icon style — outline grosso, cantos arredondados (estilo Phosphor/Iconoir) */
 svg{stroke-linecap:round;stroke-linejoin:round}
 /* Montaria + Veículos — cards rascunho */
@@ -869,10 +935,10 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 /* Esconde card Inventário do dashboard quando ambas listas estão vazias */
 /* Inventário vazio volta a aparecer (layout antigo: Inventário topo-esq + Evolução topo-meio) — não esconde */
 .item-list-section .item-list{flex:0 1 auto;overflow-y:auto;min-height:0}
-.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm),inset 0 1px 0 rgba(255,255,255,.04);transition:border-color .2s}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm);transition:border-color .2s}
 .card.card-square{border-radius:4px}
 .card:hover{border-color:var(--border-light)}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
 .card-title{font-size:16px;font-weight:600}
 .card-actions{display:flex;gap:6px}
 .card-action-btn{width:32px;height:32px;min-width:32px;min-height:32px;max-width:32px;max-height:32px;flex:0 0 32px;aspect-ratio:1/1;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dim);transition:all .2s;box-sizing:border-box;padding:0}
@@ -880,19 +946,20 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 .card-action-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
 .see-all{font-size:12px;font-weight:600;color:var(--magenta);text-transform:uppercase;letter-spacing:.5px;cursor:pointer;background:none;border:none;font-family:inherit;transition:all var(--transition-fast);padding:2px 0}
 .see-all:hover{color:var(--magenta-dim);text-decoration:underline;text-underline-offset:3px}
-.toggle-pills{display:flex;background:var(--bg-input);border-radius:20px;padding:2px;gap:2px;position:relative;overflow:hidden}
-.toggle-pill{padding:5px 14px;font-size:11px;font-weight:600;font-family:inherit;border:none;border-radius:16px;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:color .3s,text-shadow .3s;background:transparent;color:var(--text-dim);position:relative;z-index:2}
-.toggle-pill.active{color:#000000}
-/* Pill ativo dá um pop elástico ao trocar (texto pula) */
-.toggle-pill.active{animation:togglePillPop .42s var(--ease-tactile,cubic-bezier(.34,1.56,.64,1))}
-@keyframes togglePillPop{0%{transform:scale(.82)}40%{transform:scale(1.14)}65%{transform:scale(.96)}100%{transform:scale(1)}}
-.toggle-pill{transition:color .3s,text-shadow .3s,transform .18s var(--ease-tactile,cubic-bezier(.34,1.56,.64,1))}
-.toggle-pill:active{transform:scale(.9)}
-/* Slider desliza com mola (overshoot) entre XP/Crédito */
-.toggle-pills .toggle-slider{position:absolute;top:2px;bottom:2px;border-radius:16px;transition:left .42s cubic-bezier(.34,1.45,.5,1),width .42s cubic-bezier(.34,1.45,.5,1),background .3s ease,box-shadow .3s ease;z-index:1;pointer-events:none;will-change:left,width}
-/* Squash + stretch (juicy) no momento da troca */
-.toggle-pills .toggle-slider.pop{animation:toggleSliderPop .44s cubic-bezier(.34,1.5,.5,1)}
-@keyframes toggleSliderPop{0%{transform:scaleX(.84) scaleY(1.1)}45%{transform:scaleX(1.08) scaleY(.92)}75%{transform:scaleX(.98) scaleY(1.02)}100%{transform:scale(1)}}
+.toggle-pills{display:grid;grid-template-columns:1fr 1fr;background:var(--bg-input);border-radius:999px;padding:3px;position:relative;overflow:hidden;flex-shrink:0}
+.toggle-pill{padding:5px 14px;font-size:11px;font-weight:600;font-family:inherit;border:none;border-radius:999px;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;text-align:center;white-space:nowrap;transition:color .3s,text-shadow .3s;background:transparent;color:var(--text-dim);position:relative;z-index:2}
+/* Pílula ativa colorida pela própria cor do modo (sem slider absoluto) */
+.toggle-pill.active{color:#000}
+.toggle-pill[data-mode="xp"].active{background:#84cc16}
+.toggle-pill[data-mode="xp"].active.estagio{background:#a78bfa}
+.toggle-pill[data-mode="credito"].active{background:var(--yellow)}
+.toggle-pill[data-mode="tipo"].active{background:var(--magenta)}
+.toggle-pill[data-mode="raridade"].active{background:var(--purple)}
+.toggle-pill{transition:color .25s ease,background-color .25s ease,transform .18s var(--ease-tactile,cubic-bezier(.34,1.56,.64,1))}
+.toggle-pill:active{transform:scale(.94)}
+/* Segmented control com thumb deslizante (não-grimoire) — preenche o segmento inteiro, sem círculo solto no canto */
+:root:not([data-theme="grimoire"]) .toggle-pills::before{content:"";position:absolute;top:3px;bottom:3px;left:3px;width:calc(50% - 3px);border-radius:999px;background:var(--tp-bg,#84cc16);transform:translateX(var(--tp-x,0));z-index:1;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .36s cubic-bezier(.32,.72,0,1),background-color .26s ease!important;pointer-events:none;will-change:transform}
+:root:not([data-theme="grimoire"]) .toggle-pill.active{background:transparent!important}
 
 /* ═══ ITEM LIST ═══ */
 .item-list-group-label{font-size:11px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
@@ -2045,7 +2112,7 @@ body.inv-dragging-active .inv-cell:hover .item-icon svg{transform:none}
 [data-theme="light"] .re4-expand-btn{color:#737373}
 [data-theme="light"] .re4-expand-btn:hover{color:#171717}
 .re4-case-topbar{display:inline-flex;align-items:center;gap:6px;padding:0;margin:8px 0 8px 8px;width:fit-content;background:transparent;border:0;border-radius:0}
-.re4-case-topbar>.re4-top-btn,.re4-top-btn{display:inline-flex!important;align-items:center;justify-content:center;width:32px!important;height:32px!important;min-width:32px!important;max-width:32px!important;min-height:32px!important;max-height:32px!important;flex:0 0 32px!important;flex-grow:0!important;flex-shrink:0!important;box-sizing:border-box!important;padding:0!important;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:8px!important;color:var(--text-primary);cursor:pointer;transition:all .15s}
+.re4-case-topbar>.re4-top-btn,.re4-top-btn{display:inline-flex!important;align-items:center;justify-content:center;width:32px!important;height:32px!important;min-width:32px!important;max-width:32px!important;min-height:32px!important;max-height:32px!important;flex:0 0 32px!important;flex-grow:0!important;flex-shrink:0!important;box-sizing:border-box!important;padding:0!important;background:var(--bg-card-inner);border:1px solid var(--border-light);border-radius:8px!important;color:var(--text-primary);cursor:pointer;transition:all .15s}
 .re4-top-btn:hover{border-color:var(--magenta-dim);color:var(--magenta);background:var(--magenta-bg)}
 .re4-top-btn:active{transform:scale(.9)}
 .re4-top-btn svg{width:14px;height:14px}
@@ -2423,6 +2490,9 @@ html.no-radius,html.no-radius *{border-radius:0!important}
 [data-theme="light"] #tab-config .cfg-confirm:hover{background:#000}
 /* ═══ CONFIG — Customize section (réplica 100% da imagem) ═══ */
 #tab-config .cfg-tabs,#tab-config .cfg-app{display:none!important}
+/* Revelados sob demanda quando o usuário abre uma "pasta"/Performance no feed (cfgGoPanel) — restaura acesso a modos de performance, cache, log e admin que ficavam inalcançáveis. */
+#tab-config.cfg-detail-open .cfg-tabs{display:flex!important}
+#tab-config.cfg-detail-open .cfg-app{display:block!important}
 #tab-config .cz-shell{position:relative;max-width:600px;margin:0 auto;background:#171717;border:1px solid #262626;border-radius:24px;padding:26px 26px 34px;display:flex;flex-direction:column;gap:18px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
 #tab-config .cz-title{font-size:23px;font-weight:600;color:#fff;letter-spacing:-.2px;margin:0}
 #tab-config .cz-tabs{display:flex!important;gap:8px;background:#0a0a0a;border:1px solid #262626;border-radius:16px;padding:6px;overflow:visible}
@@ -4050,7 +4120,8 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .toast{position:fixed;bottom:28px;right:28px;width:min(420px,calc(100vw - 56px));background:var(--bg-card);border:1px solid color-mix(in srgb,var(--text-dim) 22%,transparent);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow-md),0 1px 2px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:transform .25s ease,opacity .25s ease;z-index:400;display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;column-gap:12px;row-gap:2px;align-items:start;color:var(--text-primary);font-size:13px;font-weight:500;will-change:transform,opacity}
 .toast.show{transform:translateY(0);opacity:1}
 .toast:not(.show){pointer-events:none!important}
-.toast.show:not([data-type]):has(.toast-title:empty):has(.toast-desc:empty){display:none!important;opacity:0!important;pointer-events:none!important}
+/* Esconde toast vazio (sem título E sem descrição) — independente de data-type. Mata a "barra do nada". */
+.toast.show:has(.toast-title:empty):has(.toast-desc:empty){display:none!important;opacity:0!important;pointer-events:none!important}
 .toast-icon{grid-column:1;grid-row:1/3;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .toast-icon svg{width:22px;height:22px;display:block}
 .toast-title{grid-column:2;grid-row:1;font-size:13px;line-height:18px;font-weight:600;color:var(--text-primary);align-self:center}
@@ -6629,6 +6700,9 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   /* Engrenagem da pill: força cor clara (estava caindo pro cinza/text-secondary) */
   .sidebar-gear,.sidebar-gear svg,.sidebar-gear svg path{fill:var(--text-primary)!important;color:var(--text-primary)!important;stroke:none!important;opacity:1!important}
   #sidebar-gear-btn,#sidebar-gear-btn svg,#sidebar-gear-btn svg *{fill:#fff!important;color:#fff!important;stroke:none!important;opacity:1!important}
+  /* Config selecionada (fundo magenta) → ícone preto, igual aos demais ativos */
+  #sidebar-gear-btn.active,#sidebar-gear-btn.active svg,#sidebar-gear-btn.active svg *{fill:#0a0a0a!important;color:#0a0a0a!important;stroke:none!important}
+  [data-theme="light"] #sidebar-gear-btn.active,[data-theme="light"] #sidebar-gear-btn.active svg,[data-theme="light"] #sidebar-gear-btn.active svg *{fill:#fff!important;color:#fff!important}
   /* Tabs primários ganham altura/largura uniforme + ícone padronizado */
   .sidebar-btn[data-mp],.sidebar-btn[data-tab="inventory"]{
     width:44px!important;height:44px;
@@ -6995,9 +7069,13 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
 @media (prefers-reduced-motion:reduce){
   .app-splash .splash-ring,.app-splash .splash-logo{animation:none!important}
 }
-.app-fade-in{animation:app-fade-in .25s ease-out both}
+/* Fade de entrada — NUNCA deixa o body invisível se a animação não rodar.
+   `forwards`/`both` travava em opacity:0 quando a animação não disparava (tab em bg,
+   reduce-motion parcial do Brave, etc.) → tela preta. Sem fill-mode: estado base = opacity:1,
+   a animação só sobrepõe enquanto roda; se não rodar, body fica visível. */
+.app-fade-in{opacity:1;animation:app-fade-in .25s ease-out}
 @keyframes app-fade-in{0%{opacity:0}100%{opacity:1}}
-@media (prefers-reduced-motion:reduce){.app-fade-in{animation:none}}
+@media (prefers-reduced-motion:reduce){.app-fade-in{animation:none;opacity:1}}
 
 /* ═══════════ MOBILE VERTICAL REFINEMENTS ═══════════ */
 @media (max-width:640px) and (orientation:portrait){
@@ -7168,6 +7246,8 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
 .summary-bar{border-radius:16px}
 .modal{border-radius:16px}
 .topbar{backdrop-filter:none;background:transparent}
+/* Barra topo: cinza escuro sólido (var --bg-card), não preto — vale em todos os viewports/perf-low; tema claro fica transparente */
+:root:not([data-theme="light"]) .topbar{background:var(--bg-card)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 
 /* Remove rotações decorativas dos botões em repouso (ficavam tortos) */
 .xp-gear,.attr-gear,.size-gear{transform:none!important}
@@ -7285,6 +7365,7 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
   .topbar{padding:8px 12px 6px!important;gap:6px!important}
   .topbar-row-2{display:none!important}
   .content{flex:1 1 0;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+           padding-top:0!important;
            padding-bottom:calc(58px + env(safe-area-inset-bottom,0px))!important;
            background:transparent!important;border-radius:0!important;box-shadow:none!important;
            scrollbar-width:none;-ms-overflow-style:none}
@@ -7303,17 +7384,22 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
     max-width:calc(100vw - 24px)!important;
     padding:6px 8px!important;
     display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;
-    /* Efeito vidro (liquid glass): translúcido + blur/saturate + borda clara + highlight no topo.
-       Em perf-low a regra body[data-perf-low] .sidebar (transparente) vence → sem barra em GPU fraca. */
-    background:color-mix(in srgb,var(--bg-card) 34%,transparent)!important;
+    /* Efeito vidro (liquid glass): translúcido + blur + borda clara + sombra flutuante.
+       bg semi-opaco garante aspecto de vidro mesmo onde o blur é desligado (mobile/perf). */
+    background:color-mix(in srgb,var(--bg-card) 55%,transparent)!important;
     -webkit-backdrop-filter:blur(20px) saturate(1.8)!important;backdrop-filter:blur(20px) saturate(1.8)!important;
     border:1px solid rgba(255,255,255,.14)!important;
     border-radius:999px!important;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 1px rgba(0,0,0,.18)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 10px 30px rgba(0,0,0,.5)!important;
     z-index:250;overflow:visible!important
   }
-  /* Tema claro: pill com fundo levemente escuro (no branco não fica todo vidro/invisível) */
-  [data-theme="light"] .sidebar{background:#262626!important;border-color:rgba(255,255,255,.10)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  /* NÃO força backdrop-filter no mobile: o blur de elemento fixo sobre conteúdo rolando
+     causa repaint storm (jank/"página sem resposta"). bg translúcido (55%) já dá look de vidro.
+     O blur do base só aplica onde é barato (desktop >520px, mouse); no mobile/touch o kill global o desliga. */
+  /* perf-low: pill sólido translúcido — nunca ícones soltos */
+  body[data-perf-low] .sidebar{background:color-mix(in srgb,var(--bg-card) 92%,transparent)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border:1px solid var(--border-light)!important;box-shadow:0 8px 24px rgba(0,0,0,.5)!important}
+  /* Tema claro: vidro claro */
+  [data-theme="light"] .sidebar{background:color-mix(in srgb,#fff 72%,transparent)!important;border:1px solid rgba(0,0,0,.08)!important;-webkit-backdrop-filter:blur(20px) saturate(1.6)!important;backdrop-filter:blur(20px) saturate(1.6)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 10px 30px rgba(0,0,0,.15)!important}
   .sidebar .sidebar-nav{flex-direction:row!important;display:flex!important;width:auto!important;height:auto!important;align-items:center;justify-content:center;gap:4px;padding:0;overflow-x:auto;scrollbar-width:none}
   .sidebar .sidebar-nav::-webkit-scrollbar{display:none}
   .main-wrapper{padding-bottom:0!important;padding-right:0!important}
@@ -8305,6 +8391,25 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .ad-row-val{min-width:48px;justify-content:center}
 .ad-row-val>span:first-child{font-size:27px}
 .ad-row{padding:16px}
+/* === Distribuir Atributos — polish premium (só visual) === */
+/* Header: gradiente sutil magenta + barra de progresso com brilho */
+.ad-pts-bar{background:linear-gradient(180deg,color-mix(in srgb,var(--magenta) 7%,var(--bg-card-inner)),var(--bg-card-inner));box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 6px 22px -12px color-mix(in srgb,var(--magenta) 55%,transparent)}
+.ad-pts-bar::before{background:linear-gradient(90deg,var(--magenta-dim),var(--magenta));box-shadow:0 0 12px color-mix(in srgb,var(--magenta) 55%,transparent)}
+.ad-pts-fill{background:linear-gradient(90deg,color-mix(in srgb,var(--magenta) 16%,transparent),color-mix(in srgb,var(--magenta) 5%,transparent))}
+.ad-pts-val{font-size:30px}
+.ad-pts-block.ad-pts-max{background:color-mix(in srgb,var(--bg-card) 55%,transparent);border-color:var(--border-light)}
+/* Cards: gradiente leve da cor do atributo + glow colorido quando ativo */
+.ad-row{background:linear-gradient(180deg,color-mix(in srgb,var(--c) 4%,var(--bg-card-inner)),var(--bg-card-inner));box-shadow:inset 0 1px 0 rgba(255,255,255,.03);transition:border-color .25s,box-shadow .25s,background .25s}
+.ad-row.has-points{border-color:color-mix(in srgb,var(--c) 55%,var(--border));box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 22%,transparent),0 8px 24px -12px color-mix(in srgb,var(--c) 55%,transparent),inset 0 1px 0 rgba(255,255,255,.04)}
+/* Slider: trilho fundo + fill gradiente com brilho + thumb núcleo branco com anel colorido */
+.ad-slider-track{height:8px;border-radius:5px;box-shadow:inset 0 1px 2px rgba(0,0,0,.45)}
+.ad-slider-fill{height:8px;border-radius:5px;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 60%,#000),var(--c));box-shadow:0 0 10px color-mix(in srgb,var(--c) 50%,transparent)}
+.ad-range::-webkit-slider-thumb{width:18px;height:18px;background:#fff;border:none;box-shadow:0 0 0 4px var(--c),0 2px 8px rgba(0,0,0,.5),0 0 12px color-mix(in srgb,var(--c) 50%,transparent)}
+.ad-range::-moz-range-thumb{width:18px;height:18px;background:#fff;border:none;box-shadow:0 0 0 4px var(--c),0 2px 8px rgba(0,0,0,.5)}
+.ad-range:active::-webkit-slider-thumb{transform:scale(1.18)}
+.ad-range:active::-moz-range-thumb{transform:scale(1.18)}
+/* Steppers ativos herdam tom da cor do atributo */
+.ad-row.has-points .ad-row-head .sp-step:not(:disabled){border-color:color-mix(in srgb,var(--c) 35%,var(--border))}
 .modal-overlay.open .modal-header{display:flex;align-items:center}
 .arch-dice-btn{
   width:32px;height:32px;border-radius:8px;background:var(--bg-card-inner);border:1px solid var(--border);
@@ -9598,8 +9703,7 @@ body[data-perf-low] *,body[data-perf-low] *::before,body[data-perf-low] *::after
 }
 
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.0/styles/overlayscrollbars.min.css">
-<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.0/browser/overlayscrollbars.browser.es6.min.js" defer></script>
+<!-- OverlayScrollbars (CDN) removido — dependência sem uso (init era inerte); usa scrollbars nativos. -->
 <style>
 .os-theme-eclipse{--os-size:10px;--os-padding-perpendicular:2px;--os-padding-axis:2px;--os-track-border-radius:6px;--os-track-bg:transparent;--os-track-bg-hover:rgba(255,255,255,.04);--os-track-bg-active:rgba(255,255,255,.06);--os-handle-border-radius:6px;--os-handle-bg:color-mix(in srgb,var(--magenta) 35%,var(--border));--os-handle-bg-hover:color-mix(in srgb,var(--magenta) 55%,var(--border));--os-handle-bg-active:var(--magenta);--os-handle-min-size:24px}
 [data-overlayscrollbars] *::-webkit-scrollbar{display:none}
@@ -9861,6 +9965,9 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
   <button class="radial-menu-close" id="radial-close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
 </div>
 
+<!-- Cortina de transição de página (sweep nativo, GPU) — controlada por _pageTransition() -->
+<div id="page-curtain" aria-hidden="true"></div>
+
 <div class="main-wrapper">
   <header class="topbar">
     <div class="topbar-row topbar-row-1">
@@ -9978,13 +10085,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
       const pill=card?.querySelector('.toggle-pill[data-mode="xp"]');
       const otherPill=card?.querySelector('.toggle-pill[data-mode="credito"]');
       if(pill){pill.classList.add('active');otherPill?.classList.remove('active')}
-      const container=card?.querySelector('.toggle-pills');
-      if(container&&typeof updateSliderPos==='function')updateSliderPos(container);
-      const slider=card?.querySelector('.toggle-slider');
-      if(slider){
-        slider.style.background=window.chartMode==='estagio'?'#a78bfa':'#84cc16';
-        slider.style.boxShadow='none';
-      }
+      if(pill)pill.classList.toggle('estagio',window.chartMode==='estagio');
       if(card){card.style.transition='transform .35s cubic-bezier(.2,.9,.2,1.05),filter .35s';card.style.transform='scale(.98)';card.style.filter='brightness(.85)';
         setTimeout(()=>{card.style.transform='';card.style.filter=''},360);
       }
@@ -11018,10 +11119,12 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
         var root=document.getElementById('tab-config');if(!root)return;
         // Folder → ativa painel detalhado + scroll
         window.cfgGoPanel=function(k){
+          // Revela a seção "Ajustes detalhados" (escondida por padrão p/ feed limpo) e abre o painel.
+          root.classList.add('cfg-detail-open');
           var tab=root.querySelector('.cfg-tab[data-cfg-tab="'+k+'"]');
           if(tab)tab.click();
           var nav=root.querySelector('.cfg-tabs');
-          if(nav)nav.scrollIntoView({behavior:'smooth',block:'start'});
+          if(nav)requestAnimationFrame(function(){nav.scrollIntoView({behavior:'smooth',block:'start'})});
           try{window.sfx&&sfx.tick&&sfx.tick()}catch(_){}
         };
         window._wkToggleSound=function(){
@@ -11484,14 +11587,20 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
 
 <script type="module">
 // ═══ TIKS — Procedural UI sounds ═══
-import { tiks } from 'https://cdn.jsdelivr.net/npm/@rexa-developer/tiks@0.1.8/dist/index.js';
-window.tiks=tiks;
+// CDN carregado via import() DINÂMICO no 1º gesto do usuário — NÃO no top-level.
+// import estático bloqueava o evento 'load' até o jsdelivr responder; com Brave Shields
+// (ou CDN lento/offline) o load NUNCA disparava → spinner infinito + tela presa no boot.
+let tiks=null;
 let _tiksReady=false,_tiksMuted=localStorage.getItem('tiks-muted')==='1';
 let _tiksVolume=parseFloat(localStorage.getItem('tiks-volume'));
 if(!Number.isFinite(_tiksVolume)||_tiksVolume<0||_tiksVolume>1)_tiksVolume=0.08;
-function initTiks(){
+async function initTiks(){
   if(_tiksReady)return;_tiksReady=true;
-  try{tiks.init({theme:'soft'});tiks.setVolume(_tiksVolume);if(_tiksMuted)tiks.mute()}catch(_){}
+  try{
+    const mod=await import('https://cdn.jsdelivr.net/npm/@rexa-developer/tiks@0.1.8/dist/index.js');
+    tiks=mod.tiks;window.tiks=tiks;
+    tiks.init({theme:'soft'});tiks.setVolume(_tiksVolume);if(_tiksMuted)tiks.mute();
+  }catch(_){ tiks=null; } // CDN bloqueado/offline → som fica off, app segue normal
 }
 ['pointerdown','keydown','touchstart'].forEach(ev=>window.addEventListener(ev,initTiks,{once:true,passive:true}));
 window.toggleSound=function(){
@@ -11633,7 +11742,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     upd();
   }
   document.addEventListener('click',e=>{
-    if(!_tiksReady||_tiksMuted)return;
+    if(!tiks||_tiksMuted)return;
     const t=e.target.closest('button,.btn,[role=button],.tab,.sidebar-btn,.topbar-icon-btn,.save-opt,.vg-slot,.alert-btn,.toast-close,.nav-item');
     if(!t)return;
     if(t.classList.contains('save-opt-danger')||t.classList.contains('danger')){tiks.warning();return}
@@ -11644,7 +11753,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   if(typeof _toast==='function'){
     window.toast=function(m,opts){
       const r=_toast.apply(this,arguments);
-      if(_tiksReady&&!_tiksMuted){
+      if(tiks&&!_tiksMuted){
         const o=typeof opts==='string'?{type:opts}:(opts||{});
         const t=o.type||'success';
         try{({success:'success',error:'error',warning:'warning',info:'notify'})[t]&&tiks[{success:'success',error:'error',warning:'warning',info:'notify'}[t]]()}catch(e){}
@@ -11655,8 +11764,7 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
-<!-- Lottie (lazy, defer) -->
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+<!-- Lottie agora é injetado após window.load (ver <head>) — não bloqueia o load -->
 
 <script>
 // ═══ Profile char details (nome/idade/etc) persist localStorage ═══
@@ -15387,6 +15495,22 @@ let nextMemberId=1;
 
 // ═══ NAV ═══
 const NAV_ANIM_TABS=new Set(['dashboard','progress','credit','pericias','biblioteca','inventory','feiticos']);
+// Cortina de transição: cobre a tela → troca a aba (swapFn) no auge → revela.
+// CRÍTICO: swapFn SEMPRE executa (flag idempotente + timeout de troca + fallback) → a navegação NUNCA quebra,
+// mesmo se a animação falhar. Em reduced-motion / perf-low / sem elemento, troca direto (sem cortina).
+function _pageTransition(swapFn){
+  let done=false;
+  const swap=()=>{if(done)return;done=true;try{swapFn()}catch(_){}};
+  const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const c=document.getElementById('page-curtain');
+  if(!c||reduce||document.body.hasAttribute('data-perf-low')){swap();return}
+  c.classList.remove('sweep');void c.offsetWidth; // reinicia a animação
+  c.classList.add('sweep');
+  const tSwap=setTimeout(swap,250); // troca quando a cortina cobre (~46% de .56s)
+  const end=()=>{clearTimeout(tSwap);c.classList.remove('sweep');swap()};
+  c.addEventListener('animationend',end,{once:true});
+  setTimeout(end,800); // fallback: nunca deixa cortina presa nem swap pendente
+}
 document.querySelectorAll('.sidebar-btn[data-tab]').forEach(b=>{b.addEventListener('click',()=>{
   // Animação por tab (mesmo padrão da lua/sol) — só nas tabs whitelisted
   if(NAV_ANIM_TABS.has(b.dataset.tab)&&!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
@@ -15411,7 +15535,7 @@ document.querySelectorAll('.sidebar-btn[data-tab]').forEach(b=>{b.addEventListen
     else if(t==='mounts'){try{renderMounts()}catch(_){}}
     else if(t==='vehicles'){try{renderVehicles()}catch(_){}}
   };
-  doSwitch();
+  _pageTransition(doSwitch);
 })});
 
 // ═══ STATUS ICONS — toque/swipe ativa animação ═══
@@ -15853,7 +15977,7 @@ function _dashEmptyHandCircle(size){
   </div>`;
 }
 function _dashWeaponWidget(prim,sec){
-  if(!prim){return '';}
+  if(!prim){return `<div class="dash-hunt-widget single dash-hunt-empty">${_dashEmptyHandCircle(130)}</div>`;}
   const isTwoHand=!!prim.twoHanded;
   const showSec=!isTwoHand&&sec&&sec.id!==prim.id;
   return `<div class="dash-hunt-widget${showSec?' dual':' single'}" data-prim="${prim.id}" ${showSec?`data-sec="${sec.id}"`:''}>
@@ -16207,10 +16331,10 @@ function renderStatus(){
     if(empty){vl.innerHTML=''}
     else vl.innerHTML=`<span>${v}</span><span class="sv-max">/${mRaw||m}</span>${b>0?`<span class="sv-bonus">+${b}</span>`:''}${t>0?`<span class="sv-temp">+${t}</span>`:''}`;
   });
-  try{
-    const dw=document.getElementById('dash-weapons');
-    if(dw&&dw.querySelector('.dash-hunt-empty')&&typeof renderDashLists==='function')renderDashLists();
-  }catch(_){}
+  // (removido) renderStatus NÃO chama mais renderDashLists: criava recursão infinita
+  // renderDashLists→renderSummary→renderXP→_recomputeStatusFromArq→renderStatus→renderDashLists…
+  // quando as mãos estavam vazias (.dash-hunt-empty sempre presente). renderDashLists já
+  // renderiza dash-weapons (linha ~16096), então essa chamada era redundante além de fatal.
 }
 
 // ═══ CHART ═══
@@ -16251,8 +16375,13 @@ function drawChart(animate){
   const rect=c.parentElement.getBoundingClientRect();
   if(rect.width<10||rect.height<10)return;
   const dpr=window.devicePixelRatio||1;
-  c.width=rect.width*dpr;c.height=rect.height*dpr;c.style.width=rect.width+'px';c.style.height=rect.height+'px';
-  const ctx=c.getContext('2d');ctx.scale(dpr,dpr);
+  const tw=Math.round(rect.width*dpr),th=Math.round(rect.height*dpr);
+  // Só re-dimensiona o canvas quando o tamanho REALMENTE muda. Atribuir c.width/c.height
+  // (mesmo com valor igual) limpa o bitmap e força reflow → com o canvas dentro de uma
+  // região content-visibility isso disparava render→reflow→render em loop (drawChart
+  // chamado todo frame, main thread 100%, 'load' nunca dispara, tela congelada no boot).
+  if(c.width!==tw||c.height!==th){c.width=tw;c.height=th;c.style.width=rect.width+'px';c.style.height=rect.height+'px'}
+  const ctx=c.getContext('2d');ctx.setTransform(1,0,0,1,0,0);ctx.scale(dpr,dpr);
   const w=rect.width,h=rect.height;
   const d=buildChartData();chartData=d;
   // Em modo estagio, usa stage data como linha primária; xp continua secundário
@@ -28875,7 +29004,7 @@ function renderProfile(){
   const _setStat=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};
   _setStat('ps-armas',cats.arma);_setStat('ps-armaduras',cats.armadura);
   _setStat('ps-consumiveis',cats.consumivel);_setStat('ps-materiais',cats.material);_setStat('ps-chaves',cats.chave);
-  document.querySelector('.topbar-welcome h2').textContent=profileData.name;
+  const _tw=document.querySelector('.topbar-welcome h2');if(_tw)_tw.textContent=profileData.name;
   renderProfileLog();
 }
 
@@ -29723,13 +29852,18 @@ function _safe(fn,n){try{fn()}catch(err){console.error('[init]',n,err)}}
 _safe(renderGrid,'renderGrid');
 _safe(renderDashLists,'renderDashLists');
 _safe(renderXP,'renderXP');
-_safe(renderSkills,'renderSkills');
 _safe(renderAttrs,'renderAttrs');
 _safe(renderAch,'renderAch');
 _safe(renderGroup,'renderGroup');
-_safe(renderPericias,'renderPericias');
-_safe(renderCaseSelector,'renderCaseSelector');
 _safe(()=>initCustomSelects(),'initCustomSelects');
+// Renders de abas ESCONDIDAS adiados pra após o 1º paint → boot mais leve, menos "página sem resposta".
+// renderXP (acima) já fez o seeding de skills; refreshAll() re-renderiza estes quando os dados mudam,
+// e renderCaseSelector ainda é re-renderizado ao abrir a aba inventário (switchTab). Seguro adiar.
+(window.requestIdleCallback||(f=>setTimeout(f,200)))(()=>{
+  _safe(renderSkills,'renderSkills');
+  _safe(renderPericias,'renderPericias');
+  _safe(renderCaseSelector,'renderCaseSelector');
+});
 setTimeout(()=>_safe(()=>drawChart(true),'drawChart'),100);
 let _chartResizeTmr=null;
 window.addEventListener('resize',()=>{
@@ -32064,14 +32198,7 @@ document.querySelectorAll('.see-all').forEach((btn,idx)=>{
   });
 });
 
-// ═══ TOGGLE SLIDER SYSTEM ═══
-const TOGGLE_COLORS={
-  xp:{bg:'#84cc16',shadow:'rgba(132,204,22,.4)'},
-  credito:{bg:'var(--yellow)',shadow:'rgba(251,191,36,.4)'},
-  tipo:{bg:'var(--magenta)',shadow:'rgba(var(--magenta-rgb),.4)'},
-  raridade:{bg:'var(--purple)',shadow:'rgba(167,139,250,.4)'}
-};
-
+// ═══ DASHBOARD TOGGLE PILLS ═══ (pílula ativa colorida via CSS; sem slider absoluto)
 function _evoSlide(container,dir){
   const card=container.closest&&container.closest('.card');
   const area=card&&card.querySelector('.chart-area');
@@ -32086,61 +32213,44 @@ function _donutSlide(container,dir){
   area.classList.remove('slide-l','slide-r');void area.offsetWidth;
   area.classList.add(dir==='r'?'slide-r':'slide-l');
 }
-function initToggleSlider(container){
-  if(container.querySelector('.toggle-slider'))return;
-  const slider=document.createElement('div');
-  slider.className='toggle-slider';
-  container.appendChild(slider);
-  updateSliderPos(container);
-}
-
-function updateSliderPos(container){
-  const active=container.querySelector('.toggle-pill.active');
-  const slider=container.querySelector('.toggle-slider');
-  if(!active||!slider)return;
-  // Container oculto no momento → offset 0. Tenta de novo no próximo frame sem animar (snap).
-  if(active.offsetWidth===0){
-    const prev=slider.style.transition;slider.style.transition='none';
-    requestAnimationFrame(()=>{updateSliderPos(container);requestAnimationFrame(()=>{slider.style.transition=prev})});
-    return;
-  }
-  const mode=active.dataset.mode||'xp';
-  let colors=TOGGLE_COLORS[mode]||TOGGLE_COLORS.xp;
-  // Override pra estagio quando chartMode=='estagio' e pill xp ativo
-  if(mode==='xp'&&window.chartMode==='estagio'){
-    colors={bg:'#a78bfa',shadow:'rgba(167,139,250,.4)'};
-  }
-  slider.style.left=active.offsetLeft+'px';
-  slider.style.width=active.offsetWidth+'px';
-  slider.style.background=colors.bg;
-  slider.style.boxShadow='none';
-}
-
-// Reposiciona sliders no resize (largura dos pills muda)
-window.addEventListener('resize',()=>{document.querySelectorAll('.toggle-pills').forEach(updateSliderPos)});
 document.querySelectorAll('.toggle-pills').forEach(container=>{
-  initToggleSlider(container);
   container.querySelectorAll('.toggle-pill').forEach(btn=>{
     btn.addEventListener('click',()=>{
-      // Skip click se acabou de fazer long-press (evita reset do estagio)
+      // Skip click logo após long-press (evita resetar o estágio)
       if(window._chartLongPressed){window._chartLongPressed=false;return}
       container.querySelectorAll('.toggle-pill').forEach(x=>x.classList.remove('active'));
       btn.classList.add('active');
       const mode=btn.dataset.mode;
-      // Garante slider (caso container estivesse oculto no init → 0px)
-      if(!container.querySelector('.toggle-slider'))initToggleSlider(container);
-      // Limpa inline overrides do long-press
-      const slider=container.querySelector('.toggle-slider');
-      if(slider){slider.style.background='';slider.style.boxShadow=''}
-      updateSliderPos(container);
-      // Pop/squash sutil ao trocar
-      if(slider){slider.classList.remove('pop');void slider.offsetWidth;slider.classList.add('pop');}
-      if(mode==='xp'){chartMode='xp';drawChart(true);_evoSlide(container,'l')}
+      if(mode==='xp'){chartMode='xp';btn.classList.remove('estagio');drawChart(true);_evoSlide(container,'l')}
       else if(mode==='credito'){chartMode='credito';drawChart(true);_evoSlide(container,'r')}
       else if(mode==='tipo'||mode==='raridade'){donutMode=mode;renderDonut();_donutSlide(container,mode==='raridade'?'r':'l')}
     });
   });
 });
+
+// ═══ Thumb deslizante das toggle-pills (var-driven → anima via transition CSS) ═══
+(function(){
+  function syncTP(c){
+    const pills=Array.prototype.slice.call(c.querySelectorAll('.toggle-pill'));
+    let idx=pills.findIndex(p=>p.classList.contains('active'));
+    if(idx<0)idx=0;
+    const a=pills[idx];
+    const mode=a&&a.dataset?a.dataset.mode:'';
+    const estagio=!!(a&&a.classList.contains('estagio'));
+    c.style.setProperty('--tp-x',idx>0?'100%':'0');
+    let bg='#84cc16';
+    if(mode==='xp')bg=estagio?'#a78bfa':'#84cc16';
+    else if(mode==='credito')bg='var(--yellow)';
+    else if(mode==='tipo')bg='var(--magenta)';
+    else if(mode==='raridade')bg='var(--purple)';
+    c.style.setProperty('--tp-bg',bg);
+  }
+  document.querySelectorAll('.toggle-pills').forEach(function(c){
+    syncTP(c);
+    try{new MutationObserver(function(){syncTP(c)}).observe(c,{subtree:true,attributes:true,attributeFilter:['class']});}catch(_){}
+  });
+  window._syncTogglePills=function(){document.querySelectorAll('.toggle-pills').forEach(syncTP)};
+})();
 
 // Chart time pills
 document.querySelectorAll('.chart-time-pill').forEach(btn=>{
@@ -32593,28 +32703,9 @@ document.addEventListener('visibilitychange',()=>{
 </div>
 
 <script>
-(function(){
-  function initOS(){
-    if(!window.OverlayScrollbarsGlobal){setTimeout(initOS,80);return}
-    const {OverlayScrollbars}=window.OverlayScrollbarsGlobal;
-    const sel='__nope__';
-    const observed=new WeakSet();
-    function attach(el){
-      if(observed.has(el))return;
-      observed.add(el);
-      try{OverlayScrollbars(el,{scrollbars:{theme:'os-theme-eclipse',autoHide:'leave',autoHideDelay:600}})}catch(e){}
-    }
-    document.querySelectorAll(sel).forEach(attach);
-    const mo=new MutationObserver(muts=>{muts.forEach(m=>m.addedNodes.forEach(n=>{
-      if(n.nodeType!==1)return;
-      if(n.matches&&n.matches(sel))attach(n);
-      n.querySelectorAll&&n.querySelectorAll(sel).forEach(attach);
-    }))});
-    mo.observe(document.body,{childList:true,subtree:true});
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initOS);
-  else initOS();
-})();
+/* OverlayScrollbars REMOVIDO: o seletor era '__nope__' (não casava nada), então o init era inerte.
+   Eliminado: (1) MutationObserver em document.body+subtree que reprocessava a CADA mutação do DOM,
+   (2) o poll setTimeout(initOS,80) que rodaria em loop infinito se o CDN não carregasse. Scrollbars nativos. */
 
 // ═══ Equip Slot Picker ═══
 window.equippedGear=window.equippedGear||{};
@@ -35045,12 +35136,13 @@ body[data-perf-anim-tabswitch="off"] .sidebar-btn[data-tab].nav-anim svg{animati
       if(typeof switchToConfig==='function'){
         if(!document.getElementById('tab-config').classList.contains('active'))switchToConfig();
       }
-      const tabBtn=document.querySelector('#tab-config .cfg-tab[data-cfg-tab="app"]');
-      if(tabBtn)tabBtn.click();
+      // Usa cfgGoPanel (revela a seção detalhada) em vez de clicar a aba invisível direto.
+      if(typeof cfgGoPanel==='function')cfgGoPanel('app');
+      else{const tabBtn=document.querySelector('#tab-config .cfg-tab[data-cfg-tab="app"]');if(tabBtn)tabBtn.click();}
       setTimeout(()=>{
         const block=document.querySelector('.perf-pane-block');
         if(block)block.scrollIntoView({behavior:'smooth',block:'start'});
-      },80);
+      },120);
     }catch(_){}
   }
   function close(){}
