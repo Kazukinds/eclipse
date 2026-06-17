@@ -35658,12 +35658,13 @@ body[data-perf-low] .dcard-handle{display:none}
     border:0;border-bottom:1px solid var(--line);
     box-shadow:0 10px 30px -16px rgba(0,0,0,.9)}
 
-  /* BARRA ÚNICA: voltar + marca + [Filtrar/busca/sort/compra] numa linha só */
-  .grimorio-root .side-bar{display:flex;align-items:center;gap:16px;min-width:0;width:100%}
-  .grimorio-root .side-bar .side-head{flex:0 0 auto}
+  /* BARRA: grid 2 linhas — cima: voltar+marca | baixo: Filtrar/busca/sort/compra */
+  .grimorio-root .side-bar{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"back brand" "tools tools";gap:14px 14px;align-items:center;min-width:0;width:100%}
+  .grimorio-root .side-bar .grim-close{grid-area:back}
+  .grimorio-root .side-bar .side-head{grid-area:brand;flex:0 0 auto}
   .grimorio-root .side-bar .brand-txt p{display:none}
-  /* toolbar embutida na barra → vira inline e cresce */
-  .grimorio-root .side-bar .toolbar{flex:1 1 auto;min-width:0;flex-direction:row!important;gap:0!important;margin:0!important}
+  /* toolbar na 2ª linha, largura total */
+  .grimorio-root .side-bar .toolbar{grid-area:tools;width:100%;min-width:0;flex-direction:row!important;gap:0!important;margin:0!important}
   .grimorio-root .side-bar .toolbar .tb-row{width:100%;flex-wrap:nowrap}
 
   .grimorio-root .grim-close{flex:0 0 auto;width:40px;height:40px;display:flex;align-items:center;justify-content:center;
