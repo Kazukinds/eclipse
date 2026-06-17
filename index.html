@@ -6634,6 +6634,40 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   .dash-grid{grid-template-columns:340px 1fr 300px!important}
   .inv-layout{grid-template-columns:1fr 340px!important}
 }
+/* ═══════════════════════════════════════════════════════════════════
+   DESKTOP — VISUAL MINIMAL / FLAT PREMIUM (estilo Linear/Notion)
+   Só >=1024px. Sem glow, sem sombra pesada; cards sólidos sutis, bordas
+   finas, mais respiro, tipografia forte. Mobile/portrait intactos.
+   ═══════════════════════════════════════════════════════════════════ */
+@media (min-width:1024px){
+  /* superfícies sólidas + borda fina, zero glow */
+  .card,.credit-card,.lout-card,.mv-card,.peri-budget,
+  #tab-config .cfg-app,#tab-config .cfg-item,#tab-config .cfg-block{
+    box-shadow:none!important;background:var(--bg-card)!important;
+    border:1px solid var(--border-light)!important;border-radius:16px!important}
+  .card:hover{transform:none!important;box-shadow:none!important;border-color:color-mix(in srgb,#fff 14%,var(--border-light))!important}
+  /* respiro: mais padding e gaps */
+  .content{padding:28px 36px!important}
+  .dash-grid{gap:18px!important}
+  .card{padding:22px!important}
+  /* tipografia mais marcante nos títulos de card */
+  .card-title,.peri-cat-header,.ritual-main-title{letter-spacing:-.2px}
+  .card-title{font-size:15px!important;font-weight:650!important}
+  /* topbar plana, sem sombra/blur, só uma linha divisória */
+  .topbar{box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+    border-bottom:1px solid var(--border)!important;background:var(--bg-sidebar)!important}
+  .topbar-search input{background:var(--bg-card)!important;border:1px solid var(--border-light)!important;box-shadow:none!important;border-radius:12px!important}
+  /* botões redondos do topo: planos */
+  .topbar-icon-btn{background:var(--bg-card)!important;border:1px solid var(--border-light)!important;box-shadow:none!important}
+  .topbar-icon-btn:hover{background:var(--bg-hover)!important}
+  /* sidebar minimal: plana, item ativo só com fundo sutil (sem glow) */
+  .sidebar{box-shadow:none!important}
+  .sidebar-btn.active{box-shadow:none!important}
+  /* remove sombras/realces fortes em botões de ação dentro de cards */
+  .card-action-btn,.see-all,.pericia-add-btn{box-shadow:none!important}
+  /* o content respira do topbar */
+  .content{border-radius:0!important;box-shadow:none!important}
+}
 /* Mobile portrait (até 640) */
 @media (max-width:640px) and (orientation:portrait){
   /* Pill flutuante: wrapper transparente, conteúdo passa por baixo da pill (sem barra dark) */
