@@ -35679,7 +35679,9 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .ess{flex:0 0 auto!important}
   /* X fixo no canto; a marca e as pills (todas as linhas) reservam a faixa dele à direita */
   .grimorio-root .grim-close{position:absolute!important;top:14px!important;right:16px!important;z-index:20!important}
-  .grimorio-root .side-head,.grimorio-root .ess-list{padding-right:64px!important;box-sizing:border-box}
+  /* barra de pills termina ANTES do X (X fica numa faixa própria à direita) */
+  .grimorio-root .side-head{padding-right:64px!important;box-sizing:border-box}
+  .grimorio-root .ess-list{padding-right:0!important;margin-right:58px!important;box-sizing:border-box}
   .grimorio-root .ess{flex:0 0 auto!important;border-left:0!important;border-bottom:2px solid transparent!important;padding:8px 14px!important;border-radius:8px}
   .grimorio-root .ess::after{display:none!important}
   .grimorio-root .ess[data-on="1"]{border-left:0!important;border-bottom-color:transparent!important;background:transparent!important}
