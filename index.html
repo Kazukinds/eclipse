@@ -35903,9 +35903,28 @@ body[data-perf-low] .dcard-handle{display:none}
     .grimorio-root .ess-list{flex-direction:row!important;flex-wrap:nowrap!important;overflow-x:auto!important;gap:4px!important;width:100%!important;-webkit-overflow-scrolling:touch}
     .grimorio-root .ess-list::-webkit-scrollbar{display:none}
     .grimorio-root .ess{flex:0 0 auto!important;gap:7px!important}
-    .grimorio-root main{padding:30px 20px 100px;max-width:none}
-    .grimorio-root .m-head h2{font-size:42px}
-    .grimorio-root .search{font-size:16px}
+    .grimorio-root main{padding:24px 18px 100px;max-width:none}
+    /* ═══ REDESIGN MOBILE do header do grimório ═══ */
+    /* topbar: marca menor */
+    .grimorio-root .side-head .brand-txt h1{font-size:15px;letter-spacing:3px}
+    /* essências como pills compactas, ativa colorida */
+    .grimorio-root .ess{padding:7px 12px!important;border-radius:999px!important;border-bottom:0!important;background:#1c1c1c!important}
+    .grimorio-root .ess[data-on="1"]{background:color-mix(in srgb,var(--bc) 18%,#1c1c1c)!important}
+    .grimorio-root .ess[data-on="1"] .ess-name{color:var(--bc2)!important}
+    .grimorio-root .ess .ess-name{font-size:11px!important;letter-spacing:.06em!important}
+    .grimorio-root .ess-ico{width:15px!important;height:15px!important}
+    /* título da essência menor + subtítulo compacto */
+    .grimorio-root .m-head{margin:0 0 18px}
+    .grimorio-root .m-head h2{font-size:40px;line-height:1}
+    .grimorio-root .m-head .sub{font-size:14px;margin-top:8px}
+    /* busca + controles */
+    .grimorio-root .search{font-size:15px;padding:12px 0}
+    .grimorio-root .tb-top{border-radius:14px}
+    /* dropdowns com rótulo visível (Grau/Arq), LISTA só ícone */
+    .grimorio-root .grim-dd-btn .dd-k{display:inline!important;font-size:9px}
+    .grimorio-root .grim-dd-btn b{font-size:10px}
+    .grimorio-root .tb-row .viewtog{flex:0 0 auto;gap:0;padding:9px 14px}
+    .grimorio-root .tb-row .viewtog span{font-size:14px}
     .grimorio-root .cards{grid-template-columns:1fr}
   }
 </style>
