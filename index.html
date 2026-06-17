@@ -35895,10 +35895,14 @@ body[data-perf-low] .dcard-handle{display:none}
     .grimorio-root .ess .ess-name{display:inline!important;font-size:11px;letter-spacing:1px}
     .grimorio-root .ess .ess-count{display:none}
     .grimorio-root .ess-sep{display:none}
-    /* barra rola horizontal e não fica sob o X de fechar */
-    .grimorio-root .side{flex-wrap:nowrap!important;overflow-x:auto!important;padding-right:56px!important}
-    .grimorio-root .ess-list{flex-wrap:nowrap!important}
-    .grimorio-root .ess{gap:7px!important}
+    /* vertical: empilha em 2 linhas — marca (cima) + essências rolando (baixo);
+       assim TODAS as essências ficam acessíveis (rolagem horizontal), sem o X sobrepor */
+    .grimorio-root .side{flex-direction:column!important;align-items:stretch!important;gap:12px!important;padding:16px 18px!important;overflow:visible!important}
+    .grimorio-root .side-head{flex:0 0 auto!important;border-right:0!important;padding-right:56px!important;margin:0!important}
+    .grimorio-root .side-head .brand-txt p{display:none}
+    .grimorio-root .ess-list{flex-direction:row!important;flex-wrap:nowrap!important;overflow-x:auto!important;gap:4px!important;width:100%!important;-webkit-overflow-scrolling:touch}
+    .grimorio-root .ess-list::-webkit-scrollbar{display:none}
+    .grimorio-root .ess{flex:0 0 auto!important;gap:7px!important}
     .grimorio-root main{padding:30px 20px 100px;max-width:none}
     .grimorio-root .m-head h2{font-size:42px}
     .grimorio-root .search{font-size:16px}
