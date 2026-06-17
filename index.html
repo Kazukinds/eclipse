@@ -36187,8 +36187,16 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .grim-fdrop .fd-chev{margin-left:auto;transition:transform .2s;color:var(--faint)}
   .grimorio-root .grim-fdrop[open] .fd-chev{transform:rotate(180deg)}
   @media(max-width:640px){
-    .grimorio-root .grim-fdrop>summary{display:flex}
+    /* busca em cima; LISTA + Grau + Arquétipo numa linha compacta embaixo */
+    .grimorio-root .toolbar{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px}
+    .grimorio-root .tb-top{flex:1 1 100%;order:0}
+    .grimorio-root .viewtog{order:1}
+    .grimorio-root .grim-fdrop{order:2;flex:0 0 auto;position:relative}
+    .grimorio-root .grim-fdrop>summary{display:inline-flex;margin:0;padding:7px 11px;font-size:10px;gap:6px}
+    .grimorio-root .grim-fdrop .fd-chev{margin-left:4px}
     .grimorio-root .grim-fdrop:not([open]) .gfilters,.grimorio-root .grim-fdrop:not([open]) .cfilters{display:none}
+    /* opções flutuam (não empurram layout) */
+    .grimorio-root .grim-fdrop[open] .gfilters,.grimorio-root .grim-fdrop[open] .cfilters{position:absolute;top:calc(100%+4px);left:0;min-width:160px;z-index:20}
     .grimorio-root .grim-fdrop[open] .gfilters,.grimorio-root .grim-fdrop[open] .cfilters{flex-direction:column;gap:4px;padding:10px 4px 6px;background:#161616;border:1px solid var(--line);border-top:0;border-radius:0 0 10px 10px}
     .grimorio-root .grim-fdrop[open] .gchip,.grimorio-root .grim-fdrop[open] .cchip{padding:9px 12px;border-bottom:0;border-radius:8px;font-size:13px}
     .grimorio-root .grim-fdrop[open] .gchip[data-on="1"],.grimorio-root .grim-fdrop[open] .cchip[data-on="1"]{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc2)}
