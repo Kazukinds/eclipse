@@ -8184,7 +8184,7 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 /* === Distribuir Atributos — interface unificada === */
 .ad-pts-bar{
   position:relative;display:flex;gap:14px;align-items:center;
-  background:linear-gradient(135deg in oklch,var(--bg-card-inner) 0%,color-mix(in srgb,var(--magenta) 20%,var(--bg-card-inner)) 100%);
+  background:var(--bg-card-inner);
   border:1px solid var(--magenta-dim);
   border-radius:12px;padding:13px 16px 17px;margin-bottom:14px;
   overflow:hidden;
@@ -8245,7 +8245,7 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .ad-radar-dot{fill:var(--magenta);stroke:var(--bg-card-inner);stroke-width:2}
 .ad-radar-name{font-family:inherit;font-size:8.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;fill:var(--text-dim)}
 .ad-radar-rv{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
-.ad-pts-fill{position:absolute;left:0;top:0;bottom:0;width:100%;z-index:0;pointer-events:none;background:linear-gradient(90deg,color-mix(in srgb,var(--magenta) 20%,transparent),color-mix(in srgb,var(--magenta) 6%,transparent));transition:width .5s cubic-bezier(.4,0,.2,1)}
+.ad-pts-fill{position:absolute;left:0;top:0;bottom:0;width:100%;z-index:0;pointer-events:none;background:color-mix(in srgb,var(--magenta) 14%,transparent);transition:width .5s cubic-bezier(.4,0,.2,1)}
 .ad-pts-fill::after{content:"";position:absolute;right:0;top:0;bottom:0;width:2px;background:var(--magenta);box-shadow:0 0 10px color-mix(in srgb,var(--magenta) 70%,transparent);opacity:.85}/* === Cards + stepper === */
 .sp-list{display:flex;flex-direction:column;gap:10px;margin:4px 0 18px}
 .sp-card{background:var(--bg-card-inner);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:13px;transition:border-color .2s,box-shadow .2s}
@@ -8296,6 +8296,15 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .ad-row.has-points .ad-benef{opacity:1;border-color:color-mix(in srgb,var(--c) 30%,var(--border))}
 .ad-benef-l{color:var(--text-dim);font-style:normal;text-transform:uppercase;font-weight:600;font-size:9px;letter-spacing:.5px}
 .ad-benef-v{color:var(--c);font-weight:800;font-size:11px;font-family:'JetBrains Mono',monospace}
+/* Distribuição: steppers quadrado-curvado + polish */
+.ad-row-head{gap:12px}
+.ad-row-head .sp-step{width:42px;height:42px;border-radius:14px;font-size:22px;background:var(--bg-card);border:1px solid var(--border);color:var(--text-secondary);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 0%,transparent)}
+.ad-row-head .sp-step:hover:not(:disabled){background:color-mix(in srgb,var(--c) 16%,var(--bg-card));border-color:color-mix(in srgb,var(--c) 60%,var(--border));color:var(--c)}
+.ad-row-head .sp-step:active:not(:disabled){transform:scale(.88)}
+.ad-row-head .sp-step:disabled{opacity:.28;cursor:not-allowed}
+.ad-row-val{min-width:48px;justify-content:center}
+.ad-row-val>span:first-child{font-size:27px}
+.ad-row{padding:16px}
 .modal-overlay.open .modal-header{display:flex;align-items:center}
 .arch-dice-btn{
   width:32px;height:32px;border-radius:8px;background:var(--bg-card-inner);border:1px solid var(--border);
@@ -10900,7 +10909,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
         <!-- wide value: Versão -->
         <button type="button" class="wk-card wk-row" title="Verificar atualização" onclick="(window.otaCheckAndInstall&&window.otaCheckAndInstall(true))||(window.eclipseExt3&&window.eclipseExt3.checkSWUpdate&&window.eclipseExt3.checkSWUpdate())">
                     <span class="wk-row-info"><span class="wk-name">Versão</span><span class="wk-sub" id="wk-ver-sub">Build 386 · Web</span></span>
-          <span class="wk-val" id="wk-ver">v3.8.81</span>
+          <span class="wk-val" id="wk-ver">v3.8.82</span>
         </button>
         <!-- pair: Som | Tema -->
         <div class="wk-pair">
@@ -11168,7 +11177,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="cfg-block">
               <h4 class="cfg-block-title">Sobre</h4>
-              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.81</span></div>
+              <div class="cfg-row"><span class="cfg-row-label">Versão</span><span class="cfg-row-val" id="cfg-app-ver">v3.8.82</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Build</span><span class="cfg-row-val" id="cfg-app-build">386</span></div>
               <div class="cfg-row"><span class="cfg-row-label">Plataforma</span><span class="cfg-row-val" id="cfg-app-plat">Web</span></div>
             </div>
@@ -20858,10 +20867,9 @@ function openModal(type,eid){
     body.innerHTML=`<div class="form-group"><label>Nome</label><input type="text" id="m-mname" placeholder="Ex: Soldado da Guarda" required></div><div class="form-group"><label>Tipo</label><div class="type-select-grid" id="member-type-select">${Object.entries(MEMBER_TYPES).map(([k,v])=>`<label class="type-pill${k==='aliado'?' active':''}" data-type="${k}"><input type="radio" name="mem-type" value="${k}" ${k==='aliado'?'checked':''}>${gi('user')} ${v}</label>`).join('')}</div></div><div class="form-group"><label>Credito</label><input type="number" id="m-mgold" value="0" min="0"></div><div class="form-group"><label>Descricao</label><input type="text" id="m-mdesc" placeholder="Detalhes..."></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveMember()">Adicionar</button></div>`;
     document.querySelectorAll('#member-type-select .type-pill').forEach(p=>{p.addEventListener('click',()=>{document.querySelectorAll('#member-type-select .type-pill').forEach(x=>x.classList.remove('active'));p.classList.add('active')})});
   } else if(type==='attribute'){
-    // Ajustar Atributos manual removido — sempre redireciona pro distribuir
-    if(typeof _openCustomArchetype==='function'){closeModal();setTimeout(()=>_openCustomArchetype(),50);return}
-    title.textContent='Distribuir Atributos';
-    body.innerHTML=`<div style="padding:12px;font-size:12px;color:var(--text-dim)">Distribuir não disponível.</div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Fechar</button></div>`;
+    // Interface de distribuição de atributos (radar + slider + stepper)
+    if(typeof _adOpen==='function'){_adOpen(title,body);}
+    else{title.textContent='Distribuir Atributos';body.innerHTML=`<div style="padding:12px;font-size:12px;color:var(--text-dim)">Distribuir não disponível.</div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Fechar</button></div>`;}
   } else if(type==='status'){
     title.textContent='Configurar Status';
     const sKeys=Object.entries(playerStatus);
@@ -23465,7 +23473,17 @@ function updateThemeIcon(){
 }
 function updateMetaTheme(){
   const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta)meta.setAttribute('content',currentTheme==='grimoire'?'#f1e6cd':currentTheme==='light'?'#f5f5f5':'#000000');
+  if(!meta)return;
+  // Barra de status adapta à cor real do fundo (a "ponta" do app) — sem cor desconexa.
+  let c=currentTheme==='grimoire'?'#f1e6cd':currentTheme==='light'?'#f5f5f5':'#000000';
+  try{
+    const bg=getComputedStyle(document.body).backgroundColor;
+    if(bg&&bg!=='transparent'&&!/rgba?\(0,\s*0,\s*0,\s*0\)/.test(bg))c=bg;
+    if(typeof Capacitor!=='undefined'&&Capacitor.Plugins&&Capacitor.Plugins.StatusBar){
+      try{Capacitor.Plugins.StatusBar.setBackgroundColor({color:c});}catch(_){}
+    }
+  }catch(_){}
+  meta.setAttribute('content',c);
 }
 function toggleTheme(){setTheme(currentTheme==='light'?'dark':'light')}
 function _applyTheme(t){
@@ -29394,6 +29412,12 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.8.82',date:'2026-06-16',title:'Distribuir Atributos funcional + status bar adaptativa + pickers tela cheia',items:[
+    {tag:'feat',text:'Distribuir Atributos agora funciona: barra de pontos + slider e botões −/+ por atributo, com trava de orçamento (12 pts · máx 5; Nv 10 sobe pra 14/6).'},
+    {tag:'ui',text:'Modal de atributos sem radar, barra de cor sólida e botões quadrado-curvado.'},
+    {tag:'ui',text:'Pickers (Escolher Passado/Linhagem/Arquétipo/Caminho) em tela cheia no mobile.'},
+    {tag:'fix',text:'Barra de status adapta à cor real do fundo — sem cor desconexa no topo — e sincroniza o StatusBar no APK.'}
+  ]},
   {version:'v3.8.81',date:'2026-06-16',title:'Interface fixa no hover + atalhos em pastas + atributo temporário',items:[
     {tag:'fix',text:'Painéis do dashboard não se movem mais ao passar o mouse — hover fixo, sem levantar nem inclinar o card.'},
     {tag:'feat',text:'Configurações: atalhos reorganizados em pastas (Ficha, App, Tema, Avançado).'},
@@ -30044,6 +30068,131 @@ function _applyArchetypeAttrs(attrs){
   try{if(typeof autosaveNow==='function')autosaveNow()}catch(_){}
   return true;
 }
+/* ═══ Distribuir Atributos — interface (radar + slider + stepper) ═══ */
+let _adState=null;
+const _AD_KEYS=['Fisico','Motora','Psique','Intelecto'];
+const _AD_RADAR=['Intelecto','Motora','Fisico','Psique']; // topo, dir, base, esq
+const _AD_COLORS={Fisico:'#f87171',Motora:'#34d399',Psique:'#c084fc',Intelecto:'#60a5fa'};
+const _AD_CX=120,_AD_CY=96,_AD_R=60;
+function _adCap(){return (typeof _archetypePointCap==='function')?_archetypePointCap():{maxPerAttr:5,totalPts:12,level:1};}
+function _adSliderMax(n){const s=_adState;return s.unlocked?Math.max(10,s.draft[n]):s.cap.maxPerAttr;}
+function _adScaleMax(){const s=_adState;const hi=Math.max(0,...Object.values(s.draft));return s.unlocked?Math.max(s.cap.maxPerAttr,hi,5):s.cap.maxPerAttr;}
+window._adOpen=function(title,body){
+  const cap=_adCap();
+  const unlocked=(typeof _attrUnlocked!=='undefined')&&_attrUnlocked;
+  const draft={};
+  _AD_KEYS.forEach(n=>{const a=(typeof attributes!=='undefined')?attributes.find(x=>x.name===n):null;draft[n]=a?(a.val||0):0;});
+  _adState={cap,unlocked,draft};
+  if(title)title.textContent='Distribuir Atributos';
+  body.innerHTML=_adMarkup();
+  _adRefresh();
+};
+function _adMarkup(){
+  const s=_adState,cap=s.cap;
+  const lbl=(typeof ATTR_LABEL!=='undefined')?ATTR_LABEL:{};
+  const ptsBar=`<div class="ad-pts-bar">
+    <div class="ad-pts-fill" id="ad-ptsfill"></div>
+    <div class="ad-pts-block"><span class="ad-pts-lbl">Pontos distribuídos</span><span class="ad-pts-val-row"><span class="ad-pts-val" id="ad-used">0</span><span class="ad-pts-total" id="ad-total">/ ${s.unlocked?'∞':cap.totalPts}</span></span></div>
+    <div class="ad-pts-block ad-pts-max"><span class="ad-pts-lbl">Máx/atrib</span><span class="ad-pts-cap">${s.unlocked?'∞':cap.maxPerAttr}</span></div>
+  </div>`;
+  const rows=_AD_KEYS.map(n=>{
+    const c=_AD_COLORS[n]||'var(--magenta)';
+    const sMax=_adSliderMax(n);
+    const ticks=Array.from({length:sMax+1},()=>'<div class="ad-tick"></div>').join('');
+    return `<div class="ad-row" id="ad-row-${n}" style="--c:${c}" data-attr="${n}">
+      <div class="ad-row-head">
+        <span class="ad-row-dot"></span>
+        <span class="ad-row-name">${lbl[n]||n}</span>
+        <button type="button" class="sp-step" id="ad-dec-${n}" onclick="_adStep('${n}',-1)" aria-label="Diminuir">−</button>
+        <span class="ad-row-val"><span id="ad-val-${n}">0</span><span class="ad-row-max" id="ad-max-${n}">/${s.unlocked?'∞':cap.maxPerAttr}</span></span>
+        <button type="button" class="sp-step" id="ad-inc-${n}" onclick="_adStep('${n}',1)" aria-label="Aumentar">+</button>
+      </div>
+      <div class="ad-slider">
+        <div class="ad-slider-track"></div>
+        <div class="ad-slider-fill" id="ad-fill-${n}"></div>
+        <div class="ad-slider-ticks">${ticks}</div>
+        <input type="range" class="ad-range" id="ad-range-${n}" min="0" max="${sMax}" step="1" value="0" oninput="_adSet('${n}',this.value)" aria-label="${lbl[n]||n}">
+      </div>
+    </div>`;
+  }).join('');
+  const footer=`<div class="modal-btns">
+    <button class="modal-btn secondary" onclick="closeModal()">Fechar</button>
+    <button class="modal-btn secondary" onclick="_adReset()">Zerar</button>
+    <button class="modal-btn primary" onclick="_adSave()">Salvar</button>
+  </div>`;
+  return ptsBar+`<div class="ad-list">${rows}</div>`+footer;
+}
+function _adRadarMarkup(){
+  const cx=_AD_CX,cy=_AD_CY,R=_AD_R;
+  const rings=[0.34,0.67,1].map((r,i)=>`<circle class="ad-radar-ring${i===2?' outer':''}" cx="${cx}" cy="${cy}" r="${(R*r).toFixed(1)}"/>`).join('');
+  let axes='',names='',dots='',vals='';
+  const abbr=(typeof ATTR_ABBR!=='undefined')?ATTR_ABBR:{};
+  _AD_RADAR.forEach((n,i)=>{
+    const a=(-90+i*90)*Math.PI/180, co=Math.cos(a), si=Math.sin(a);
+    const ax=cx+R*co, ay=cy+R*si;
+    axes+=`<line class="ad-radar-axis" x1="${cx}" y1="${cy}" x2="${ax.toFixed(1)}" y2="${ay.toFixed(1)}"/>`;
+    const nx=cx+(R+16)*co, ny=cy+(R+16)*si;
+    const anchor=Math.abs(co)<0.1?'middle':(co>0?'start':'end');
+    const dy=si>0.1?10:(si<-0.1?-4:3);
+    names+=`<text class="ad-radar-name" x="${nx.toFixed(1)}" y="${(ny+dy).toFixed(1)}" text-anchor="${anchor}">${abbr[n]||n}</text>`;
+    vals+=`<text class="ad-radar-rv" id="ad-rv-${n}" x="${nx.toFixed(1)}" y="${(ny+dy+13).toFixed(1)}" text-anchor="${anchor}" fill="${_AD_COLORS[n]}">0</text>`;
+    dots+=`<circle class="ad-radar-dot" id="ad-dot-${n}" cx="${cx}" cy="${cy}" r="3.5"/>`;
+  });
+  return `<div class="ad-radar-wrap"><svg class="ad-radar" viewBox="0 0 240 200" role="img" aria-label="Radar de atributos">
+    <defs><radialGradient id="adRadarGrad" cx="50%" cy="50%" r="50%"><stop class="s0" offset="0%"/><stop class="s1" offset="100%"/></radialGradient></defs>
+    ${rings}${axes}<polygon class="ad-radar-poly" id="ad-poly" points=""/>${dots}${names}${vals}
+  </svg></div>`;
+}
+window._adSet=function(n,v){
+  const s=_adState; if(!s)return;
+  v=Math.max(0,Math.round(parseFloat(v)||0));
+  if(!s.unlocked)v=Math.min(v,s.cap.maxPerAttr);
+  if(!s.unlocked){const others=_AD_KEYS.reduce((t,k)=>t+(k===n?0:s.draft[k]),0);v=Math.min(v,s.cap.totalPts-others);}
+  s.draft[n]=Math.max(0,v);
+  _adRefresh();
+};
+window._adStep=function(n,d){const s=_adState; if(!s)return; _adSet(n,(s.draft[n]||0)+d);};
+function _adRefresh(){
+  const s=_adState; if(!s)return;
+  const total=_AD_KEYS.reduce((t,k)=>t+s.draft[k],0);
+  const remaining=s.unlocked?Infinity:s.cap.totalPts-total;
+  const usedEl=document.getElementById('ad-used'); if(usedEl){usedEl.textContent=total;usedEl.classList.toggle('depleted',!s.unlocked&&remaining<=0);}
+  const fill=document.getElementById('ad-ptsfill'); if(fill)fill.style.width=s.unlocked?'100%':Math.min(100,(total/s.cap.totalPts)*100)+'%';
+  _AD_KEYS.forEach(n=>{
+    const v=s.draft[n], sMax=_adSliderMax(n);
+    const valEl=document.getElementById('ad-val-'+n); if(valEl)valEl.textContent=v;
+    const fl=document.getElementById('ad-fill-'+n); if(fl)fl.style.width=(sMax>0?(v/sMax*100):0)+'%';
+    const rng=document.getElementById('ad-range-'+n); if(rng){if(parseInt(rng.max)!==sMax)rng.max=sMax; if(parseInt(rng.value)!==v)rng.value=v;}
+    const dec=document.getElementById('ad-dec-'+n); if(dec)dec.disabled=v<=0;
+    const inc=document.getElementById('ad-inc-'+n); if(inc)inc.disabled=!s.unlocked&&(remaining<=0||v>=s.cap.maxPerAttr);
+    const row=document.getElementById('ad-row-'+n); if(row)row.classList.toggle('has-points',v>0);
+  });
+}
+function _adRadarUpdate(){
+  const s=_adState; if(!s)return;
+  const cx=_AD_CX,cy=_AD_CY,R=_AD_R,scale=_adScaleMax(),pts=[];
+  _AD_RADAR.forEach((n,i)=>{
+    const a=(-90+i*90)*Math.PI/180, ratio=scale>0?Math.min(1,s.draft[n]/scale):0;
+    const x=cx+R*ratio*Math.cos(a), y=cy+R*ratio*Math.sin(a);
+    pts.push(x.toFixed(1)+','+y.toFixed(1));
+    const dot=document.getElementById('ad-dot-'+n); if(dot){dot.setAttribute('cx',x.toFixed(1));dot.setAttribute('cy',y.toFixed(1));}
+    const rv=document.getElementById('ad-rv-'+n); if(rv)rv.textContent=s.draft[n];
+  });
+  const poly=document.getElementById('ad-poly'); if(poly)poly.setAttribute('points',pts.join(' '));
+}
+window._adReset=function(){const s=_adState;if(!s)return;_AD_KEYS.forEach(n=>s.draft[n]=0);_adRefresh();};
+window._adSave=function(){
+  const s=_adState;if(!s)return;
+  if(typeof _applyArchetypeAttrs==='function'){_applyArchetypeAttrs(s.draft);}
+  else{
+    if(typeof attributes!=='undefined')_AD_KEYS.forEach(n=>{const a=attributes.find(x=>x.name===n);if(a){a.val=s.draft[n];if(a.max<a.val)a.max=a.val;}});
+    try{if(typeof renderAttrs==='function')renderAttrs()}catch(_){}
+    try{if(typeof refreshAll==='function')refreshAll()}catch(_){}
+    try{if(typeof autosaveNow==='function')autosaveNow()}catch(_){}
+  }
+  try{closeModal()}catch(_){}
+  if(typeof toast==='function')toast('Atributos atualizados');
+};
 window.openArchetypePicker=function(){
   try{closeModal()}catch(_){}
   if(typeof openAttrGearMenu==='function')return openAttrGearMenu();
@@ -30382,7 +30531,7 @@ window.openAdvPicker=function(field){
           <div class="adv-locked-desc">Escolha um <b>Arquétipo</b> antes. Os caminhos disponíveis dependem da classe selecionada.</div>
           <div class="modal-btns"><button type="button" class="modal-btn secondary" onclick="closeModal()">Fechar</button><button type="button" class="modal-btn primary" id="adv-go-arq">Escolher Arquétipo</button></div>
         </div>`;
-      document.getElementById('modal-overlay').classList.add('open','modal-fit');
+      document.getElementById('modal-overlay').classList.add('open');
       const goArq=document.getElementById('adv-go-arq');
       if(goArq)goArq.addEventListener('click',()=>openAdvPicker('arquetipo'));
       return;
@@ -30403,7 +30552,7 @@ window.openAdvPicker=function(field){
       </button>`).join('')}
     </div>
     ${current?`<div class="modal-btns"><button type="button" class="modal-btn secondary" id="adv-clear-btn">Remover seleção</button><button type="button" class="modal-btn primary" onclick="closeModal()">Fechar</button></div>`:`<div class="modal-btns"><button type="button" class="modal-btn secondary" onclick="closeModal()">Cancelar</button></div>`}`;
-  document.getElementById('modal-overlay').classList.add('open','modal-fit');
+  document.getElementById('modal-overlay').classList.add('open');
   document.querySelectorAll(`#adv-grid-${field} .adv-card`).forEach(btn=>{
     btn.addEventListener('click',()=>{
       const idx=parseInt(btn.dataset.advIdx);
@@ -30502,7 +30651,7 @@ window._advShowDetail=function(field,item){
       <button type="button" class="modal-btn secondary" id="adv-detail-back">← Voltar</button>
       <button type="button" class="modal-btn primary" id="adv-detail-confirm"${isSelected?' disabled':''}>${isSelected?'Já selecionado':'Confirmar'}</button>
     </div>`;
-  document.getElementById('modal-overlay').classList.add('open','modal-fit');
+  document.getElementById('modal-overlay').classList.add('open');
   const backBtn=document.getElementById('adv-detail-back');
   if(backBtn)backBtn.addEventListener('click',()=>openAdvPicker(field));
   const cbtn=document.getElementById('adv-detail-confirm');
