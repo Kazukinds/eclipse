@@ -35695,7 +35695,7 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .ess-sep{display:none}
 
   /* ---- main + título ---- */
-  .grimorio-root main{flex:1;min-width:0;width:100%;max-width:1280px;margin:0 auto;padding:30px 40px 100px;position:relative}
+  .grimorio-root main{flex:1;min-width:0;width:100%;max-width:1680px;margin:0 auto;padding:30px 40px 100px;position:relative}
   .grimorio-root .m-head{display:none!important}
 
   /* ---- sobre a essência ---- */
@@ -35862,10 +35862,11 @@ body[data-perf-low] .dcard-handle{display:none}
 
   /* entradas de ritual (editorial, sem caixa) */
   /* Grid: cards na mesma linha = mesma altura, ordem esquerda→direita */
-  .grimorio-root .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:22px;align-items:stretch}
-  .grimorio-root .card{border:1px solid var(--line);border-radius:14px;height:100%;
-    padding:26px 28px 28px;margin:0;background:#1a1a1a;transition:border-color .2s}
-  .grimorio-root .card:hover{border-color:color-mix(in srgb,var(--acc) 24%,var(--line))}
+  .grimorio-root .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px 26px;align-items:stretch}
+  /* borda só nas laterais (curta), sem caixa fechada */
+  .grimorio-root .card{border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);border-radius:0;height:100%;
+    padding:6px 22px 14px;margin:0;background:none;transition:border-color .2s}
+  .grimorio-root .card:hover{border-left-color:color-mix(in srgb,var(--acc) 45%,var(--line));border-right-color:color-mix(in srgb,var(--acc) 45%,var(--line))}
   .grimorio-root .card-h{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:15px}
   .grimorio-root .card-h h3{margin:0;font-size:24px;font-weight:600;letter-spacing:.2px;color:var(--txt);line-height:1.18}
   .grimorio-root .card-h-r{display:flex;align-items:center;gap:16px;flex:0 0 auto}
@@ -35877,9 +35878,9 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .st+.st{border:0}
   .grimorio-root .st-k{display:block;color:var(--acc);font-weight:700;font-size:8.5px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px;opacity:.92}
   .grimorio-root .st-v{color:var(--txt);font-size:14px}
-  .grimorio-root .desc{font-size:15.5px;line-height:1.8;margin:0;color:#d6d3dd;max-width:64ch}
+  .grimorio-root .desc{font-size:14.5px;line-height:1.75;margin:0;color:#d6d3dd;max-width:none}
   .grimorio-root .desc b,.grimorio-root .apr-t b{color:var(--acc2);font-weight:600}
-  .grimorio-root .aprs{margin-top:20px;display:flex;flex-direction:column;gap:16px;max-width:64ch}
+  .grimorio-root .aprs{margin-top:18px;display:flex;flex-direction:column;gap:14px;max-width:none}
   .grimorio-root .apr{padding-left:18px;border-left:1px solid var(--line)}
   .grimorio-root .apr.asc{border-left-color:color-mix(in srgb,var(--acc) 45%,var(--line))}
   .grimorio-root .apr-h{display:flex;align-items:center;gap:11px;margin-bottom:6px}
