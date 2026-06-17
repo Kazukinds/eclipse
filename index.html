@@ -35771,6 +35771,44 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .gfd-panel{position:absolute;top:0;right:0;bottom:0;width:min(380px,88vw);background:#0e0e0e;border-left:1px solid var(--line);
     display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);box-shadow:-12px 0 40px -10px rgba(0,0,0,.7)}
   .grimorio-root .grim-filtdrawer.open .gfd-panel{transform:translateX(0)}
+  /* ═══ Animações do drawer Filtros ═══ */
+  @keyframes gfd-in{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:translateX(0)}}
+  @keyframes gfd-fade{from{opacity:0}to{opacity:1}}
+  /* seções + itens entram escalonados quando o drawer abre */
+  .grimorio-root .grim-filtdrawer.open .gfd-sec{animation:gfd-in .45s cubic-bezier(.2,.8,.2,1) both}
+  .grimorio-root .grim-filtdrawer.open .gfd-sec:nth-child(1){animation-delay:.06s}
+  .grimorio-root .grim-filtdrawer.open .gfd-sec:nth-child(2){animation-delay:.13s}
+  .grimorio-root .grim-filtdrawer.open .gfd-sec:nth-child(3){animation-delay:.20s}
+  .grimorio-root .grim-filtdrawer.open .echip,
+  .grimorio-root .grim-filtdrawer.open .gchip,
+  .grimorio-root .grim-filtdrawer.open .cchip{animation:gfd-in .4s ease both}
+  .grimorio-root .grim-filtdrawer.open .efilters>*:nth-child(1){animation-delay:.14s}
+  .grimorio-root .grim-filtdrawer.open .efilters>*:nth-child(2){animation-delay:.18s}
+  .grimorio-root .grim-filtdrawer.open .efilters>*:nth-child(3){animation-delay:.22s}
+  .grimorio-root .grim-filtdrawer.open .efilters>*:nth-child(4){animation-delay:.26s}
+  .grimorio-root .grim-filtdrawer.open .efilters>*:nth-child(5){animation-delay:.30s}
+  .grimorio-root .grim-filtdrawer.open .efilters>*:nth-child(6){animation-delay:.34s}
+  .grimorio-root .grim-filtdrawer.open .efilters>*:nth-child(7){animation-delay:.38s}
+  .grimorio-root .grim-filtdrawer.open .gfd-head,
+  .grimorio-root .grim-filtdrawer.open .gfd-foot{animation:gfd-fade .5s ease both}
+  /* micro-interações: deslize no hover + ativo */
+  .grimorio-root .echip,.grimorio-root .gfd-sec .gchip,.grimorio-root .gfd-sec .cchip{transition:background .15s,color .15s,transform .15s,padding-left .15s}
+  .grimorio-root .echip:hover,.grimorio-root .gfd-sec .gchip:hover,.grimorio-root .gfd-sec .cchip:hover{transform:translateX(3px)}
+  .grimorio-root .echip[data-on="1"]{padding-left:18px}
+  .grimorio-root .echip::before{transition:opacity .15s,transform .25s cubic-bezier(.2,.8,.2,1)}
+  .grimorio-root .echip[data-on="1"]::before{transform:scale(1.25)}
+  .grimorio-root .gfd-x{transition:color .15s,border-color .15s,transform .3s}
+  .grimorio-root .gfd-x:hover{transform:rotate(90deg)}
+  .grimorio-root .gfd-apply{transition:filter .15s,transform .12s}
+  .grimorio-root .gfd-apply:hover{filter:brightness(1.08)}
+  .grimorio-root .gfd-apply:active{transform:scale(.97)}
+  .grimorio-root .gfd-clear{transition:color .15s,border-color .15s,background .15s}
+  .grimorio-root .gfd-clear:hover{background:#1c1c1c;color:var(--txt);border-color:#3a3a3a}
+  @media(prefers-reduced-motion:reduce){
+    .grimorio-root .grim-filtdrawer *{animation:none!important}
+    .grimorio-root .echip:hover,.grimorio-root .gfd-sec .gchip:hover,.grimorio-root .gfd-sec .cchip:hover{transform:none}
+    .grimorio-root .gfd-x:hover{transform:none}
+  }
   .grimorio-root .gfd-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--line);font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:var(--txt)}
   .grimorio-root .gfd-x{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--muted);cursor:pointer;font-size:15px}
   .grimorio-root .gfd-x:hover{color:var(--txt);border-color:#3a3a3a}
