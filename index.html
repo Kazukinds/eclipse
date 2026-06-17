@@ -6592,6 +6592,36 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   .inv-layout{grid-template-columns:1fr 320px}
   .veh-layout{grid-template-columns:580px 1fr}
 }
+/* ═══════════════════════════════════════════════════════════════
+   HORIZONTAL / DESKTOP (>1024px landscape) — layout próprio.
+   Garante que o conteúdo PREENCHE a largura toda (mata o "void" à
+   direita) e que o dock/sidebar fica vertical à esquerda, nunca pill.
+   Override forte: vence qualquer regra mobile que vaze por zoom/coarse.
+   ═══════════════════════════════════════════════════════════════ */
+@media (min-width:1024px){
+  /* Sidebar vertical fixa à esquerda (nunca pill flutuante no desktop) */
+  .sidebar{position:fixed!important;top:0!important;left:0!important;right:auto!important;bottom:0!important;
+    width:72px!important;height:auto!important;min-height:100vh!important;
+    transform:none!important;flex-direction:column!important;align-items:flex-start!important;
+    border-radius:0!important;border-right:1px solid var(--border)!important;
+    background:var(--bg-sidebar)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+    padding:calc(24px + var(--sa-top,0px)) 14px 16px!important;box-shadow:none!important}
+  .sidebar .sidebar-nav{flex-direction:column!important;align-items:stretch!important;width:100%!important;height:auto!important;gap:6px!important;overflow:visible!important}
+  .sidebar .sidebar-bottom{display:flex!important;flex-direction:column!important}
+  .sidebar .sidebar-more,.sidebar .sidebar-gear{display:none!important} /* botões do pill mobile fora */
+  .sidebar .sidebar-nav>.sidebar-btn{display:flex!important} /* mostra todos os tabs */
+  .sidebar-btn .sidebar-label{display:none}
+  /* Conteúdo ocupa toda a largura restante */
+  .main-wrapper{margin-left:72px!important;width:auto!important;padding:0!important;background:var(--bg-sidebar)!important}
+  .content{flex:1 1 auto!important;width:auto!important;max-width:none!important;padding:18px 24px!important;
+    padding-bottom:24px!important;overflow-y:auto!important;height:auto!important}
+  /* Abas em altura/coluna preenchem o painel inteiro */
+  #tab-pericias.tab-content.active,#tab-progress.tab-content.active,#tab-feiticos.tab-content.active{
+    height:calc(100dvh - var(--top-offset,120px) - 36px)!important}
+  .pericias-layout{grid-template-columns:2fr 1.1fr!important;grid-template-rows:1fr 1fr!important}
+  .dash-grid{grid-template-columns:340px 1fr 300px!important}
+  .inv-layout{grid-template-columns:1fr 340px!important}
+}
 /* Mobile portrait (até 640) */
 @media (max-width:640px) and (orientation:portrait){
   /* Pill flutuante: wrapper transparente, conteúdo passa por baixo da pill (sem barra dark) */
