@@ -35711,10 +35711,11 @@ body[data-perf-low] .dcard-handle{display:none}
     .grimorio-root .ess-list::-webkit-scrollbar{display:none}
     .grimorio-root main{padding:22px 16px 90px;max-width:none}
     .grimorio-root .m-head{padding:22px 20px;border-radius:14px}
-    /* barra empilha: linha 1 = voltar+marca | linha 2 = Filtrar/busca/sort/compra */
-    .grimorio-root .side-bar{flex-wrap:wrap;gap:11px}
-    .grimorio-root .side-bar .side-head{flex:1 1 auto}
-    .grimorio-root .side-bar .toolbar{flex:1 1 100%;order:2}
+    /* barra em grid 2 linhas: linha 1 = voltar+marca | linha 2 = controles */
+    .grimorio-root .side-bar{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"back brand" "tools tools";gap:11px 12px;align-items:center}
+    .grimorio-root .side-bar .grim-close{grid-area:back}
+    .grimorio-root .side-bar .side-head{grid-area:brand;flex:0 0 auto}
+    .grimorio-root .side-bar .toolbar{grid-area:tools;width:100%}
     .grimorio-root .side-bar .toolbar .tb-row{flex-wrap:nowrap;gap:8px}
     .grimorio-root .side-bar .toolbar .grim-filtbtn{padding:0 12px}
     .grimorio-root .cart-fab{padding:0 12px}
