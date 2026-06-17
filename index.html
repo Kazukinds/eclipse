@@ -3758,13 +3758,13 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .peri-stats-num{font-size:16px;font-weight:700;color:var(--magenta)}
 .peri-stats-divider,.peri-stats-total{font-size:12px;color:var(--text-dim)}
 .peri-stats-label{font-size:9px;text-transform:uppercase;color:var(--text-dim);letter-spacing:.5px;margin-left:4px}
-.peri-tabs{display:flex;gap:4px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;padding:2px 0}
+.peri-tabs{display:flex;gap:4px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;padding:4px;background:var(--bg-input);border-radius:999px;border:1px solid var(--border)}
 .peri-tabs::-webkit-scrollbar{display:none}
-.peri-tab{padding:6px 12px;background:transparent;border:1px solid var(--border);border-radius:999px;color:var(--text-dim);font-family:inherit;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
-.peri-tab:hover{border-color:var(--border-light);color:var(--text-primary)}
-.peri-tab.active{background:var(--bg-input);border-color:var(--magenta-dim);color:var(--magenta)}
+.peri-tab{padding:7px 14px;background:transparent;border:none;border-radius:999px;color:var(--text-dim);font-family:inherit;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;cursor:pointer;transition:color .18s,background .18s;white-space:nowrap;flex-shrink:0}
+.peri-tab:hover{color:var(--text-primary)}
+.peri-tab.active{background:color-mix(in srgb,var(--magenta) 16%,var(--bg-card-inner));color:var(--magenta);box-shadow:inset 0 0 0 1px var(--magenta-dim)}
 .peri-cat-wrap{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-right:4px;margin-bottom:8px;scrollbar-width:thin;scrollbar-color:var(--border-light) transparent}
-.modal.peri-modal-square{width:min(440px,92vw);max-width:92vw;height:min(560px,88vh);max-height:88vh;aspect-ratio:auto}
+.modal.peri-modal-square{width:min(460px,92vw);max-width:92vw;height:min(680px,90vh);max-height:90vh;aspect-ratio:auto}
 @media (max-width:480px){.modal.peri-modal-square{width:95vw;height:90vh}}
 .modal.peri-modal-square .peri-cat-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
 .peri-cat-wrap{gap:10px!important}
@@ -3774,33 +3774,40 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .peri-cat-header{display:flex;align-items:center;gap:6px;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;padding:0 2px 5px;border-bottom:1px solid var(--border);position:relative}
 .peri-cat-header svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.4}
 .peri-cat-header-count{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);background:transparent;padding:1px 6px;border-radius:8px;border:1px solid var(--border);font-weight:700}
-.peri-cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3px}
-.peri-cat-item{display:flex;align-items:center;gap:7px;padding:6px 9px;background:var(--bg-input);border:1px solid transparent;border-radius:5px;cursor:pointer;transition:background .14s,border-color .14s,color .14s;font-size:11.5px;color:var(--text-secondary);font-family:inherit;text-align:left;width:100%;position:relative;overflow:hidden;line-height:1.2}
-.peri-cat-item:hover{border-color:color-mix(in srgb,var(--g-color) 50%,transparent);background:color-mix(in srgb,var(--g-color) 7%,var(--bg-input));color:var(--text-primary)}
-.peri-cat-item.added{border-color:color-mix(in srgb,var(--g-color) 65%,transparent);background:color-mix(in srgb,var(--g-color) 14%,var(--bg-input));color:var(--text-primary);box-shadow:inset 2px 0 0 var(--g-color)}
-.peri-cat-dot{width:5px;height:5px;border-radius:50%;background:var(--g-color);opacity:.55;flex-shrink:0;transition:all .15s}
-.peri-cat-item:hover .peri-cat-dot{opacity:.85}
-.peri-cat-item.added .peri-cat-dot{opacity:1;box-shadow:0 0 5px var(--g-color)}
+.peri-cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+/* ═══ Chip de perícia — redesign: legível, tátil, estados claros ═══ */
+.peri-cat-item{display:flex;align-items:center;gap:9px;padding:10px 11px;background:var(--bg-card-inner);border:1px solid var(--border-light);border-radius:11px;cursor:pointer;transition:transform .16s var(--ease-out-expo,cubic-bezier(.16,1,.3,1)),background .16s,border-color .16s,box-shadow .16s;font-size:12.5px;color:var(--text-primary);font-family:inherit;text-align:left;width:100%;position:relative;overflow:hidden;line-height:1.2}
+.peri-cat-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g-color);opacity:.5;transition:opacity .16s,width .16s}
+.peri-cat-item:hover{border-color:color-mix(in srgb,var(--g-color) 60%,var(--border-light));background:color-mix(in srgb,var(--g-color) 10%,var(--bg-card-inner));transform:translateY(-2px);box-shadow:0 6px 16px -8px color-mix(in srgb,var(--g-color) 60%,transparent)}
+.peri-cat-item:hover::before{opacity:1;width:4px}
+.peri-cat-item:active{transform:translateY(0) scale(.98)}
+.peri-cat-item.added{border-color:var(--g-color);background:color-mix(in srgb,var(--g-color) 18%,var(--bg-card-inner));color:#fff}
+.peri-cat-item.added::before{opacity:1;width:4px}
+.peri-cat-dot{width:8px;height:8px;border-radius:50%;background:var(--g-color);opacity:.7;flex-shrink:0;transition:all .16s;box-shadow:0 0 0 0 var(--g-color)}
+.peri-cat-item:hover .peri-cat-dot{opacity:1}
+.peri-cat-item.added .peri-cat-dot{opacity:1;box-shadow:0 0 8px color-mix(in srgb,var(--g-color) 80%,transparent)}
 .peri-cat-name{font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.1px}
-.peri-cat-action{display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:4px;color:var(--text-dim);flex-shrink:0;transition:color .14s}
-.peri-cat-item:hover .peri-cat-action{color:var(--g-color)}
-.peri-cat-action svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round}
-.peri-cat-item.added .peri-cat-action{color:var(--g-color)}
-.peri-cat-item.added .peri-cat-action svg{stroke-width:3}
-.peri-cat-item.auto{border-color:color-mix(in srgb,var(--yellow) 60%,transparent);background:color-mix(in srgb,var(--yellow) 10%,var(--bg-input));box-shadow:inset 3px 0 0 var(--yellow);cursor:not-allowed}
-.peri-cat-item.auto:hover{transform:none}
-.peri-cat-item.blocked{opacity:.4;cursor:not-allowed;filter:grayscale(.5)}
-.peri-cat-item.blocked:hover{transform:none;background:var(--bg-input);border-color:var(--border);color:var(--text-secondary)}
+.peri-cat-action{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:7px;background:color-mix(in srgb,var(--g-color) 14%,transparent);color:var(--g-color);flex-shrink:0;transition:all .16s}
+.peri-cat-item:hover .peri-cat-action{background:color-mix(in srgb,var(--g-color) 24%,transparent)}
+.peri-cat-action svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.peri-cat-item.added .peri-cat-action{background:var(--g-color);color:#0a0a0a}
+.peri-cat-item.added .peri-cat-action svg{stroke-width:3.4}
+.peri-cat-item.auto{border-color:color-mix(in srgb,var(--yellow) 60%,transparent);background:color-mix(in srgb,var(--yellow) 12%,var(--bg-card-inner));cursor:not-allowed}
+.peri-cat-item.auto::before{background:var(--yellow);opacity:1;width:4px}
+.peri-cat-item.auto .peri-cat-action{background:color-mix(in srgb,var(--yellow) 20%,transparent);color:var(--yellow)}
+.peri-cat-item.auto:hover{transform:none;box-shadow:none}
+.peri-cat-item.blocked{opacity:.42;cursor:not-allowed;filter:grayscale(.5)}
+.peri-cat-item.blocked:hover{transform:none;box-shadow:none;background:var(--bg-card-inner);border-color:var(--border-light);color:var(--text-primary)}
 .peri-origin-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:800;letter-spacing:.5px;padding:1px 5px;border-radius:3px;margin-left:6px;vertical-align:middle;text-transform:uppercase}
 .peri-origin-tag.pass{background:color-mix(in srgb,var(--yellow) 18%,transparent);color:var(--yellow);border:1px solid color-mix(in srgb,var(--yellow) 40%,transparent)}
 .peri-origin-tag.cam{background:color-mix(in srgb,var(--magenta) 18%,transparent);color:var(--magenta);border:1px solid var(--magenta-dim)}
 .peri-origin-tag.arq{background:color-mix(in srgb,var(--red) 18%,transparent);color:var(--red);border:1px solid color-mix(in srgb,var(--red) 40%,transparent)}
 .peri-origin-tag.dual{background:linear-gradient(90deg,color-mix(in srgb,var(--yellow) 18%,transparent),color-mix(in srgb,var(--magenta) 18%,transparent));color:#fff;border:1px solid var(--yellow);box-shadow:0 0 6px color-mix(in srgb,var(--yellow) 40%,transparent)}
-.peri-budget{margin-bottom:12px;padding:10px 12px;background:linear-gradient(180deg,color-mix(in srgb,var(--magenta) 6%,transparent),transparent);border:1px solid var(--magenta-dim);border-radius:8px;flex-shrink:0}
+.peri-budget{margin-bottom:14px;padding:12px 14px;background:linear-gradient(160deg,color-mix(in srgb,var(--magenta) 9%,var(--bg-card-inner)),var(--bg-card-inner));border:1px solid var(--magenta-dim);border-radius:14px;flex-shrink:0;box-shadow:0 4px 18px -10px color-mix(in srgb,var(--magenta) 50%,transparent)}
 .peri-budget-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.peri-budget-pill{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:7px;background:var(--bg-input);border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--text-secondary);letter-spacing:.3px}
-.peri-budget-pill svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.peri-budget-pill b{font-size:14px;color:var(--text-primary)}
+.peri-budget-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;background:var(--bg-body);border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--text-secondary);letter-spacing:.3px}
+.peri-budget-pill svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.peri-budget-pill b{font-size:17px;color:var(--text-primary);line-height:1}
 .peri-budget-pill[data-state="ok"]{border-color:var(--magenta-dim);color:var(--magenta)}
 .peri-budget-pill[data-state="ok"] b{color:var(--magenta)}
 .peri-budget-pill[data-state="full"]{border-color:color-mix(in srgb,var(--yellow) 50%,transparent);color:var(--yellow)}
