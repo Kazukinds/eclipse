@@ -36095,6 +36095,7 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .eclipse-logo svg{width:100%;height:100%;display:block}
   .grimorio-root .eclipse-logo .el-moon{fill:rgba(255,255,255,.55)}
   .grimorio-root .eclipse-logo .el-star{fill:#fff}
+  .grimorio-root .side-head .eclipse-logo{display:none!important}
   .grimorio-root .side-toggle{flex:0 0 auto;margin-left:auto;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--line);border-radius:6px;background:none;color:var(--muted);font-size:14px;line-height:1;transition:.18s}
   .grimorio-root .side-toggle:hover{color:var(--txt);border-color:#3a3a3a}
   .grimorio-root .ess-list{display:flex;flex-direction:column}
@@ -36191,6 +36192,7 @@ body[data-perf-low] .dcard-handle{display:none}
     .grimorio-root .toolbar{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px}
     .grimorio-root .tb-top{flex:1 1 100%;order:0}
     .grimorio-root .viewtog{order:1}
+    .grimorio-root .tb-filters{order:1;display:flex;flex-direction:row;gap:8px;align-items:center;flex:0 0 auto;margin-left:auto}
     .grimorio-root .grim-fdrop{order:2;flex:0 0 auto;position:relative}
     .grimorio-root .grim-fdrop>summary{display:inline-flex;margin:0;padding:7px 11px;font-size:10px;gap:6px}
     .grimorio-root .grim-fdrop .fd-chev{margin-left:4px}
@@ -36925,8 +36927,10 @@ function renderToolbar(){
   const catLbl=catF==='all'?'Todos':catF;
   toolbar.innerHTML=`<div class="tb-top"><input class="search" id="grim-srch" placeholder="Buscar feitiço..." value="${query}">`
     +`<button class="viewtog" id="grim-viewtog" title="Alternar lista e cards"><span>${viewMode==='list'?'▦':'☰'}</span>${viewMode==='list'?'Cards':'Lista'}</button></div>`
+    +`<div class="tb-filters">`
     +`<details class="grim-fdrop"><summary><span class="fd-k">Grau</span><span class="fd-v">${grauLbl}</span><span class="fd-chev">▾</span></summary><div class="gfilters">${gchips}</div></details>`
-    +(cchips?`<details class="grim-fdrop"><summary><span class="fd-k">Arquétipo</span><span class="fd-v">${catLbl}</span><span class="fd-chev">▾</span></summary><div class="cfilters">${cchips}</div></details>`:'');
+    +(cchips?`<details class="grim-fdrop"><summary><span class="fd-k">Arquétipo</span><span class="fd-v">${catLbl}</span><span class="fd-chev">▾</span></summary><div class="cfilters">${cchips}</div></details>`:'')
+    +`</div>`;
   const s=document.getElementById('grim-srch');
   s.oninput=()=>{query=s.value;render();};
   toolbar.querySelectorAll('.gchip').forEach(b=>b.onclick=()=>{grauF=b.dataset.g;renderToolbar();render();});
