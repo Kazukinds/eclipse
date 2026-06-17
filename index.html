@@ -20289,17 +20289,10 @@ function renderPericias(){
       const color=ATTR_GROUP_COLORS[p.group];
       return`<div class="pericia-row" onclick="openPericiaModal('${p.id}','${p.group}')"><div class="pericia-rank${rankClass}"></div><div class="pericia-name">${p.name}${bonusExtra}${customBadge}</div><div class="pericia-group-tag" style="color:${color};border-color:${color}55">${p.group}</div><div class="pericia-bonus" style="color:${RANK_COLORS[st.rank]}">+${pBonus}</div><div class="pericia-roll-btn" onclick="event.stopPropagation();rollPericia('${p.id}','${p.group}','${p.name}')"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="4"/><circle cx="8" cy="8" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="16" cy="16" r="1.5"/></svg></div><button class="pericia-del-btn" onclick="event.stopPropagation();_removePericia('${p.id}')" title="Remover perícia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>`;
     }).join('');
-    const groupNames=Object.keys(PERICIAS_DATA);
     const cTrein=all.filter(p=>(periciasState[p.id]||{}).rank==='treinado').length;
     const cPer=all.filter(p=>(periciasState[p.id]||{}).rank==='perito').length;
     const cMes=all.filter(p=>(periciasState[p.id]||{}).rank==='mestre').length;
-    const empty=all.length===0?`<div class="peri-empty-pro">
-      <div class="pe-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-      <div class="pe-title">Sua ficha sem perícias</div>
-      <div class="pe-sub">Perícias definem o que seu personagem sabe fazer — combate, social, sentidos, técnico. Adicione e configure rank (treinado/perito/mestre).</div>
-      <button class="pe-cta" onclick="openAddPericiaModal()"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Escolher perícias</button>
-      <div class="pe-cats">${groupNames.map(g=>`<span class="pe-cat" style="color:${ATTR_GROUP_COLORS[g]||'var(--text-dim)'};border-color:${(ATTR_GROUP_COLORS[g]||'var(--border)')}55">${g}</span>`).join('')}</div>
-    </div>`:'';
+    const empty='';// empty-state "Sua ficha sem perícias" removido
     const chips=all.length?`<div class="peri-stat-chips">
       <span class="peri-stat-chip"><b>${all.length}</b> total</span>
       ${cTrein?`<span class="peri-stat-chip" data-r="treinado"><b>${cTrein}</b> treinada${cTrein!==1?'s':''}</span>`:''}
