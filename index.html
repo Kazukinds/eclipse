@@ -35694,7 +35694,8 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .ess:hover .ess-name{color:var(--txt)}
   .grimorio-root .ess[data-on="1"]{border-left-color:var(--bc)}
   .grimorio-root .ess[data-on="1"] .ess-name{color:var(--bc2)}
-  .grimorio-root .ess-ico{display:none!important}
+  .grimorio-root .ess-ico{flex:0 0 auto;width:16px;height:16px;display:flex;align-items:center;justify-content:center;color:var(--bc2)}
+  .grimorio-root .ess-ico svg{width:16px;height:16px}
   .grimorio-root .ess-ico svg{width:18px;height:18px;display:block}
   .grimorio-root .ess-name{flex:1;min-width:0;font-size:13.5px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .16s}
   .grimorio-root .ess-count{flex:0 0 auto;font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
@@ -35763,32 +35764,42 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .viewtog span{font-size:15px;line-height:1}
   .grimorio-root .gfilters{display:flex;gap:24px;flex-wrap:wrap}
   .grimorio-root .cfilters{display:flex;gap:20px;flex-wrap:wrap}
-  /* ═══ 2 dropdowns Grau/Arquétipo na linha da busca (painel flutuante) ═══ */
+  /* ═══ Barra estilo Behance: botão Filtrar + busca + view; filtros num drawer ═══ */
   .grimorio-root .tb-row{display:flex;align-items:stretch;gap:10px;position:relative;z-index:30}
-  .grimorio-root .grim-dd{position:relative;flex:0 0 auto}
-  .grimorio-root .grim-dd-btn{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;height:100%;
-    padding:0 14px;background:#161616;border:1px solid var(--line);border-radius:12px;
-    font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap;transition:border-color .15s}
-  .grimorio-root .grim-dd-btn::-webkit-details-marker{display:none}
-  .grimorio-root .grim-dd-btn:hover,.grimorio-root .grim-dd[open] .grim-dd-btn{border-color:#3a3a3a;color:var(--txt)}
-  .grimorio-root .grim-dd-btn .dd-k{color:var(--faint)}
-  .grimorio-root .grim-dd-btn b{color:var(--acc2);font-weight:700}
-  .grimorio-root .grim-dd-btn .dd-chev{transition:transform .2s;color:var(--faint)}
-  .grimorio-root .grim-dd[open] .dd-chev{transform:rotate(180deg)}
-  .grimorio-root .grim-dd-panel{position:absolute;top:calc(100% + 6px);right:0;min-width:180px;z-index:40;
-    background:#161616;border:1px solid var(--line);border-radius:12px;padding:8px;box-shadow:0 12px 32px -8px rgba(0,0,0,.6)}
-  .grimorio-root .grim-dd-panel .gfilters,.grimorio-root .grim-dd-panel .cfilters{display:flex;flex-direction:column;gap:2px}
-  .grimorio-root .grim-dd-panel .gchip,.grimorio-root .grim-dd-panel .cchip{text-align:left;padding:9px 12px;border-bottom:0;border-radius:8px}
-  .grimorio-root .grim-dd-panel .gchip:hover,.grimorio-root .grim-dd-panel .cchip:hover{background:#222;color:var(--txt)}
-  .grimorio-root .grim-dd-panel .gchip[data-on="1"],.grimorio-root .grim-dd-panel .cchip[data-on="1"]{background:color-mix(in srgb,var(--acc) 16%,transparent);color:var(--acc2)}
+  .grimorio-root .grim-filtbtn{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:0 16px;cursor:pointer;
+    background:#161616;border:1px solid var(--line);border-radius:12px;color:var(--txt);font-family:'Inter',sans-serif;
+    font-size:12px;font-weight:600;letter-spacing:.02em;transition:border-color .15s,background .15s;position:relative}
+  .grimorio-root .grim-filtbtn:hover{border-color:#3a3a3a;background:#1c1c1c}
+  .grimorio-root .grim-filtbtn svg{width:16px;height:16px}
+  .grimorio-root .grim-filtbtn .filt-badge{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;padding:0 5px;border-radius:9px;background:var(--acc);color:#0a0a0a;font-size:10px;font-weight:800;margin-left:2px}
+  /* Drawer lateral (oculto até .open) */
+  .grimorio-root .grim-filtdrawer{position:fixed;inset:0;z-index:9200;pointer-events:none;visibility:hidden}
+  .grimorio-root .grim-filtdrawer.open{pointer-events:auto;visibility:visible}
+  .grimorio-root .gfd-scrim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .25s}
+  .grimorio-root .grim-filtdrawer.open .gfd-scrim{opacity:1}
+  .grimorio-root .gfd-panel{position:absolute;top:0;right:0;bottom:0;width:min(380px,88vw);background:#0e0e0e;border-left:1px solid var(--line);
+    display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);box-shadow:-12px 0 40px -10px rgba(0,0,0,.7)}
+  .grimorio-root .grim-filtdrawer.open .gfd-panel{transform:translateX(0)}
+  .grimorio-root .gfd-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--line);font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:var(--txt)}
+  .grimorio-root .gfd-x{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--muted);cursor:pointer;font-size:15px}
+  .grimorio-root .gfd-x:hover{color:var(--txt);border-color:#3a3a3a}
+  .grimorio-root .gfd-body{flex:1;overflow-y:auto;padding:6px 0}
+  .grimorio-root .gfd-sec{border-bottom:1px solid var(--line)}
+  .grimorio-root .gfd-sec>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:16px 22px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:var(--txt)}
+  .grimorio-root .gfd-sec>summary::-webkit-details-marker{display:none}
+  .grimorio-root .gfd-sec .gfd-chev{color:var(--faint);transition:transform .2s}
+  .grimorio-root .gfd-sec[open] .gfd-chev{transform:rotate(180deg)}
+  .grimorio-root .gfd-sec .gfilters,.grimorio-root .gfd-sec .cfilters{display:flex;flex-direction:column;gap:2px;padding:0 14px 16px}
+  .grimorio-root .gfd-sec .gchip,.grimorio-root .gfd-sec .cchip{text-align:left;padding:11px 14px;border-bottom:0!important;border-radius:8px;font-size:13px}
+  .grimorio-root .gfd-sec .gchip:hover,.grimorio-root .gfd-sec .cchip:hover{background:#1c1c1c;color:var(--txt)}
+  .grimorio-root .gfd-sec .gchip[data-on="1"],.grimorio-root .gfd-sec .cchip[data-on="1"]{background:color-mix(in srgb,var(--acc) 16%,transparent);color:var(--acc2)}
+  .grimorio-root .gfd-foot{display:flex;gap:10px;padding:16px 22px;border-top:1px solid var(--line)}
+  .grimorio-root .gfd-clear{flex:0 0 auto;padding:13px 18px;background:none;border:1px solid var(--line);border-radius:10px;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600}
+  .grimorio-root .gfd-apply{flex:1;padding:13px;background:var(--acc);border:0;border-radius:10px;color:#0a0a0a;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:700}
   @media(max-width:640px){
-    .grimorio-root .grim-dd-btn{padding:9px 12px;font-size:10px}.grimorio-root .grim-dd-btn .dd-k{display:none}
-    /* busca em cima (linha cheia); Grau + Arquétipo + LISTA embaixo */
-    .grimorio-root .tb-row{flex-wrap:wrap}
-    .grimorio-root .tb-row .tb-top{flex:1 1 100%;order:0}
-    .grimorio-root .tb-row .grim-dd{order:1}
-    .grimorio-root .tb-row .viewtog{order:2;flex:1 1 auto;justify-content:center;padding:9px 12px;font-size:11px}
-    .grimorio-root .grim-dd-panel{right:auto;left:0}
+    .grimorio-root .tb-row{flex-wrap:nowrap}
+    .grimorio-root .grim-filtbtn{padding:9px 12px}
+    .grimorio-root .tb-row .viewtog{flex:0 0 auto;padding:9px 12px}
   }
   .grimorio-root .gchip,.grimorio-root .cchip{padding:1px 0;background:none;border:0;border-bottom:2px solid transparent;color:var(--faint);font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Inter',system-ui,sans-serif;transition:color .15s}
   .grimorio-root .gchip:hover,.grimorio-root .cchip:hover{color:var(--muted)}
@@ -36546,18 +36557,37 @@ function renderToolbar(){
   const cchips=cats.length?`<button class="cchip" data-c="all" ${catF==='all'?'data-on="1"':''}>Todos</button>`+cats.map(c=>`<button class="cchip" data-c="${c}" data-cat="${c}" ${catF===c?'data-on="1"':''}>${c}</button>`).join(''):'';
   const grauLbl=grauF==='all'?'Todos':'Grau '+grauF;
   const catLbl=catF==='all'?'Todos':catF;
+  const nAtivos=(grauF!=='all'?1:0)+(catF!=='all'?1:0);
+  // Barra estilo Behance: [Filtrar] [busca] [view]
   toolbar.innerHTML=`<div class="tb-row">`
+    +`<button class="grim-filtbtn" id="grim-filtbtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>Filtrar${nAtivos?`<span class="filt-badge">${nAtivos}</span>`:''}</button>`
     +`<div class="tb-top"><input class="search" id="grim-srch" placeholder="Buscar feitiço..." value="${query}"></div>`
-    +`<details class="grim-dd"><summary class="grim-dd-btn"><span class="dd-k">Grau</span><b>${grauLbl}</b><span class="dd-chev">▾</span></summary><div class="grim-dd-panel"><div class="gfilters">${gchips}</div></div></details>`
-    +(cchips?`<details class="grim-dd"><summary class="grim-dd-btn"><span class="dd-k">Arquétipo</span><b>${catLbl}</b><span class="dd-chev">▾</span></summary><div class="grim-dd-panel"><div class="cfilters">${cchips}</div></div></details>`:'')
     +`<button class="viewtog" id="grim-viewtog" title="Alternar lista e cards"><span>${viewMode==='list'?'▦':'☰'}</span>${viewMode==='list'?'Cards':'Lista'}</button>`
     +`</div>`;
-  // fecha o dropdown ao escolher
-  toolbar.querySelectorAll('.grim-dd .gchip,.grim-dd .cchip').forEach(b=>b.addEventListener('click',()=>{const d=b.closest('.grim-dd');if(d)d.open=false}));
+  // Drawer de filtros (oculto até abrir) — seções colapsáveis estilo Behance
+  let drawer=document.getElementById('grim-filtdrawer');
+  if(!drawer){drawer=document.createElement('div');drawer.id='grim-filtdrawer';ROOT.appendChild(drawer);}
+  drawer.className='grim-filtdrawer';
+  drawer.innerHTML=`<div class="gfd-scrim" id="gfd-scrim"></div>`
+    +`<aside class="gfd-panel">`
+    +`<div class="gfd-head"><span>Filtros</span><button class="gfd-x" id="gfd-x" aria-label="Fechar">✕</button></div>`
+    +`<div class="gfd-body">`
+    +`<details class="gfd-sec" open><summary>Grau<span class="gfd-chev">▾</span></summary><div class="gfilters">${gchips}</div></details>`
+    +(cchips?`<details class="gfd-sec" open><summary>Arquétipo<span class="gfd-chev">▾</span></summary><div class="cfilters">${cchips}</div></details>`:'')
+    +`</div>`
+    +`<div class="gfd-foot"><button class="gfd-clear" id="gfd-clear">Limpar</button><button class="gfd-apply" id="gfd-apply">Aplicar</button></div>`
+    +`</aside>`;
+  const openDrawer=()=>drawer.classList.add('open');
+  const closeDrawer=()=>drawer.classList.remove('open');
+  document.getElementById('grim-filtbtn').onclick=openDrawer;
+  drawer.querySelector('#gfd-x').onclick=closeDrawer;
+  drawer.querySelector('#gfd-scrim').onclick=closeDrawer;
+  drawer.querySelector('#gfd-apply').onclick=closeDrawer;
+  drawer.querySelector('#gfd-clear').onclick=()=>{grauF='all';catF='all';renderToolbar();render();};
+  drawer.querySelectorAll('.gchip').forEach(b=>b.onclick=()=>{grauF=b.dataset.g;renderToolbar();render();openDrawer();});
+  drawer.querySelectorAll('.cchip').forEach(b=>b.onclick=()=>{catF=b.dataset.c;renderToolbar();render();openDrawer();});
   const s=document.getElementById('grim-srch');
   s.oninput=()=>{query=s.value;render();};
-  toolbar.querySelectorAll('.gchip').forEach(b=>b.onclick=()=>{grauF=b.dataset.g;renderToolbar();render();});
-  toolbar.querySelectorAll('.cchip').forEach(b=>b.onclick=()=>{catF=b.dataset.c;renderToolbar();render();});
   document.getElementById('grim-viewtog').onclick=()=>{viewMode=viewMode==='list'?'card':'list';renderToolbar();render();};
 }
 
