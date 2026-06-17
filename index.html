@@ -35667,12 +35667,15 @@ body[data-perf-low] .dcard-handle{display:none}
   /* ═══ Layout: SEM sidebar vertical — essências viram BARRA HORIZONTAL no topo
      (a "barra da própria interface"), grimório empilha topo+conteúdo ═══ */
   .grimorio-root{flex-direction:column!important}
-  .grimorio-root .side{flex:0 0 auto!important;width:100%!important;height:auto!important;position:sticky!important;top:0!important;
-    z-index:5;border-right:0!important;border-bottom:1px solid var(--line)!important;padding:14px 22px!important;background:var(--bg)!important;
-    display:flex!important;align-items:center!important;gap:18px!important;overflow-x:auto!important;overflow-y:hidden!important}
-  .grimorio-root .side-head{flex:0 0 auto!important;padding-bottom:0!important;margin-bottom:0!important;border-bottom:0!important;border-right:1px solid var(--line);padding-right:18px!important}
+  /* barra de essências: marca (linha 1, com X no canto) + pills que quebram em
+     linhas (flex-wrap) — todas visíveis, sem scroll quebrado, X nunca sobre pill */
+  .grimorio-root .side{flex:0 0 auto!important;width:100%!important;height:auto!important;position:relative!important;
+    z-index:5;border-right:0!important;border-bottom:1px solid var(--line)!important;padding:16px 18px!important;background:var(--bg)!important;
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:12px!important;overflow:visible!important}
+  .grimorio-root .side-head{flex:0 0 auto!important;padding:0 56px 0 0!important;margin:0!important;border:0!important;display:flex!important;align-items:center!important;gap:11px!important}
   .grimorio-root .side-toggle{display:none!important}
-  .grimorio-root .ess-list{flex-direction:row!important;flex-wrap:nowrap!important;gap:4px!important;align-items:center}
+  .grimorio-root .ess-list{flex-direction:row!important;flex-wrap:wrap!important;gap:8px!important;align-items:center;width:100%!important;overflow:visible!important}
+  .grimorio-root .grim-close{position:absolute!important;top:14px!important;right:16px!important;z-index:20!important}
   .grimorio-root .ess{flex:0 0 auto!important;border-left:0!important;border-bottom:2px solid transparent!important;padding:8px 14px!important;border-radius:8px}
   .grimorio-root .ess::after{display:none!important}
   .grimorio-root .ess[data-on="1"]{border-left:0!important;border-bottom-color:transparent!important;background:transparent!important}
@@ -35888,7 +35891,7 @@ body[data-perf-low] .dcard-handle{display:none}
     .grimorio-root .side{flex:none;width:100%;height:auto;position:static;border-right:0;border-bottom:1px solid var(--line);padding:16px 18px}
     .grimorio-root .side-head{margin-bottom:12px;padding-bottom:12px}
     .grimorio-root .side-toggle{display:none}
-    .grimorio-root .ess-list{flex-direction:row;flex-wrap:nowrap;gap:2px;overflow-x:auto}
+    .grimorio-root .ess-list{flex-direction:row;flex-wrap:wrap;gap:8px;overflow:visible}
     .grimorio-root .ess{flex:0 0 auto;padding:8px 12px;border-left:0;border-bottom:2px solid transparent}
     .grimorio-root .ess::after{display:none}
     .grimorio-root .ess[data-on="1"]{border-left:0;border-bottom-color:var(--bc)}
@@ -35905,7 +35908,7 @@ body[data-perf-low] .dcard-handle{display:none}
     .grimorio-root .side{flex-direction:column!important;align-items:stretch!important;gap:12px!important;padding:16px 18px!important;overflow:visible!important}
     .grimorio-root .side-head{flex:0 0 auto!important;border-right:0!important;padding-right:56px!important;margin:0!important}
     .grimorio-root .side-head .brand-txt p{display:none}
-    .grimorio-root .ess-list{flex-direction:row!important;flex-wrap:nowrap!important;overflow-x:auto!important;gap:4px!important;width:100%!important;-webkit-overflow-scrolling:touch}
+    .grimorio-root .ess-list{flex-direction:row!important;flex-wrap:wrap!important;overflow:visible!important;gap:8px!important;width:100%!important}
     .grimorio-root .ess-list::-webkit-scrollbar{display:none}
     .grimorio-root .ess{flex:0 0 auto!important;gap:7px!important}
     .grimorio-root main{padding:24px 18px 100px;max-width:none}
