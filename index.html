@@ -6619,8 +6619,9 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
     padding:calc(24px + var(--sa-top,0px)) 14px 16px!important;box-shadow:none!important}
   .sidebar .sidebar-nav{flex-direction:column!important;align-items:stretch!important;width:100%!important;height:auto!important;gap:6px!important;overflow:visible!important}
   .sidebar .sidebar-bottom{display:flex!important;flex-direction:column!important}
-  .sidebar .sidebar-more,.sidebar .sidebar-gear{display:none!important} /* botões do pill mobile fora */
-  .sidebar .sidebar-nav>.sidebar-btn{display:flex!important} /* mostra todos os tabs */
+  /* botões exclusivos da pill mobile FORA no desktop (alta especificidade pra vencer) */
+  html body .sidebar .sidebar-more,html body .sidebar .sidebar-gear{display:none!important}
+  .sidebar .sidebar-nav>.sidebar-btn:not(.sidebar-more):not(.sidebar-gear){display:flex!important} /* mostra os tabs, exceto botões da pill mobile */
   .sidebar-btn .sidebar-label{display:none}
   /* Conteúdo ocupa toda a largura restante */
   .main-wrapper{margin-left:72px!important;width:auto!important;padding:0!important;background:var(--bg-sidebar)!important}
