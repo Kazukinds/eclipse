@@ -3781,17 +3781,19 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
   .modal.peri-modal-square .peri-modal-top{margin-bottom:10px!important}
   .modal.peri-modal-square .peri-budget{margin-bottom:10px!important;padding:10px 14px!important}
   .modal.peri-modal-square .peri-budget-row{justify-content:flex-start!important;gap:18px!important}
-  .modal.peri-modal-square .peri-tabs{margin-bottom:10px!important}
-  /* área das perícias: ocupa o resto da altura, NÃO rola (tudo cabe) */
+  .modal.peri-modal-square .peri-tabs{margin-bottom:10px!important;justify-content:center!important;background:transparent!important;border:none!important;padding:0!important}
+  /* área das perícias: 2 colunas (esq/dir), ocupa o resto da altura, SEM rolar.
+     align-content:start pra seções terem altura natural; INTELECTO (10) cabe
+     em 3 linhas porque os chips são compactos. */
   .modal.peri-modal-square .peri-cat-wrap{flex:1 1 auto!important;min-height:0!important;overflow:hidden!important;
-    display:grid!important;grid-template-columns:repeat(2,1fr)!important;grid-auto-rows:1fr!important;gap:12px 36px!important;align-content:stretch!important}
-  /* cada grupo: header + grade que cabe (4 colunas → 8 perícias em 2 linhas) */
-  .modal.peri-modal-square .peri-cat-section{min-height:0!important}
-  .modal.peri-modal-square .peri-cat-grid{grid-template-columns:repeat(4,1fr)!important;gap:8px!important}
-  /* chips compactos pra não estourar a altura */
-  .modal.peri-modal-square .peri-cat-item{padding:8px 10px!important;border-radius:9px!important;font-size:12px!important}
+    display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:10px 36px!important;align-content:start!important}
+  .modal.peri-modal-square .peri-cat-section{min-height:0!important;gap:4px!important}
+  .modal.peri-modal-square .peri-cat-grid{grid-template-columns:repeat(4,1fr)!important;gap:7px!important}
+  /* chips bem compactos pra TODAS as 33 caberem (INTELECTO=3 linhas) */
+  .modal.peri-modal-square .peri-cat-item{padding:7px 9px!important;border-radius:9px!important;font-size:11.5px!important;gap:6px!important}
+  .modal.peri-modal-square .peri-cat-item .peri-cat-action{width:18px!important;height:18px!important}
   .modal.peri-modal-square .peri-cat-name{white-space:nowrap!important}
-  .modal.peri-modal-square .peri-cat-header{padding-bottom:4px!important;margin-bottom:2px!important}
+  .modal.peri-modal-square .peri-cat-header{padding-bottom:3px!important;margin-bottom:1px!important}
   /* botão criar + concluir não empurram a lista */
   .modal.peri-modal-square .peri-create{margin:8px 0 0!important}
   .modal.peri-modal-square .modal-btns{margin-top:10px!important}
@@ -3803,6 +3805,9 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .peri-cat-header{display:flex;align-items:center;gap:6px;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;padding:0 2px 5px;border-bottom:1px solid var(--border);position:relative}
 .peri-cat-header svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.4}
 .peri-cat-header-count{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);background:transparent;padding:1px 6px;border-radius:8px;border:1px solid var(--border);font-weight:700}
+/* Empty-state minimal das perícias (painel da ficha) */
+.peri-empty-min{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:28px 16px;text-align:center}
+.peri-empty-min p{font-size:13px;color:var(--text-dim);margin:0}
 .peri-cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
 /* ═══ Chip de perícia — redesign: legível, tátil, estados claros ═══ */
 .peri-cat-item{display:flex;align-items:center;gap:9px;padding:10px 11px;background:var(--bg-card-inner);border:1px solid var(--border-light);border-radius:11px;cursor:pointer;transition:transform .16s var(--ease-out-expo,cubic-bezier(.16,1,.3,1)),background .16s,border-color .16s,box-shadow .16s;font-size:12.5px;color:var(--text-primary);font-family:inherit;text-align:left;width:100%;position:relative;overflow:hidden;line-height:1.2}
@@ -20389,7 +20394,8 @@ function renderPericias(){
     const cTrein=all.filter(p=>(periciasState[p.id]||{}).rank==='treinado').length;
     const cPer=all.filter(p=>(periciasState[p.id]||{}).rank==='perito').length;
     const cMes=all.filter(p=>(periciasState[p.id]||{}).rank==='mestre').length;
-    const empty='';// empty-state "Sua ficha sem perícias" removido
+    // Sem perícias: hint enxuto (1 linha + botão) — não o bloco grande antigo
+    const empty=all.length?'':`<div class="peri-empty-min"><p>Nenhuma perícia ainda.</p><button class="pericia-add-btn" onclick="openAddPericiaModal()"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Escolher perícias</span></button></div>`;
     const chips=all.length?`<div class="peri-stat-chips">
       <span class="peri-stat-chip"><b>${all.length}</b> total</span>
       ${cTrein?`<span class="peri-stat-chip" data-r="treinado"><b>${cTrein}</b> treinada${cTrein!==1?'s':''}</span>`:''}
