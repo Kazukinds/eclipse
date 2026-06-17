@@ -3749,11 +3749,12 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .pericia-group-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;padding:2px 7px;border:1px solid;border-radius:10px;background:transparent;margin-left:auto;margin-right:8px;white-space:nowrap}
 .pericia-custom-badge{margin-left:6px;color:var(--yellow);font-size:10px}
 .pericia-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;color:var(--text-dim);font-size:13px;font-weight:600;text-align:center;gap:8px}
-.peri-modal-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-shrink:0}
-.peri-search{flex:1;position:relative;display:flex;align-items:center}
+.peri-modal-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-shrink:0;padding:3px}
+.peri-search{flex:1;min-width:0;position:relative;display:flex;align-items:center}
 .peri-search svg{position:absolute;left:12px;width:14px;height:14px;stroke:var(--text-dim);fill:none;stroke-width:2.2;pointer-events:none}
-.peri-search input{width:100%;padding:9px 12px 9px 34px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-family:inherit;font-size:12px;outline:none;transition:all .2s}
-.peri-search input:focus{border-color:var(--magenta-dim);box-shadow:0 0 0 3px rgba(var(--magenta-rgb),.06)}
+.peri-search input{width:100%;box-sizing:border-box;padding:9px 12px 9px 34px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-family:inherit;font-size:12px;outline:none;transition:border-color .2s,box-shadow .2s}
+.peri-search input::placeholder{color:var(--text-dim)}
+.peri-search input:focus{border-color:var(--magenta-dim);box-shadow:0 0 0 3px rgba(var(--magenta-rgb),.10)}
 .peri-stats{display:flex;align-items:baseline;gap:4px;padding:6px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;flex-shrink:0}
 .peri-stats-num{font-size:16px;font-weight:700;color:var(--magenta)}
 .peri-stats-divider,.peri-stats-total{font-size:12px;color:var(--text-dim)}
