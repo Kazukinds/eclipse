@@ -35756,39 +35756,15 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .cfilters{display:flex;gap:20px;flex-wrap:wrap}
   /* Linha de controles: LISTA à esquerda, filtros (Grau/Arquétipo) à direita */
   .grimorio-root .tb-filters{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
-  .grimorio-root .tb-filters .tb-fspacer{flex:1 1 auto}
-  .grimorio-root .tb-filters .viewtog{margin:0;flex:0 0 auto}
-  /* Dropdown de filtros (subpasta): no DESKTOP fica sempre aberto inline (botão vira rótulo);
-     no MOBILE colapsa num botão que expande. */
-  .grimorio-root .grim-fdrop{border:0;margin:0}
-  .grimorio-root .grim-fdrop>summary{display:none;list-style:none;cursor:pointer;align-items:center;gap:8px;
-    padding:9px 14px;background:#222;border:1px solid var(--line);border-radius:10px;margin:8px 0 0;
-    font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
-  .grimorio-root .grim-fdrop>summary::-webkit-details-marker{display:none}
-  .grimorio-root .grim-fdrop .fd-k{color:var(--faint)}
-  .grimorio-root .grim-fdrop .fd-v{color:var(--acc2);font-weight:700}
-  .grimorio-root .grim-fdrop .fd-chev{margin-left:auto;transition:transform .2s;color:var(--faint)}
-  .grimorio-root .grim-fdrop[open] .fd-chev{transform:rotate(180deg)}
-  /* DESKTOP: chips sempre visíveis inline (details aberto ou não) */
-  .grimorio-root .grim-fdrop{display:flex!important;align-items:center}
-  .grimorio-root .grim-fdrop>.gfilters,.grimorio-root .grim-fdrop>.cfilters{display:flex!important;height:auto!important}
-  .grimorio-root .tb-filters{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
-  .grimorio-root .tb-filters .tb-fspacer{display:none}
+  /* ═══ Filtros reformulados: grupos rotulados, chips inline (sem <details>) ═══ */
+  .grimorio-root .tb-filters{display:flex;align-items:flex-start;gap:14px 32px;flex-wrap:wrap;margin-top:16px}
+  .grimorio-root .fgroup{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .grimorio-root .fg-lbl{font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);flex:0 0 auto}
   @media(max-width:640px){
-    /* busca em cima; LISTA + Grau + Arquétipo numa linha compacta embaixo */
-    .grimorio-root .toolbar{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px}
-    .grimorio-root .tb-top{flex:1 1 100%;order:0}
-    .grimorio-root .viewtog{order:1}
-    .grimorio-root .tb-filters{order:1;display:flex;flex-direction:row;gap:8px;align-items:center;flex:0 0 auto;margin-left:auto}
-    .grimorio-root .grim-fdrop{order:2;flex:0 0 auto;position:relative}
-    .grimorio-root .grim-fdrop>summary{display:inline-flex;margin:0;padding:7px 11px;font-size:10px;gap:6px}
-    .grimorio-root .grim-fdrop .fd-chev{margin-left:4px}
-    .grimorio-root .grim-fdrop:not([open]) .gfilters,.grimorio-root .grim-fdrop:not([open]) .cfilters{display:none}
-    /* opções flutuam (não empurram layout) */
-    .grimorio-root .grim-fdrop[open] .gfilters,.grimorio-root .grim-fdrop[open] .cfilters{position:absolute;top:calc(100%+4px);left:0;min-width:160px;z-index:20}
-    .grimorio-root .grim-fdrop[open] .gfilters,.grimorio-root .grim-fdrop[open] .cfilters{flex-direction:column;gap:4px;padding:10px 4px 6px;background:#161616;border:1px solid var(--line);border-top:0;border-radius:0 0 10px 10px}
-    .grimorio-root .grim-fdrop[open] .gchip,.grimorio-root .grim-fdrop[open] .cchip{padding:9px 12px;border-bottom:0;border-radius:8px;font-size:13px}
-    .grimorio-root .grim-fdrop[open] .gchip[data-on="1"],.grimorio-root .grim-fdrop[open] .cchip[data-on="1"]{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc2)}
+    .grimorio-root .tb-filters{gap:10px 0;flex-direction:column;align-items:stretch}
+    .grimorio-root .fgroup{gap:10px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+    .grimorio-root .fgroup::-webkit-scrollbar{display:none}
+    .grimorio-root .fg-lbl{position:sticky;left:0}
   }
   .grimorio-root .gchip,.grimorio-root .cchip{padding:1px 0;background:none;border:0;border-bottom:2px solid transparent;color:var(--faint);font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Inter',system-ui,sans-serif;transition:color .15s}
   .grimorio-root .gchip:hover,.grimorio-root .cchip:hover{color:var(--muted)}
@@ -36515,9 +36491,8 @@ function renderToolbar(){
   const catLbl=catF==='all'?'Todos':catF;
   toolbar.innerHTML=`<div class="tb-row"><div class="tb-top"><input class="search" id="grim-srch" placeholder="Buscar feitiço..." value="${query}"></div><button class="viewtog" id="grim-viewtog" title="Alternar lista e cards"><span>${viewMode==='list'?'▦':'☰'}</span>${viewMode==='list'?'Cards':'Lista'}</button></div>`
     +`<div class="tb-filters">`
-    +`<span class="tb-fspacer"></span>`
-    +`<details class="grim-fdrop"><summary><span class="fd-k">Grau</span><span class="fd-v">${grauLbl}</span><span class="fd-chev">▾</span></summary><div class="gfilters">${gchips}</div></details>`
-    +(cchips?`<details class="grim-fdrop"><summary><span class="fd-k">Arquétipo</span><span class="fd-v">${catLbl}</span><span class="fd-chev">▾</span></summary><div class="cfilters">${cchips}</div></details>`:'')
+    +`<div class="fgroup"><span class="fg-lbl">Grau</span><div class="gfilters">${gchips}</div></div>`
+    +(cchips?`<div class="fgroup"><span class="fg-lbl">Arquétipo</span><div class="cfilters">${cchips}</div></div>`:'')
     +`</div>`;
   const s=document.getElementById('grim-srch');
   s.oninput=()=>{query=s.value;render();};
