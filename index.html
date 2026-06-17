@@ -12138,8 +12138,6 @@ function _shuffle(a){for(let i=a.length-1;i>0;i--){const j=_rngInt(i+1);[a[i],a[
 function _clamp(v,lo,hi){return Math.min(hi,Math.max(lo,v))}
 function _clampInt(v,lo,hi,def){const n=parseInt(v,10);return Number.isFinite(n)?_clamp(n,lo,hi):(def!=null?def:lo)}
 function _clampFloat(v,lo,hi,def){const n=parseFloat(v);return Number.isFinite(n)?_clamp(n,lo,hi):(def!=null?def:lo)}
-// Helper genérico para clamp de HP/stats (clamp [0..max])
-function _clampHp(v,max){const n=parseInt(v,10);return Number.isFinite(n)?Math.max(0,Math.min(max|0,n)):0}
 // Dice expression parser: "2d6+3","1d20","3d8-1". mode: 'normal'|'adv'|'dis' (adv/dis valid p/ N=1)
 function _rollExpr(expr,mode){
   const m=String(expr||'').replace(/\s/g,'').match(/^(\d{0,3})d(\d{1,3})([+-]\d{1,4})?$/i);
@@ -16233,43 +16231,6 @@ function renderDonut(){
   if(!container)return;
   container.innerHTML=`<div class="donut-wrap"><svg class="donut-svg" viewBox="0 0 120 120"><circle cx="60" cy="60" r="${r}" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="6" stroke-dasharray="${trackDash}" stroke-linecap="round" transform="rotate(135 60 60)"/><circle cx="60" cy="60" r="${r}" fill="none" stroke="#ffffff" stroke-width="6" stroke-dasharray="${fillDash}" stroke-linecap="round" transform="rotate(135 60 60)"/></svg><div class="donut-center"><div class="donut-center-value" style="color:#fff;font-family:'JetBrains Mono',monospace;font-size:18px">${used}<span style="opacity:.5;font-size:13px">/${cap}</span></div></div></div>`;
 }
-function attachDonutHover(container){
-  const tip=container.querySelector('.donut-tooltip');const wrap=container.querySelector('.donut-wrap,.attr-donut-wrap');
-  if(!tip||!wrap)return;
-  let hideTimer=null;
-  const showTip=(c,x,y)=>{
-    tip.innerHTML=`<div class="donut-tooltip-dot" style="background:${c.dataset.color}"></div>${c.dataset.label}<span class="donut-tooltip-val">${c.dataset.val}</span>`;
-    tip.classList.add('visible');
-    const w=tip.offsetWidth||140,h=tip.offsetHeight||30;
-    const vw=window.innerWidth,vh=window.innerHeight;
-    let left=x+14,top=y+14;
-    if(left+w>vw-8)left=x-w-14;
-    if(top+h>vh-8)top=y-h-14;
-    tip.style.left=Math.max(8,left)+'px';
-    tip.style.top=Math.max(8,top)+'px';
-    clearTimeout(hideTimer);
-  };
-  const hideTip=(delay=0)=>{
-    clearTimeout(hideTimer);
-    if(delay>0)hideTimer=setTimeout(()=>tip.classList.remove('visible'),delay);
-    else tip.classList.remove('visible');
-  };
-  container.querySelectorAll('circle[data-slice]').forEach(c=>{
-    c.addEventListener('mousemove',e=>showTip(c,e.clientX,e.clientY));
-    c.addEventListener('mouseleave',()=>hideTip());
-    c.addEventListener('touchstart',e=>{
-      const t=e.touches[0];if(!t)return;
-      e.stopPropagation();
-      showTip(c,t.clientX,t.clientY);
-    },{passive:true});
-    c.addEventListener('touchend',()=>hideTip(1800),{passive:true});
-    c.addEventListener('touchcancel',()=>hideTip(1200),{passive:true});
-  });
-  document.addEventListener('touchstart',e=>{
-    if(!wrap.contains(e.target))hideTip();
-  },{passive:true});
-}
-
 const QA_TARGETS={
   hp:{label:'Vitalidade',short:'PV',color:'var(--red)',icon:'<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>'},
   esforco:{label:'Esforço',short:'PE',color:'#fb923c',icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c2.2 3.3 5 5.8 5 9.5a5 5 0 1 1-10 0c0-1.7.8-2.9 1.7-3.8.1 1.4.9 2.3 2.1 2.3 0-2.2-1.3-3-1.3-5.2 0-1.3.9-2.3 2.5-2.8z"/><path d="M12 14c1.1.8 1.6 1.8 1.6 2.8a1.6 1.6 0 1 1-3.2 0c0-.6.3-1 .8-1.4.2.5.5.7.8.7 0-.7-.4-1-.4-1.6 0-.2.1-.4.4-.5z"/></svg>'},
@@ -16610,91 +16571,6 @@ function clearItemSlots(idx,w,h){
   const col=idx%gridCols,row=Math.floor(idx/gridCols);
   for(let r=0;r<h;r++)for(let c=0;c<w;c++){gridSlots[(row+r)*gridCols+(col+c)]=null}
 }
-function rotateItem(id){
-  const it=inventory.find(x=>x.id===id);if(!it)return;
-  const oldRot=it.rot||0;
-  const cwOf=r=>{if(r===0)return 90;if(r===90)return 180;if(r===180)return -90;return 0};
-  let newRot=cwOf(oldRot);
-  const _wEnt=it.iconWpn&&WEAPON_SVGS[it.iconWpn];
-  if(it.gw==null&&_wEnt&&_wEnt.gw)it.gw=_wEnt.gw;
-  if(it.gh==null&&_wEnt&&_wEnt.gh)it.gh=_wEnt.gh;
-  const oldW=it.gw||1,oldH=it.gh||1;
-  const oldVert=(oldRot===90||oldRot===-90);
-  let newVert=(newRot===90||newRot===-90);
-  let swap=(oldW!==oldH)&&(oldVert!==newVert);
-  if(swap&&it.posIdx!=null){
-    const tw=oldH,th=oldW;
-    let canFit=canPlaceIgnoring(it.posIdx,tw,th,id);
-    if(!canFit){let f=-1;for(let i=0;i<GRID_SIZE;i++){if(canPlaceIgnoring(i,tw,th,id)){f=i;break}}canFit=(f>=0)}
-    if(!canFit){
-      newRot=cwOf(newRot);
-      newVert=(newRot===90||newRot===-90);
-      swap=(oldW!==oldH)&&(oldVert!==newVert);
-    }
-  }
-  const newW=swap?oldH:oldW;
-  const newH=swap?oldW:oldH;
-  const dur=320;
-  const ease='cubic-bezier(.34,1.4,.6,1)';
-  document.querySelectorAll(`.inv-cell[data-item-id="${id}"] img.item-icon-svg`).forEach(img=>{
-    const overlay=img.closest('.item-overlay');
-    const orient=overlay?overlay.dataset.orient:null;
-    if(overlay){
-      overlay.style.transformOrigin='center center';
-      overlay.style.transition=`transform ${dur}ms ${ease}`;
-      const prev=parseFloat(overlay.dataset._spinDeg||'0')||0;
-      const delta=((newRot-oldRot+540)%360)-180;
-      const next=prev+delta;
-      overlay.dataset._spinDeg=String(next);
-      overlay.style.transform=`rotate(${next}deg)`;
-    }else{
-      img.style.transition=`transform ${dur}ms ${ease}`;
-      img.style.setProperty('--_rot',newRot+'deg');
-      let tx;
-      if(orient==='v')tx=`translate(-50%,-50%) rotate(${newRot}deg)`;
-      else if(orient==='h')tx=`scale(1.18) rotate(${newRot}deg)`;
-      else tx=`rotate(${newRot}deg)`;
-      img.style.setProperty('transform',tx,'important');
-    }
-  });
-  setTimeout(()=>{
-    if(swap&&it.posIdx!=null){
-      clearItemSlots(it.posIdx,oldW,oldH);
-      let targetIdx=it.posIdx;
-      if(!canPlaceIgnoring(targetIdx,newW,newH,id)){
-        let found=-1;
-        for(let i=0;i<GRID_SIZE;i++){if(canPlaceIgnoring(i,newW,newH,id)){found=i;break}}
-        if(found<0){
-          placeItem(it.posIdx,id,oldW,oldH);
-          renderGrid();
-          requestAnimationFrame(()=>{
-            document.querySelectorAll(`.inv-cell[data-item-id="${id}"]`).forEach(c=>{
-              c.classList.add('shake-nofit');
-              setTimeout(()=>c.classList.remove('shake-nofit'),400);
-            });
-          });
-          return;
-        }
-        targetIdx=found;
-      }
-      it.gw=newW;it.gh=newH;it.posIdx=targetIdx;
-      placeItem(targetIdx,id,newW,newH);
-    } else if(swap){
-      it.gw=newW;it.gh=newH;
-    }
-    it.rot=newRot;
-    // Switch iconWpn to rotation variant if available.
-    const _curEnt=it.iconWpn&&WEAPON_SVGS[it.iconWpn];
-    const _baseKey=_curEnt&&_curEnt.rotVariants?it.iconWpn:_findBaseRotKey(it.iconWpn);
-    if(_baseKey){
-      const _baseEnt=WEAPON_SVGS[_baseKey];
-      const _v=_baseEnt&&_baseEnt.rotVariants&&_baseEnt.rotVariants[newRot];
-      if(_v&&WEAPON_SVGS[_v])it.iconWpn=_v;
-    }
-    renderGrid();
-    if(typeof saveGame==='function')try{saveGame()}catch(_){}
-  },dur);
-}
 function _findBaseRotKey(curKey){
   if(!curKey)return null;
   for(const k in WEAPON_SVGS){
@@ -16732,26 +16608,6 @@ window._toggleItemShape=function(id){
   if(typeof saveGame==='function')try{saveGame()}catch(_){}
   if(navigator.vibrate)try{navigator.vibrate(20)}catch(_){}
 };
-function _doRotate(id,fromRot,toRot,done){done&&done();return}
-function _animRotate(id,fromRot,toRot,done,newW,newH){
-  const cell=document.querySelector(`.inv-cell[data-item-id="${id}"]`);
-  const overlay=cell?.querySelector('.item-overlay');
-  const img=(overlay||cell)?.querySelector('.item-icon-svg');
-  if(!img){done();return}
-  const dur=450;
-  img.style.transition=`transform ${dur}ms cubic-bezier(.34,1.56,.64,1)`;
-  img.style.transform=`rotate(${fromRot}deg)`;
-  void img.offsetWidth;
-  img.style.transform=`rotate(${toRot}deg)`;
-  if(overlay&&newW!=null&&newH!=null){
-    overlay.style.transition=`width ${dur}ms cubic-bezier(.34,1.56,.64,1),height ${dur}ms cubic-bezier(.34,1.56,.64,1)`;
-    void overlay.offsetWidth;
-    overlay.style.width=`calc(${newW*100}% + ${(newW-1)*1}px)`;
-    overlay.style.height=`calc(${newH*100}% + ${(newH-1)*1}px)`;
-  }
-  setTimeout(done,dur);
-}
-window.rotateItem=rotateItem;
 function setItemRotation(id,target){
   const it=inventory.find(x=>x.id===id);if(!it)return;
   const oldRot=it.rot||0;
@@ -16800,33 +16656,6 @@ function setItemRotation(id,target){
   if(typeof saveGame==='function')try{saveGame()}catch(_){}
 }
 window.setItemRotation=setItemRotation;
-function closeRotateMenu(){document.getElementById('rotate-menu')?.remove()}
-function openRotateMenu(itemId,pos){
-  const it=inventory.find(x=>x.id===itemId);if(!it)return;
-  closeRotateMenu();
-  const menu=document.createElement('div');
-  menu.id='rotate-menu';menu.className='rotate-menu';
-  const cur=it.rot||0;
-  const opts=[0,90,180,-90];
-  menu.innerHTML=opts.map(d=>`<button data-rot="${d}" class="${cur===d?'active':''}">${d}°</button>`).join('');
-  document.body.appendChild(menu);
-  const x=Math.max(80,Math.min(window.innerWidth-80,pos.x));
-  const y=Math.max(80,pos.y);
-  menu.style.left=x+'px';menu.style.top=y+'px';
-  menu.addEventListener('pointerdown',e=>e.stopPropagation());
-  menu.addEventListener('click',e=>{
-    const b=e.target.closest('button[data-rot]');if(!b)return;
-    e.stopPropagation();
-    const deg=parseInt(b.dataset.rot,10);
-    setItemRotation(itemId,deg);
-    closeRotateMenu();
-  });
-  setTimeout(()=>{document.addEventListener('pointerdown',_rotMenuOutside,{once:true,capture:true})},20);
-}
-function _rotMenuOutside(e){
-  if(!e.target.closest('.rotate-menu'))closeRotateMenu();
-}
-window.openRotateMenu=openRotateMenu;
 function _editItemStat(id,field,label,type,current){
   const it=inventory.find(i=>i.id===id);if(!it)return;
   document.getElementById('stat-edit-modal')?.remove();
@@ -19098,15 +18927,6 @@ function _ammoTypeOf(it){
   if(!w)return null;
   if(w.sub==='municao')return it.ammoType||w.label||it.iconWpn;
   return w.sub||null;
-}
-function _findAmmoItems(weapon){
-  const aType=_ammoTypeOf(weapon);if(!aType)return[];
-  return inventory.filter(x=>{
-    if(x.id===weapon.id)return false;
-    const w=x.iconWpn&&WEAPON_SVGS[x.iconWpn];
-    if(!w||w.sub!=='municao')return false;
-    return _ammoTypeOf(x)===aType;
-  });
 }
 function _ammoReserveFor(weapon){
   // Reserve stored directly on weapon item (populated by drag-drop ammo consumption).
@@ -25809,7 +25629,7 @@ function renderBiblioGrid(){
     clearAll(null);clearTimeout(_revealTimer);
   },{passive:true,capture:true});
 })();
-let _biblioReaderIdx=-1,_biblioSubIdx=0,_BIBLIO_FULL=null,_biblioLoading=false;
+let _biblioReaderIdx=-1,_biblioSubIdx=0,_BIBLIO_FULL=null;
 const BIBLIO_ENV_COLORS={violet:'#5b3acf',blue:'#3a47cf',green:'#2e9c5b',cyan:'#1d8bb0',orange:'#d97540',red:'#c0394a',purple:'#7340c4',lime:'#7aa83a',yellow:'#c79a2a',pink:'#c14e8d'};
 
 // Map id BIBLIO_DATA → título biblioteca.html
@@ -25824,37 +25644,10 @@ const BIBLIO_TITLE_MAP={
   pwv:'PODERES VANGUARDA',pwo:'PODERES OPERADOR',pwf:'PODERES FEITICEIRO',pwa:'PODERES ABERRAÇÃO'
 };
 
-function _biblioLoadViaXHR(){
-  return new Promise((resolve,reject)=>{
-    try{
-      const x=new XMLHttpRequest();
-      x.open('GET','biblioteca.html',true);
-      x.onload=()=>{if(x.status===0||(x.status>=200&&x.status<400))resolve(x.responseText);else reject(new Error('xhr status '+x.status))};
-      x.onerror=()=>reject(new Error('xhr error'));
-      x.send();
-    }catch(e){reject(e)}
-  });
-}
-async function loadBiblioFull(){
-  if(_BIBLIO_FULL)return _BIBLIO_FULL;
-  if(_biblioLoading)return null;
-  _biblioLoading=true;
-  try{
-    let txt='';
-    try{
-      const res=await fetch('biblioteca.html?v=10.2',{cache:'no-cache'});
-      txt=await res.text();
-    }catch(fe){
-      console.warn('biblio fetch fail, tentando XHR',fe);
-      txt=await _biblioLoadViaXHR();
-    }
-    const m=txt.match(/<script[^>]*id="chapters-json"[^>]*>([\s\S]*?)<\/script>/);
-    if(!m)throw new Error('chapters-json not found');
-    _BIBLIO_FULL=JSON.parse(m[1]);
-    return _BIBLIO_FULL;
-  }catch(e){console.warn('biblio load fail, usando resumo',e);return null}
-  finally{_biblioLoading=false}
-}
+// biblioteca.html foi removida do projeto — a biblioteca completa não existe mais.
+// loadBiblioFull retorna null sempre; os chamadores caem no resumo embutido.
+// (Antes: fetch + XHR pro arquivo inexistente → 2 erros 404 no console em todo boot.)
+async function loadBiblioFull(){ return null; }
 function _biblioStripBrackets(s){
   return s.replace(/\[([^\[\]]*)\]/g,'$1');
 }
