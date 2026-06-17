@@ -35758,10 +35758,11 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .grim-sort-btn b{color:var(--txt);font-weight:600}
   .grimorio-root .grim-sort-btn .dd-chev{color:var(--faint);transition:transform .2s}
   .grimorio-root .grim-sort[open] .dd-chev{transform:rotate(180deg)}
-  .grimorio-root .grim-sort-panel{position:absolute;top:calc(100% + 6px);right:0;min-width:180px;z-index:40;background:#161616;border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 12px 32px -8px rgba(0,0,0,.6);display:flex;flex-direction:column;gap:2px}
-  .grimorio-root .sort-opt{text-align:left;padding:10px 12px;border:0;background:none;border-radius:8px;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;cursor:pointer}
-  .grimorio-root .sort-opt:hover{background:#222;color:var(--txt)}
-  .grimorio-root .sort-opt[data-on="1"]{color:var(--acc2);font-weight:700}
+  .grimorio-root .grim-sort-panel{position:absolute;top:calc(100% + 8px);right:0;min-width:200px;z-index:40;background:#141414;border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 16px 40px -10px rgba(0,0,0,.75);display:flex;flex-direction:column;gap:1px}
+  .grimorio-root .sort-opt{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;padding:9px 12px;border:0;background:none;border-radius:8px;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:background .14s,color .14s}
+  .grimorio-root .sort-opt:hover{background:#1f1f1f;color:var(--txt)}
+  .grimorio-root .sort-opt[data-on="1"]{color:var(--acc2);font-weight:600;background:color-mix(in srgb,var(--acc) 12%,transparent)}
+  .grimorio-root .sort-opt .sort-chk{flex:0 0 auto;color:var(--acc);font-size:12px}
   /* Drawer lateral (oculto até .open) */
   .grimorio-root .grim-filtdrawer{position:fixed;inset:0;z-index:9200;pointer-events:none;visibility:hidden}
   .grimorio-root .grim-filtdrawer.open{pointer-events:auto;visibility:visible}
@@ -36511,7 +36512,7 @@ function renderToolbar(){
   toolbar.innerHTML=`<div class="tb-row">`
     +`<button class="grim-filtbtn" id="grim-filtbtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>Filtrar${nAtivos?`<span class="filt-badge">${nAtivos}</span>`:''}</button>`
     +`<div class="tb-top"><input class="search" id="grim-srch" placeholder="Buscar feitiço..." value="${query}"></div>`
-    +`<details class="grim-sort"><summary class="grim-sort-btn"><b>${SORTS[sortMode]}</b><span class="dd-chev">▾</span></summary><div class="grim-sort-panel">${Object.entries(SORTS).map(([k,v])=>`<button class="sort-opt" data-s="${k}" ${sortMode===k?'data-on="1"':''}>${v}${sortMode===k?' ✓':''}</button>`).join('')}</div></details>`
+    +`<details class="grim-sort"><summary class="grim-sort-btn"><b>${SORTS[sortMode]}</b><span class="dd-chev">▾</span></summary><div class="grim-sort-panel">${Object.entries(SORTS).map(([k,v])=>`<button class="sort-opt" data-s="${k}" ${sortMode===k?'data-on="1"':''}><span>${v}</span>${sortMode===k?'<span class="sort-chk">✓</span>':''}</button>`).join('')}</div></details>`
     +`<button class="viewtog" id="grim-viewtog" title="Alternar lista e cards"><span>${viewMode==='list'?'▦':'☰'}</span>${viewMode==='list'?'Cards':'Lista'}</button>`
     +`</div>`;
   // Drawer de filtros (oculto até abrir) — seções colapsáveis estilo Behance
