@@ -9236,6 +9236,8 @@ body:has(#tab-feiticos.active) .topbar-search input{background:#262626!important
 #tab-feiticos.tab-content.active .ritual-main{height:100%;border-radius:0;border:0}
 #tab-feiticos.tab-content.active .ritual-main,#tab-feiticos.tab-content.active .ritual-main-head,#tab-feiticos.tab-content.active .ritual-shell{border-radius:0!important}
 #tab-feiticos.tab-content.active .ritual-main-body{padding:0}
+.ritual-main-body:has(.rvd){display:block;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#3a3a3a transparent}
+.rvd{padding-bottom:80px}
 #tab-feiticos .ritual-shell{height:100%}
 .ritual-side{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px;overflow:hidden}
 .ritual-side-head{padding-bottom:10px;border-bottom:1px solid var(--border)}
