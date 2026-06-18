@@ -9229,7 +9229,10 @@ img{content-visibility:auto}
 /* Acervo: preenche TODA a area de conteudo (cola ate a base da viewport) */
 body:has(#tab-feiticos.active) .main-wrapper{position:relative;padding-bottom:0!important}
 .content:has(#tab-feiticos.active){position:static;padding:0!important;margin:0!important;overflow:visible}
-#tab-feiticos.tab-content.active{position:absolute;top:var(--top-offset,130px);left:0;right:0;bottom:0;display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;height:auto;margin:0;padding:0;z-index:5}
+#tab-feiticos.tab-content.active{position:fixed;top:var(--top-offset,130px);left:72px;right:0;bottom:0;display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;height:auto;margin:0;padding:0;z-index:5}
+@media(max-width:980px){#tab-feiticos.tab-content.active{left:60px}}
+@media(max-width:760px){#tab-feiticos.tab-content.active{left:48px}}
+@media(max-width:600px){#tab-feiticos.tab-content.active{left:0}}
 #tab-feiticos.tab-content.active .ritual-shell{height:100%;gap:0}
 #tab-feiticos.tab-content.active .ritual-main{height:100%;border-radius:0;border:0}
 #tab-feiticos.tab-content.active .ritual-main-body{padding:0}
