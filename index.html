@@ -6900,8 +6900,8 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   .radial-menu{display:none;position:fixed;inset:0;z-index:400;pointer-events:none;opacity:0;transition:opacity .28s var(--ease-out-expo);align-items:center;justify-content:center;box-sizing:border-box}
   .radial-menu.open,.radial-menu.mount{display:flex}
   .radial-menu.open{opacity:1;pointer-events:auto}
-  .radial-menu-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.94);backdrop-filter:blur(32px) saturate(160%);-webkit-backdrop-filter:blur(32px) saturate(160%)}
-  [data-theme="light"] .radial-menu-backdrop{background:rgba(0,0,0,.9)}
+  .radial-menu-backdrop{position:fixed;inset:0;background:rgba(10,10,14,.55);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%)}
+  [data-theme="light"] .radial-menu-backdrop{background:rgba(245,246,248,.6);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%)}
   .radial-menu-ring{position:relative;width:min(86vw,460px);height:min(86vw,460px);--selected-angle:0deg;--wedge-opacity:0;flex-shrink:0}
   /* Spotlight wedge removido — glow agora fica só atrás do item ativo (ver .radial-menu-item.touched) */
   .radial-menu-ring::before,.radial-menu-ring::after{content:none}
@@ -6912,7 +6912,7 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   .radial-menu-conn{
     position:absolute;left:50%;top:50%;
     width:var(--clen,0);height:1px;
-    background:linear-gradient(90deg,color-mix(in srgb,var(--magenta) 80%,transparent),color-mix(in srgb,var(--magenta) 30%,transparent));
+    background:linear-gradient(90deg,rgba(255,255,255,.7),rgba(255,255,255,.15));
     transform:translate(calc(-50% + var(--cx,0px)),calc(-50% + var(--cy,0px))) rotate(var(--cang,0deg));
     transform-origin:center;
     opacity:0;pointer-events:none;
@@ -6921,6 +6921,7 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   }
   .radial-menu-item:hover + .radial-menu-tooltip + .radial-menu-conn,
   .radial-menu-item.touched + .radial-menu-tooltip + .radial-menu-conn{opacity:.85}
+  [data-theme="light"] .radial-menu-conn{background:linear-gradient(90deg,rgba(0,0,0,.45),rgba(0,0,0,.08))}
   /* Bolha de proteção: quando um item ativa tooltip, vizinhos desfocam e somem ligeiramente p/ garantir respiro */
   .radial-menu-ring:has(.radial-menu-item.touched) .radial-menu-item:not(.touched),
   .radial-menu-ring:has(.radial-menu-item:hover) .radial-menu-item:not(:hover){opacity:.35;filter:blur(.3px);transition:opacity .25s,filter .25s}
@@ -6938,9 +6939,10 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   .radial-menu-item svg{width:22px;height:22px;color:currentColor;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
   .radial-menu.open .radial-menu-item{opacity:1;transform:translate(var(--rx),var(--ry)) scale(1)}
   .radial-menu-item.active{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.08)}
-  .radial-menu-item:hover,.radial-menu-item.touched{background:var(--magenta);color:#0a0a0a;border-color:var(--magenta);box-shadow:0 0 0 3px color-mix(in srgb,var(--magenta) 28%,transparent),0 0 22px color-mix(in srgb,var(--magenta) 60%,transparent)}
+  .radial-menu-item:hover,.radial-menu-item.touched{background:rgba(255,255,255,.95);color:#0a0a0a;border-color:rgba(255,255,255,.9);box-shadow:0 0 0 3px rgba(255,255,255,.18),0 8px 24px rgba(0,0,0,.5)}
   .radial-menu-item:hover svg,.radial-menu-item.touched svg{transform:scale(1.12)}
-  [data-theme="light"] .radial-menu-item:hover,[data-theme="light"] .radial-menu-item.active,[data-theme="light"] .radial-menu-item.touched{background:var(--magenta-dim);color:#fff;border-color:var(--magenta-dim)}
+  [data-theme="light"] .radial-menu-item{background:rgba(255,255,255,.96);border-color:rgba(0,0,0,.1);color:#1d2128;box-shadow:0 6px 18px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.6)}
+  [data-theme="light"] .radial-menu-item:hover,[data-theme="light"] .radial-menu-item.active,[data-theme="light"] .radial-menu-item.touched{background:#171717;color:#fff;border-color:#171717;box-shadow:0 0 0 3px rgba(0,0,0,.12),0 8px 24px rgba(0,0,0,.25)}
   /* Tooltip pill — cor padrão lime + shortcut badge */
   .radial-menu-tooltip{
     position:absolute;left:50%;top:50%;
