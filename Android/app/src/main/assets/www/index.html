@@ -3813,8 +3813,8 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 /* Contador ao lado do título (chip discreto) */
 .peri-count-chip{font-size:11px;padding:2px 9px;margin-left:8px;background:var(--bg-input);border:1px solid var(--border-light);border-radius:999px;color:var(--text-secondary);font-family:'JetBrains Mono',monospace;font-weight:700;vertical-align:middle}
 .pericia-list-flat{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;max-height:none;overflow-y:visible;padding:0}
-.pericia-list-flat .pericia-row{display:grid;grid-template-columns:auto auto 1fr auto auto auto;grid-template-rows:auto;grid-template-areas:'rank tag name bonus roll del';align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--border);background:var(--bg-card-inner);border-radius:var(--radius-sm);min-height:0;transition:border-color .2s}
-.pericia-list-flat .pericia-row .pericia-del-btn{grid-area:del;width:22px;height:22px;border-radius:5px;background:transparent;border:1px solid transparent;color:var(--text-dim);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:all .15s;opacity:0}
+.pericia-list-flat .pericia-row{display:grid;grid-template-columns:auto auto 1fr auto auto auto;grid-template-rows:auto;grid-template-areas:'rank tag name bonus roll del';align-items:center;gap:12px;padding:10px 14px;border:1px solid var(--border);background:var(--bg-card-inner);border-radius:var(--radius-sm);min-height:0;transition:border-color .2s}
+.pericia-list-flat .pericia-row .pericia-del-btn{grid-area:del;width:28px!important;height:28px!important;min-width:28px;max-width:28px;min-height:28px;max-height:28px;aspect-ratio:1/1;align-self:center;box-sizing:border-box;border-radius:6px;background:transparent;border:1px solid transparent;color:var(--text-dim);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:all .15s;opacity:0}
 .pericia-list-flat .pericia-row:hover .pericia-del-btn{opacity:1}
 .pericia-list-flat .pericia-row .pericia-del-btn:hover{color:var(--red);border-color:var(--red);background:color-mix(in srgb,var(--red) 12%,transparent);opacity:1}
 .pericia-list-flat .pericia-row .pericia-del-btn svg{width:11px;height:11px}
@@ -4082,7 +4082,7 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .pericia-rank.mestre{background:var(--yellow);border-color:var(--yellow)}
 .pericia-name{font-size:12px;color:var(--text-secondary);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pericia-bonus{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--magenta);min-width:24px;text-align:right}
-.pericia-roll-btn{width:20px;height:20px;border-radius:50%;background:var(--bg-input);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dim);transition:color .15s,border-color .15s;flex-shrink:0}
+.pericia-roll-btn{width:28px!important;height:28px!important;min-width:28px;max-width:28px;min-height:28px;max-height:28px;flex:0 0 28px;box-sizing:border-box;aspect-ratio:1/1;align-self:center;padding:0;border-radius:50%;background:var(--bg-input);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dim);transition:color .15s,border-color .15s;flex-shrink:0}
 .pericia-roll-btn:hover{color:var(--magenta);border-color:var(--magenta)}
 .pericia-roll-btn svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2}
 .roll-result{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.8);background:var(--bg-card);border:2px solid var(--border);border-radius:var(--radius);padding:32px 48px;text-align:center;z-index:500;opacity:0;pointer-events:none;transition:all .3s;box-shadow:var(--shadow-lg)}
