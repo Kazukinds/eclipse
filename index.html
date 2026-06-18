@@ -35935,10 +35935,12 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .addbtn svg{width:16px;height:16px}
   .grimorio-root .addbtn:hover{border-color:var(--acc);color:var(--acc2);background:color-mix(in srgb,var(--acc) 12%,transparent)}
   .grimorio-root .addbtn[data-added="1"]{background:var(--acc);border-color:var(--acc);color:#000}
-  .grimorio-root .stats{display:grid;grid-template-columns:1fr 1fr;gap:11px 22px;margin:0 0 16px;padding:14px 0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
-  .grimorio-root .st{min-width:0}
-  .grimorio-root .st-k{display:block;color:var(--acc2);font-weight:700;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:3px;opacity:.9}
-  .grimorio-root .st-v{color:var(--txt);font-size:13.5px;line-height:1.35}
+  .grimorio-root .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:1px;margin:0 0 16px;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--line)}
+  .grimorio-root .st{min-width:0;display:flex;flex-direction:column;gap:4px;padding:10px 12px;background:var(--panel-2)}
+  .grimorio-root .st-k{display:block;color:var(--acc2);font-weight:700;font-size:8px;letter-spacing:.16em;text-transform:uppercase;opacity:.92}
+  .grimorio-root .st-v{color:var(--txt);font-size:13px;line-height:1.3;font-weight:500}
+  /* destaque para Grau e Custo (primeiras células) */
+  .grimorio-root .st:nth-child(1) .st-v,.grimorio-root .st:nth-child(2) .st-v{font-family:'Fraunces',Georgia,serif;font-size:15px}
   .grimorio-root .desc{font-size:14px;line-height:1.72;margin:0;color:#cecbd6}
   .grimorio-root .desc b,.grimorio-root .apr-t b{color:var(--acc2);font-weight:600}
   .grimorio-root .aprs{margin-top:16px;display:flex;flex-direction:column;gap:13px}
@@ -35981,7 +35983,10 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .gd-scroll{flex:1;min-height:0;overflow-y:auto;padding:38px 48px 64px;max-width:760px;width:100%;margin:0 auto}
   .grimorio-root .gd-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:24px}
   .grimorio-root .gd-head h2{margin:0;font-weight:500;font-size:clamp(30px,4.4vw,46px);line-height:1.08;letter-spacing:-.015em;color:var(--txt)}
-  .grimorio-root .gd-scroll .stats{margin-bottom:24px}
+  .grimorio-root .gd-scroll .stats{margin-bottom:28px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));border-radius:14px}
+  .grimorio-root .gd-scroll .st{padding:13px 16px;gap:5px}
+  .grimorio-root .gd-scroll .st-v{font-size:14px}
+  .grimorio-root .gd-scroll .st:nth-child(1) .st-v,.grimorio-root .gd-scroll .st:nth-child(2) .st-v{font-size:17px}
   .grimorio-root .gd-scroll .desc{font-size:15.5px;line-height:1.85}
   .grimorio-root .gd-scroll .apr-t{font-size:15px;line-height:1.85;color:#cecbd6}
   .grimorio-root .gd-scroll .apr{padding-left:18px}
@@ -36060,7 +36065,7 @@ body[data-perf-low] .dcard-handle{display:none}
     .grimorio-root main{padding:26px 18px 100px}
     .grimorio-root .gtop{padding:12px 16px;gap:10px}
     .grimorio-root .cards{grid-template-columns:1fr;gap:14px}
-    .grimorio-root .stats{grid-template-columns:1fr 1fr}
+    .grimorio-root .stats{grid-template-columns:repeat(auto-fit,minmax(84px,1fr))}
     /* toolbar empilha: busca em cima, controles embaixo */
     .grimorio-root .tb-row{display:grid;grid-template-columns:1fr auto auto auto;grid-template-areas:"search search search search" "filt sort view cart";gap:9px}
     .grimorio-root .tb-top{grid-area:search}
@@ -36748,9 +36753,18 @@ function render(){
   ft.innerHTML=total?`${total} feitiço(s)`:'';
 }
 
-function statsOf(f){
+const _PE_GRAU={1:1,2:3,3:6,4:10};
+function statsOf(f,g){
   const stat=(k,v)=>v?`<div class="st"><span class="st-k">${k}</span><span class="st-v">${v}</span></div>`:'';
-  return stat('Execução',f.ex)+stat('Alcance',f.al)+stat('Alvo/Efeito',f.av)+stat('Duração',f.du)+(f.re&&f.re!=='—'?stat('Resistência',f.re):'');
+  const grau=g||f.circle;
+  const alvoK=(f.av||'').toLowerCase().includes('área')||(f.av||'').toLowerCase().includes('cone')||(f.av||'').toLowerCase().includes('esfera')||(f.av||'').toLowerCase().includes('linha')||(f.av||'').toLowerCase().includes('emanação')||(f.av||'').toLowerCase().includes('nuvem')?'Área/Efeito':'Alvo/Efeito';
+  return stat('Grau',grau?grau+'º':'')
+    +stat('Custo',grau&&_PE_GRAU[grau]?_PE_GRAU[grau]+' PE':'')
+    +stat('Execução',f.ex)
+    +stat('Alcance',f.al)
+    +stat(alvoK,f.av)
+    +stat('Duração',f.du)
+    +(f.re&&f.re!=='—'?stat('Resistência',f.re):'');
 }
 function aprsOf(f){
   const aprs=(f.ap||[]).map(x=>{const asc=/asce/i.test(x.tier);
@@ -36763,10 +36777,10 @@ function aprsOf(f){
 }
 function catTag(f){return f.cat?`<span class="cat-tag" data-cat="${f.cat}">${f.cat}</span>`:'';}
 function card(f,g){
-  return `<div class="card" data-el="${atual}" data-n="${(f.n||'').replace(/"/g,'&quot;')}" data-g="${g}" tabindex="0" role="button"><div class="card-h"><h3>${f.n}</h3><div class="card-h-r">${catTag(f)}${addBtn(f,g)}</div></div><div class="stats">${statsOf(f)}</div><p class="desc">${f.d}</p>${aprsOf(f)}</div>`;
+  return `<div class="card" data-el="${atual}" data-n="${(f.n||'').replace(/"/g,'&quot;')}" data-g="${g}" tabindex="0" role="button"><div class="card-h"><h3>${f.n}</h3><div class="card-h-r">${catTag(f)}${addBtn(f,g)}</div></div><div class="stats">${statsOf(f,g)}</div><p class="desc">${f.d}</p>${aprsOf(f)}</div>`;
 }
 function row(f,g){
-  return `<details class="row"><summary class="row-h"><span class="row-n">${f.n}</span><span class="row-meta">${f.ex}${f.al?' · '+f.al:''}</span>${catTag(f)}${addBtn(f,g)}<span class="row-chev">⌄</span></summary><div class="row-body"><div class="stats">${statsOf(f)}</div><p class="desc">${f.d}</p>${aprsOf(f)}</div></details>`;
+  return `<details class="row"><summary class="row-h"><span class="row-n">${f.n}</span><span class="row-meta">${f.ex}${f.al?' · '+f.al:''}</span>${catTag(f)}${addBtn(f,g)}<span class="row-chev">⌄</span></summary><div class="row-body"><div class="stats">${statsOf(f,g)}</div><p class="desc">${f.d}</p>${aprsOf(f)}</div></details>`;
 }
 
 // ===== visão detalhada do feitiço (clique no card) =====
@@ -36787,7 +36801,7 @@ function openDetail(el,n,g){
         <h2 class="serif">${f.n}</h2>
         ${catTag(f)}
       </div>
-      <div class="stats">${statsOf(f)}</div>
+      <div class="stats">${statsOf(f,g)}</div>
       <p class="desc">${f.d}</p>
       ${aprsOf(f)}
     </div>
