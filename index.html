@@ -30145,7 +30145,8 @@ window._adOverviewOpen=function(){
     else if(spread>=Math.max(3,Math.ceil(maxV*0.6))){veredito='Build focado.';perfil=`Concentra em ${lbl[top]||top} (${s.draft[top]}) com apoio menor. ${lbl[low]||low} (${s.draft[low]}) é o ponto fraco — evite situações que o exijam.`;}
     else{veredito='Build híbrido.';perfil=`Distribuição razoavelmente espalhada, puxando para ${lbl[top]||top}. Adaptável, mas sem um pico forte de especialização.`;}
   }
-  const rows=sorted.map((n,i)=>{const v=s.draft[n];const pct=total>0?Math.round(v/total*100):0;const tag=i===0&&total>0?'Dominante':(v===0?'Ausente':'');
+  const maxA=s.unlocked?Math.max(1,maxV):(s.cap.maxPerAttr||5);
+  const rows=sorted.map((n,i)=>{const v=s.draft[n];const pct=maxA>0?Math.round(v/maxA*100):0;const tag=i===0&&total>0?'Dominante':(v===0?'Ausente':'');
     return `<div class="ad-ov-row"><span class="ad-ov-dot" style="background:${_AD_COLORS[n]}"></span><span class="ad-ov-name">${lbl[n]||n}</span>${tag?`<span class="ad-ov-tag">${tag}</span>`:''}<span class="ad-ov-bar"><i style="width:${pct}%;background:${_AD_COLORS[n]}"></i></span><span class="ad-ov-v">${v}</span></div>`;}).join('');
   ov.innerHTML=`<div class="ad-info-card" role="dialog">
     <button class="ad-info-x" onclick="_adInfoClose()" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
