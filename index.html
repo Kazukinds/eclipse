@@ -2587,7 +2587,7 @@ html.no-radius,html.no-radius *{border-radius:0!important}
 /* aba: sobe do corpo, encosta nele (overlap 3px), borda direita em diagonal */
 #tab-config .wk-folder::before{content:"";position:absolute;top:-11px;left:0;width:56%;height:14px;background:var(--bg-card-inner,#171717);border-radius:9px 2px 0 0;clip-path:polygon(0 0,68% 0,100% 100%,0 100%);transition:background .16s}
 /* linha-luz no topo da aba+corpo pra dar relevo de papel */
-#tab-config .wk-folder::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--text-primary) 9%,transparent),transparent);border-radius:18px;pointer-events:none}
+#tab-config .wk-folder::after{content:none}
 #tab-config .wk-folder:hover{transform:translateY(-3px)}
 #tab-config .wk-folder:hover::before{background:var(--wk-hover)}
 #tab-config .wk-folder .wk-ficon{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:11px;background:color-mix(in srgb,var(--text-primary) 6%,transparent);border:1px solid color-mix(in srgb,var(--text-primary) 9%,transparent);color:var(--text-dim);margin-bottom:auto;transition:color .16s,background .16s,border-color .16s}
