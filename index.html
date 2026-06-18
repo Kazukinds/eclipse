@@ -35744,9 +35744,19 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .grim-filtbtn,.grimorio-root .grim-sort-btn,.grimorio-root .viewtog,.grimorio-root .cart-fab{
     flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:0 16px;cursor:pointer;
     background:var(--panel-2);border:1px solid var(--line);border-radius:12px;color:var(--txt);
-    font-size:12.5px;font-weight:600;letter-spacing:.02em;transition:border-color .15s,background .15s,color .15s;white-space:nowrap}
-  .grimorio-root .grim-filtbtn:hover,.grimorio-root .viewtog:hover{border-color:#3a3a42;background:#1c1c22}
-  .grimorio-root .grim-filtbtn svg,.grimorio-root .viewtog span{width:16px;height:16px}
+    font-size:12.5px;font-weight:600;letter-spacing:.02em;transition:border-color .18s,background .18s,color .18s,transform .18s,box-shadow .18s;white-space:nowrap}
+  .grimorio-root .grim-filtbtn:hover,.grimorio-root .viewtog:hover,.grimorio-root .cart-fab:hover,.grimorio-root .tb-menu:hover{border-color:color-mix(in srgb,var(--acc) 45%,#3a3a42);background:#1c1c22;transform:translateY(-2px);box-shadow:0 8px 20px -12px rgba(0,0,0,.8)}
+  .grimorio-root .grim-filtbtn:active,.grimorio-root .viewtog:active,.grimorio-root .cart-fab:active,.grimorio-root .tb-menu:active,.grimorio-root .grim-sort-btn:active{transform:translateY(0) scale(.97)}
+  .grimorio-root .grim-sort-btn{transition:border-color .18s,color .18s,transform .18s}
+  .grimorio-root .grim-sort[open] .grim-sort-btn,.grimorio-root .grim-sort-btn:hover{transform:translateY(-2px)}
+  .grimorio-root .grim-filtbtn svg,.grimorio-root .viewtog span{width:16px;height:16px;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+  .grimorio-root .grim-filtbtn:hover svg{transform:translateY(1px) scale(1.12)}
+  .grimorio-root .viewtog:hover span{transform:scale(1.18)}
+  .grimorio-root .grim-sort:hover .dd-chev,.grimorio-root .grim-sort[open] .dd-chev{transform:translateY(2px)}
+  .grimorio-root .dd-chev{transition:transform .2s}
+  .grimorio-root .cart-fab:hover svg{transform:scale(1.1) rotate(-4deg);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+  .grimorio-root .tb-menu:hover svg{transform:scale(1.12)}
+  .grimorio-root .tb-menu svg{transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
   .grimorio-root .viewtog span{font-size:16px;line-height:1}
   .grimorio-root .grim-filtbtn .filt-badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--acc);color:#0a0a0a;font-size:10px;font-weight:800}
   /* sort dropdown */
