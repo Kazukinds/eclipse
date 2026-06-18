@@ -35754,7 +35754,7 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .viewtog:hover span{transform:scale(1.18)}
   .grimorio-root .grim-sort:hover .dd-chev,.grimorio-root .grim-sort[open] .dd-chev{transform:translateY(2px)}
   .grimorio-root .dd-chev{transition:transform .2s}
-  .grimorio-root .cart-fab:hover svg{transform:scale(1.1) rotate(-4deg);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+  .grimorio-root .cart-fab[data-empty="1"]:hover .cf-book{transform:scale(1.1) rotate(-4deg);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
   .grimorio-root .tb-menu:hover svg{transform:scale(1.12)}
   .grimorio-root .tb-menu svg{transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
   .grimorio-root .viewtog span{font-size:16px;line-height:1}
@@ -35775,12 +35775,27 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .sort-arr{display:inline-block;width:14px;height:14px;vertical-align:-2px;opacity:.85}
   /* carrinho na toolbar */
   .grimorio-root .cart-fab{position:relative}
-  .grimorio-root .cart-fab svg{width:20px;height:20px}
   .grimorio-root .cart-fab[data-empty="1"]{color:var(--muted)}
   .grimorio-root .cart-fab:not([data-empty="1"]){border-color:color-mix(in srgb,var(--acc) 55%,var(--line));color:var(--acc2)}
   .grimorio-root .cart-fab:hover{border-color:var(--acc);color:var(--acc2);background:#1c1c22}
-  .grimorio-root .cart-count{flex:0 0 auto;min-width:20px;height:20px;padding:0 6px;border-radius:20px;background:var(--acc);color:#000;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
-  .grimorio-root .cart-fab[data-empty="1"] .cart-count{display:none}
+  /* ico = palco do livro + contador (trocam de lugar) */
+  .grimorio-root .cf-ico{position:relative;flex:0 0 auto;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;perspective:120px}
+  .grimorio-root .cf-book{width:20px;height:20px;transform-origin:left center;transition:transform .55s cubic-bezier(.6,.04,.3,1),opacity .4s ease}
+  .grimorio-root .cf-count{position:absolute;inset:0;margin:auto;min-width:22px;height:22px;padding:0 6px;border-radius:22px;
+    background:var(--acc);color:#000;font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;
+    transform:scale(0);opacity:0;transition:transform .5s cubic-bezier(.34,1.56,.64,1) .12s,opacity .3s ease .12s}
+  /* vazio: livro visivel, contador escondido */
+  .grimorio-root .cart-fab[data-empty="1"] .cf-book{transform:none;opacity:1}
+  .grimorio-root .cart-fab[data-empty="1"] .cf-count{transform:scale(0);opacity:0}
+  /* com itens: livro fecha (rotateY) e some, contador surge no lugar */
+  .grimorio-root .cart-fab:not([data-empty="1"]) .cf-book{transform:rotateY(90deg) scale(.7);opacity:0}
+  .grimorio-root .cart-fab:not([data-empty="1"]) .cf-count{transform:scale(1);opacity:1}
+  /* 0->1: sequencia mais longa/limpa no botao */
+  .grimorio-root .cart-fab.cf-anim-in{animation:cf-pop .7s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes cf-pop{0%{transform:translateY(-2px) scale(1)}28%{transform:translateY(-2px) scale(.92)}60%{transform:translateY(-2px) scale(1.1)}100%{transform:translateY(-2px) scale(1)}}
+  /* incremento: bump no contador */
+  .grimorio-root .cart-fab.cf-bump .cf-count{animation:cf-bump .42s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes cf-bump{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
 
   /* ═══════════ DRAWER DE FILTROS ═══════════ */
   .grimorio-root .grim-filtdrawer{position:fixed;inset:0;z-index:9200;pointer-events:none;visibility:hidden}
@@ -36636,7 +36651,7 @@ function renderToolbar(){
     +`<div class="tb-top"><input class="search" id="grim-srch" placeholder="Buscar feitiço..." value="${query}"></div>`
     +`<details class="grim-sort"><summary class="grim-sort-btn"><b>${SORTS[sortMode]}</b><span class="dd-chev">▾</span></summary><div class="grim-sort-panel">${Object.entries(SORTS).map(([k,v])=>`<button class="sort-opt" data-s="${k}" ${sortMode===k?'data-on="1"':''}><span>${v}</span></button>`).join('')}</div></details>`
     +`<button class="viewtog" id="grim-viewtog" title="Alternar lista e cards"><span>${viewMode==='list'?'▦':'☰'}</span>${viewMode==='list'?'Cards':'Lista'}</button>`
-    +`<button class="cart-fab" id="grim-cartFab" data-empty="1" aria-label="Feitiços adquiridos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="cart-lbl">Adquirir Feitiço</span><span class="cart-count" id="grim-cartCount">0</span></button>`
+    +`<button class="cart-fab" id="grim-cartFab" data-empty="1" aria-label="Feitiços adquiridos"><span class="cf-ico"><svg class="cf-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="cf-count" id="grim-cartCount">0</span></span><span class="cart-lbl">Adquirir Feitiço</span></button>`
     +`</div>`;
   // Drawer de filtros (oculto até abrir) — seções colapsáveis estilo Behance
   let drawer=document.getElementById('grim-filtdrawer');
@@ -36761,10 +36776,21 @@ const cEl=id=>ELEMENTOS.find(x=>x.id===id)||{};
 function inCart(el,n){return cart.some(i=>i.el===el&&i.n===n);}
 function saveCart(){try{localStorage.setItem('grimorio_cart',JSON.stringify(cart));}catch(e){}}
 function addBtn(f,g){const a=inCart(atual,f.n);const ico=a?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';return `<button class="addbtn" data-el="${atual}" data-n="${f.n}" data-g="${g}" data-c="${f.cat||''}" ${a?'data-added="1"':''} title="${a?'Já na compra':'Adicionar à compra'}">${ico}</button>`;}
+let _cartPrevN=0;
 function updateCart(){
   const n=cart.length;
-  document.getElementById('grim-cartCount').textContent=n;
-  document.getElementById('grim-cartFab').dataset.empty=n?0:1;
+  const cc=document.getElementById('grim-cartCount');
+  const fab=document.getElementById('grim-cartFab');
+  if(cc)cc.textContent=n;
+  if(fab){
+    fab.dataset.empty=n?0:1;
+    if(n>0&&_cartPrevN===0){ // 0 -> 1: livro fecha/some, contador surge
+      fab.classList.remove('cf-anim-in');void fab.offsetWidth;fab.classList.add('cf-anim-in');
+    }else if(n>_cartPrevN){ // incremento: bump
+      fab.classList.remove('cf-bump');void fab.offsetWidth;fab.classList.add('cf-bump');
+    }
+    _cartPrevN=n;
+  }
   const total=document.getElementById('grim-cartTotal');if(total)total.innerHTML=`<b>${n}</b> feitiço${n===1?'':'s'}`;
   const buy=document.getElementById('grim-cartBuy');if(buy)buy.disabled=!n;
   const list=document.getElementById('grim-cartList');
