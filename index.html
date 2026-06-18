@@ -35947,7 +35947,7 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .apr-h{display:flex;align-items:center;gap:10px;margin-bottom:5px}
   .grimorio-root .apr .tier{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acc2)}
   .grimorio-root .apr .pe{font-size:10px;font-weight:600;letter-spacing:.04em;color:var(--muted);padding:2px 7px;border-radius:6px;background:#161619}
-  .grimorio-root .apr-t{font-size:13.5px;line-height:1.7;color:#b8b5c2}
+  .grimorio-root .apr-t{font-size:14px;line-height:1.78;color:#c4c1cd}
   .grimorio-root .card{cursor:pointer}
   .grimorio-root .card:focus-visible{outline:2px solid var(--acc2);outline-offset:3px}
   .grimorio-root .card .addbtn{cursor:pointer}
@@ -35975,11 +35975,9 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .gd-head h2{margin:0;font-weight:500;font-size:clamp(30px,4.4vw,46px);line-height:1.08;letter-spacing:-.015em;color:var(--txt)}
   .grimorio-root .gd-scroll .stats{margin-bottom:24px}
   .grimorio-root .gd-scroll .desc{font-size:15.5px;line-height:1.85}
-  .grimorio-root .gd-add{margin-top:30px;align-self:flex-start;width:auto;max-width:max-content;height:46px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:0 22px;border-radius:12px;cursor:pointer;
-    border:1px solid var(--bc2);background:color-mix(in srgb,var(--bc) 16%,transparent);color:var(--bc2);font-size:13px;font-weight:700;line-height:1;letter-spacing:.04em;transition:.16s;font-family:inherit;white-space:nowrap}
-  .grimorio-root .gd-add svg{width:17px;height:17px}
-  .grimorio-root .gd-add:hover{background:color-mix(in srgb,var(--bc) 26%,transparent)}
-  .grimorio-root .gd-add[data-added="1"]{background:var(--bc2);border-color:var(--bc2);color:#0a0a0a;cursor:default}
+  .grimorio-root .gd-scroll .apr-t{font-size:15px;line-height:1.85;color:#cecbd6}
+  .grimorio-root .gd-scroll .apr{padding-left:18px}
+  .grimorio-root .gd-scroll .aprs{margin-top:22px;gap:18px}
   @media(max-width:1080px){
     /* mobile: overlay sobe a tela toda, acima da topbar */
     .grimorio-root .gdetail{position:fixed;inset:0;z-index:9300;transform:translateY(100%)}
@@ -36748,7 +36746,8 @@ function statsOf(f){
 }
 function aprsOf(f){
   const aprs=(f.ap||[]).map(x=>{const asc=/asce/i.test(x.tier);
-    return `<div class="apr${asc?' asc':''}"><div class="apr-h"><span class="tier">${x.tier}</span><span class="pe">${x.pe}</span></div><div class="apr-t">${x.txt}</div></div>`;}).join('');
+    const txt=String(x.txt||'').replace(/:\s+/g,' ');
+    return `<div class="apr${asc?' asc':''}"><div class="apr-h"><span class="tier">${x.tier}</span><span class="pe">${x.pe}</span></div><div class="apr-t">${txt}</div></div>`;}).join('');
   return aprs?`<div class="aprs">${aprs}</div>`:'';
 }
 function catTag(f){return f.cat?`<span class="cat-tag" data-cat="${f.cat}">${f.cat}</span>`:'';}
@@ -36763,7 +36762,7 @@ function row(f,g){
 function findFeit(el,n,g){const arr=(FEITICOS[el]&&FEITICOS[el][g])||[];return arr.find(f=>f.n===n);}
 function openDetail(el,n,g){
   const f=findFeit(el,n,g);if(!f)return;
-  const e=cEl(el);const inc=inCart(el,f.n);
+  const e=cEl(el);
   const det=document.getElementById('grim-detail');if(!det)return;
   det.style.setProperty('--bc',e.cor||'var(--acc)');
   det.style.setProperty('--bc2',e.cor2||'var(--acc2)');
@@ -36780,16 +36779,11 @@ function openDetail(el,n,g){
       <div class="stats">${statsOf(f)}</div>
       <p class="desc">${f.d}</p>
       ${aprsOf(f)}
-      <button class="gd-add" id="grim-detAdd" data-el="${el}" data-n="${(f.n||'').replace(/"/g,'&quot;')}" data-g="${g}" data-c="${f.cat||''}" ${inc?'data-added="1"':''}>
-        ${inc?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Na compra':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Adicionar à compra'}
-      </button>
     </div>
   </div>`;
   det.dataset.on=1;
   document.getElementById('grimorio-screen').dataset.detail=1;
   det.querySelector('#grim-detClose').onclick=closeDetail;
-  const addB=det.querySelector('#grim-detAdd');
-  if(addB)addB.onclick=()=>{if(addB.dataset.added==='1')return;addToCart(el,f.n,g,f.cat,null);addB.dataset.added='1';addB.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Na compra';bumpFab();};
   const sc=det.querySelector('.gd-scroll');if(sc)sc.scrollTop=0;
 }
 function closeDetail(){const det=document.getElementById('grim-detail');if(det)det.dataset.on=0;document.getElementById('grimorio-screen').dataset.detail=0;}
