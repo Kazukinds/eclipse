@@ -8604,10 +8604,14 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
   transition:width .62s cubic-bezier(.34,1.45,.5,1),box-shadow .35s,filter .35s}
 /* leve brilho varrendo ao mudar */
 .ad-hbar-fill::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-120%);opacity:0}
+.ad-hrow-val{display:inline-block}
+.ad-hrow-val.ad-bump{animation:ad-bump .42s cubic-bezier(.34,1.56,.64,1)}
+.ad-hbar.ad-bar-pulse{animation:ad-bar-punch .45s cubic-bezier(.34,1.56,.64,1)}
 .ad-hbar.ad-bar-pulse .ad-hbar-fill{animation:ad-bar-pulse .55s ease-out}
-.ad-hbar.ad-bar-pulse .ad-hbar-fill::after{animation:ad-bar-sweep .6s ease-out}
-@keyframes ad-bar-pulse{0%{filter:brightness(1)}35%{filter:brightness(1.45) saturate(1.25)}100%{filter:brightness(1)}}
-@keyframes ad-bar-sweep{0%{transform:translateX(-120%);opacity:1}100%{transform:translateX(120%);opacity:0}}
+.ad-hbar.ad-bar-pulse .ad-hbar-fill::after{animation:ad-bar-sweep .65s ease-out}
+@keyframes ad-bar-punch{0%{transform:scaleY(1)}30%{transform:scaleY(1.22)}100%{transform:scaleY(1)}}
+@keyframes ad-bar-pulse{0%{filter:brightness(1)}30%{filter:brightness(1.7) saturate(1.4)}100%{filter:brightness(1)}}
+@keyframes ad-bar-sweep{0%{transform:translateX(-130%);opacity:1}100%{transform:translateX(130%);opacity:0}}
 .ad-hrow-val{flex:0 0 auto;min-width:20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:800;color:var(--text-primary);font-variant-numeric:tabular-nums;transition:opacity .35s ease,max-width .45s cubic-bezier(.22,1,.36,1),margin .45s cubic-bezier(.22,1,.36,1);max-width:40px;overflow:hidden}
 .ad-hbar{transition:flex-grow .45s cubic-bezier(.22,1,.36,1),width .45s cubic-bezier(.22,1,.36,1)}
 /* zerado: barra engole o espaco do valor e do "-"; ao ter pontos volta ao normal */
@@ -29997,7 +30001,10 @@ function _adRefresh(){
     const v=s.draft[n], sMax=_adSliderMax(n);
     const valEl=document.getElementById('ad-val-'+n); if(valEl)valEl.textContent=v;
     const fl=document.getElementById('ad-fill-'+n); if(fl)fl.style.width=(sMax>0?(v/sMax*100):0)+'%';
-    if(_adRefresh._prev[n]!==undefined && _adRefresh._prev[n]!==v){const bar=fl?fl.parentNode:null;if(bar){bar.classList.remove('ad-bar-pulse');void bar.offsetWidth;bar.classList.add('ad-bar-pulse');}}
+    if(_adRefresh._prev[n]!==undefined && _adRefresh._prev[n]!==v){
+      const bar=fl?fl.parentNode:null;if(bar){bar.classList.remove('ad-bar-pulse');void bar.offsetWidth;bar.classList.add('ad-bar-pulse');}
+      if(valEl){valEl.classList.remove('ad-bump');void valEl.offsetWidth;valEl.classList.add('ad-bump');}
+    }
     _adRefresh._prev[n]=v;
     const rng=document.getElementById('ad-range-'+n); if(rng){if(parseInt(rng.max)!==sMax)rng.max=sMax; if(parseInt(rng.value)!==v)rng.value=v;}
     const dec=document.getElementById('ad-dec-'+n); if(dec)dec.disabled=v<=0;
