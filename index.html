@@ -8668,21 +8668,19 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .ad-hsteps{flex:0 0 auto;display:flex;gap:6px}
 .ad-hsteps{align-items:center}
 .ad-hstep{width:32px!important;min-width:32px;max-width:32px;height:32px!important;min-height:32px;max-height:32px;flex:0 0 32px;box-sizing:border-box;padding:0!important;aspect-ratio:1/1;border-radius:4px;border:1px solid var(--border-light);background:var(--bg-card);color:var(--text-secondary);font-size:18px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,color .15s,border-color .15s,transform .1s;-webkit-tap-highlight-color:transparent}
-.ad-hstep{position:relative;overflow:visible}
-.ad-hstep:hover:not(:disabled){background:var(--bg-hover);color:var(--text-primary)}
-.ad-hstep:active:not(:disabled){transform:scale(.86)}
+.ad-hstep{position:relative;overflow:visible;transform-origin:center}
+.ad-hstep:hover:not(:disabled){background:var(--bg-hover);color:var(--text-primary);border-color:color-mix(in srgb,var(--text-primary) 22%,var(--border))}
 .ad-hstep:disabled{opacity:.3;cursor:not-allowed}
-/* punch elastico ao clicar */
-.ad-hstep.ad-step-punch{animation:ad-step-blob .72s cubic-bezier(.34,1.7,.45,1)}
-/* blob INTENSO: squash & stretch forte + morph de cantos (gelatina) */
+/* blob ao clicar — Notion-style: spring polido + morph sutil de cantos. !important vence perf mobile */
+.ad-hstep.ad-step-punch{animation:ad-step-blob .6s cubic-bezier(.22,1,.36,1)!important;transition:none!important}
+.ad-hstep.ad-step-punch .ad-step-ico,.ad-hstep.ad-step-punch{will-change:transform}
 @keyframes ad-step-blob{
-  0%{transform:scale(1,1) rotate(0);border-radius:4px}
-  14%{transform:scale(1.5,.55) rotate(-3deg);border-radius:20px 20px 6px 6px}
-  32%{transform:scale(.58,1.46) rotate(3deg);border-radius:6px 6px 22px 22px}
-  50%{transform:scale(1.3,.8) rotate(-2deg);border-radius:16px}
-  66%{transform:scale(.86,1.16) rotate(1deg);border-radius:9px}
-  82%{transform:scale(1.06,.96);border-radius:5px}
-  100%{transform:scale(1,1) rotate(0);border-radius:4px}
+  0%{transform:scale(1,1);border-radius:6px}
+  22%{transform:scale(1.35,.7);border-radius:14px 14px 7px 7px;background:color-mix(in srgb,var(--text-primary) 14%,var(--bg-card))}
+  44%{transform:scale(.78,1.28);border-radius:7px 7px 16px 16px}
+  64%{transform:scale(1.12,.92);border-radius:9px}
+  82%{transform:scale(.97,1.03);border-radius:6px}
+  100%{transform:scale(1,1);border-radius:6px}
 }
 /* ripple que expande e some */
 .ad-hstep::after{content:"";position:absolute;inset:0;border-radius:inherit;border:2px solid var(--c,var(--text-secondary));opacity:0;transform:scale(.6);pointer-events:none}
