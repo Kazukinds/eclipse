@@ -29869,6 +29869,7 @@ function _adMarkup(){
   return _adDonutMarkup()+ptsBar+`<div class="ad-list">${rows}</div>`+footer;
 }
 function _adDonutMarkup(){
+  const s=_adState;
   const lbl=(typeof ATTR_LABEL!=='undefined')?ATTR_LABEL:{};
   const C=2*Math.PI*52; // circunferencia (r=52)
   const segs=_AD_KEYS.map(n=>`<circle class="ad-donut-seg" id="ad-donut-${n}" cx="80" cy="80" r="52" fill="none" stroke="${_AD_COLORS[n]||'var(--magenta)'}" stroke-width="20" stroke-linecap="round" stroke-dasharray="0 ${C.toFixed(1)}" stroke-dashoffset="0" transform="rotate(-90 80 80)"/>`).join('');
@@ -29880,7 +29881,7 @@ function _adDonutMarkup(){
         <circle cx="80" cy="80" r="52" fill="none" stroke="var(--border)" stroke-width="20" opacity=".5"/>
         ${segs}
       </svg>
-      <div class="ad-donut-center"><span id="ad-donut-total">0</span><small>pontos</small></div>
+      <div class="ad-donut-center"><span id="ad-donut-total">${s.unlocked?'∞':s.cap.totalPts}</span><small>restam</small></div>
     </div>
   </div>`;
 }
@@ -29888,7 +29889,8 @@ function _adDonutUpdate(){
   const s=_adState; if(!s)return;
   const C=2*Math.PI*52;
   const total=_AD_KEYS.reduce((t,k)=>t+s.draft[k],0);
-  const tot=document.getElementById('ad-donut-total'); if(tot)tot.textContent=total;
+  const remaining=s.unlocked?'∞':Math.max(0,s.cap.totalPts-total);
+  const tot=document.getElementById('ad-donut-total'); if(tot)tot.textContent=remaining;
   let acc=0;
   _AD_KEYS.forEach(n=>{
     const v=s.draft[n];
