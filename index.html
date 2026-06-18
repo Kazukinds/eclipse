@@ -4199,6 +4199,15 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
     border-radius:18px !important;box-shadow:var(--shadow-lg) !important;
     padding:18px !important;
   }
+  /* Distribuir Atributos = card flutuante (nao tela cheia) no vertical */
+  .modal-overlay:has(.ad-body-wrap){align-items:center !important;justify-content:center !important;padding:16px !important}
+  .modal-overlay:has(.ad-body-wrap) .modal{
+    height:auto !important;min-height:0 !important;max-height:calc(100dvh - 32px) !important;
+    width:100% !important;max-width:440px !important;
+    border-radius:18px !important;box-shadow:var(--shadow-lg) !important;
+    padding:20px !important;
+  }
+  .modal-overlay:has(.ad-body-wrap) .ad-body-wrap{min-height:0 !important;justify-content:flex-start !important;gap:6px !important}
   /* Picker de habilidades = TELA CHEIA no vertical */
   .hab-picker-overlay{padding:0 !important;align-items:stretch !important;justify-content:stretch !important}
   .hab-picker-modal{width:100% !important;max-width:100% !important;height:100dvh !important;max-height:100dvh !important;border-radius:0 !important}
