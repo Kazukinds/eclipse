@@ -9457,11 +9457,12 @@ body.forja-sub-open #modal-overlay{transition:backdrop-filter .25s}
 .feit-grid{display:flex;flex-direction:column;gap:8px;margin:0;padding:12px;background:var(--bg-card-inner,#171717);border:1px solid color-mix(in srgb,#fff 14%,var(--border,#262626));border-radius:16px;box-shadow:none;width:100%;flex:1;min-width:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-gutter:stable;scrollbar-color:#525252 transparent}
 /* cada feitiço vira uma linha horizontal de altura fixa */
 .feit-grid .feit-badge{aspect-ratio:auto!important;max-width:none!important;width:100%;height:64px;min-height:64px;max-height:64px;flex:0 0 64px;flex-direction:row;align-items:center;gap:12px;padding:0 14px;border-radius:12px}
-.feit-grid .feit-badge-bg{opacity:.42}
+/* fundo estático (sem animação), cor da essência sutil */
+.feit-grid .feit-badge-bg{opacity:.4;animation:none!important;background-size:100% 100%!important;background-position:0 0!important;filter:none!important}
 .feit-grid .feit-badge-overlay,.feit-grid .feit-badge-gleam,.feit-grid .feit-badge-spacer,.feit-grid .feit-badge-divider,.feit-grid .feit-badge-logo,.feit-grid .feit-badge-btn,.feit-grid .feit-badge-info{display:none!important}
 .feit-grid .feit-badge-stamp{position:static!important;order:-1;width:34px;height:34px;flex:0 0 34px;opacity:1}
-.feit-grid .feit-badge-name{position:relative;z-index:3;margin:0!important;flex:1;min-width:0;font-size:15px;-webkit-line-clamp:1;line-height:1.2}
-.feit-grid .feit-badge-tags{position:relative;z-index:3;margin:0!important;flex:0 0 auto;font-size:8.5px}
+.feit-grid .feit-badge-name{position:relative!important;z-index:3;order:0;margin:0!important;flex:1 1 auto;min-width:0;display:block!important;-webkit-line-clamp:unset!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:15px;line-height:1.2}
+.feit-grid .feit-badge-tags{position:relative!important;z-index:3;order:1;margin:0!important;flex:0 0 auto;font-size:8.5px}
 .feit-grid::-webkit-scrollbar{width:6px;height:6px}
 .feit-grid::-webkit-scrollbar-button,.feit-grid::-webkit-scrollbar-button:start,.feit-grid::-webkit-scrollbar-button:end,.feit-grid::-webkit-scrollbar-button:single-button,.feit-grid::-webkit-scrollbar-button:double-button{display:none!important;width:0!important;height:0!important;background:transparent!important}
 .feit-grid::-webkit-scrollbar-corner{background:transparent}
@@ -10892,7 +10893,6 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
               <button class="ritual-main-act" type="button" onclick="openGrimorio()" title="Grimório — Compêndio de Feitiços" aria-label="Grimório"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></button>
               <!-- botão Forjar removido — criador da forja salvo em forja-backup.js -->
 
-              <button class="ritual-main-act" type="button" onclick="openAddFeiticoModal()" title="Adicionar ritual existente" aria-label="Adicionar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
               <div class="ritual-filt-wrap"><button class="ritual-main-act" id="ritual-filt-btn" type="button" title="Filtrar por grau" aria-label="Filtrar" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></button><div class="ritual-filt-pop" id="ritual-filt-pop" role="menu"><button class="rfp-item" data-f="all">Todos</button><button class="rfp-item" data-f="1">1º Grau</button><button class="rfp-item" data-f="2">2º Grau</button><button class="rfp-item" data-f="3">3º Grau</button><button class="rfp-item" data-f="4">4º Grau</button></div></div>
               <div class="ritual-main-pager" id="ritual-pager"></div>
             </div>
@@ -24855,7 +24855,6 @@ function renderFeitTab(){
           <div class="feit-badge-info-l">${f.execucao?'EXEC: '+f.execucao.toUpperCase():'GLOBAL / UTC'}<br>${f.alcance?'ALC: '+f.alcance.toUpperCase():'MEMBRO DESDE '+dt}<br>${f.duracao?'DUR: '+f.duracao.toUpperCase():tm}</div>
           <div class="feit-badge-info-r">${f.alvo?(FORJA_ALVO.find(a=>a.tipo===f.alvo)?.nome||f.alvo).toUpperCase():'ATIVO'}</div>
         </div>
-        <button class="feit-badge-btn" onclick="event.stopPropagation();editFeitico('${f.id}')">Customizar</button>
       </div>`}).join('');
   }
   document.querySelectorAll('#feit-filter-pills .ritual-filt-pill').forEach(p=>{
@@ -25032,187 +25031,10 @@ const FORJA_CURA_REF=[10,20,30,40,50];
 const FORJA_DT={g1:{cat:'Alta',base:14,cor:'#7fff72'},g2:{cat:'Alta',base:14,cor:'#7fff72'},g3:{cat:'Média',base:11,cor:'#e0b840'},g4:{cat:'Baixa',base:8,cor:'#e05050'},aprimoramento:{cat:'Média',base:11,cor:'#e0b840'}};
 function _forjaCustoDC(v,gi,ref){if(v<=0)return 0;return Math.max(5,Math.round(15*(v/ref[gi])))}
 function _forjaMultAlvo(alvo,qtd,tam){if(alvo==='multiplos'){const n=Math.max(2,qtd);let m=1+(n*.10);if(n>5)m+=.25;if(n>10)m+=.25;if(n>20)m+=.25;return m}if(alvo==='area_cubo')return 1+Math.ceil(Math.max(0,tam-3)/3+1)*.20;if(alvo==='area_cone')return 1+Math.ceil(Math.max(0,tam-4.5)/4.5+1)*.20;return 1}
-window.editFeitico=id=>window.openAddFeiticoModal(id);
-/* ═══ ADICIONAR / EDITAR FEITIÇO — interface reconstruída (split + acento por essência) ═══ */
-window.openAddFeiticoModal=function(id){
-  _editingFeitId=id||null;
-  const existing=id?((fichaData.feiticos||[]).find(f=>f.id===id)):null;
-  const title=document.getElementById('modal-title'),body=document.getElementById('modal-body');
-  if(!title||!body)return;
-  const ovEl=document.getElementById('modal-overlay');const mEl=ovEl.querySelector('.modal');
-  if(mEl){mEl.classList.remove('peri-modal-square');mEl.classList.add('forja-active','add-active','addv2')}
-  title.textContent=existing?'Editar Feitiço':'Adicionar Feitiço';
-
-  /* Gradiente de crachá por essência (cor cheia do crachá no grimório) */
-  const COLORS=[
-    {name:'Alba',v:'linear-gradient(165deg in oklch,#1a3a1f 0%,#4a9954 45%,#a8e6a0 100%)'},
-    {name:'Carmin',v:'linear-gradient(165deg in oklch,#1a0202 0%,#4a0a08 35%,#8b1414 70%,#c91a14 100%)'},
-    {name:'Kaos',v:'linear-gradient(165deg in oklch,#2a0a3a 0%,#6b1a8a 45%,#c060e8 100%)'},
-    {name:'Lumen',v:'linear-gradient(165deg in oklch,#3a2808 0%,#9a7820 50%,#f0c030 100%)'},
-    {name:'Perene',v:'linear-gradient(165deg in oklch,#0a2a2a 0%,#1f6a6a 45%,#40e0b0 100%)'},
-    {name:'Ruina',v:'linear-gradient(165deg in oklch,#171717 0%,#4a4438 50%,#888070 100%)'}
-  ];
-  const SCHOOL_GRAD=Object.fromEntries(COLORS.map(c=>[c.name,c.v]));
-  /* Acento sólido por essência — dirige focus rings, pills ativas, etc. */
-  const SCHOOL_ACCENT={Alba:'#4a9954',Carmin:'#d11a14',Kaos:'#b25ce0',Lumen:'#e0a820',Perene:'#2fb89a',Ruina:'#7a7060'};
-  const SECTS=[
-    {id:'identidade',ico:'<path d="M12 2 14.6 8.6 21.5 9 16.3 13.5 18 20.5 12 16.8 6 20.5 7.7 13.5 2.5 9 9.4 8.6Z"/>',lbl:'Identidade'},
-    {id:'mecanica',ico:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>',lbl:'Mecânica'},
-    {id:'alvo',ico:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',get lbl(){return (_addState&&(_addState.alvo||'').startsWith('area'))?'Área':'Alvo'}},
-    {id:'detalhes',ico:'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',lbl:'Detalhes'}
-  ];
-  let curSect='identidade';
-  const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const escAttr=s=>String(s==null?'':s).replace(/"/g,'&quot;');
-
-  const _addState={
-    name:existing?.name||'',desc:existing?.desc||'',
-    circle:existing?.circle||1,school:existing?.school||'Carmin',
-    execucao:existing?.execucao||'Decisiva',alcance:existing?.alcance||'Curto',
-    duracao:existing?.duracao||'Instantânea',alvo:existing?.alvo||'unico',
-    customColor:existing?.customColor||''
-  };
-  let _selColor=_addState.customColor;
-
-  /* ── Crachá-prévia: espelha exatamente o card do grimório (feit-badge-mini) ── */
-  function previewBadgeHTML(){
-    const grad=_selColor||SCHOOL_GRAD[_addState.school]||COLORS[1].v;
-    const nm=(_addState.name||'').trim();
-    const disp=nm?nm.replace(/^(\p{L})/u,c=>c.toUpperCase()):'Sem nome';
-    return `<div class="feit-badge feit-badge-mini addv2-badge" style="--badge-grad:${escAttr(grad)}">
-      <div class="feit-badge-bg" style="background:${escAttr(grad)}"></div>
-      <div class="feit-badge-logo"><svg class="feit-badge-logo-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 14.6 8.6 21.5 9 16.3 13.5 18 20.5 12 16.8 6 20.5 7.7 13.5 2.5 9 9.4 8.6Z"/></svg></div>
-      <div class="feit-badge-stamp">${_addState.circle}º</div>
-      <div class="feit-badge-name">${esc(disp)}</div>
-      <div class="feit-badge-tags"><span class="feit-badge-tag">${esc(_addState.school)}</span><span class="feit-badge-tag">${_addState.circle}º Grau</span></div>
-    </div>`;
-  }
-  function previewMetaHTML(){
-    const alvoNome=FORJA_ALVO.find(a=>a.tipo===_addState.alvo)?.nome||_addState.alvo;
-    const rows=[['Execução',_addState.execucao],['Alcance',_addState.alcance],['Duração',_addState.duracao],[(_addState.alvo||'').startsWith('area')?'Área':'Alvo',alvoNome]];
-    return rows.map(([k,v])=>`<div class="addv2-meta-row"><span class="addv2-meta-k">${esc(k)}</span><span class="addv2-meta-v">${esc(v)||'—'}</span></div>`).join('');
-  }
-  function syncPreview(){
-    const prev=body.querySelector('#addv2-prev');if(prev)prev.innerHTML=previewBadgeHTML();
-    const meta=body.querySelector('#addv2-meta');if(meta)meta.innerHTML=previewMetaHTML();
-    const acc=SCHOOL_ACCENT[_addState.school]||'var(--magenta)';
-    if(mEl)mEl.style.setProperty('--forja-accent',acc);
-  }
-
-  /* ── Seções ── */
-  function sectionHTML(){
-    if(curSect==='identidade')return `
-      <label class="addv2-field-lbl" for="feit-name">Nome do ritual</label>
-      <input type="text" id="feit-name" class="addv2-input" placeholder="Ex: Couraça Hemática" autocomplete="off" spellcheck="false" value="${escAttr(_addState.name)}">
-      <div class="addv2-field-lbl">Grau</div>
-      <div class="addv2-pills" id="add-grau">${[1,2,3,4].map(g=>`<button type="button" class="addv2-pill" data-g="${g}" ${_addState.circle===g?'data-sel':''}>${g}º</button>`).join('')}</div>
-      <div class="addv2-field-lbl">Essência</div>
-      <div class="addv2-pills" id="add-essencia">${FEITICO_ESCOLAS.map(s=>`<button type="button" class="addv2-pill addv2-pill-ess" data-e="${s}" style="--ess-clr:${SCHOOL_ACCENT[s]||'#888'}" ${_addState.school===s?'data-sel':''}><span class="addv2-ess-dot"></span>${s}</button>`).join('')}</div>
-      <div class="addv2-field-lbl">Cor do crachá <span class="addv2-lbl-opt">opcional · padrão segue a essência</span></div>
-      <div class="addv2-colors" id="feit-colors">
-        <button type="button" class="addv2-color addv2-color-auto${_selColor?'':' sel'}" data-c="" title="Automático (essência)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m12 3-1.9 5.8L4 9.5l4.5 4-1.2 6 4.7-3.2 4.7 3.2-1.2-6 4.5-4-6.1-.7Z"/></svg></button>
-        ${COLORS.map(c=>`<button type="button" class="addv2-color${c.v===_selColor?' sel':''}" data-c="${escAttr(c.v)}" style="background:${escAttr(c.v)}" title="${escAttr(c.name)}"></button>`).join('')}
-      </div>`;
-    if(curSect==='mecanica')return `
-      <div class="addv2-field-lbl">Execução</div>
-      <div class="addv2-pills" id="add-exec">${FORJA_EXEC.map(e=>`<button type="button" class="addv2-pill" data-x="${escAttr(e.nome)}" ${_addState.execucao===e.nome?'data-sel':''} title="${escAttr(e.desc||'')}">${esc(e.nome)}</button>`).join('')}</div>
-      <div class="addv2-field-lbl">Alcance</div>
-      <div class="addv2-pills" id="add-alc">${Object.keys(FORJA_ALC).map(k=>`<button type="button" class="addv2-pill" data-a="${escAttr(k)}" ${_addState.alcance===k?'data-sel':''}>${esc(k)}</button>`).join('')}</div>
-      <div class="addv2-field-lbl">Duração</div>
-      <div class="addv2-pills" id="add-dur">${FORJA_DUR.map(d=>`<button type="button" class="addv2-pill" data-d="${escAttr(d.nome)}" ${_addState.duracao===d.nome?'data-sel':''} title="${escAttr(d.desc||'')}">${esc(d.nome)}</button>`).join('')}</div>`;
-    if(curSect==='alvo')return `
-      <div class="addv2-field-lbl">Alvo / Área de efeito</div>
-      <div class="addv2-cards" id="add-alvo">${FORJA_ALVO.map(a=>`<button type="button" class="addv2-card" data-alvo-card="${escAttr(a.tipo)}" ${_addState.alvo===a.tipo?'data-sel':''}><span class="addv2-card-name">${esc(a.nome)}</span><span class="addv2-card-desc">${esc(a.desc)}</span><span class="addv2-card-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></button>`).join('')}</div>`;
-    return `
-      <label class="addv2-field-lbl" for="feit-desc">Descrição</label>
-      <textarea id="feit-desc" class="addv2-textarea" placeholder="Efeito, componentes, sensação narrativa do ritual...">${esc(_addState.desc)}</textarea>
-      <p class="addv2-hint">Flavor text, componentes específicos, sensações e detalhes narrativos. Aparece na aba “Descrição” do ritual.</p>`;
-  }
-
-  function renderAdd(){
-    const idx=SECTS.findIndex(s=>s.id===curSect);
-    body.innerHTML=`
-    <div class="addv2-grid">
-      <aside class="addv2-prev-col">
-        <div class="addv2-prev-wrap" id="addv2-prev">${previewBadgeHTML()}</div>
-        <div class="addv2-meta" id="addv2-meta">${previewMetaHTML()}</div>
-      </aside>
-      <div class="addv2-form-col">
-        <nav class="addv2-tabs" role="tablist">${SECTS.map((s,i)=>`<button type="button" class="addv2-tab" role="tab" data-s="${s.id}" ${curSect===s.id?'data-active aria-selected="true"':''}><span class="addv2-tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${s.ico}</svg></span><span class="addv2-tab-lbl">${s.lbl}</span></button>`).join('')}</nav>
-        <div class="addv2-sect" key="${curSect}">${sectionHTML()}</div>
-        <div class="addv2-nav">
-          <button type="button" class="addv2-nav-btn" data-nav="-1" ${idx===0?'disabled':''} aria-label="Seção anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
-          <span class="addv2-nav-pos">${idx+1} / ${SECTS.length}</span>
-          <button type="button" class="addv2-nav-btn" data-nav="1" ${idx===SECTS.length-1?'disabled':''} aria-label="Próxima seção"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
-        </div>
-      </div>
-    </div>
-    <div class="addv2-actions">
-      ${existing?`<button type="button" class="addv2-btn addv2-btn-del" data-act="del"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><span>Excluir</span></button>`:''}
-      <button type="button" class="addv2-btn addv2-btn-ghost" data-act="cancel">Cancelar</button>
-      <button type="button" class="addv2-btn addv2-btn-save" data-act="save"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>${existing?'Salvar alterações':'Adicionar ritual'}</span></button>
-    </div>`;
-    syncPreview();
-    bindAdd();
-  }
-
-  function setSect(s){if(s===curSect)return;curSect=s;renderAdd();}
-  function bindAdd(){
-    body.querySelectorAll('.addv2-tab').forEach(t=>t.onclick=()=>setSect(t.dataset.s));
-    body.querySelectorAll('.addv2-nav-btn').forEach(b=>b.onclick=()=>{if(b.disabled)return;const i=SECTS.findIndex(s=>s.id===curSect);const n=Math.max(0,Math.min(SECTS.length-1,i+(+b.dataset.nav)));setSect(SECTS[n].id);});
-    const nm=body.querySelector('#feit-name');if(nm)nm.oninput=e=>{_addState.name=e.target.value;syncPreview();};
-    const ds=body.querySelector('#feit-desc');if(ds)ds.oninput=e=>{_addState.desc=e.target.value;};
-    body.querySelectorAll('#add-grau .addv2-pill').forEach(b=>b.onclick=()=>{body.querySelectorAll('#add-grau .addv2-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');_addState.circle=+b.dataset.g;syncPreview();});
-    body.querySelectorAll('#add-essencia .addv2-pill').forEach(b=>b.onclick=()=>{body.querySelectorAll('#add-essencia .addv2-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');_addState.school=b.dataset.e;syncPreview();});
-    body.querySelectorAll('#add-exec .addv2-pill').forEach(b=>b.onclick=()=>{body.querySelectorAll('#add-exec .addv2-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');_addState.execucao=b.dataset.x;syncPreview();});
-    body.querySelectorAll('#add-alc .addv2-pill').forEach(b=>b.onclick=()=>{body.querySelectorAll('#add-alc .addv2-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');_addState.alcance=b.dataset.a;syncPreview();});
-    body.querySelectorAll('#add-dur .addv2-pill').forEach(b=>b.onclick=()=>{body.querySelectorAll('#add-dur .addv2-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');_addState.duracao=b.dataset.d;syncPreview();});
-    body.querySelectorAll('#add-alvo .addv2-card').forEach(c=>c.onclick=()=>{body.querySelectorAll('#add-alvo .addv2-card').forEach(x=>x.removeAttribute('data-sel'));c.setAttribute('data-sel','');_addState.alvo=c.dataset.alvoCard;syncPreview();});
-    body.querySelectorAll('#feit-colors .addv2-color').forEach(b=>b.onclick=()=>{body.querySelectorAll('#feit-colors .addv2-color').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');_selColor=b.dataset.c||'';_addState.customColor=_selColor;syncPreview();});
-    body.querySelectorAll('.addv2-actions [data-act]').forEach(b=>b.onclick=()=>{
-      const a=b.dataset.act;
-      if(a==='cancel')return closeModal();
-      if(a==='save')return window.saveAddFeitico();
-      if(a==='del'&&existing)return window.removeFeitico(existing.id).then(()=>closeModal());
-    });
-  }
-
-  /* contrato de leitura usado por saveAddFeitico */
-  window._feitFormGet=()=>({..._addState});
-  window._feitSelColorGet=()=>_selColor;
-
-  document.getElementById('modal-overlay').classList.add('open');
-  renderAdd();
-  setTimeout(()=>body.querySelector('#feit-name')?.focus(),120);
-};
-
-window.saveAddFeitico=function(){
-  const s=(typeof window._feitFormGet==='function')?window._feitFormGet():{};
-  const name=(s.name||'').trim();
-  if(!name){toast&&toast('Nome obrigatório','error');const i=document.getElementById('feit-name');if(i){i.focus();i.classList.add('addv2-input-err');setTimeout(()=>i.classList.remove('addv2-input-err'),1200);}return;}
-  const data={
-    name,
-    circle:Math.max(1,Math.min(4,parseInt(s.circle,10)||1)),
-    school:s.school||'Carmin',
-    desc:(s.desc||'').trim(),
-    execucao:s.execucao||'Decisiva',
-    alcance:s.alcance||'Curto',
-    duracao:s.duracao||'Instantânea',
-    alvo:s.alvo||'unico',
-    customColor:(typeof window._feitSelColorGet==='function')?(window._feitSelColorGet()||''):''
-  };
-  fichaData.feiticos=fichaData.feiticos||[];
-  if(_editingFeitId){
-    const f=fichaData.feiticos.find(x=>x.id===_editingFeitId);
-    if(f)Object.assign(f,data);
-  }else{
-    fichaData.feiticos.push({id:'f'+Date.now().toString(36),...data});
-  }
-  const wasEdit=!!_editingFeitId;
-  _editingFeitId=null;
-  renderFeitTab();autosaveDebounced&&autosaveDebounced();closeModal();
-  toast&&toast(wasEdit?'Feitiço atualizado':'Feitiço adicionado','success');
-};
+/* Interface Editar/Adicionar Feitiço removida — feitiços vêm pelo Grimório. */
+window.openAddFeiticoModal=function(){};
+window.editFeitico=function(){};
+window.saveAddFeitico=function(){};
 
 window.removeFeitico=async function(id){
   if(!await appConfirm('Remover feitiço?'))return;
