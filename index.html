@@ -29909,7 +29909,7 @@ function _adMarkup(){
     <button class="modal-btn secondary" onclick="_adReset()">Zerar</button>
     <button class="modal-btn primary" onclick="_adSave()">Salvar</button>
   </div>`;
-  return _adDonutMarkup()+ptsBar+`<div class="ad-list">${rows}</div>`+footer;
+  return _adDonutMarkup()+`<div class="ad-list">${rows}</div>`+footer;
 }
 function _adDonutMarkup(){
   const s=_adState;
