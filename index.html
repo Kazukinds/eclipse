@@ -8566,7 +8566,26 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .sp-step:hover{border-color:color-mix(in srgb,var(--c) 50%,var(--border));color:var(--c)}
 .sp-step:active{transform:scale(.9)}
 .sp-step:disabled{opacity:.32;cursor:not-allowed}
-.ad-list{display:flex;flex-direction:column;gap:8px}
+.ad-list{display:flex;flex-direction:column;gap:18px;padding:6px 2px}
+/* === Barras listradas (hachura diagonal) === */
+.ad-hrow{display:flex;align-items:center;gap:14px}
+.ad-hrow-name{flex:0 0 120px;font-size:15px;color:var(--text-secondary);font-weight:500}
+.ad-hbar{position:relative;flex:1;min-width:0;height:30px;border-radius:8px;overflow:hidden;cursor:pointer;
+  background-color:#1c1c1c;
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.13) 0,rgba(255,255,255,.13) 5px,transparent 5px,transparent 11px)}
+.ad-hbar:focus-visible{outline:2px solid var(--text-secondary);outline-offset:2px}
+.ad-hbar-fill{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:8px 0 0 8px;
+  background-color:#f2f2f2;
+  background-image:repeating-linear-gradient(45deg,#0a0a0a 0,#0a0a0a 5px,transparent 5px,transparent 11px);
+  transition:width .35s cubic-bezier(.4,0,.2,1)}
+.ad-hrow-val{flex:0 0 auto;min-width:20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:800;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.ad-hsteps{flex:0 0 auto;display:flex;gap:6px}
+.ad-hstep{width:30px;height:30px;border-radius:8px;border:1px solid var(--border-light);background:var(--bg-card);color:var(--text-secondary);font-size:18px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,color .15s,border-color .15s,transform .1s;-webkit-tap-highlight-color:transparent}
+.ad-hstep:hover:not(:disabled){background:var(--bg-hover);color:var(--text-primary)}
+.ad-hstep:active:not(:disabled){transform:scale(.9)}
+.ad-hstep:disabled{opacity:.3;cursor:not-allowed}
+@media(max-width:480px){.ad-hrow-name{flex-basis:84px;font-size:13px}.ad-hrow{gap:9px}}
+.ad-list-OLD{display:flex;flex-direction:column;gap:8px}
 .ad-row{position:relative;padding:14px 16px;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:12px;display:flex;flex-direction:column;gap:12px;transition:border-color .2s}
 .ad-row.has-points{border-color:color-mix(in srgb,var(--c) 50%,var(--border))}
 .ad-row-head{display:flex;align-items:center;gap:10px}
@@ -29830,20 +29849,15 @@ function _adMarkup(){
   const rows=_AD_KEYS.map(n=>{
     const c=_AD_COLORS[n]||'var(--magenta)';
     const sMax=_adSliderMax(n);
-    const ticks=Array.from({length:sMax+1},()=>'<div class="ad-tick"></div>').join('');
-    return `<div class="ad-row" id="ad-row-${n}" style="--c:${c}" data-attr="${n}">
-      <div class="ad-row-head">
-        <span class="ad-row-dot"></span>
-        <span class="ad-row-name">${lbl[n]||n}</span>
-        <button type="button" class="sp-step" id="ad-dec-${n}" onclick="_adStep('${n}',-1)" aria-label="Diminuir">−</button>
-        <span class="ad-row-val"><span id="ad-val-${n}">0</span><span class="ad-row-max" id="ad-max-${n}">/${s.unlocked?'∞':cap.maxPerAttr}</span></span>
-        <button type="button" class="sp-step" id="ad-inc-${n}" onclick="_adStep('${n}',1)" aria-label="Aumentar">+</button>
+    return `<div class="ad-hrow" id="ad-row-${n}" style="--c:${c}" data-attr="${n}">
+      <span class="ad-hrow-name">${lbl[n]||n}:</span>
+      <div class="ad-hbar" role="slider" aria-label="${lbl[n]||n}" aria-valuenow="0" aria-valuemax="${sMax}" tabindex="0" onclick="_adBarClick(event,'${n}')">
+        <div class="ad-hbar-fill" id="ad-fill-${n}"></div>
       </div>
-      <div class="ad-slider">
-        <div class="ad-slider-track"></div>
-        <div class="ad-slider-fill" id="ad-fill-${n}"></div>
-        <div class="ad-slider-ticks">${ticks}</div>
-        <input type="range" class="ad-range" id="ad-range-${n}" min="0" max="${sMax}" step="1" value="0" oninput="_adSet('${n}',this.value)" aria-label="${lbl[n]||n}">
+      <span class="ad-hrow-val" id="ad-val-${n}">0</span>
+      <div class="ad-hsteps">
+        <button type="button" class="ad-hstep" id="ad-dec-${n}" onclick="_adStep('${n}',-1)" aria-label="Diminuir">−</button>
+        <button type="button" class="ad-hstep" id="ad-inc-${n}" onclick="_adStep('${n}',1)" aria-label="Aumentar">+</button>
       </div>
     </div>`;
   }).join('');
@@ -29922,6 +29936,7 @@ window._adSet=function(n,v){
   _adRefresh();
 };
 window._adStep=function(n,d){const s=_adState; if(!s)return; _adSet(n,(s.draft[n]||0)+d);};
+window._adBarClick=function(ev,n){const s=_adState;if(!s)return;const bar=ev.currentTarget;const r=bar.getBoundingClientRect();const sMax=_adSliderMax(n);const x=(ev.clientX-r.left)/r.width;_adSet(n,Math.round(x*sMax));};
 function _adRefresh(){
   const s=_adState; if(!s)return;
   const total=_AD_KEYS.reduce((t,k)=>t+s.draft[k],0);
