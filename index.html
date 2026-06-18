@@ -8644,9 +8644,9 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
   background-color:#161616;
   background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0,rgba(255,255,255,.06) 5px,transparent 5px,transparent 11px)}
 .ad-hbar:focus-visible{outline:2px solid var(--text-secondary);outline-offset:2px}
-.ad-hbar-fill{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:8px 0 0 8px;overflow:hidden;
-  background:var(--c,#fff);
-  transition:width .42s cubic-bezier(.22,1,.36,1);will-change:width}
+.ad-hbar-fill{position:absolute;left:0;top:0;bottom:0;width:100%;border-radius:8px 0 0 8px;overflow:hidden;
+  background:var(--c,#fff);transform-origin:left center;transform:scaleX(var(--fill,0));
+  transition:transform .42s cubic-bezier(.22,1,.36,1);will-change:transform}
 /* leve brilho varrendo ao mudar */
 .ad-hbar-fill::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-120%);opacity:0}
 .ad-hrow-val{display:inline-block}
@@ -30098,7 +30098,7 @@ function _adRefresh(){
   _AD_KEYS.forEach(n=>{
     const v=s.draft[n], sMax=_adSliderMax(n);
     const valEl=document.getElementById('ad-val-'+n); if(valEl)valEl.textContent=v;
-    const fl=document.getElementById('ad-fill-'+n); if(fl)fl.style.width=(sMax>0?(v/sMax*100):0)+'%';
+    const fl=document.getElementById('ad-fill-'+n); if(fl)fl.style.setProperty('--fill',(sMax>0?(v/sMax):0).toFixed(4));
     if(_adRefresh._prev[n]!==undefined && _adRefresh._prev[n]!==v){
       const bar=fl?fl.parentNode:null;if(bar){bar.classList.remove('ad-bar-pulse');void bar.offsetWidth;bar.classList.add('ad-bar-pulse');}
       if(valEl){valEl.classList.remove('ad-bump');void valEl.offsetWidth;valEl.classList.add('ad-bump');}
