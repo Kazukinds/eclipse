@@ -30038,6 +30038,8 @@ function _adDonutUpdate(){
     const seg=document.getElementById('ad-donut-'+n);
     if(seg){
       const gap=len>0?Math.max(0,len-3):0; // respiro entre segmentos
+      // linecap round so em arco grande; arco pequeno vira "bolinha" com caps redondos -> usa butt
+      seg.style.strokeLinecap=gap>22?'round':'butt';
       const newOff=-acc;
       const prevGap=_adDonutUpdate._gap[n]; const prevOff=_adDonutUpdate._off[n];
       const da=g=>g.toFixed(2)+' '+(C-g).toFixed(2);
