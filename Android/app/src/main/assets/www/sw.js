@@ -5,7 +5,7 @@
  * Navigation Preload acelera primeira navegação.
  * Runtime cache tem teto (LRU manual) pra não crescer sem limite.
  */
-const VERSION = 'v3.8.50';
+const VERSION = 'v3.8.83';
 const STATIC_CACHE  = 'eclipse-static-' + VERSION;
 const RUNTIME_CACHE = 'eclipse-runtime-' + VERSION;
 const RUNTIME_MAX   = 60; // máx entries no runtime cache
@@ -35,6 +35,8 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener('install', e => {
+  // skipWaiting: ativa imediato sem esperar todas as abas fecharem. Boot 1º-instalação mais rápido.
+  self.skipWaiting();
   e.waitUntil((async () => {
     const c = await caches.open(STATIC_CACHE);
     // add individual com catch — se um falhar, install não quebra
@@ -44,8 +46,22 @@ self.addEventListener('install', e => {
   })());
 });
 
+function _swIsDev(){
+  const h = self.location.hostname;
+  return h==='localhost' || h==='127.0.0.1' || /^192\.168\./.test(h) || /^10\./.test(h) || /^172\.(1[6-9]|2\d|3[01])\./.test(h);
+}
+
 self.addEventListener('activate', e => {
   e.waitUntil((async () => {
+    // DEV (localhost/LAN): SW NÃO deve operar — auto-ejeta silenciosamente.
+    // Só limpa cache + se desregistra. NÃO navega/reloada os clients: a página tem o próprio
+    // reload guardado por sessionStorage._swKilled (no <head>). Navegar daqui ignorava esse guard
+    // e brigava com o reload da página → loop de reload (spinner infinito + navegador travado).
+    if (_swIsDev()) {
+      try { const ks = await caches.keys(); await Promise.all(ks.map(k => caches.delete(k))); } catch(_){}
+      try { await self.registration.unregister(); } catch(_){}
+      return;
+    }
     // Habilita navigation preload (parallel fetch de navegações)
     if (self.registration.navigationPreload) {
       try { await self.registration.navigationPreload.enable(); } catch(_){}
@@ -90,6 +106,7 @@ function isHTML(req, url) {
 }
 
 self.addEventListener('fetch', e => {
+  if (_swIsDev()) return; // DEV: nunca intercepta — deixa o navegador buscar direto (sem stale)
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
@@ -114,11 +131,12 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // HTML/navigation: network-first (evita UI desatualizada após deploy)
+  // HTML/navigation: NETWORK-FIRST — sempre busca fresco, cai pro cache só offline.
+  // (SWR servia HTML em cache instantâneo, mas se um index.html quebrado/parcial fosse
+  //  cacheado, servia tela branca em todo load. Network-first evita esse trap.)
   if (isHTML(req, url)) {
     e.respondWith((async () => {
       try {
-        // Aproveita navigation preload se disponível
         const preload = e.preloadResponse ? await e.preloadResponse : null;
         const resp = preload || await fetch(req);
         if (resp && resp.status === 200 && resp.type === 'basic') {
@@ -127,8 +145,7 @@ self.addEventListener('fetch', e => {
         }
         return resp;
       } catch(_) {
-        const cached = await caches.match(req) || await caches.match('./index.html');
-        return cached || Response.error();
+        return (await caches.match(req)) || (await caches.match('./index.html')) || Response.error();
       }
     })());
     return;
