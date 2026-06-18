@@ -9558,17 +9558,6 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
 @media(max-width:900px){body.forja-sub-preview-open .modal.forja-active{transform:translateX(-32px) scale(.96)!important}.forja-sub-overlay.forja-sub-preview{justify-content:center;padding-right:20px}.forja-sub-overlay.forja-sub-preview .forja-sub-modal{width:min(460px,94vw)}}
 .modal.forja-active .modal-header{flex-shrink:0}
 .modal.forja-active>#modal-body{flex:1 1 auto;overflow-y:auto!important;overflow-x:hidden;min-height:0;scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--magenta) 50%,transparent) transparent;padding-right:6px;padding-bottom:8px;display:flex;flex-direction:column}
-.modal.forja-active.add-active>#modal-body{display:flex!important;flex-direction:column;gap:14px;padding-top:8px}
-.modal.forja-active.add-active .add-prev-col{display:flex;flex-direction:row;align-items:center;gap:14px;padding:12px 14px;background:linear-gradient(180deg in oklch,var(--bg-card-inner),color-mix(in srgb,var(--bg-card-inner) 70%,#000));border:1px solid color-mix(in srgb,var(--magenta) 18%,var(--border));border-radius:12px;position:relative;top:0}
-.modal.forja-active.add-active .feit-badge.feit-badge-mini{width:88px;flex:0 0 88px;border-radius:10px;padding:24px 8px 8px}
-.modal.forja-active.add-active .feit-badge.feit-badge-mini .feit-badge-name{font-size:13px;letter-spacing:-.4px}
-.modal.forja-active.add-active .feit-badge.feit-badge-mini .feit-badge-tags{font-size:6px;gap:5px}
-.modal.forja-active.add-active .feit-badge.feit-badge-mini .feit-badge-stamp{width:22px;height:22px;top:8px;right:6px}
-.modal.forja-active.add-active .feit-badge.feit-badge-mini .feit-badge-logo{width:18px;height:18px;top:8px;left:8px}
-.modal.forja-active.add-active .feit-badge.feit-badge-mini .feit-badge-logo-ico{width:18px;height:18px}
-.modal.forja-active.add-active .add-prev-meta{flex:1;min-width:0;gap:0}
-.modal.forja-active.add-active .add-meta-row{padding:5px 0;font-size:11.5px;border-bottom:1px solid color-mix(in srgb,var(--border) 40%,transparent)}
-.modal.forja-active.add-active .add-meta-row:last-child{border-bottom:none}
 .modal.forja-active>#modal-body::-webkit-scrollbar{width:8px}
 .modal.forja-active>#modal-body::-webkit-scrollbar-track{background:transparent}
 .modal.forja-active>#modal-body::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--magenta) 35%,var(--border));border-radius:4px}
@@ -9602,57 +9591,113 @@ body.forja-sub-preview-open .modal.forja-active>*:not(.modal-header){filter:blur
 .forja-ess-desc{font-size:10.5px;color:var(--text-dim);line-height:1.3}
 .modal.forja-active .modal-btn.primary{background:linear-gradient(135deg in oklch,var(--forja-accent),color-mix(in srgb,var(--forja-accent) 70%,#000));border-color:var(--forja-accent);color:#fff}
 .modal.forja-active .modal-btn.primary:hover{filter:brightness(1.1);box-shadow:0 4px 14px color-mix(in srgb,var(--forja-accent) 40%,transparent)}
-.modal.add-active .modal-body,.modal.forja-active.add-active .modal-body{display:grid!important;grid-template-columns:260px 1fr!important;gap:24px;align-items:start}
-.modal.add-active .add-prev-col,.modal.forja-active.add-active .add-prev-col{grid-column:1}
-.modal.add-active .add-form-col,.modal.forja-active.add-active .add-form-col{grid-column:2}
-.modal.add-active .modal-btns,.modal.forja-active.add-active .modal-btns,.modal.add-active .add-nav,.modal.forja-active.add-active .add-nav{grid-column:1/-1}
-.add-prev-col{position:sticky;top:0;display:flex;flex-direction:column;gap:14px}
-.add-prev-meta{background:transparent;border:none;padding:0;display:flex;flex-direction:column;gap:2px}
-.add-meta-row{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;padding:6px 2px;border-bottom:1px solid color-mix(in srgb,var(--border) 50%,transparent)}
-.add-meta-row:last-child{border-bottom:none}
-.add-meta-k{color:var(--text-dim);letter-spacing:.18em;font-family:'JetBrains Mono',monospace;font-size:10px}
-.add-meta-v{color:var(--text);font-weight:600;font-size:12px}
-.add-form-col{min-width:0}
-.add-sect-tabs{display:flex;gap:0;background:transparent;padding:0;border-radius:0;margin-bottom:18px;border:none;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
-.add-sect-tabs::-webkit-scrollbar{display:none}
-.add-sect-tab{flex:1;min-width:auto;padding:11px 12px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;background:transparent;border:none;color:var(--text-dim);cursor:pointer;font-family:inherit;border-radius:0;border-bottom:2px solid transparent;display:flex;align-items:center;justify-content:center;gap:6px;transition:color .2s,border-color .2s;font-weight:700;margin-bottom:-1px;white-space:nowrap}
-.add-sect-tab .add-sect-ico{opacity:.5;transition:opacity .2s}
-.add-sect-tab:hover{color:var(--text-secondary)}
-.add-sect-tab:hover .add-sect-ico{opacity:.8}
-.add-sect-tab[data-active]{color:var(--magenta,#84cc16);border-bottom-color:var(--magenta,#84cc16);box-shadow:none;background:transparent}
-.add-sect-tab[data-active] .add-sect-ico{opacity:1}
-.add-sect-ico{font-size:14px}
-.add-sect-body{min-height:280px;animation:addSectIn .32s cubic-bezier(.2,.8,.2,1) both}
-@keyframes addSectIn{from{opacity:0;transform:translateX(14px) scale(.99);filter:blur(3px)}to{opacity:1;transform:translateX(0) scale(1);filter:blur(0)}}
-.modal.forja-active.add-active .add-sect-body{padding:0 4px}
-.modal.forja-active.add-active .add-sect-body .forja-label{font-size:10px;letter-spacing:.18em;color:var(--magenta);text-transform:uppercase;padding:18px 0 8px;margin:0;font-weight:700;border-top:1px solid color-mix(in srgb,var(--border) 50%,transparent);font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:6px}
-.modal.forja-active.add-active .add-sect-body .forja-label::before{content:"";width:3px;height:11px;background:var(--magenta);border-radius:2px;display:inline-block}
-.modal.forja-active.add-active .add-sect-body .forja-label:first-child{border-top:none;padding-top:6px}
-.modal.forja-active.add-active .feit-name-input{width:100%;padding:12px 14px;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);font-size:14px;font-weight:600;font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s}
-.modal.forja-active.add-active .feit-name-input:focus{border-color:var(--magenta);box-shadow:0 0 0 3px color-mix(in srgb,var(--magenta) 18%,transparent)}
-.modal.forja-active.add-active .forja-pills{display:flex;gap:6px;flex-wrap:wrap}
-.modal.forja-active.add-active .feit-color-row{display:flex;gap:8px;flex-wrap:wrap;padding:4px 0}
-.modal.forja-active.add-active .feit-color-sw{width:34px;height:34px;flex-shrink:0;aspect-ratio:1/1;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s;padding:0}
-.modal.forja-active.add-active .feit-color-sw:hover{transform:scale(1.12);border-color:rgba(255,255,255,.4)}
-.modal.forja-active.add-active .feit-color-sw.sel{border-color:#fff;box-shadow:0 0 0 3px var(--magenta),0 6px 16px rgba(0,0,0,.4);transform:scale(1.1)}
-.modal.forja-active.add-active .add-sect-body .forja-pills{gap:6px;flex-wrap:wrap;margin-bottom:4px}
-.modal.forja-active.add-active .add-sect-body .forja-pill{padding:8px 14px;font-size:12px;font-weight:600;border-radius:6px;background:transparent;border:1px solid var(--border);color:var(--text-secondary);transition:all .18s;letter-spacing:.2px}
-.modal.forja-active.add-active .add-sect-body .forja-pill:hover{border-color:color-mix(in srgb,var(--magenta,#84cc16) 40%,var(--border));color:var(--text)}
-.modal.forja-active.add-active .add-sect-body .forja-pill[data-sel]{background:color-mix(in srgb,var(--magenta,#84cc16) 14%,transparent);border-color:color-mix(in srgb,var(--magenta,#84cc16) 60%,var(--border));color:var(--magenta,#84cc16);font-weight:700}
-.modal.forja-active.add-active .add-sect-tab{transition:color .25s,border-color .35s cubic-bezier(.2,.8,.2,1)}
-.modal.forja-active.add-active .add-sect-body .feit-name-input{display:block;width:100%;box-sizing:border-box;padding:11px 14px;font-size:15px;background:var(--bg-card-inner);border:1px solid var(--border);color:var(--text);border-radius:8px;margin:0 0 14px;outline:none;transition:border-color .15s,box-shadow .15s;font-family:inherit}
-.modal.forja-active.add-active .add-sect-body .feit-name-input:focus{border-color:var(--magenta,#84cc16);box-shadow:0 0 0 2px color-mix(in srgb,var(--magenta,#84cc16) 25%,transparent)}
-.add-nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:8px 4px;border-top:1px solid var(--border)}
-.add-nav-btn{width:40px;height:40px;flex-shrink:0;aspect-ratio:1/1;border-radius:50%;background:linear-gradient(145deg in oklch,var(--bg-card-inner),color-mix(in srgb,var(--bg-card-inner) 70%,#000));border:1px solid var(--border);color:var(--text);cursor:pointer;font-family:inherit;transition:background .2s,border-color .2s,color .2s,transform .15s,box-shadow .2s;display:flex;align-items:center;justify-content:center;padding:0;-webkit-tap-highlight-color:transparent}
-.add-nav-btn svg{width:18px;height:18px;transition:transform .2s}
-.add-nav-btn:hover{border-color:var(--magenta,#84cc16);color:var(--magenta,#84cc16);transform:translateY(-1px);box-shadow:0 4px 12px color-mix(in srgb,var(--magenta,#84cc16) 25%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--magenta,#84cc16) 20%,transparent)}
-.add-nav-btn[data-nav="-1"]:hover svg{transform:translateX(-2px)}
-.add-nav-btn[data-nav="1"]:hover svg{transform:translateX(2px)}
-.add-nav-btn:active{transform:translateY(0) scale(.95)}
-.add-nav-pos{font-size:11px;color:var(--text-dim);letter-spacing:.2em;font-family:'JetBrains Mono',monospace}
-@media (max-width:760px){.modal.add-active .modal-body{grid-template-columns:1fr;gap:14px!important}.add-prev-col{position:relative;flex-direction:row;align-items:stretch;gap:12px}.add-prev-col .feit-badge.feit-badge-mini{flex:0 0 120px;width:120px;max-width:120px}.add-prev-meta{flex:1;min-width:0;padding:6px 12px;justify-content:center}.add-meta-row{padding:5px 0;font-size:12px}.add-sect-tabs{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.add-sect-tabs::-webkit-scrollbar{display:none}.add-sect-tab{flex:0 0 auto;padding:10px 12px;font-size:10px;white-space:nowrap}.add-sect-tab[data-active]{flex:0 0 auto}.modal.add-active .modal-btns{display:flex!important;flex-direction:row!important;gap:8px;position:sticky;bottom:0;background:linear-gradient(180deg,transparent,var(--bg-card) 30%);padding:10px 0 4px;margin-top:8px}.modal.add-active .modal-btns .modal-btn{flex:1;padding:14px 12px;font-size:14px;font-weight:700}.modal.add-active .modal-btns .modal-btn.primary{order:2}.modal.add-active .modal-btns .modal-btn.secondary{order:1}}
-/* Tablet/desktop intermediário (760-900px) — ainda stacked mas card compacto */
-@media (min-width:761px) and (max-width:900px){.modal.add-active .modal-body,.modal.forja-active.add-active .modal-body{grid-template-columns:1fr!important}.add-prev-col{flex-direction:row;gap:14px;align-items:stretch}.add-prev-col .feit-badge.feit-badge-mini{flex:0 0 160px;width:160px;max-width:160px}.add-prev-meta{flex:1;min-width:0}}
+/* ═══ ADD/EDIT FEITIÇO v2 — interface reconstruída (.addv2-*) ═══ */
+.modal.forja-active.add-active.addv2>#modal-body{display:block!important;padding:0 2px 2px}
+.modal.addv2 .addv2-grid{display:grid;grid-template-columns:248px 1fr;gap:26px;align-items:start}
+/* ── coluna de prévia (esquerda, sticky) ── */
+.modal.addv2 .addv2-prev-col{position:sticky;top:0;display:flex;flex-direction:column;gap:14px;min-width:0}
+.modal.addv2 .addv2-prev-wrap{display:flex;justify-content:center}
+.modal.addv2 .feit-badge.feit-badge-mini.addv2-badge{width:100%;max-width:210px;flex:none;aspect-ratio:0.76/1;max-height:none;border-radius:18px;padding:38px 16px 16px;pointer-events:none}
+.modal.addv2 .addv2-badge .feit-badge-name{font-size:21px;letter-spacing:-.8px;transition:none}
+.modal.addv2 .addv2-badge .feit-badge-stamp{top:14px;right:12px;width:40px;height:40px;font-size:15px}
+.modal.addv2 .addv2-badge .feit-badge-logo{top:14px;left:13px;width:28px;height:28px}
+.modal.addv2 .addv2-badge .feit-badge-logo-ico{width:28px;height:28px;color:rgba(255,255,255,.85)}
+.modal.addv2 .addv2-badge .feit-badge-tags{font-size:7px;letter-spacing:1.2px;gap:8px}
+.modal.addv2 .addv2-meta{display:flex;flex-direction:column;background:linear-gradient(180deg in oklch,var(--bg-card-inner),color-mix(in srgb,var(--bg-card-inner) 65%,#000));border:1px solid color-mix(in srgb,var(--forja-accent) 16%,var(--border));border-radius:12px;padding:4px 14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+.modal.addv2 .addv2-meta-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid color-mix(in srgb,var(--border) 45%,transparent)}
+.modal.addv2 .addv2-meta-row:last-child{border-bottom:none}
+.modal.addv2 .addv2-meta-k{color:var(--text-dim);letter-spacing:.16em;font-family:'JetBrains Mono',monospace;font-size:9.5px;text-transform:uppercase;flex-shrink:0}
+.modal.addv2 .addv2-meta-v{color:var(--text);font-weight:600;font-size:12px;text-align:right;line-height:1.3}
+/* ── coluna do formulário (direita) ── */
+.modal.addv2 .addv2-form-col{min-width:0;display:flex;flex-direction:column}
+.modal.addv2 .addv2-tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:6px;overflow-x:auto;scrollbar-width:none}
+.modal.addv2 .addv2-tabs::-webkit-scrollbar{display:none}
+.modal.addv2 .addv2-tab{flex:1;min-width:fit-content;display:flex;align-items:center;justify-content:center;gap:7px;padding:12px 12px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;color:var(--text-dim);font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:color .2s,border-color .25s}
+.modal.addv2 .addv2-tab-ico{display:inline-flex;width:15px;height:15px;opacity:.55;transition:opacity .2s}
+.modal.addv2 .addv2-tab-ico svg{width:15px;height:15px}
+.modal.addv2 .addv2-tab:hover{color:var(--text-secondary)}
+.modal.addv2 .addv2-tab:hover .addv2-tab-ico{opacity:.85}
+.modal.addv2 .addv2-tab[data-active]{color:var(--forja-accent);border-bottom-color:var(--forja-accent)}
+.modal.addv2 .addv2-tab[data-active] .addv2-tab-ico{opacity:1}
+@media(max-width:520px){.modal.addv2 .addv2-tab-lbl{display:none}.modal.addv2 .addv2-tab{flex:1;gap:0}.modal.addv2 .addv2-tab-ico,.modal.addv2 .addv2-tab-ico svg{width:18px;height:18px}}
+.modal.addv2 .addv2-sect{padding-top:6px;min-height:218px;animation:addv2In .34s cubic-bezier(.2,.8,.2,1) both}
+@keyframes addv2In{from{opacity:0;transform:translateY(8px);filter:blur(2px)}to{opacity:1;transform:none;filter:blur(0)}}
+.modal.addv2 .addv2-field-lbl{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--forja-accent);margin:18px 0 9px}
+.modal.addv2 .addv2-field-lbl:first-child{margin-top:6px}
+.modal.addv2 .addv2-field-lbl::before{content:"";width:3px;height:11px;border-radius:2px;background:var(--forja-accent)}
+.modal.addv2 .addv2-lbl-opt{font-weight:500;letter-spacing:.04em;text-transform:none;color:var(--text-dim);font-size:9.5px}
+.modal.addv2 .addv2-input,.modal.addv2 .addv2-textarea{display:block;width:100%;box-sizing:border-box;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s}
+.modal.addv2 .addv2-input{padding:12px 14px;font-size:15px;font-weight:600}
+.modal.addv2 .addv2-textarea{padding:12px 14px;font-size:13.5px;line-height:1.5;min-height:170px;resize:vertical}
+.modal.addv2 .addv2-input::placeholder,.modal.addv2 .addv2-textarea::placeholder{color:var(--text-dim);font-weight:400}
+.modal.addv2 .addv2-input:focus,.modal.addv2 .addv2-textarea:focus{border-color:var(--forja-accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--forja-accent) 20%,transparent)}
+.modal.addv2 .addv2-input-err{border-color:var(--red)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--red) 22%,transparent)!important;animation:addv2Shake .4s}
+@keyframes addv2Shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.modal.addv2 .addv2-hint{margin:10px 2px 0;font-size:11.5px;line-height:1.5;color:var(--text-dim)}
+/* ── pills ── */
+.modal.addv2 .addv2-pills{display:flex;gap:7px;flex-wrap:wrap}
+.modal.addv2 .addv2-pill{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text-secondary);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;-webkit-tap-highlight-color:transparent}
+.modal.addv2 .addv2-pill:hover{border-color:color-mix(in srgb,var(--forja-accent) 42%,var(--border));color:var(--text)}
+.modal.addv2 .addv2-pill:active{transform:scale(.96)}
+.modal.addv2 .addv2-pill[data-sel]{background:color-mix(in srgb,var(--forja-accent) 14%,transparent);border-color:color-mix(in srgb,var(--forja-accent) 62%,var(--border));color:var(--forja-accent);font-weight:700}
+.modal.addv2 .addv2-pill-ess{--ess-clr:#888}
+.modal.addv2 .addv2-ess-dot{width:9px;height:9px;flex-shrink:0;border-radius:50%;background:var(--ess-clr);box-shadow:0 0 0 2px color-mix(in srgb,var(--ess-clr) 25%,transparent)}
+.modal.addv2 .addv2-pill-ess[data-sel]{background:color-mix(in srgb,var(--ess-clr) 15%,transparent);border-color:var(--ess-clr);color:var(--ess-clr)}
+/* ── color swatches ── */
+.modal.addv2 .addv2-colors{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.modal.addv2 .addv2-color{width:34px;height:34px;flex-shrink:0;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;transition:transform .15s,border-color .15s,box-shadow .15s}
+.modal.addv2 .addv2-color:hover{transform:scale(1.12);border-color:rgba(255,255,255,.4)}
+.modal.addv2 .addv2-color.sel{border-color:#fff;box-shadow:0 0 0 3px var(--forja-accent),0 6px 16px rgba(0,0,0,.4);transform:scale(1.1)}
+.modal.addv2 .addv2-color-auto{display:flex;align-items:center;justify-content:center;background:var(--bg-card-inner);border-color:var(--border);color:var(--text-dim)}
+.modal.addv2 .addv2-color-auto svg{width:17px;height:17px}
+.modal.addv2 .addv2-color-auto.sel{color:var(--forja-accent)}
+/* ── target cards ── */
+.modal.addv2 .addv2-cards{display:flex;flex-direction:column;gap:8px}
+.modal.addv2 .addv2-card{position:relative;display:flex;flex-direction:column;gap:3px;text-align:left;padding:13px 44px 13px 15px;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:11px;cursor:pointer;font-family:inherit;color:var(--text);transition:border-color .18s,background .18s,transform .12s}
+.modal.addv2 .addv2-card:hover{border-color:color-mix(in srgb,var(--forja-accent) 40%,var(--border))}
+.modal.addv2 .addv2-card:active{transform:scale(.99)}
+.modal.addv2 .addv2-card[data-sel]{border-color:var(--forja-accent);background:color-mix(in srgb,var(--forja-accent) 9%,var(--bg-card-inner))}
+.modal.addv2 .addv2-card-name{font-size:13.5px;font-weight:700}
+.modal.addv2 .addv2-card[data-sel] .addv2-card-name{color:var(--forja-accent)}
+.modal.addv2 .addv2-card-desc{font-size:11.5px;line-height:1.4;color:var(--text-dim)}
+.modal.addv2 .addv2-card-check{position:absolute;top:50%;right:14px;transform:translateY(-50%) scale(.6);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--forja-accent);color:#0a0a0a;opacity:0;transition:opacity .18s,transform .18s}
+.modal.addv2 .addv2-card-check svg{width:13px;height:13px}
+.modal.addv2 .addv2-card[data-sel] .addv2-card-check{opacity:1;transform:translateY(-50%) scale(1)}
+/* ── seção nav (prev/next) ── */
+.modal.addv2 .addv2-nav{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+.modal.addv2 .addv2-nav-btn{width:38px;height:38px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg-card-inner);border:1px solid var(--border);color:var(--text);cursor:pointer;padding:0;transition:border-color .2s,color .2s,transform .15s,opacity .2s}
+.modal.addv2 .addv2-nav-btn svg{width:17px;height:17px}
+.modal.addv2 .addv2-nav-btn:hover:not(:disabled){border-color:var(--forja-accent);color:var(--forja-accent);transform:translateY(-1px)}
+.modal.addv2 .addv2-nav-btn:active:not(:disabled){transform:scale(.93)}
+.modal.addv2 .addv2-nav-btn:disabled{opacity:.32;cursor:default}
+.modal.addv2 .addv2-nav-pos{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--text-dim)}
+/* ── ações (sticky footer) ── */
+.modal.addv2 .addv2-actions{display:flex;gap:9px;justify-content:flex-end;align-items:center;position:sticky;bottom:0;z-index:10;background:var(--bg-card);padding:14px 0 2px;margin-top:18px;border-top:1px solid color-mix(in srgb,var(--border) 55%,transparent)}
+.modal.addv2 .addv2-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 20px;border-radius:9px;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;border:1px solid transparent;transition:filter .18s,background .18s,border-color .18s,box-shadow .18s,transform .12s;-webkit-tap-highlight-color:transparent}
+.modal.addv2 .addv2-btn svg{width:16px;height:16px}
+.modal.addv2 .addv2-btn:active{transform:scale(.97)}
+.modal.addv2 .addv2-btn-save{background:linear-gradient(135deg in oklch,var(--forja-accent),color-mix(in srgb,var(--forja-accent) 70%,#000));border-color:var(--forja-accent);color:#fff}
+.modal.addv2 .addv2-btn-save:hover{filter:brightness(1.1);box-shadow:0 5px 16px color-mix(in srgb,var(--forja-accent) 40%,transparent)}
+.modal.addv2 .addv2-btn-ghost{background:transparent;border-color:var(--border);color:var(--text-secondary)}
+.modal.addv2 .addv2-btn-ghost:hover{border-color:var(--text-dim);color:var(--text)}
+.modal.addv2 .addv2-btn-del{margin-right:auto;background:transparent;border-color:color-mix(in srgb,var(--red) 45%,transparent);color:var(--red)}
+.modal.addv2 .addv2-btn-del:hover{background:color-mix(in srgb,var(--red) 12%,transparent);border-color:var(--red)}
+/* ── responsivo: empilha prévia no topo ── */
+@media(max-width:760px){
+  .modal.addv2 .addv2-grid{grid-template-columns:1fr;gap:16px}
+  .modal.addv2 .addv2-prev-col{position:relative;top:0;flex-direction:row;align-items:stretch;gap:14px}
+  .modal.addv2 .addv2-prev-wrap{flex:0 0 130px;justify-content:flex-start}
+  .modal.addv2 .feit-badge.feit-badge-mini.addv2-badge{max-width:130px;padding:30px 12px 12px}
+  .modal.addv2 .addv2-badge .feit-badge-name{font-size:16px}
+  .modal.addv2 .addv2-meta{flex:1;min-width:0;justify-content:center;padding:4px 14px}
+  .modal.addv2 .addv2-actions{flex-wrap:wrap}
+  .modal.addv2 .addv2-btn-ghost,.modal.addv2 .addv2-btn-save{flex:1;padding:14px 12px}
+}
+@media(max-width:420px){
+  .modal.addv2 .addv2-prev-col{flex-direction:column;align-items:stretch}
+  .modal.addv2 .addv2-prev-wrap{flex:none;justify-content:center}
+  .modal.addv2 .feit-badge.feit-badge-mini.addv2-badge{max-width:150px;margin:0 auto}
+}
 /* Card mini cap altura geral */
 .feit-badge.feit-badge-mini{max-height:240px;aspect-ratio:0.76/1}
 .modal.forja-active .modal-body{display:flex;flex-direction:column;gap:14px}
@@ -24981,13 +25026,17 @@ const FORJA_DT={g1:{cat:'Alta',base:14,cor:'#7fff72'},g2:{cat:'Alta',base:14,cor
 function _forjaCustoDC(v,gi,ref){if(v<=0)return 0;return Math.max(5,Math.round(15*(v/ref[gi])))}
 function _forjaMultAlvo(alvo,qtd,tam){if(alvo==='multiplos'){const n=Math.max(2,qtd);let m=1+(n*.10);if(n>5)m+=.25;if(n>10)m+=.25;if(n>20)m+=.25;return m}if(alvo==='area_cubo')return 1+Math.ceil(Math.max(0,tam-3)/3+1)*.20;if(alvo==='area_cone')return 1+Math.ceil(Math.max(0,tam-4.5)/4.5+1)*.20;return 1}
 window.editFeitico=id=>window.openAddFeiticoModal(id);
+/* ═══ ADICIONAR / EDITAR FEITIÇO — interface reconstruída (split + acento por essência) ═══ */
 window.openAddFeiticoModal=function(id){
   _editingFeitId=id||null;
   const existing=id?((fichaData.feiticos||[]).find(f=>f.id===id)):null;
   const title=document.getElementById('modal-title'),body=document.getElementById('modal-body');
   if(!title||!body)return;
-  const ovEl=document.getElementById('modal-overlay');const mEl=ovEl.querySelector('.modal');if(mEl){mEl.classList.remove('peri-modal-square');mEl.classList.add('forja-active','add-active')}
+  const ovEl=document.getElementById('modal-overlay');const mEl=ovEl.querySelector('.modal');
+  if(mEl){mEl.classList.remove('peri-modal-square');mEl.classList.add('forja-active','add-active','addv2')}
   title.textContent=existing?'Editar Feitiço':'Adicionar Feitiço';
+
+  /* Gradiente de crachá por essência (cor cheia do crachá no grimório) */
   const COLORS=[
     {name:'Alba',v:'linear-gradient(165deg in oklch,#1a3a1f 0%,#4a9954 45%,#a8e6a0 100%)'},
     {name:'Carmin',v:'linear-gradient(165deg in oklch,#1a0202 0%,#4a0a08 35%,#8b1414 70%,#c91a14 100%)'},
@@ -24996,111 +25045,155 @@ window.openAddFeiticoModal=function(id){
     {name:'Perene',v:'linear-gradient(165deg in oklch,#0a2a2a 0%,#1f6a6a 45%,#40e0b0 100%)'},
     {name:'Ruina',v:'linear-gradient(165deg in oklch,#171717 0%,#4a4438 50%,#888070 100%)'}
   ];
-  const curColor=existing?.customColor||'';
+  const SCHOOL_GRAD=Object.fromEntries(COLORS.map(c=>[c.name,c.v]));
+  /* Acento sólido por essência — dirige focus rings, pills ativas, etc. */
+  const SCHOOL_ACCENT={Alba:'#4a9954',Carmin:'#d11a14',Kaos:'#b25ce0',Lumen:'#e0a820',Perene:'#2fb89a',Ruina:'#7a7060'};
   const SECTS=[
-    {id:'identidade',ico:'★',lbl:'Identidade'},
-    {id:'mecanica',ico:'⚙',lbl:'Mecânica'},
-    {id:'alvo',ico:'⊙',get lbl(){return (_addState&&(_addState.alvo||'').startsWith('area'))?'Área':'Alvo'}},
-    {id:'detalhes',ico:'✎',lbl:'Detalhes'}
+    {id:'identidade',ico:'<path d="M12 2 14.6 8.6 21.5 9 16.3 13.5 18 20.5 12 16.8 6 20.5 7.7 13.5 2.5 9 9.4 8.6Z"/>',lbl:'Identidade'},
+    {id:'mecanica',ico:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>',lbl:'Mecânica'},
+    {id:'alvo',ico:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',get lbl(){return (_addState&&(_addState.alvo||'').startsWith('area'))?'Área':'Alvo'}},
+    {id:'detalhes',ico:'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',lbl:'Detalhes'}
   ];
   let curSect='identidade';
-  function renderAdd(){
-    body.innerHTML=`
-    <div class="add-form-col">
-      <div class="add-sect-tabs">${SECTS.map(s=>`<button type="button" class="add-sect-tab" data-s="${s.id}" ${curSect===s.id?'data-active':''}><span class="add-sect-ico">${s.ico}</span>${s.lbl}</button>`).join('')}</div>
-      <div class="add-sect-body">
-        ${curSect==='identidade'?`
-          <div class="forja-label">Nome</div>
-          <input type="text" id="feit-name" class="feit-name-input" placeholder="Ex: Bola de Fogo" value="${(existing?.name||_addState.name||'').replace(/"/g,'&quot;')}">
-          <div class="forja-label">Grau (1º–4º)</div>
-          <div class="forja-pills" id="add-grau">${[1,2,3,4].map(g=>`<button type="button" class="forja-pill" data-g="${g}" ${_addState.circle===g?'data-sel':''}>${g}º Grau</button>`).join('')}</div>
-          <div class="forja-label">Essência</div>
-          <div class="forja-pills" id="add-essencia">${FEITICO_ESCOLAS.map(s=>`<button type="button" class="forja-pill" data-e="${s}" ${_addState.school===s?'data-sel':''}>${s}</button>`).join('')}</div>
-          <div class="forja-label">Cor do crachá</div>
-          <div class="feit-color-row" id="feit-colors">${COLORS.map(c=>{const SOLID={Alba:'#4a9954',Carmin:'#8b1414',Kaos:'#8a3aa8',Lumen:'#9a7820',Perene:'#1f8c7a',Ruina:'#5a534a'};return `<button type="button" class="feit-color-sw${c.v===_addState.customColor?' sel':''}" data-c="${c.v.replace(/"/g,'&quot;')}" style="background:${SOLID[c.name]||'#888'}" title="${c.name}"></button>`}).join('')}</div>
-        `:''}
-        ${curSect==='mecanica'?`
-          <div class="forja-label">Execução</div>
-          <div class="forja-pills" id="add-exec">${FORJA_EXEC.map(e=>`<button type="button" class="forja-pill" data-x="${e.nome}" ${_addState.execucao===e.nome?'data-sel':''} title="${e.desc||''}">${e.nome}</button>`).join('')}</div>
-          <div class="forja-label">Alcance</div>
-          <div class="forja-pills" id="add-alc">${Object.keys(FORJA_ALC).map(k=>`<button type="button" class="forja-pill" data-a="${k}" ${_addState.alcance===k?'data-sel':''}>${k}</button>`).join('')}</div>
-          <div class="forja-label">Duração</div>
-          <div class="forja-pills" id="add-dur">${FORJA_DUR.map(d=>`<button type="button" class="forja-pill" data-d="${d.nome}" ${_addState.duracao===d.nome?'data-sel':''} title="${d.desc||''}">${d.nome}</button>`).join('')}</div>
-        `:''}
-        ${curSect==='alvo'?`
-          <div class="forja-label">Alvo / Área</div>
-          ${FORJA_ALVO.map(a=>`<div class="forja-card" ${_addState.alvo===a.tipo?'data-sel':''} data-alvo-card="${a.tipo}"><div><span class="forja-card-name">${a.nome}</span><div class="forja-card-desc">${a.desc}</div></div></div>`).join('')}
-        `:''}
-        ${curSect==='detalhes'?`
-          <div class="forja-label">Descrição</div>
-          <textarea id="feit-desc" placeholder="Efeito, componentes, sensação..." style="width:100%;min-height:160px;padding:10px;font-size:13px;background:var(--bg-card-inner);border:1px solid var(--border);color:var(--text);border-radius:6px;resize:vertical">${(existing?.desc||_addState.desc||'').replace(/</g,'&lt;')}</textarea>
-          <div class="forja-info" style="margin-top:10px">Use este campo para flavor text, componentes específicos, sensações e detalhes narrativos do ritual.</div>
-        `:''}
-      </div>
-    </div>
-    <input type="hidden" id="feit-circle"><input type="hidden" id="feit-school"><input type="hidden" id="feit-exec"><input type="hidden" id="feit-alc"><input type="hidden" id="feit-dur"><input type="hidden" id="feit-alvo">
-    <div class="modal-btns" style="margin-top:14px;display:flex;gap:8px;justify-content:flex-end">
-      ${existing?`<button class="modal-btn" style="background:transparent;color:var(--red);border:1px solid var(--red)" onclick="removeFeitico('${existing.id}');closeModal()">Excluir</button>`:''}
-      <button class="modal-btn secondary" onclick="closeModal()">Cancelar</button>
-      <button class="modal-btn primary" onclick="saveAddFeitico()">Salvar</button>
-    </div>`;
-    document.getElementById('feit-circle').value=_addState.circle;
-    document.getElementById('feit-school').value=_addState.school;
-    document.getElementById('feit-exec').value=_addState.execucao;
-    document.getElementById('feit-alc').value=_addState.alcance;
-    document.getElementById('feit-dur').value=_addState.duracao;
-    document.getElementById('feit-alvo').value=_addState.alvo;
-    bindAdd();
-    updatePrev();
-  }
+  const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const escAttr=s=>String(s==null?'':s).replace(/"/g,'&quot;');
+
   const _addState={
     name:existing?.name||'',desc:existing?.desc||'',
     circle:existing?.circle||1,school:existing?.school||'Carmin',
     execucao:existing?.execucao||'Decisiva',alcance:existing?.alcance||'Curto',
     duracao:existing?.duracao||'Instantânea',alvo:existing?.alvo||'unico',
-    customColor:curColor
+    customColor:existing?.customColor||''
   };
-  let _selColor=curColor;
+  let _selColor=_addState.customColor;
+
+  /* ── Crachá-prévia: espelha exatamente o card do grimório (feit-badge-mini) ── */
+  function previewBadgeHTML(){
+    const grad=_selColor||SCHOOL_GRAD[_addState.school]||COLORS[1].v;
+    const nm=(_addState.name||'').trim();
+    const disp=nm?nm.replace(/^(\p{L})/u,c=>c.toUpperCase()):'Sem nome';
+    return `<div class="feit-badge feit-badge-mini addv2-badge" style="--badge-grad:${escAttr(grad)}">
+      <div class="feit-badge-bg" style="background:${escAttr(grad)}"></div>
+      <div class="feit-badge-logo"><svg class="feit-badge-logo-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 14.6 8.6 21.5 9 16.3 13.5 18 20.5 12 16.8 6 20.5 7.7 13.5 2.5 9 9.4 8.6Z"/></svg></div>
+      <div class="feit-badge-stamp">${_addState.circle}º</div>
+      <div class="feit-badge-name">${esc(disp)}</div>
+      <div class="feit-badge-tags"><span class="feit-badge-tag">${esc(_addState.school)}</span><span class="feit-badge-tag">${_addState.circle}º Grau</span></div>
+    </div>`;
+  }
+  function previewMetaHTML(){
+    const alvoNome=FORJA_ALVO.find(a=>a.tipo===_addState.alvo)?.nome||_addState.alvo;
+    const rows=[['Execução',_addState.execucao],['Alcance',_addState.alcance],['Duração',_addState.duracao],[(_addState.alvo||'').startsWith('area')?'Área':'Alvo',alvoNome]];
+    return rows.map(([k,v])=>`<div class="addv2-meta-row"><span class="addv2-meta-k">${esc(k)}</span><span class="addv2-meta-v">${esc(v)||'—'}</span></div>`).join('');
+  }
+  function syncPreview(){
+    const prev=body.querySelector('#addv2-prev');if(prev)prev.innerHTML=previewBadgeHTML();
+    const meta=body.querySelector('#addv2-meta');if(meta)meta.innerHTML=previewMetaHTML();
+    const acc=SCHOOL_ACCENT[_addState.school]||'var(--magenta)';
+    if(mEl)mEl.style.setProperty('--forja-accent',acc);
+  }
+
+  /* ── Seções ── */
+  function sectionHTML(){
+    if(curSect==='identidade')return `
+      <label class="addv2-field-lbl" for="feit-name">Nome do ritual</label>
+      <input type="text" id="feit-name" class="addv2-input" placeholder="Ex: Couraça Hemática" autocomplete="off" spellcheck="false" value="${escAttr(_addState.name)}">
+      <div class="addv2-field-lbl">Grau</div>
+      <div class="addv2-pills" id="add-grau">${[1,2,3,4].map(g=>`<button type="button" class="addv2-pill" data-g="${g}" ${_addState.circle===g?'data-sel':''}>${g}º</button>`).join('')}</div>
+      <div class="addv2-field-lbl">Essência</div>
+      <div class="addv2-pills" id="add-essencia">${FEITICO_ESCOLAS.map(s=>`<button type="button" class="addv2-pill addv2-pill-ess" data-e="${s}" style="--ess-clr:${SCHOOL_ACCENT[s]||'#888'}" ${_addState.school===s?'data-sel':''}><span class="addv2-ess-dot"></span>${s}</button>`).join('')}</div>
+      <div class="addv2-field-lbl">Cor do crachá <span class="addv2-lbl-opt">opcional · padrão segue a essência</span></div>
+      <div class="addv2-colors" id="feit-colors">
+        <button type="button" class="addv2-color addv2-color-auto${_selColor?'':' sel'}" data-c="" title="Automático (essência)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m12 3-1.9 5.8L4 9.5l4.5 4-1.2 6 4.7-3.2 4.7 3.2-1.2-6 4.5-4-6.1-.7Z"/></svg></button>
+        ${COLORS.map(c=>`<button type="button" class="addv2-color${c.v===_selColor?' sel':''}" data-c="${escAttr(c.v)}" style="background:${escAttr(c.v)}" title="${escAttr(c.name)}"></button>`).join('')}
+      </div>`;
+    if(curSect==='mecanica')return `
+      <div class="addv2-field-lbl">Execução</div>
+      <div class="addv2-pills" id="add-exec">${FORJA_EXEC.map(e=>`<button type="button" class="addv2-pill" data-x="${escAttr(e.nome)}" ${_addState.execucao===e.nome?'data-sel':''} title="${escAttr(e.desc||'')}">${esc(e.nome)}</button>`).join('')}</div>
+      <div class="addv2-field-lbl">Alcance</div>
+      <div class="addv2-pills" id="add-alc">${Object.keys(FORJA_ALC).map(k=>`<button type="button" class="addv2-pill" data-a="${escAttr(k)}" ${_addState.alcance===k?'data-sel':''}>${esc(k)}</button>`).join('')}</div>
+      <div class="addv2-field-lbl">Duração</div>
+      <div class="addv2-pills" id="add-dur">${FORJA_DUR.map(d=>`<button type="button" class="addv2-pill" data-d="${escAttr(d.nome)}" ${_addState.duracao===d.nome?'data-sel':''} title="${escAttr(d.desc||'')}">${esc(d.nome)}</button>`).join('')}</div>`;
+    if(curSect==='alvo')return `
+      <div class="addv2-field-lbl">Alvo / Área de efeito</div>
+      <div class="addv2-cards" id="add-alvo">${FORJA_ALVO.map(a=>`<button type="button" class="addv2-card" data-alvo-card="${escAttr(a.tipo)}" ${_addState.alvo===a.tipo?'data-sel':''}><span class="addv2-card-name">${esc(a.nome)}</span><span class="addv2-card-desc">${esc(a.desc)}</span><span class="addv2-card-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></button>`).join('')}</div>`;
+    return `
+      <label class="addv2-field-lbl" for="feit-desc">Descrição</label>
+      <textarea id="feit-desc" class="addv2-textarea" placeholder="Efeito, componentes, sensação narrativa do ritual...">${esc(_addState.desc)}</textarea>
+      <p class="addv2-hint">Flavor text, componentes específicos, sensações e detalhes narrativos. Aparece na aba “Descrição” do ritual.</p>`;
+  }
+
+  function renderAdd(){
+    const idx=SECTS.findIndex(s=>s.id===curSect);
+    body.innerHTML=`
+    <div class="addv2-grid">
+      <aside class="addv2-prev-col">
+        <div class="addv2-prev-wrap" id="addv2-prev">${previewBadgeHTML()}</div>
+        <div class="addv2-meta" id="addv2-meta">${previewMetaHTML()}</div>
+      </aside>
+      <div class="addv2-form-col">
+        <nav class="addv2-tabs" role="tablist">${SECTS.map((s,i)=>`<button type="button" class="addv2-tab" role="tab" data-s="${s.id}" ${curSect===s.id?'data-active aria-selected="true"':''}><span class="addv2-tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${s.ico}</svg></span><span class="addv2-tab-lbl">${s.lbl}</span></button>`).join('')}</nav>
+        <div class="addv2-sect" key="${curSect}">${sectionHTML()}</div>
+        <div class="addv2-nav">
+          <button type="button" class="addv2-nav-btn" data-nav="-1" ${idx===0?'disabled':''} aria-label="Seção anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="addv2-nav-pos">${idx+1} / ${SECTS.length}</span>
+          <button type="button" class="addv2-nav-btn" data-nav="1" ${idx===SECTS.length-1?'disabled':''} aria-label="Próxima seção"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="addv2-actions">
+      ${existing?`<button type="button" class="addv2-btn addv2-btn-del" data-act="del"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><span>Excluir</span></button>`:''}
+      <button type="button" class="addv2-btn addv2-btn-ghost" data-act="cancel">Cancelar</button>
+      <button type="button" class="addv2-btn addv2-btn-save" data-act="save"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>${existing?'Salvar alterações':'Adicionar ritual'}</span></button>
+    </div>`;
+    syncPreview();
+    bindAdd();
+  }
+
+  function setSect(s){if(s===curSect)return;curSect=s;renderAdd();}
   function bindAdd(){
-    body.querySelectorAll('.add-sect-tab').forEach(t=>t.onclick=()=>{curSect=t.dataset.s;renderAdd()});
-    body.querySelectorAll('.add-nav-btn').forEach(b=>b.onclick=()=>{const i=SECTS.findIndex(s=>s.id===curSect);const n=Math.max(0,Math.min(SECTS.length-1,i+ +b.dataset.nav));curSect=SECTS[n].id;renderAdd()});
-    const n=body.querySelector('#feit-name');if(n)n.oninput=e=>{_addState.name=e.target.value;updatePrev()};
-    const d=body.querySelector('#feit-desc');if(d)d.oninput=e=>{_addState.desc=e.target.value};
-    body.querySelectorAll('#add-grau .forja-pill').forEach(b=>b.onclick=()=>{_addState.circle=+b.dataset.g;document.getElementById('feit-circle').value=_addState.circle;body.querySelectorAll('#add-grau .forja-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');updatePrev()});
-    body.querySelectorAll('#add-essencia .forja-pill').forEach(b=>b.onclick=()=>{_addState.school=b.dataset.e;document.getElementById('feit-school').value=_addState.school;body.querySelectorAll('#add-essencia .forja-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');updatePrev()});
-    body.querySelectorAll('#add-exec .forja-pill').forEach(b=>b.onclick=()=>{_addState.execucao=b.dataset.x;document.getElementById('feit-exec').value=_addState.execucao;body.querySelectorAll('#add-exec .forja-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');updatePrev()});
-    body.querySelectorAll('#add-alc .forja-pill').forEach(b=>b.onclick=()=>{_addState.alcance=b.dataset.a;document.getElementById('feit-alc').value=_addState.alcance;body.querySelectorAll('#add-alc .forja-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');updatePrev()});
-    body.querySelectorAll('#add-dur .forja-pill').forEach(b=>b.onclick=()=>{_addState.duracao=b.dataset.d;document.getElementById('feit-dur').value=_addState.duracao;body.querySelectorAll('#add-dur .forja-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');updatePrev()});
-    body.querySelectorAll('[data-alvo-card]').forEach(c=>c.onclick=()=>{_addState.alvo=c.dataset.alvoCard;document.getElementById('feit-alvo').value=_addState.alvo;body.querySelectorAll('[data-alvo-card]').forEach(x=>x.removeAttribute('data-sel'));c.setAttribute('data-sel','');updatePrev()});
-    body.querySelectorAll('#feit-colors .feit-color-sw').forEach(b=>b.onclick=()=>{body.querySelectorAll('#feit-colors .feit-color-sw').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');_selColor=b.dataset.c;_addState.customColor=_selColor;updatePrev()});
+    body.querySelectorAll('.addv2-tab').forEach(t=>t.onclick=()=>setSect(t.dataset.s));
+    body.querySelectorAll('.addv2-nav-btn').forEach(b=>b.onclick=()=>{if(b.disabled)return;const i=SECTS.findIndex(s=>s.id===curSect);const n=Math.max(0,Math.min(SECTS.length-1,i+(+b.dataset.nav)));setSect(SECTS[n].id);});
+    const nm=body.querySelector('#feit-name');if(nm)nm.oninput=e=>{_addState.name=e.target.value;syncPreview();};
+    const ds=body.querySelector('#feit-desc');if(ds)ds.oninput=e=>{_addState.desc=e.target.value;};
+    body.querySelectorAll('#add-grau .addv2-pill').forEach(b=>b.onclick=()=>{body.querySelectorAll('#add-grau .addv2-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');_addState.circle=+b.dataset.g;syncPreview();});
+    body.querySelectorAll('#add-essencia .addv2-pill').forEach(b=>b.onclick=()=>{body.querySelectorAll('#add-essencia .addv2-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');_addState.school=b.dataset.e;syncPreview();});
+    body.querySelectorAll('#add-exec .addv2-pill').forEach(b=>b.onclick=()=>{body.querySelectorAll('#add-exec .addv2-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');_addState.execucao=b.dataset.x;syncPreview();});
+    body.querySelectorAll('#add-alc .addv2-pill').forEach(b=>b.onclick=()=>{body.querySelectorAll('#add-alc .addv2-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');_addState.alcance=b.dataset.a;syncPreview();});
+    body.querySelectorAll('#add-dur .addv2-pill').forEach(b=>b.onclick=()=>{body.querySelectorAll('#add-dur .addv2-pill').forEach(x=>x.removeAttribute('data-sel'));b.setAttribute('data-sel','');_addState.duracao=b.dataset.d;syncPreview();});
+    body.querySelectorAll('#add-alvo .addv2-card').forEach(c=>c.onclick=()=>{body.querySelectorAll('#add-alvo .addv2-card').forEach(x=>x.removeAttribute('data-sel'));c.setAttribute('data-sel','');_addState.alvo=c.dataset.alvoCard;syncPreview();});
+    body.querySelectorAll('#feit-colors .addv2-color').forEach(b=>b.onclick=()=>{body.querySelectorAll('#feit-colors .addv2-color').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');_selColor=b.dataset.c||'';_addState.customColor=_selColor;syncPreview();});
+    body.querySelectorAll('.addv2-actions [data-act]').forEach(b=>b.onclick=()=>{
+      const a=b.dataset.act;
+      if(a==='cancel')return closeModal();
+      if(a==='save')return window.saveAddFeitico();
+      if(a==='del'&&existing)return window.removeFeitico(existing.id).then(()=>closeModal());
+    });
   }
-  const SCHOOL_FALLBACK={Alba:COLORS[0].v,Carmin:COLORS[1].v,Kaos:COLORS[2].v,Lumen:COLORS[3].v,Perene:COLORS[4].v,Ruina:COLORS[5].v};
-  function updatePrev(){
-    const bg=_selColor||SCHOOL_FALLBACK[_addState.school]||COLORS[1].v;
-    const pn=document.getElementById('feit-prev-name');if(pn)pn.textContent=(_addState.name||'—').toLowerCase().replace(/^(\p{L})/u,c=>c.toUpperCase());
-    const ps=document.getElementById('feit-prev-school');if(ps)ps.textContent=_addState.school.toUpperCase();
-    const pc=document.getElementById('feit-prev-circle');if(pc)pc.textContent=_addState.circle+'º GRAU';
-    const pgt=document.getElementById('feit-prev-grau-txt');if(pgt)pgt.textContent=_addState.circle+'º';
-    const pb=document.getElementById('feit-prev-bg');if(pb)pb.style.background=bg;
-    const meta=document.getElementById('add-prev-meta');if(meta)meta.innerHTML=`<div class="add-meta-row"><span class="add-meta-k">EXEC</span><span class="add-meta-v">${_addState.execucao}</span></div><div class="add-meta-row"><span class="add-meta-k">ALC</span><span class="add-meta-v">${_addState.alcance}</span></div><div class="add-meta-row"><span class="add-meta-k">DUR</span><span class="add-meta-v">${_addState.duracao}</span></div><div class="add-meta-row"><span class="add-meta-k">ALVO</span><span class="add-meta-v">${FORJA_ALVO.find(a=>a.tipo===_addState.alvo)?.nome||_addState.alvo}</span></div>`;
-  }
+
+  /* contrato de leitura usado por saveAddFeitico */
+  window._feitFormGet=()=>({..._addState});
   window._feitSelColorGet=()=>_selColor;
+
   document.getElementById('modal-overlay').classList.add('open');
   renderAdd();
-  setTimeout(()=>document.getElementById('feit-name')?.focus(),120);
+  setTimeout(()=>body.querySelector('#feit-name')?.focus(),120);
 };
+
 window.saveAddFeitico=function(){
-  const name=document.getElementById('feit-name').value.trim();
-  if(!name){toast&&toast('Nome obrigatório','error');return}
-  const circle=Math.max(1,Math.min(4,parseInt(document.getElementById('feit-circle').value)||1));
-  const school=document.getElementById('feit-school').value;
-  const desc=document.getElementById('feit-desc').value.trim();
-  const execucao=document.getElementById('feit-exec')?.value||'Decisiva';
-  const alcance=document.getElementById('feit-alc')?.value||'Curto';
-  const duracao=document.getElementById('feit-dur')?.value||'Instantânea';
-  const alvo=document.getElementById('feit-alvo')?.value||'unico';
-  const customColor=(typeof window._feitSelColorGet==='function')?(window._feitSelColorGet()||''):'';
-  const data={name,circle,school,desc,execucao,alcance,duracao,alvo,customColor};
+  const s=(typeof window._feitFormGet==='function')?window._feitFormGet():{};
+  const name=(s.name||'').trim();
+  if(!name){toast&&toast('Nome obrigatório','error');const i=document.getElementById('feit-name');if(i){i.focus();i.classList.add('addv2-input-err');setTimeout(()=>i.classList.remove('addv2-input-err'),1200);}return;}
+  const data={
+    name,
+    circle:Math.max(1,Math.min(4,parseInt(s.circle,10)||1)),
+    school:s.school||'Carmin',
+    desc:(s.desc||'').trim(),
+    execucao:s.execucao||'Decisiva',
+    alcance:s.alcance||'Curto',
+    duracao:s.duracao||'Instantânea',
+    alvo:s.alvo||'unico',
+    customColor:(typeof window._feitSelColorGet==='function')?(window._feitSelColorGet()||''):''
+  };
   fichaData.feiticos=fichaData.feiticos||[];
   if(_editingFeitId){
     const f=fichaData.feiticos.find(x=>x.id===_editingFeitId);
@@ -25108,10 +25201,12 @@ window.saveAddFeitico=function(){
   }else{
     fichaData.feiticos.push({id:'f'+Date.now().toString(36),...data});
   }
+  const wasEdit=!!_editingFeitId;
   _editingFeitId=null;
   renderFeitTab();autosaveDebounced&&autosaveDebounced();closeModal();
-  toast&&toast('Feitiço adicionado','success');
+  toast&&toast(wasEdit?'Feitiço atualizado':'Feitiço adicionado','success');
 };
+
 window.removeFeitico=async function(id){
   if(!await appConfirm('Remover feitiço?'))return;
   fichaData.feiticos=(fichaData.feiticos||[]).filter(f=>f.id!==id);
