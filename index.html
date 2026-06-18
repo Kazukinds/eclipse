@@ -35956,6 +35956,11 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .gdetail{position:absolute;inset:var(--top-h) 0 0 0;z-index:45;background:var(--bg);
     opacity:0;visibility:hidden;transform:translateX(18px);transition:opacity .26s,transform .3s cubic-bezier(.2,.8,.2,1),visibility .26s}
   .grimorio-root .gdetail[data-on="1"]{opacity:1;visibility:visible;transform:none}
+  /* detalhe aberto com carrinho aberto (desktop): ocupa o espaço à esquerda do drawer e fica acima do scrim */
+  @media(min-width:1081px){
+    .grimorio-root[data-cart="1"] .gdetail[data-on="1"]{right:410px;z-index:9058}
+    .grimorio-root[data-cart="1"][data-detail="1"] .cart-scrim{background:rgba(0,0,0,.3)}
+  }
   .grimorio-root .gd-inner{height:100%;display:flex;flex-direction:column;min-height:0}
   .grimorio-root .gd-bar{flex:0 0 auto;display:flex;align-items:center;gap:16px;padding:16px 48px;border-bottom:1px solid var(--line);background:var(--panel)}
   .grimorio-root .gd-close{display:inline-flex;align-items:center;gap:8px;padding:9px 15px 9px 11px;border:1px solid var(--line);border-radius:11px;
@@ -36841,8 +36846,8 @@ function flyCardToCart(btn){
   };
 }
 function removeFromCart(el,n){cart=cart.filter(i=>!(i.el===el&&i.n===n));updateCart();render();}
-function openCart(){document.getElementById('grim-cartDrawer').dataset.on=1;document.getElementById('grim-cartScrim').dataset.on=1;}
-function closeCart(){document.getElementById('grim-cartDrawer').dataset.on=0;document.getElementById('grim-cartScrim').dataset.on=0;}
+function openCart(){document.getElementById('grim-cartDrawer').dataset.on=1;document.getElementById('grim-cartScrim').dataset.on=1;ROOT.dataset.cart=1;}
+function closeCart(){document.getElementById('grim-cartDrawer').dataset.on=0;document.getElementById('grim-cartScrim').dataset.on=0;ROOT.dataset.cart=0;}
 function confirmBuy(){if(!cart.length)return;const n=cart.length;cart=[];updateCart();render();closeCart();toast(`Compra confirmada · ${n} feitiço${n===1?'':'s'}`);}
 function bumpFab(){document.getElementById('grim-cartFab').animate([{transform:'scale(1)'},{transform:'scale(1.18)'},{transform:'scale(1)'}],{duration:300,easing:'cubic-bezier(.34,1.56,.64,1)'});}
 let toastT;
@@ -36861,8 +36866,8 @@ function bootGrimorio(){
   cont.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const c=e.target.closest('.card');if(c&&c.dataset.n){e.preventDefault();openDetail(c.dataset.el,c.dataset.n,+c.dataset.g);}});
   const cartListEl=document.getElementById('grim-cartList');
   cartListEl.addEventListener('click',e=>{const x=e.target.closest('.ci-x');if(x){removeFromCart(x.dataset.el,x.dataset.n);return;}
-    const it=e.target.closest('.cart-it');if(it&&it.dataset.n){closeCart();openDetail(it.dataset.el,it.dataset.n,+it.dataset.g);}});
-  cartListEl.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const it=e.target.closest('.cart-it');if(it&&it.dataset.n){e.preventDefault();closeCart();openDetail(it.dataset.el,it.dataset.n,+it.dataset.g);}});
+    const it=e.target.closest('.cart-it');if(it&&it.dataset.n){openDetail(it.dataset.el,it.dataset.n,+it.dataset.g);}});
+  cartListEl.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const it=e.target.closest('.cart-it');if(it&&it.dataset.n){e.preventDefault();openDetail(it.dataset.el,it.dataset.n,+it.dataset.g);}});
   // rail de essências (mobile): botão hambúrguer + backdrop
   const railBtn=document.getElementById('grim-railBtn'),railScrim=document.getElementById('grim-railScrim');
   if(railBtn)railBtn.onclick=openRail;
