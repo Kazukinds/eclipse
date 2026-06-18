@@ -7310,9 +7310,9 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
   .card,.summary-bar,.progress-card,.stat-block,.credit-card,.inv-card,.profile-stats-card,.profile-sidebar-card,.cfg-block,.prof-card,.interludio-card{border:none!important;box-shadow:none!important;background:var(--bg-card)!important}
   /* ═══ TOPBAR FIXED — bg opaco igual ao body (sem seam) ═══ */
   .topbar{
-    position:fixed!important;top:0;
+    position:sticky!important;top:0;
     left:0;right:0;width:auto;
-    padding:calc(4px + env(safe-area-inset-top,0px)) 16px 4px;gap:0;
+    padding:calc(8px + env(safe-area-inset-top,0px)) 16px 8px;gap:0;
     background:var(--bg-body)!important;
     border:none!important;
     border-bottom:1px solid var(--border)!important;
@@ -7334,8 +7334,8 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
   .topbar-actions{justify-content:flex-end;margin-left:auto;flex:0 0 auto;flex-shrink:0;gap:6px;display:flex!important;visibility:visible!important;opacity:1!important}
   .topbar{display:flex!important}
   .topbar-row-1{display:flex!important;width:100%}
-  /* Content compensa topbar fixa (sobe até embaixo da pill) */
-  .main-wrapper{padding-top:calc(54px + env(safe-area-inset-top,0px))}
+  /* topbar sticky fica no fluxo — wrapper nao reserva espaco extra (so a safe-area) */
+  .main-wrapper{padding-top:0}
   .content{padding-top:0}
 
   /* Header XP/Estagio empilhado — botões verticais à direita */
