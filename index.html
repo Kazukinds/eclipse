@@ -8589,8 +8589,9 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .sp-step:hover{border-color:color-mix(in srgb,var(--c) 50%,var(--border));color:var(--c)}
 .sp-step:active{transform:scale(.9)}
 .sp-step:disabled{opacity:.32;cursor:not-allowed}
+.ad-body-wrap{display:flex;flex-direction:column;justify-content:center;gap:8px;min-height:100%}
 .ad-list{display:flex;flex-direction:column;gap:18px;padding:6px 2px;max-width:560px;margin:0 auto;width:100%}
-.ad-donut-wrap{max-width:560px;margin-left:auto;margin-right:auto}
+.ad-donut-wrap{max-width:560px;margin:0 auto !important;padding:8px}
 /* === Barras listradas (hachura diagonal) === */
 .ad-hrow{display:flex;align-items:center;gap:14px;user-select:none;-webkit-user-select:none}
 .ad-hrow *{user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
@@ -29918,7 +29919,7 @@ function _adMarkup(){
     <button class="modal-btn secondary" onclick="_adReset()">Zerar</button>
     <button class="modal-btn primary" onclick="_adSave()">Salvar</button>
   </div>`;
-  return _adDonutMarkup()+`<div class="ad-list">${rows}</div>`+footer;
+  return `<div class="ad-body-wrap">${_adDonutMarkup()}<div class="ad-list">${rows}</div></div>`+footer;
 }
 function _adDonutMarkup(){
   const s=_adState;
