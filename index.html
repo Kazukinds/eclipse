@@ -35684,6 +35684,7 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .toolbar{flex:1;min-width:0}
   .grimorio-root .toolbar:empty{display:none}
   .grimorio-root .tb-row{display:flex;align-items:stretch;gap:10px;min-width:0;position:relative}
+  .grimorio-root .tb-menu{display:none}
   .grimorio-root .tb-top{flex:1 1 auto;min-width:0;display:flex;gap:11px;align-items:center;
     border:1px solid var(--line);border-radius:12px;background:var(--panel-2);padding:0 15px;transition:border-color .18s,box-shadow .18s}
   .grimorio-root .tb-top:focus-within{border-color:color-mix(in srgb,var(--acc) 60%,var(--line));box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 14%,transparent)}
@@ -35941,8 +35942,12 @@ body[data-perf-low] .dcard-handle{display:none}
     .grimorio-root .gtop{padding:12px 16px;gap:10px}
     .grimorio-root .cards{grid-template-columns:1fr;gap:14px}
     .grimorio-root .stats,.grimorio-root .gd-scroll .stats{grid-template-columns:repeat(2,1fr)}
-    /* toolbar empilha: busca em cima, controles embaixo */
-    .grimorio-root .tb-row{display:grid;grid-template-columns:1fr auto auto auto;grid-template-areas:"search search search search" "filt sort view cart";gap:9px}
+    /* toolbar empilha: busca full em cima, [menu][controles] embaixo */
+    .grimorio-root .gtop-menu{display:none!important}
+    .grimorio-root .tb-menu{display:flex;grid-area:menu;align-items:center;justify-content:center;width:auto;padding:11px 14px;
+      border:1px solid var(--line);border-radius:11px;background:#161619;color:var(--txt);cursor:pointer}
+    .grimorio-root .tb-menu svg{width:20px;height:20px}
+    .grimorio-root .tb-row{display:grid;grid-template-columns:auto 1fr auto auto auto;grid-template-areas:"search search search search search" "menu filt sort view cart";gap:9px}
     .grimorio-root .tb-top{grid-area:search}
     .grimorio-root .grim-filtbtn{grid-area:filt;justify-content:center;padding:11px 14px}
     .grimorio-root .grim-sort{grid-area:sort}
@@ -35954,7 +35959,7 @@ body[data-perf-low] .dcard-handle{display:none}
   }
   @media(max-width:440px){
     .grimorio-root .m-head h2{font-size:34px}
-    .grimorio-root .tb-row{grid-template-columns:1fr auto auto;grid-template-areas:"search search search" "filt sort cart"}
+    .grimorio-root .tb-row{grid-template-columns:auto 1fr auto auto;grid-template-areas:"search search search search" "menu filt sort cart"}
     .grimorio-root .viewtog{display:none}
   }
 </style>
@@ -36567,6 +36572,7 @@ function renderToolbar(){
   const nAtivos=(grauF!=='all'?1:0)+(catF!=='all'?1:0);
   // Barra estilo Behance: [Filtrar] [busca] [view]
   toolbar.innerHTML=`<div class="tb-row">`
+    +`<button class="tb-menu" id="grim-railBtn2" type="button" aria-label="Essências"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>`
     +`<button class="grim-filtbtn" id="grim-filtbtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>Filtrar${nAtivos?`<span class="filt-badge">${nAtivos}</span>`:''}</button>`
     +`<div class="tb-top"><input class="search" id="grim-srch" placeholder="Buscar feitiço..." value="${query}"></div>`
     +`<details class="grim-sort"><summary class="grim-sort-btn"><b>${SORTS[sortMode]}</b><span class="dd-chev">▾</span></summary><div class="grim-sort-panel">${Object.entries(SORTS).map(([k,v])=>`<button class="sort-opt" data-s="${k}" ${sortMode===k?'data-on="1"':''}><span>${v}</span></button>`).join('')}</div></details>`
@@ -36590,6 +36596,7 @@ function renderToolbar(){
   const openDrawer=()=>drawer.classList.add('open');
   const closeDrawer=()=>drawer.classList.remove('open');
   document.getElementById('grim-filtbtn').onclick=openDrawer;
+  {const rb2=document.getElementById('grim-railBtn2');if(rb2)rb2.onclick=openRail;}
   drawer.querySelector('#gfd-x').onclick=closeDrawer;
   drawer.querySelector('#gfd-scrim').onclick=closeDrawer;
   drawer.querySelector('#gfd-apply').onclick=closeDrawer;
