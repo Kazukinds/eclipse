@@ -8509,7 +8509,21 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
   border-radius:0;
   transition:width .35s cubic-bezier(.4,0,.2,1);
 }
-/* === Radar central === */
+/* === Donut de proporção === */
+.ad-donut-wrap{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin:4px 0 16px;padding:18px 8px}
+.ad-legend{display:flex;flex-direction:column;gap:13px;min-width:150px}
+.ad-legend-row{display:flex;align-items:center;gap:10px;font-size:14px}
+.ad-legend-dot{width:13px;height:13px;border-radius:50%;flex-shrink:0}
+.ad-legend-name{flex:1;color:var(--text-secondary);font-weight:500}
+.ad-legend-pct{font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.ad-donut{position:relative;width:160px;height:160px;flex-shrink:0}
+.ad-donut svg{width:100%;height:100%;display:block;overflow:visible}
+.ad-donut-seg{transition:stroke-dasharray .5s cubic-bezier(.4,0,.2,1),stroke-dashoffset .5s cubic-bezier(.4,0,.2,1),opacity .3s}
+.ad-donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.ad-donut-center span{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:800;color:var(--text-primary);line-height:1;font-variant-numeric:tabular-nums}
+.ad-donut-center small{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-dim);font-weight:700;margin-top:4px}
+@media(max-width:420px){.ad-donut-wrap{gap:14px}.ad-donut{width:140px;height:140px}}
+/* === Radar central (legacy) === */
 .ad-radar-wrap{
   position:relative;display:flex;justify-content:center;align-items:center;
   margin:2px 0 16px;padding:14px 8px 8px;
@@ -29838,7 +29852,45 @@ function _adMarkup(){
     <button class="modal-btn secondary" onclick="_adReset()">Zerar</button>
     <button class="modal-btn primary" onclick="_adSave()">Salvar</button>
   </div>`;
-  return ptsBar+`<div class="ad-list">${rows}</div>`+footer;
+  return _adDonutMarkup()+ptsBar+`<div class="ad-list">${rows}</div>`+footer;
+}
+function _adDonutMarkup(){
+  const lbl=(typeof ATTR_LABEL!=='undefined')?ATTR_LABEL:{};
+  const C=2*Math.PI*52; // circunferencia (r=52)
+  const segs=_AD_KEYS.map(n=>`<circle class="ad-donut-seg" id="ad-donut-${n}" cx="80" cy="80" r="52" fill="none" stroke="${_AD_COLORS[n]||'var(--magenta)'}" stroke-width="20" stroke-linecap="round" stroke-dasharray="0 ${C.toFixed(1)}" stroke-dashoffset="0" transform="rotate(-90 80 80)"/>`).join('');
+  const legend=_AD_KEYS.map(n=>`<div class="ad-legend-row"><span class="ad-legend-dot" style="background:${_AD_COLORS[n]||'var(--magenta)'}"></span><span class="ad-legend-name">${lbl[n]||n}</span><span class="ad-legend-pct" id="ad-pct-${n}">0%</span></div>`).join('');
+  return `<div class="ad-donut-wrap">
+    <div class="ad-legend">${legend}</div>
+    <div class="ad-donut">
+      <svg viewBox="0 0 160 160" role="img" aria-label="Proporção de atributos">
+        <circle cx="80" cy="80" r="52" fill="none" stroke="var(--border)" stroke-width="20" opacity=".5"/>
+        ${segs}
+      </svg>
+      <div class="ad-donut-center"><span id="ad-donut-total">0</span><small>pontos</small></div>
+    </div>
+  </div>`;
+}
+function _adDonutUpdate(){
+  const s=_adState; if(!s)return;
+  const C=2*Math.PI*52;
+  const total=_AD_KEYS.reduce((t,k)=>t+s.draft[k],0);
+  const tot=document.getElementById('ad-donut-total'); if(tot)tot.textContent=total;
+  let acc=0;
+  _AD_KEYS.forEach(n=>{
+    const v=s.draft[n];
+    const frac=total>0?v/total:0;
+    const len=frac*C;
+    const seg=document.getElementById('ad-donut-'+n);
+    if(seg){
+      const gap=len>0?Math.max(0,len-3):0; // respiro entre segmentos
+      seg.setAttribute('stroke-dasharray',gap.toFixed(2)+' '+(C-gap).toFixed(2));
+      seg.setAttribute('stroke-dashoffset',(-acc).toFixed(2));
+      seg.style.opacity=v>0?'1':'0';
+    }
+    const pct=document.getElementById('ad-pct-'+n);
+    if(pct)pct.textContent=(total>0?Math.round(frac*100):0)+'%';
+    acc+=len;
+  });
 }
 function _adRadarMarkup(){
   const cx=_AD_CX,cy=_AD_CY,R=_AD_R;
@@ -29885,6 +29937,7 @@ function _adRefresh(){
     const inc=document.getElementById('ad-inc-'+n); if(inc)inc.disabled=!s.unlocked&&(remaining<=0||v>=s.cap.maxPerAttr);
     const row=document.getElementById('ad-row-'+n); if(row)row.classList.toggle('has-points',v>0);
   });
+  _adDonutUpdate();
 }
 function _adRadarUpdate(){
   const s=_adState; if(!s)return;
