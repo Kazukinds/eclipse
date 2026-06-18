@@ -35717,6 +35717,7 @@ body[data-perf-low] .dcard-handle{display:none}
       <div id="grim-content"></div>
       <footer id="grim-ft"></footer>
     </main>
+    <div class="gdetail" id="grim-detail" data-on="0"></div>
   </div>
 
   <div class="cart-scrim" id="grim-cartScrim" data-on="0"></div>
@@ -35947,6 +35948,40 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .apr .tier{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acc2)}
   .grimorio-root .apr .pe{font-size:10px;font-weight:600;letter-spacing:.04em;color:var(--muted);padding:2px 7px;border-radius:6px;background:#161619}
   .grimorio-root .apr-t{font-size:13.5px;line-height:1.7;color:#b8b5c2}
+  .grimorio-root .card{cursor:pointer}
+  .grimorio-root .card:focus-visible{outline:2px solid var(--acc2);outline-offset:3px}
+  .grimorio-root .card .addbtn{cursor:pointer}
+
+  /* ═══════════ VISÃO DETALHADA (clique no card) ═══════════ */
+  .grimorio-root .gdetail{position:absolute;inset:var(--top-h) 0 0 0;z-index:45;background:var(--bg);
+    opacity:0;visibility:hidden;transform:translateX(18px);transition:opacity .26s,transform .3s cubic-bezier(.2,.8,.2,1),visibility .26s}
+  .grimorio-root .gdetail[data-on="1"]{opacity:1;visibility:visible;transform:none}
+  .grimorio-root .gd-inner{height:100%;display:flex;flex-direction:column;min-height:0}
+  .grimorio-root .gd-bar{flex:0 0 auto;display:flex;align-items:center;gap:16px;padding:16px 48px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .grimorio-root .gd-close{display:inline-flex;align-items:center;gap:8px;padding:9px 15px 9px 11px;border:1px solid var(--line);border-radius:11px;
+    background:#161619;color:var(--muted);font-size:12.5px;font-weight:600;cursor:pointer;transition:.16s}
+  .grimorio-root .gd-close svg{width:17px;height:17px}
+  .grimorio-root .gd-close:hover{color:var(--txt);border-color:color-mix(in srgb,var(--bc2) 55%,var(--line));background:#1d1d22}
+  .grimorio-root .gd-ess{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--bc2)}
+  .grimorio-root .gd-ess-ico{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:7px;background:color-mix(in srgb,var(--bc) 16%,transparent)}
+  .grimorio-root .gd-ess-ico svg{width:15px;height:15px}
+  .grimorio-root .gd-scroll{flex:1;min-height:0;overflow-y:auto;padding:38px 48px 64px;max-width:760px;width:100%;margin:0 auto}
+  .grimorio-root .gd-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:24px}
+  .grimorio-root .gd-head h2{margin:0;font-weight:500;font-size:clamp(30px,4.4vw,46px);line-height:1.08;letter-spacing:-.015em;color:var(--txt)}
+  .grimorio-root .gd-scroll .stats{margin-bottom:24px}
+  .grimorio-root .gd-scroll .desc{font-size:15.5px;line-height:1.85}
+  .grimorio-root .gd-add{margin-top:30px;display:inline-flex;align-items:center;gap:9px;padding:14px 22px;border-radius:12px;cursor:pointer;
+    border:1px solid var(--bc2);background:color-mix(in srgb,var(--bc) 16%,transparent);color:var(--bc2);font-size:13px;font-weight:700;letter-spacing:.04em;transition:.16s;font-family:inherit}
+  .grimorio-root .gd-add svg{width:17px;height:17px}
+  .grimorio-root .gd-add:hover{background:color-mix(in srgb,var(--bc) 26%,transparent)}
+  .grimorio-root .gd-add[data-added="1"]{background:var(--bc2);border-color:var(--bc2);color:#0a0a0a;cursor:default}
+  @media(max-width:1080px){
+    /* mobile: overlay sobe a tela toda, acima da topbar */
+    .grimorio-root .gdetail{position:fixed;inset:0;z-index:9300;transform:translateY(100%)}
+    .grimorio-root .gdetail[data-on="1"]{transform:none}
+    .grimorio-root .gd-bar{padding:16px 18px;position:sticky;top:0}
+    .grimorio-root .gd-scroll{padding:28px 18px 80px}
+  }
 
   /* ═══════════ MODO LISTA ═══════════ */
   .grimorio-root .rows{display:flex;flex-direction:column;border-top:1px solid var(--line)}
@@ -36709,11 +36744,46 @@ function aprsOf(f){
 }
 function catTag(f){return f.cat?`<span class="cat-tag" data-cat="${f.cat}">${f.cat}</span>`:'';}
 function card(f,g){
-  return `<div class="card"><div class="card-h"><h3>${f.n}</h3><div class="card-h-r">${catTag(f)}${addBtn(f,g)}</div></div><div class="stats">${statsOf(f)}</div><p class="desc">${f.d}</p>${aprsOf(f)}</div>`;
+  return `<div class="card" data-el="${atual}" data-n="${(f.n||'').replace(/"/g,'&quot;')}" data-g="${g}" tabindex="0" role="button"><div class="card-h"><h3>${f.n}</h3><div class="card-h-r">${catTag(f)}${addBtn(f,g)}</div></div><div class="stats">${statsOf(f)}</div><p class="desc">${f.d}</p>${aprsOf(f)}</div>`;
 }
 function row(f,g){
   return `<details class="row"><summary class="row-h"><span class="row-n">${f.n}</span><span class="row-meta">${f.ex}${f.al?' · '+f.al:''}</span>${catTag(f)}${addBtn(f,g)}<span class="row-chev">⌄</span></summary><div class="row-body"><div class="stats">${statsOf(f)}</div><p class="desc">${f.d}</p>${aprsOf(f)}</div></details>`;
 }
+
+// ===== visão detalhada do feitiço (clique no card) =====
+function findFeit(el,n,g){const arr=(FEITICOS[el]&&FEITICOS[el][g])||[];return arr.find(f=>f.n===n);}
+function openDetail(el,n,g){
+  const f=findFeit(el,n,g);if(!f)return;
+  const e=cEl(el);const inc=inCart(el,f.n);
+  const det=document.getElementById('grim-detail');if(!det)return;
+  det.style.setProperty('--bc',e.cor||'var(--acc)');
+  det.style.setProperty('--bc2',e.cor2||'var(--acc2)');
+  det.innerHTML=`<div class="gd-inner">
+    <div class="gd-bar">
+      <button class="gd-close" id="grim-detClose" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Voltar</span></button>
+      <span class="gd-ess"><span class="gd-ess-ico">${SVGS[el]||''}</span>${e.nome||el} · Grau ${g}</span>
+    </div>
+    <div class="gd-scroll">
+      <div class="gd-head">
+        <h2 class="serif">${f.n}</h2>
+        ${catTag(f)}
+      </div>
+      <div class="stats">${statsOf(f)}</div>
+      <p class="desc">${f.d}</p>
+      ${aprsOf(f)}
+      <button class="gd-add" id="grim-detAdd" data-el="${el}" data-n="${(f.n||'').replace(/"/g,'&quot;')}" data-g="${g}" data-c="${f.cat||''}" ${inc?'data-added="1"':''}>
+        ${inc?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Na compra':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Adicionar à compra'}
+      </button>
+    </div>
+  </div>`;
+  det.dataset.on=1;
+  document.getElementById('grimorio-screen').dataset.detail=1;
+  det.querySelector('#grim-detClose').onclick=closeDetail;
+  const addB=det.querySelector('#grim-detAdd');
+  if(addB)addB.onclick=()=>{if(addB.dataset.added==='1')return;addToCart(el,f.n,g,f.cat,null);addB.dataset.added='1';addB.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Na compra';bumpFab();};
+  const sc=det.querySelector('.gd-scroll');if(sc)sc.scrollTop=0;
+}
+function closeDetail(){const det=document.getElementById('grim-detail');if(det)det.dataset.on=0;document.getElementById('grimorio-screen').dataset.detail=0;}
 
 // ===== carrinho de compra de feitiços =====
 let cart=[];
@@ -36784,12 +36854,15 @@ function bootGrimorio(){
   document.getElementById('grim-cartClose').onclick=closeCart;
   document.getElementById('grim-cartScrim').onclick=closeCart;
   document.getElementById('grim-cartBuy').onclick=confirmBuy;
-  cont.addEventListener('click',e=>{const b=e.target.closest('.addbtn');if(b){e.preventDefault();e.stopPropagation();addToCart(b.dataset.el,b.dataset.n,b.dataset.g,b.dataset.c,b);}});
+  cont.addEventListener('click',e=>{const b=e.target.closest('.addbtn');if(b){e.preventDefault();e.stopPropagation();addToCart(b.dataset.el,b.dataset.n,b.dataset.g,b.dataset.c,b);return;}
+    const c=e.target.closest('.card');if(c&&c.dataset.n){openDetail(c.dataset.el,c.dataset.n,+c.dataset.g);}});
+  cont.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const c=e.target.closest('.card');if(c&&c.dataset.n){e.preventDefault();openDetail(c.dataset.el,c.dataset.n,+c.dataset.g);}});
   document.getElementById('grim-cartList').addEventListener('click',e=>{const x=e.target.closest('.ci-x');if(x)removeFromCart(x.dataset.el,x.dataset.n);});
   // rail de essências (mobile): botão hambúrguer + backdrop
   const railBtn=document.getElementById('grim-railBtn'),railScrim=document.getElementById('grim-railScrim');
   if(railBtn)railBtn.onclick=openRail;
   if(railScrim)railScrim.onclick=closeRail;
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!ROOT.hidden){const det=document.getElementById('grim-detail');if(det&&det.dataset.on==='1'){closeDetail();}else{closeRail();closeCart();}}});
   updateCart();
 }
 function openRail(){const r=document.getElementById('grim-sideEl');if(r)r.classList.add('open');const s=document.getElementById('grim-railScrim');if(s)s.dataset.on=1;}
