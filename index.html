@@ -30041,17 +30041,18 @@ function _adDonutUpdate(){
       const newOff=-acc;
       const prevGap=_adDonutUpdate._gap[n]; const prevOff=_adDonutUpdate._off[n];
       const da=g=>g.toFixed(2)+' '+(C-g).toFixed(2);
-      seg.style.opacity=v>0?'1':'0';
       // estado final (persiste apos a animacao)
       seg.style.strokeDasharray=da(gap);
       seg.style.strokeDashoffset=newOff.toFixed(2);
+      seg.style.opacity=v>0?'1':'0';
       if(seg.animate && (prevGap!==undefined) && (prevGap!==gap || prevOff!==newOff)){
-        // desenha progredindo: anima do estado anterior -> novo (offset reposiciona, comprimento cresce)
+        // anima prev -> novo nos dois sentidos (cresce ao + / encolhe ao -). easing simetrico, sem overshoot
         seg.getAnimations&&seg.getAnimations().forEach(a=>a.cancel());
+        const prevOp=prevGap>0?1:0, newOp=gap>0?1:0;
         seg.animate(
-          [{strokeDasharray:da(prevGap),strokeDashoffset:prevOff.toFixed(2)},
-           {strokeDasharray:da(gap),strokeDashoffset:newOff.toFixed(2)}],
-          {duration:900,easing:'cubic-bezier(.34,1.15,.45,1)',fill:'backwards'}
+          [{strokeDasharray:da(prevGap),strokeDashoffset:prevOff.toFixed(2),opacity:prevOp},
+           {strokeDasharray:da(gap),strokeDashoffset:newOff.toFixed(2),opacity:newOp}],
+          {duration:750,easing:'cubic-bezier(.4,0,.2,1)',fill:'backwards'}
         );
       }
       _adDonutUpdate._gap[n]=gap; _adDonutUpdate._off[n]=newOff;
