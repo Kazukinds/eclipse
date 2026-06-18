@@ -8614,6 +8614,12 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .sp-step:active{transform:scale(.9)}
 .sp-step:disabled{opacity:.32;cursor:not-allowed}
 .ad-body-wrap{display:flex;flex-direction:column;justify-content:center;gap:8px;min-height:100%}
+/* vertical/celular: espalha as secoes pelo espaco (sem vazio concentrado) */
+@media(max-width:560px),(orientation:portrait){
+  .ad-body-wrap{justify-content:space-evenly;gap:0;height:100%}
+  .ad-body-wrap .ad-donut-wrap{margin:0 auto}
+  .ad-body-wrap .ad-list{gap:14px}
+}
 .ad-list{display:flex;flex-direction:column;gap:11px;padding:4px 2px;max-width:560px;margin:0 auto;width:100%}
 .ad-donut-wrap{max-width:560px;margin:0 auto !important;padding:8px}
 /* === Barras listradas (hachura diagonal) === */
