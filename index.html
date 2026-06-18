@@ -9473,10 +9473,9 @@ body.forja-sub-open #modal-overlay{transition:backdrop-filter .25s}
 .acv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;align-items:start}
 /* card com paleta da essencia (--acv-c) */
 .acv-card{position:relative;display:flex;flex-direction:column;gap:12px;text-align:left;width:100%;padding:16px 18px;cursor:pointer;font-family:Inter,system-ui,sans-serif;overflow:hidden;
-  background:linear-gradient(160deg,color-mix(in srgb,var(--acv-c,#888) 16%,#1c1c20),#19191d 70%);
-  border:1px solid color-mix(in srgb,var(--acv-c,#888) 28%,rgba(255,255,255,.08));border-radius:14px;
-  transition:border-color .18s,transform .14s,box-shadow .18s}
-.acv-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--acv-c) 55%,rgba(255,255,255,.1))}
+  background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:6px;
+  transition:border-color .18s,transform .14s,background .18s}
+.acv-card:hover{transform:translateY(-2px);background:#202020;border-color:rgba(255,255,255,.16)}
 .acv-card>*{position:relative;z-index:1}
 .acv-card-head{display:flex;align-items:center;gap:11px}
 .acv-grau{flex:0 0 32px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:9px;
@@ -24757,7 +24756,7 @@ function renderFichaConds(){
 // ═══ FEITIÇOS ═══
 let _feitFilter='all',_editingFeitId=null,_ritualView=null;
 function _ritualScrollTop(){const mb=document.getElementById('ritual-main-body');if(mb)mb.scrollTop=0}
-window.openRitualView=function(id){if(typeof openAddFeiticoModal==='function')openAddFeiticoModal(id);};
+window.openRitualView=function(id){_ritualView={id,page:0};renderFeitTab();_ritualScrollTop();};
 window.closeRitualView=function(){_ritualView=null;renderFeitTab();_ritualScrollTop()};
 window.duplicateRitual=function(id){const f=(fichaData.feiticos||[]).find(x=>x.id===id);if(!f)return;const copy=JSON.parse(JSON.stringify(f));copy.id='f'+Date.now().toString(36);copy.name='Cópia de '+(f.name||'sem nome');fichaData.feiticos.push(copy);if(typeof autosaveDebounced==='function')autosaveDebounced();_ritualView={id:copy.id,page:0};renderFeitTab();_ritualScrollTop();if(typeof toast==='function')toast('Ritual duplicado','success')};
 window.ritualViewNav=function(d){if(!_ritualView)return;const PAGES=4;_ritualView.page=Math.max(0,Math.min(PAGES-1,_ritualView.page+d));renderFeitTab();_ritualScrollTop()};
@@ -24815,7 +24814,7 @@ function renderFeitTab(){
         {k:'descricao',ttl:'Descrição'}
       ];
       const p=_ritualView.page;const pg=PAGES[p];
-      if(mainTtl)mainTtl.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0"><button class="ritual-back-btn" onclick="closeRitualView()" title="Voltar (Esc)">←</button><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${(f.name||'sem nome')} <span style="color:var(--text-dim);font-weight:400;font-size:13px">· ${pg.ttl}</span></span></div><div class="rv-head-actions"><button class="ritual-back-btn" onclick="duplicateRitual('${f.id}')" title="Duplicar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="ritual-back-btn" onclick="openAddFeiticoModal('${f.id}')" title="Editar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button><button class="ritual-back-btn" onclick="(async()=>{if(await appConfirm('Remover ritual?')){removeFeitico('${f.id}');closeRitualView()}})()" title="Excluir" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div>`;
+      if(mainTtl)mainTtl.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0"><button class="ritual-back-btn" onclick="closeRitualView()" title="Voltar (Esc)">←</button><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${(f.name||'sem nome')} <span style="color:var(--text-dim);font-weight:400;font-size:13px">· ${pg.ttl}</span></span></div><div class="rv-head-actions"><button class="ritual-back-btn" onclick="duplicateRitual('${f.id}')" title="Duplicar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="ritual-back-btn" onclick="(async()=>{if(await appConfirm('Remover ritual?')){removeFeitico('${f.id}');closeRitualView()}})()" title="Excluir" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div>`;
       if(mainPager)mainPager.textContent=(p+1)+' / '+PAGES.length;
       const esc=s=>String(s||'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
       const fmtId='#'+(f.id||'').replace(/^f/,'').slice(0,5).toUpperCase();
@@ -24839,7 +24838,7 @@ function renderFeitTab(){
         ${f.efeitosSec?.length?`<div class="rv-section">EFEITOS SECUNDÁRIOS</div>${f.efeitosSec.map(e=>`<div class="rv-eff sec"><span>− ${esc(e.nome)}</span><span class="rv-eff-pts" style="color:#50a870">−${e.custo} pts</span></div>`).join('')}`:''}`;}
       else if(p===3){content=`
         <div class="rv-desc">${f.desc?esc(f.desc).split('\n').map(l=>`<p>${l||'&nbsp;'}</p>`).join(''):'<p class="rv-empty-text">Nenhuma descrição registrada.</p>'}</div>
-        <div class="rv-actions"><button class="ritual-btn" onclick="openAddFeiticoModal('${f.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><span>Editar</span></button><button class="ritual-btn" style="border-color:var(--red);color:var(--red)" onclick="(async()=>{if(await appConfirm('Remover ritual?')){removeFeitico('${f.id}');closeRitualView()}})()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg><span>Excluir</span></button></div>`;}
+        <div class="rv-actions"><button class="ritual-btn" style="border-color:var(--red);color:var(--red)" onclick="(async()=>{if(await appConfirm('Remover ritual?')){removeFeitico('${f.id}');closeRitualView()}})()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg><span>Excluir</span></button></div>`;}
       mainBody.innerHTML='<div class="rv-page">'+content+'</div>';
       if(mainNav)mainNav.innerHTML=`<button class="ritual-main-nav-btn" onclick="ritualViewNav(-1)" ${p===0?'disabled':''} title="Anterior (←)">←</button><div class="ritual-main-nav-dots">${PAGES.map((pp,i)=>`<button class="ritual-main-nav-dot${i===p?' active':''}" onclick="ritualViewGoto(${i})" title="${pp.ttl}"></button>`).join('')}</div><button class="ritual-main-nav-btn" onclick="ritualViewNav(1)" ${p===PAGES.length-1?'disabled':''} title="Próximo (→)">→</button>`;
       return;
