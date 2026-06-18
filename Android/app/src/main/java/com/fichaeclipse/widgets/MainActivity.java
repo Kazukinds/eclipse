@@ -488,6 +488,12 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         _enterImmersive();
+        // Retoma a instalacao apos o usuario conceder "instalar apps desconhecidos"
+        if (_pendingApk != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                && getPackageManager().canRequestPackageInstalls()) {
+            File apk = _pendingApk; _pendingApk = null;
+            _installApk(apk);
+        }
         if (webView != null) {
             webView.onResume();
             // Restaura aba se foi salva
@@ -879,7 +885,25 @@ public class MainActivity extends Activity {
         }
     }
 
+    private File _pendingApk; // APK aguardando permissao "instalar apps desconhecidos"
+
     private void _installApk(File apk) {
+        // Android 8+ exige permissao "instalar apps desconhecidos". Sem ela, o install
+        // e bloqueado silenciosamente (APK baixa mas nao instala). Checa e pede primeiro.
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                    && !getPackageManager().canRequestPackageInstalls()) {
+                _pendingApk = apk;
+                if (webView != null)
+                    webView.evaluateJavascript(
+                        "window.toast&&toast('Permita \\u0027instalar apps desconhecidos\\u0027 para atualizar','info')", null);
+                Intent perm = new Intent(android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                        Uri.parse("package:" + getPackageName()));
+                perm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(perm);
+                return;
+            }
+        } catch (Exception ignore) {}
         // REVERT: Session installer estava silenciando install em devices sem installer-of-record.
         // Voltar pra Intent.ACTION_VIEW direto (mostra dialog do sistema, install confiável).
         // Session install (PackageInstaller API) ficou disponível via _installViaSession se precisar testar.
