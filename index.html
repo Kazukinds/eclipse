@@ -8586,10 +8586,21 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .ad-info-val small{font-size:12px;color:var(--text-dim);font-weight:600}
 .ad-info-what{font-size:12.5px;line-height:1.5;color:#cfccd6;margin-bottom:10px;text-align:justify}
 .ad-info-tier{font-size:12.5px;line-height:1.5;color:var(--text-primary);padding:10px 12px;background:color-mix(in srgb,var(--c) 8%,#161616);border:1px solid color-mix(in srgb,var(--c) 22%,var(--border));border-radius:10px}
+.ad-info-tierlbl{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 60%,var(--text-secondary));margin-bottom:6px}
+/* avaliacao do build (overview) */
+.ad-ov-list{display:flex;flex-direction:column;gap:9px;margin:4px 0 4px}
+.ad-ov-row{display:flex;align-items:center;gap:9px;font-size:13px}
+.ad-ov-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.ad-ov-name{flex:0 0 84px;color:var(--text-primary);font-weight:600}
+.ad-ov-tag{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);border:1px solid var(--border-light);border-radius:999px;padding:2px 6px}
+.ad-ov-bar{flex:1;height:7px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden;min-width:0}
+.ad-ov-bar i{display:block;height:100%;border-radius:4px;transition:width .4s ease}
+.ad-ov-v{flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--text-primary);min-width:14px;text-align:right}
 .ad-donut-center span{display:inline-block}
 .ad-donut-center span.ad-bump{animation:ad-bump .42s cubic-bezier(.34,1.56,.64,1)}
 @keyframes ad-bump{0%{transform:scale(1)}38%{transform:scale(1.32)}100%{transform:scale(1)}}
-.ad-donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.ad-donut-center{position:absolute;inset:24%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:none;border:0;cursor:pointer;border-radius:50%;transition:background .15s;font:inherit;color:inherit}
+.ad-donut-center:hover{background:rgba(255,255,255,.05)}
 .ad-donut-center span{font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:800;color:var(--text-primary);line-height:1;font-variant-numeric:tabular-nums}
 .ad-donut-center small{font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--text-dim);font-weight:700;margin-top:4px}
 @media(max-width:760px){.ad-donut-wrap{gap:18px;padding:14px 4px;justify-content:center;flex-wrap:nowrap}.ad-legend{gap:8px;min-width:0;flex:0 1 auto}.ad-legend-row{font-size:15px}.ad-donut{width:172px;height:172px}.ad-donut-center span{font-size:37px}.ad-donut-center small{font-size:10px}}
@@ -30018,7 +30029,7 @@ function _adDonutMarkup(){
         <circle cx="80" cy="80" r="52" fill="none" stroke="#2e2e2e" stroke-width="20"/>
         ${segs}
       </svg>
-      <div class="ad-donut-center"><span id="ad-donut-total">${s.unlocked?'∞':s.cap.totalPts}</span><small>restam</small></div>
+      <button type="button" class="ad-donut-center" onclick="_adOverviewOpen()" title="Avaliação da distribuição"><span id="ad-donut-total">${s.unlocked?'∞':s.cap.totalPts}</span><small>restam</small></button>
     </div>
   </div>`;
 }
@@ -30113,6 +30124,38 @@ window._adInfoOpen=function(n){
   requestAnimationFrame(()=>ov.classList.add('open'));
 };
 window._adInfoClose=function(){const ov=document.getElementById('ad-info-ov');if(!ov)return;ov.classList.remove('open');setTimeout(()=>{if(ov&&ov.parentNode)ov.parentNode.removeChild(ov);},220);};
+window._adOverviewOpen=function(){
+  const s=_adState;if(!s)return;
+  const lbl=(typeof ATTR_LABEL!=='undefined')?ATTR_LABEL:{};
+  const total=_AD_KEYS.reduce((t,k)=>t+s.draft[k],0);
+  let ov=document.getElementById('ad-info-ov');
+  if(!ov){ov=document.createElement('div');ov.id='ad-info-ov';ov.className='ad-info-ov';ov.addEventListener('click',e=>{if(e.target===ov)_adInfoClose();});document.body.appendChild(ov);}
+  ov.style.setProperty('--c','#a3a3a3');ov.removeAttribute('data-attr');
+  // ranking por valor
+  const sorted=_AD_KEYS.slice().sort((a,b)=>s.draft[b]-s.draft[a]);
+  const top=sorted[0], low=sorted[sorted.length-1];
+  const vals=_AD_KEYS.map(n=>s.draft[n]);
+  const maxV=Math.max(...vals), minV=Math.min(...vals), spread=maxV-minV;
+  const nonZero=_AD_KEYS.filter(n=>s.draft[n]>0).length;
+  let veredito,perfil;
+  if(total===0){veredito='Nenhum ponto distribuído.';perfil='Distribua pontos para ver a avaliação do personagem.';}
+  else{
+    if(spread===0&&nonZero===4){veredito='Build equilibrado.';perfil='Pontos igualados entre os quatro atributos — versátil, sem fraquezas marcantes nem um pico de especialização.';}
+    else if(nonZero===1){veredito='Build extremo (especialista).';perfil=`Tudo investido em ${lbl[top]||top}. Domina o que esse atributo cobre, mas fica vulnerável em tudo o que depende dos outros três.`;}
+    else if(spread>=Math.max(3,Math.ceil(maxV*0.6))){veredito='Build focado.';perfil=`Concentra em ${lbl[top]||top} (${s.draft[top]}) com apoio menor. ${lbl[low]||low} (${s.draft[low]}) é o ponto fraco — evite situações que o exijam.`;}
+    else{veredito='Build híbrido.';perfil=`Distribuição razoavelmente espalhada, puxando para ${lbl[top]||top}. Adaptável, mas sem um pico forte de especialização.`;}
+  }
+  const rows=sorted.map((n,i)=>{const v=s.draft[n];const pct=total>0?Math.round(v/total*100):0;const tag=i===0&&total>0?'Dominante':(v===0?'Ausente':'');
+    return `<div class="ad-ov-row"><span class="ad-ov-dot" style="background:${_AD_COLORS[n]}"></span><span class="ad-ov-name">${lbl[n]||n}</span>${tag?`<span class="ad-ov-tag">${tag}</span>`:''}<span class="ad-ov-bar"><i style="width:${pct}%;background:${_AD_COLORS[n]}"></i></span><span class="ad-ov-v">${v}</span></div>`;}).join('');
+  ov.innerHTML=`<div class="ad-info-card" role="dialog">
+    <button class="ad-info-x" onclick="_adInfoClose()" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="ad-info-head"><h3>Avaliação do build</h3><span class="ad-info-val">${total}<small> pts</small></span></div>
+    <div class="ad-ov-list">${rows}</div>
+    <div class="ad-info-tierlbl" style="margin-top:14px">${veredito}</div>
+    <div class="ad-info-tier">${perfil}</div>
+  </div>`;
+  requestAnimationFrame(()=>ov.classList.add('open'));
+};
 function _adInfoRefresh(){const ov=document.getElementById('ad-info-ov');if(ov&&ov.classList.contains('open')&&ov.dataset.attr)_adInfoOpen(ov.dataset.attr);}
 window._adBarClick=function(ev,n){const s=_adState;if(!s)return;const bar=ev.currentTarget;const r=bar.getBoundingClientRect();const sMax=_adSliderMax(n);const x=(ev.clientX-r.left)/r.width;_adSet(n,Math.round(x*sMax));};
 function _adRefresh(){
