@@ -8599,14 +8599,14 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .ad-pts-block.ad-pts-max{background:color-mix(in srgb,var(--bg-card) 55%,transparent);border-color:var(--border-light)}
 /* Cards: gradiente leve da cor do atributo + glow colorido quando ativo */
 .ad-row{background:linear-gradient(180deg,color-mix(in srgb,var(--c) 4%,var(--bg-card-inner)),var(--bg-card-inner));box-shadow:inset 0 1px 0 rgba(255,255,255,.03);transition:border-color .25s,box-shadow .25s,background .25s}
-.ad-row.has-points{border-color:color-mix(in srgb,var(--c) 55%,var(--border));box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 22%,transparent),0 8px 24px -12px color-mix(in srgb,var(--c) 55%,transparent),inset 0 1px 0 rgba(255,255,255,.04)}
-/* Slider: trilho fundo + fill gradiente com brilho + thumb núcleo branco com anel colorido */
+.ad-row.has-points{border-color:color-mix(in srgb,var(--c) 45%,var(--border));box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+/* Slider: trilho + fill (sem thumb visivel, sem glow) */
 .ad-slider-track{height:8px;border-radius:5px;box-shadow:inset 0 1px 2px rgba(0,0,0,.45)}
-.ad-slider-fill{height:8px;border-radius:5px;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 60%,#000),var(--c));box-shadow:0 0 10px color-mix(in srgb,var(--c) 50%,transparent)}
-.ad-range::-webkit-slider-thumb{width:18px;height:18px;background:#fff;border:none;box-shadow:0 0 0 4px var(--c),0 2px 8px rgba(0,0,0,.5),0 0 12px color-mix(in srgb,var(--c) 50%,transparent)}
-.ad-range::-moz-range-thumb{width:18px;height:18px;background:#fff;border:none;box-shadow:0 0 0 4px var(--c),0 2px 8px rgba(0,0,0,.5)}
-.ad-range:active::-webkit-slider-thumb{transform:scale(1.18)}
-.ad-range:active::-moz-range-thumb{transform:scale(1.18)}
+.ad-slider-fill{height:8px;border-radius:5px;background:var(--c);box-shadow:none}
+.ad-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:32px;background:transparent;border:0;box-shadow:none}
+.ad-range::-moz-range-thumb{width:24px;height:32px;background:transparent;border:0;box-shadow:none}
+.ad-range:active::-webkit-slider-thumb{transform:none}
+.ad-range:active::-moz-range-thumb{transform:none}
 /* Steppers ativos herdam tom da cor do atributo */
 .ad-row.has-points .ad-row-head .sp-step:not(:disabled){border-color:color-mix(in srgb,var(--c) 35%,var(--border))}
 .modal-overlay.open .modal-header{display:flex;align-items:center}
