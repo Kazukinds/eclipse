@@ -35744,9 +35744,8 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .grim-filtbtn:active,.grimorio-root .viewtog:active,.grimorio-root .cart-fab:active,.grimorio-root .tb-menu:active,.grimorio-root .grim-sort-btn:active{transform:translateY(0) scale(.97)}
   .grimorio-root .grim-sort-btn{transition:border-color .18s,color .18s,transform .18s}
   .grimorio-root .grim-sort[open] .grim-sort-btn,.grimorio-root .grim-sort-btn:hover{transform:translateY(-2px)}
-  .grimorio-root .grim-filtbtn svg,.grimorio-root .viewtog span{width:16px;height:16px;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+  .grimorio-root .grim-filtbtn svg{width:16px;height:16px;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
   .grimorio-root .grim-filtbtn:hover svg{transform:translateY(1px) scale(1.12)}
-  .grimorio-root .viewtog:hover span{transform:scale(1.18)}
   .grimorio-root .grim-sort:hover .dd-chev{transform:translateY(2px)}
   .grimorio-root .grim-sort[open] .dd-chev{transform:rotate(180deg)}
   .grimorio-root .dd-chev{transition:transform .32s cubic-bezier(.34,1.56,.64,1);display:inline-flex;align-items:center;justify-content:center}
@@ -35754,7 +35753,9 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .cart-fab[data-empty="1"]:hover .cf-book{transform:scale(1.1) rotate(-4deg);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
   .grimorio-root .tb-menu:hover svg{transform:scale(1.12)}
   .grimorio-root .tb-menu svg{transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
-  .grimorio-root .viewtog span{font-size:16px;line-height:1}
+  .grimorio-root .viewtog svg{width:16px;height:16px;flex:0 0 auto;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+  .grimorio-root .viewtog:hover svg{transform:scale(1.12)}
+  .grimorio-root .vt-lbl{font-size:12.5px;line-height:1}
   .grimorio-root .grim-filtbtn .filt-badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--acc);color:#0a0a0a;font-size:10px;font-weight:800}
   /* sort dropdown */
   .grimorio-root .grim-sort{position:relative;flex:0 0 auto}
@@ -36649,7 +36650,7 @@ function renderToolbar(){
     +`<button class="tb-back" type="button" onclick="closeGrimorio()" aria-label="Voltar" title="Voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>`
     +`<div class="tb-top"><input class="search" id="grim-srch" placeholder="Buscar feitiço..." value="${query}"></div>`
     +`<details class="grim-sort"><summary class="grim-sort-btn"><b>${SORTS[sortMode]}</b><span class="dd-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary><div class="grim-sort-panel">${Object.entries(SORTS).map(([k,v])=>`<button class="sort-opt" data-s="${k}" ${sortMode===k?'data-on="1"':''}><span>${v}</span></button>`).join('')}</div></details>`
-    +`<button class="viewtog" id="grim-viewtog" title="Alternar lista e cards"><span>${viewMode==='list'?'▦':'☰'}</span>${viewMode==='list'?'Cards':'Lista'}</button>`
+    +`<button class="viewtog" id="grim-viewtog" title="Alternar lista e cards">${viewMode==='list'?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>'}<span class="vt-lbl">${viewMode==='list'?'Cards':'Lista'}</span></button>`
     +`<button class="cart-fab" id="grim-cartFab" data-empty="1" aria-label="Feitiços adquiridos"><span class="cf-ico"><svg class="cf-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="cf-count" id="grim-cartCount">0</span></span><span class="cart-lbl">Adquirir Feitiço</span></button>`
     +`</div>`;
   // Drawer de filtros (oculto até abrir) — seções colapsáveis estilo Behance
