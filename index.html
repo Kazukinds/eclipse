@@ -35935,8 +35935,8 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .addbtn svg{width:16px;height:16px}
   .grimorio-root .addbtn:hover{border-color:var(--acc);color:var(--acc2);background:color-mix(in srgb,var(--acc) 12%,transparent)}
   .grimorio-root .addbtn[data-added="1"]{background:var(--acc);border-color:var(--acc);color:#000}
-  .grimorio-root .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:1px;margin:0 0 16px;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--line)}
-  .grimorio-root .st{min-width:0;display:flex;flex-direction:column;gap:4px;padding:10px 12px;background:var(--panel-2)}
+  .grimorio-root .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 14px;margin:0 0 16px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--panel-2)}
+  .grimorio-root .st{min-width:0;display:flex;flex-direction:column;gap:4px;padding:0}
   .grimorio-root .st-k{display:block;color:var(--acc2);font-weight:700;font-size:8px;letter-spacing:.16em;text-transform:uppercase;opacity:.92}
   .grimorio-root .st-v{color:var(--txt);font-size:13px;line-height:1.3;font-weight:500}
   /* destaque para Grau e Custo (primeiras células) */
@@ -35983,8 +35983,8 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .gd-scroll{flex:1;min-height:0;overflow-y:auto;padding:38px 48px 64px;max-width:760px;width:100%;margin:0 auto}
   .grimorio-root .gd-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:24px}
   .grimorio-root .gd-head h2{margin:0;font-weight:500;font-size:clamp(30px,4.4vw,46px);line-height:1.08;letter-spacing:-.015em;color:var(--txt)}
-  .grimorio-root .gd-scroll .stats{margin-bottom:28px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));border-radius:14px}
-  .grimorio-root .gd-scroll .st{padding:13px 16px;gap:5px}
+  .grimorio-root .gd-scroll .stats{margin-bottom:28px;grid-template-columns:repeat(4,1fr);gap:16px 18px;padding:18px 20px;border-radius:14px}
+  .grimorio-root .gd-scroll .st{gap:5px}
   .grimorio-root .gd-scroll .st-v{font-size:14px}
   .grimorio-root .gd-scroll .st:nth-child(1) .st-v,.grimorio-root .gd-scroll .st:nth-child(2) .st-v{font-size:17px}
   .grimorio-root .gd-scroll .desc{font-size:15.5px;line-height:1.85}
@@ -36065,7 +36065,7 @@ body[data-perf-low] .dcard-handle{display:none}
     .grimorio-root main{padding:26px 18px 100px}
     .grimorio-root .gtop{padding:12px 16px;gap:10px}
     .grimorio-root .cards{grid-template-columns:1fr;gap:14px}
-    .grimorio-root .stats{grid-template-columns:repeat(auto-fit,minmax(84px,1fr))}
+    .grimorio-root .stats,.grimorio-root .gd-scroll .stats{grid-template-columns:repeat(2,1fr)}
     /* toolbar empilha: busca em cima, controles embaixo */
     .grimorio-root .tb-row{display:grid;grid-template-columns:1fr auto auto auto;grid-template-areas:"search search search search" "filt sort view cart";gap:9px}
     .grimorio-root .tb-top{grid-area:search}
