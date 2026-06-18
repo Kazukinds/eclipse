@@ -766,10 +766,10 @@ body:has(.sidebar.open) .main-wrapper *{pointer-events:none}
 .save-meta-info{flex:1;min-width:0}
 .save-meta-name{font-size:15px;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .save-meta-sub{font-size:11px;color:var(--text-dim);margin-top:2px;font-family:'JetBrains Mono',monospace;letter-spacing:.3px}
-.save-name-field{display:flex;align-items:center;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);transition:border-color .2s,box-shadow .2s;overflow:hidden}
-.save-name-field:focus-within{border-color:color-mix(in srgb,var(--text-primary) 35%,var(--border));box-shadow:0 0 0 3px color-mix(in srgb,var(--text-primary) 8%,transparent)}
-.save-name-field input{flex:1;background:transparent;border:none;padding:10px 12px;color:var(--text-primary);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none}
-.save-ext{padding:0 12px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;border-left:1px solid var(--border);background:var(--bg-card-inner);align-self:stretch;display:flex;align-items:center}
+.save-name-field{display:flex;align-items:stretch;gap:8px}
+.save-name-field input{flex:1;min-width:0;background:var(--bg-input);border:1px solid var(--border-light);border-radius:10px;padding:11px 14px;color:var(--text-primary);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s}
+.save-name-field input:focus{border-color:color-mix(in srgb,var(--text-primary) 38%,var(--border-light));box-shadow:0 0 0 3px color-mix(in srgb,var(--text-primary) 8%,transparent)}
+.save-ext{flex:0 0 auto;padding:0 14px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;background:var(--bg-card-inner);border:1px solid var(--border-light);border-radius:10px;display:flex;align-items:center}
 .save-toast{position:fixed;top:calc(18px + env(safe-area-inset-top,0px));right:28px;
   background:color-mix(in srgb,var(--bg-card) 62%,transparent);
   -webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);
