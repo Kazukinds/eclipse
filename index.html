@@ -36012,7 +36012,9 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .cart-x:hover{color:var(--txt)}
   .grimorio-root .cart-list{flex:1;overflow-y:auto;padding:6px 26px}
   .grimorio-root .cart-empty{color:var(--muted);text-align:center;padding:64px 12px;font-size:14px;line-height:1.7}
-  .grimorio-root .cart-it{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .grimorio-root .cart-it{display:flex;align-items:center;gap:14px;padding:16px 8px;margin:0 -8px;border-radius:10px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s}
+  .grimorio-root .cart-it:hover{background:#15151a}
+  .grimorio-root .cart-it:focus-visible{outline:2px solid var(--bc2,var(--acc2));outline-offset:-2px}
   .grimorio-root .ci-ico{flex:0 0 auto;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--bc2);
     border-radius:10px;background:color-mix(in srgb,var(--bc) 16%,transparent)}
   .grimorio-root .ci-ico svg{width:18px;height:18px}
@@ -36799,7 +36801,7 @@ function updateCart(){
   const total=document.getElementById('grim-cartTotal');if(total)total.innerHTML=`<b>${n}</b> feitiço${n===1?'':'s'}`;
   const buy=document.getElementById('grim-cartBuy');if(buy)buy.disabled=!n;
   const list=document.getElementById('grim-cartList');
-  if(list)list.innerHTML=n?cart.map(i=>{const e=cEl(i.el);return `<div class="cart-it" style="--bc:${e.cor};--bc2:${e.cor2}"><span class="ci-ico">${SVGS[i.el]||''}</span><div class="ci-main"><div class="ci-n">${i.n}</div><div class="ci-meta">${e.nome||i.el} · Grau ${i.g} · ${i.cat||''}</div></div><button class="ci-x" data-el="${i.el}" data-n="${i.n}" aria-label="Remover">✕</button></div>`;}).join(''):`<div class="cart-empty">Nenhum feitiço na compra. Toque no + nos cards para adicionar.</div>`;
+  if(list)list.innerHTML=n?cart.map(i=>{const e=cEl(i.el);const na=(i.n||'').replace(/"/g,'&quot;');return `<div class="cart-it" style="--bc:${e.cor};--bc2:${e.cor2}" data-el="${i.el}" data-n="${na}" data-g="${i.g}" role="button" tabindex="0" title="Ver feitiço"><span class="ci-ico">${SVGS[i.el]||''}</span><div class="ci-main"><div class="ci-n">${i.n}</div><div class="ci-meta">${e.nome||i.el} · Grau ${i.g} · ${i.cat||''}</div></div><button class="ci-x" data-el="${i.el}" data-n="${na}" aria-label="Remover">✕</button></div>`;}).join(''):`<div class="cart-empty">Nenhum feitiço na compra. Toque no + nos cards para adicionar.</div>`;
   saveCart();
 }
 function addToCart(el,n,g,cat,btn){
@@ -36857,7 +36859,10 @@ function bootGrimorio(){
   cont.addEventListener('click',e=>{const b=e.target.closest('.addbtn');if(b){e.preventDefault();e.stopPropagation();addToCart(b.dataset.el,b.dataset.n,b.dataset.g,b.dataset.c,b);return;}
     const c=e.target.closest('.card');if(c&&c.dataset.n){openDetail(c.dataset.el,c.dataset.n,+c.dataset.g);}});
   cont.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const c=e.target.closest('.card');if(c&&c.dataset.n){e.preventDefault();openDetail(c.dataset.el,c.dataset.n,+c.dataset.g);}});
-  document.getElementById('grim-cartList').addEventListener('click',e=>{const x=e.target.closest('.ci-x');if(x)removeFromCart(x.dataset.el,x.dataset.n);});
+  const cartListEl=document.getElementById('grim-cartList');
+  cartListEl.addEventListener('click',e=>{const x=e.target.closest('.ci-x');if(x){removeFromCart(x.dataset.el,x.dataset.n);return;}
+    const it=e.target.closest('.cart-it');if(it&&it.dataset.n){closeCart();openDetail(it.dataset.el,it.dataset.n,+it.dataset.g);}});
+  cartListEl.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const it=e.target.closest('.cart-it');if(it&&it.dataset.n){e.preventDefault();closeCart();openDetail(it.dataset.el,it.dataset.n,+it.dataset.g);}});
   // rail de essências (mobile): botão hambúrguer + backdrop
   const railBtn=document.getElementById('grim-railBtn'),railScrim=document.getElementById('grim-railScrim');
   if(railBtn)railBtn.onclick=openRail;
