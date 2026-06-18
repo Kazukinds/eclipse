@@ -9226,12 +9226,12 @@ img{content-visibility:auto}
 /* ═══ RITUAL SHELL (sidebar + main, biblioteca-style) ═══ */
 #tab-feiticos{--ritual-accent:var(--magenta);--ritual-accent-soft:color-mix(in srgb,var(--magenta) 16%,transparent);--ritual-accent-glow:color-mix(in srgb,var(--magenta) 30%,transparent)}
 .ritual-shell{display:grid;grid-template-columns:1fr;gap:14px;height:calc(100dvh - var(--top-offset,130px) - 28px);min-height:0;max-height:none;font-family:Inter,system-ui,sans-serif}
-/* Acervo: preenche toda a area de conteudo, sem bordas pretas sobrando */
-#tab-feiticos.tab-content.active{display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;
-  margin:-14px -18px 0;padding:0;height:calc(100dvh - var(--top-offset,130px))}
+/* Acervo: preenche TODA a area de conteudo (cola em todos os lados) */
+.content:has(#tab-feiticos.active){position:relative;padding:0!important;overflow:hidden}
+#tab-feiticos.tab-content.active{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;height:auto;margin:0;padding:0}
 #tab-feiticos.tab-content.active .ritual-shell{height:100%;gap:0}
-#tab-feiticos.tab-content.active .ritual-main{height:100%;border-radius:0;border-left:0;border-right:0;border-top:0}
-@media(max-width:760px){#tab-feiticos.tab-content.active{margin:-12px -10px 0}}
+#tab-feiticos.tab-content.active .ritual-main{height:100%;border-radius:0;border:0}
+#tab-feiticos.tab-content.active .ritual-main-body{padding:12px}
 #tab-feiticos .ritual-shell{height:100%}
 .ritual-side{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px;overflow:hidden}
 .ritual-side-head{padding-bottom:10px;border-bottom:1px solid var(--border)}
