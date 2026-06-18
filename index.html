@@ -29949,7 +29949,7 @@ const _AD_INFO={
 };
 function _adTierText(n,v){const tiers=_AD_INFO[n].tiers;let pick=tiers[0];tiers.forEach(t=>{if(v>=t.min)pick=t});return pick.t;}
 const _AD_RADAR=['Intelecto','Motora','Fisico','Psique']; // topo, dir, base, esq
-const _AD_COLORS={Fisico:'#f87171',Motora:'#22c55e',Psique:'#a855f7',Intelecto:'#3b82f6'};
+const _AD_COLORS={Fisico:'#f87171',Motora:'#3b82f6',Psique:'#a855f7',Intelecto:'#06b6d4'};
 const _AD_CX=120,_AD_CY=96,_AD_R=60;
 function _adCap(){return (typeof _archetypePointCap==='function')?_archetypePointCap():{maxPerAttr:5,totalPts:12,level:1};}
 function _adSliderMax(n){const s=_adState;return s.unlocked?Math.max(10,s.draft[n]):s.cap.maxPerAttr;}
