@@ -8513,6 +8513,17 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
   border-radius:0;
   transition:width .35s cubic-bezier(.4,0,.2,1);
 }
+/* === Entrada em cascata (stagger) ao abrir o modal === */
+.ad-donut-wrap,.ad-pts-bar,.ad-hrow{opacity:0;animation:ad-enter .5s cubic-bezier(.22,1,.36,1) forwards}
+.ad-donut-wrap{animation-delay:.05s}
+.ad-pts-bar{animation-delay:.13s}
+.ad-hrow:nth-of-type(1){animation-delay:.21s}
+.ad-hrow:nth-of-type(2){animation-delay:.29s}
+.ad-hrow:nth-of-type(3){animation-delay:.37s}
+.ad-hrow:nth-of-type(4){animation-delay:.45s}
+.ad-hrow:nth-of-type(n+5){animation-delay:.5s}
+@keyframes ad-enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.ad-donut-wrap,.ad-pts-bar,.ad-hrow{animation:none;opacity:1}}
 /* === Donut de proporção === */
 .ad-donut-wrap{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin:4px 0 16px;padding:18px 8px}
 .ad-legend{display:flex;flex-direction:column;gap:13px;min-width:150px}
