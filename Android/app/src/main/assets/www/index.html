@@ -11,6 +11,8 @@
   try{
     var h=location.hostname;
     var isCap=!!(window.Capacitor||/Capacitor/i.test(navigator.userAgent));
+    // marca o app nativo (APK) cedo -> CSS desenha barra atras da status bar
+    if(isCap||window.EclipseNative||window.cordova){document.documentElement.setAttribute('data-native','1');}
     var isDev=!isCap&&(h==='localhost'||h==='127.0.0.1'||/^192\.168\./.test(h)||/^10\./.test(h));
     if(isDev&&'serviceWorker'in navigator){
       navigator.serviceWorker.getRegistrations()
@@ -7193,6 +7195,13 @@ body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-ins
     background:var(--bg-body);z-index:9999;pointer-events:none;
   }
 }
+/* APK nativo: barra solida atras da status bar do Android (relogio/bateria/notif) */
+html[data-native] body::before{
+  content:'';position:fixed;left:0;right:0;top:0;
+  height:max(env(safe-area-inset-top,0px),28px);
+  background:var(--bg-body);z-index:9999;pointer-events:none;
+}
+[data-theme="light"] html[data-native] body::before,html[data-native][data-theme="light"] body::before{background:var(--bg-sidebar)}
 /* Round overlay + damage flash animations */
 @keyframes roundIn{from{opacity:0;transform:translate(-50%,-50%) scale(.5)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 @keyframes flashOut{0%{opacity:1}100%{opacity:0}}
