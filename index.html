@@ -9232,7 +9232,7 @@ body:has(#tab-feiticos.active) .main-wrapper{padding-bottom:0!important}
 #tab-feiticos.tab-content.active{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;height:auto;margin:0;padding:0}
 #tab-feiticos.tab-content.active .ritual-shell{height:100%;gap:0}
 #tab-feiticos.tab-content.active .ritual-main{height:100%;border-radius:0;border:0}
-#tab-feiticos.tab-content.active .ritual-main-body{padding:12px}
+#tab-feiticos.tab-content.active .ritual-main-body{padding:0}
 #tab-feiticos .ritual-shell{height:100%}
 .ritual-side{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px;overflow:hidden}
 .ritual-side-head{padding-bottom:10px;border-bottom:1px solid var(--border)}
@@ -9459,21 +9459,36 @@ body.forja-sub-open #modal-overlay{transition:backdrop-filter .25s}
 @keyframes forjaSpark{0%,42%{opacity:0;transform:translate(0,0) scale(.4)}50%{opacity:1;transform:translate(calc(var(--sx)*.4),calc(var(--sy)*.4)) scale(1)}100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(.2)}}
 @media (max-width:760px){.ritual-shell{grid-template-columns:1fr;height:auto;min-height:0;gap:12px}.ritual-side{flex-direction:column;gap:10px;padding:12px}.ritual-side-head{display:flex;align-items:baseline;gap:10px;padding-bottom:8px}.ritual-side-head .ritual-side-title{font-size:10px}.ritual-side-actions{flex-direction:row;gap:8px}.ritual-side-actions>*{flex:1;min-height:40px}.forja-btn{box-shadow:none}.ritual-side-filt{flex-direction:row;flex-wrap:wrap;gap:6px}.ritual-side-filt .ritual-filt-pill{flex:0 0 auto;padding:6px 12px;font-size:12px}.ritual-side-listwrap{display:none}.ritual-side-stats{display:none}.ritual-main{min-height:50vh}.rv-row{flex-direction:column;align-items:flex-start;gap:4px}.rv-v{text-align:left}}
 /* ═══ FEITIÇO BADGES (alpha-user dark/red crachá) ═══ */
-/* Acervo em LISTA (linhas) */
-.feit-grid{display:flex;flex-direction:column;gap:8px;margin:0;padding:12px;background:var(--bg-card-inner,#171717);border:1px solid color-mix(in srgb,#fff 14%,var(--border,#262626));border-radius:16px;box-shadow:none;width:100%;flex:1;min-width:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-gutter:stable;scrollbar-color:#525252 transparent}
-/* linha de feitiço no Acervo */
-.feit-row{position:relative;display:flex;align-items:center;gap:14px;height:64px;flex:0 0 64px;padding:0 16px 0 14px;border-radius:12px;cursor:pointer;overflow:hidden;
-  border:1px solid color-mix(in srgb,#fff 8%,var(--border,#262626));background:var(--bg-card,#141414);transition:border-color .16s,transform .12s,background .16s}
-.feit-row::before{content:"";position:absolute;inset:0;z-index:0;opacity:.32;background:var(--frow-bg,transparent);pointer-events:none}
-.feit-row::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;z-index:1;background:var(--frow-bg,var(--magenta,#fe1455))}
-.feit-row:hover{transform:translateY(-1px);border-color:color-mix(in srgb,#fff 22%,var(--border))}
-.feit-row>*{position:relative;z-index:2}
-.feit-row-grau{flex:0 0 34px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.3);font-family:Inter,system-ui,sans-serif;font-size:13px;font-weight:800;color:#fff}
-.feit-row-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.feit-row-name{font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:700;color:#f2edea;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px}
-.feit-row-tags{font-family:'JetBrains Mono',monospace;font-size:8.5px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(242,237,234,.62);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.feit-row-meta{flex:0 0 auto;max-width:46%;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.5px;text-transform:uppercase;color:rgba(242,237,234,.7);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media(max-width:480px){.feit-row-meta{display:none}}
+/* ═══ ACERVO — grimório editorial sóbrio ═══ */
+.feit-grid{display:block;margin:0;padding:24px 28px 40px;background:transparent;border:0;border-radius:0;width:100%;flex:1;min-width:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-gutter:stable;scrollbar-color:#3a3a40 transparent}
+.acv-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;height:60%;color:var(--text-dim);font-family:'Fraunces',Georgia,serif;font-size:18px;text-align:center}
+.acv-empty span{font-family:Inter,system-ui,sans-serif;font-size:13px;color:var(--faint,#5b5866)}
+/* divisória de grau */
+.acv-grau-div{display:flex;align-items:center;gap:14px;margin:30px 0 16px}
+.acv-grau-div:first-child{margin-top:4px}
+.acv-grau-div span{flex:0 0 auto;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:15px;letter-spacing:.04em;color:var(--text)}
+.acv-grau-div em{flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-style:normal;font-size:10px;font-weight:600;color:var(--text-dim);padding:2px 8px;border:1px solid var(--border);border-radius:999px}
+.acv-grau-div::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+/* grid de cards */
+.acv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;align-items:start}
+/* card de ritual (neutro, sem cor de fundo) */
+.acv-card{display:flex;flex-direction:column;gap:12px;text-align:left;width:100%;padding:16px 18px;cursor:pointer;font-family:Inter,system-ui,sans-serif;
+  background:linear-gradient(180deg,var(--bg-card-inner,#131316),var(--bg-card,#0f0f12));border:1px solid var(--border);border-radius:14px;
+  transition:border-color .18s,transform .14s,box-shadow .18s}
+.acv-card:hover{border-color:color-mix(in srgb,var(--acv-dot) 50%,var(--border));transform:translateY(-2px);box-shadow:0 12px 30px -18px rgba(0,0,0,.8)}
+.acv-card-head{display:flex;align-items:center;gap:11px}
+.acv-grau{flex:0 0 32px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:9px;
+  font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:600;color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--border)}
+.acv-card-title{flex:1;min-width:0;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:17px;line-height:1.15;color:var(--text);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acv-ess{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-dim)}
+.acv-ess i{width:7px;height:7px;border-radius:50%;background:var(--acv-dot)}
+.acv-stats{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px;padding-top:12px;border-top:1px solid var(--border)}
+.acv-st{display:flex;flex-direction:column;gap:2px;min-width:0}
+.acv-st-k{font-family:'JetBrains Mono',monospace;font-size:7.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim)}
+.acv-st-v{font-size:12.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acv-card-foot{display:flex;justify-content:flex-end}
+.acv-id{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--faint,#5b5866)}
+@media(max-width:560px){.feit-grid{padding:16px 14px 32px}.acv-grid{grid-template-columns:1fr}}
 .feit-grid::-webkit-scrollbar{width:6px;height:6px}
 .feit-grid::-webkit-scrollbar-button,.feit-grid::-webkit-scrollbar-button:start,.feit-grid::-webkit-scrollbar-button:end,.feit-grid::-webkit-scrollbar-button:single-button,.feit-grid::-webkit-scrollbar-button:double-button{display:none!important;width:0!important;height:0!important;background:transparent!important}
 .feit-grid::-webkit-scrollbar-corner{background:transparent}
@@ -24832,37 +24847,33 @@ function renderFeitTab(){
   const el=document.getElementById('feit-list');if(!el)return;
   const filt=list.filter(f=>feitInCircle(f.circle,_feitFilter));
   if(!filt.length){
-    el.innerHTML='';
+    el.innerHTML='<div class="acv-empty">Nenhum ritual no acervo.<span>Adquira feitiços pelo Grimório.</span></div>';
   }else{
     const esc=s=>String(s||'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
-    const SCHOOL_BG={
-      Alba:'linear-gradient(165deg in oklch,#1a3a1f 0%,#4a9954 45%,#a8e6a0 100%)',
-      Carmin:'linear-gradient(165deg in oklch,#1a0202 0%,#4a0a08 35%,#8b1414 70%,#c91a14 100%)',
-      Kaos:'linear-gradient(165deg in oklch,#2a0a3a 0%,#6b1a8a 45%,#c060e8 100%)',
-      Lumen:'linear-gradient(165deg in oklch,#3a2808 0%,#9a7820 50%,#f0c030 100%)',
-      Perene:'linear-gradient(165deg in oklch,#0a2a2a 0%,#1f6a6a 45%,#40e0b0 100%)',
-      Ruina:'linear-gradient(165deg in oklch,#171717 0%,#4a4438 50%,#888070 100%)'
-    };
+    const ESS_DOT={Alba:'#46b35f',Carmin:'#d11a14',Carmim:'#d11a14',Kaos:'#b25ce0',Lumen:'#e0a820',Perene:'#2fb89a',Ruina:'#7a7060'};
     const fmtId=f=>'#'+(f.id||'').replace(/^f/,'').slice(0,5).toUpperCase();
-    const _MO=['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
-    const dn=new Date();const dt=String(dn.getDate()).padStart(2,'0')+' '+_MO[dn.getMonth()]+' '+String(dn.getFullYear()).slice(-2);
-    const tm=String(dn.getHours()).padStart(2,'0')+':'+String(dn.getMinutes()).padStart(2,'0')+':'+String(dn.getSeconds()).padStart(2,'0');
-    el.innerHTML=filt.map(f=>{
-      const bg=f.customColor||SCHOOL_BG[f.school]||'';
-      const tier=f.circle<=1?'INICIANTE':f.circle===2?'INTERMEDIÁRIO':f.circle===3?'AVANÇADO':'MESTRE';
-      const stampPathId='stp-'+f.id.replace(/[^a-z0-9]/gi,'');
+    const stat=(k,v)=>v?`<div class="acv-st"><span class="acv-st-k">${k}</span><span class="acv-st-v">${esc(v)}</span></div>`:'';
+    const cardOf=f=>{
       const nm=(esc(f.name)||'—').toLowerCase().replace(/^(\p{L})/u,c=>c.toUpperCase());
       const alvoNm=f.alvo?(FORJA_ALVO.find(a=>a.tipo===f.alvo)?.nome||f.alvo):'';
-      const meta=[f.execucao,f.alcance,f.duracao].filter(Boolean).map(x=>esc(x)).join(' · ');
-      return `
-      <div class="feit-row" data-fid="${f.id}" onclick="openRitualView('${f.id}')"${bg?` style="--frow-bg:${bg}"`:''}>
-        <div class="feit-row-grau">${Math.max(1,f.circle)}º</div>
-        <div class="feit-row-main">
-          <div class="feit-row-name">${nm}</div>
-          <div class="feit-row-tags">${esc(f.school).toUpperCase()||'—'} · ${fmtId(f)}${alvoNm?' · '+esc(alvoNm).toUpperCase():''}</div>
+      const dot=ESS_DOT[f.school]||'var(--magenta,#fe1455)';
+      return `<button type="button" class="acv-card" data-fid="${f.id}" onclick="openRitualView('${f.id}')" style="--acv-dot:${dot}">
+        <div class="acv-card-head">
+          <span class="acv-grau">${Math.max(1,f.circle)}º</span>
+          <span class="acv-card-title">${nm}</span>
+          <span class="acv-ess"><i></i>${esc(f.school)||'—'}</span>
         </div>
-        <div class="feit-row-meta">${meta}</div>
-      </div>`}).join('');
+        <div class="acv-stats">${stat('Execução',f.execucao)}${stat('Alcance',f.alcance)}${stat('Alvo',alvoNm)}${stat('Duração',f.duracao)}${f.resistPericia?stat('Resist.',f.resistPericia):''}</div>
+        <div class="acv-card-foot"><span class="acv-id">${fmtId(f)}</span></div>
+      </button>`;
+    };
+    let html='';
+    [1,2,3,4].forEach(g=>{
+      const grp=filt.filter(f=>Math.max(1,f.circle)===g);
+      if(!grp.length)return;
+      html+=`<div class="acv-grau-div"><span>Grau ${g}</span><em>${grp.length}</em></div><div class="acv-grid">${grp.map(cardOf).join('')}</div>`;
+    });
+    el.innerHTML=html;
   }
   document.querySelectorAll('#feit-filter-pills .ritual-filt-pill').forEach(p=>{
     p.onclick=()=>{_feitFilter=p.dataset.f;document.querySelectorAll('#feit-filter-pills .ritual-filt-pill').forEach(x=>x.classList.toggle('active',x===p));renderFeitTab()};
