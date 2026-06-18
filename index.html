@@ -3733,7 +3733,7 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 }
 .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
 .modal-title{font-size:16px;font-weight:700}
-.modal-close{width:32px;height:32px;flex-shrink:0;aspect-ratio:1/1;border-radius:50%;background:var(--bg-input);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dim);transition:all .2s}
+.modal-close{width:32px!important;height:32px!important;min-width:32px;max-width:32px;min-height:32px;max-height:32px;flex:0 0 32px;flex-shrink:0;aspect-ratio:1/1;border-radius:50%!important;background:var(--bg-input);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dim);transition:all .2s;box-sizing:border-box}
 .modal-close:hover{color:var(--red);border-color:rgba(248,113,113,.3);background:var(--red-dim)}
 .modal-close svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;display:block;flex-shrink:0;margin:auto}
 .modal-close svg line,.modal-close svg path{stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;fill:none}
