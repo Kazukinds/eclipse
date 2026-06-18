@@ -8539,6 +8539,24 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 /* entrada: donut surge girando do zero */
 .ad-donut svg{animation:ad-donut-in .7s cubic-bezier(.22,1,.36,1)}
 @keyframes ad-donut-in{from{transform:rotate(-40deg) scale(.85);opacity:0}to{transform:none;opacity:1}}
+/* painel de info do atributo */
+.ad-legend-row{background:none;border:0;text-align:left;cursor:pointer;font:inherit;padding:2px;border-radius:8px;transition:background .15s}
+.ad-legend-row:hover{background:rgba(255,255,255,.05)}
+.ad-info-ov{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .2s}
+.ad-info-ov.open{opacity:1}
+.ad-info-card{position:relative;width:min(440px,92vw);background:#1a1a1a;border:1px solid var(--border-light);border-top:3px solid var(--c);border-radius:16px;padding:22px 22px 24px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8);transform:translateY(14px) scale(.97);transition:transform .28s cubic-bezier(.22,1,.36,1)}
+.ad-info-ov.open .ad-info-card{transform:none}
+.ad-info-x{position:absolute;top:14px;right:14px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:transparent;border:1px solid var(--border-light);color:var(--text-secondary);cursor:pointer}
+.ad-info-x svg{width:16px;height:16px}
+.ad-info-x:hover{color:var(--text-primary);background:rgba(255,255,255,.06)}
+.ad-info-head{display:flex;align-items:center;gap:11px;margin-bottom:16px;padding-right:40px}
+.ad-info-dot{width:14px;height:14px;border-radius:50%;background:var(--c);flex-shrink:0;box-shadow:0 0 12px var(--c)}
+.ad-info-head h3{flex:1;margin:0;font-size:22px;font-weight:800;color:var(--text-primary);letter-spacing:-.01em}
+.ad-info-val{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:800;color:var(--c)}
+.ad-info-val small{font-size:14px;color:var(--text-dim);font-weight:600}
+.ad-info-what{font-size:14.5px;line-height:1.65;color:#cfccd6;margin-bottom:18px;text-align:justify}
+.ad-info-tierlbl{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 65%,var(--text-dim));margin-bottom:7px}
+.ad-info-tier{font-size:14.5px;line-height:1.6;color:var(--text-primary);padding:13px 15px;background:color-mix(in srgb,var(--c) 8%,#161616);border:1px solid color-mix(in srgb,var(--c) 22%,var(--border));border-radius:11px}
 .ad-donut-center span{display:inline-block}
 .ad-donut-center span.ad-bump{animation:ad-bump .42s cubic-bezier(.34,1.56,.64,1)}
 @keyframes ad-bump{0%{transform:scale(1)}38%{transform:scale(1.32)}100%{transform:scale(1)}}
@@ -29875,6 +29893,30 @@ function _applyArchetypeAttrs(attrs){
 /* ═══ Distribuir Atributos — interface (radar + slider + stepper) ═══ */
 let _adState=null;
 const _AD_KEYS=['Fisico','Motora','Psique','Intelecto'];
+// descricao de cada atributo: o que é + faixas por nivel
+const _AD_INFO={
+  Fisico:{what:'Força bruta, resistência e vigor do corpo. Rege carregar peso, golpes corpo a corpo, intimidar pela presença e aguentar punição.',
+    tiers:[{min:0,t:'Frágil. O corpo cede cedo — esforço físico drena rápido e qualquer pancada cobra caro.'},
+      {min:1,t:'Mediano. Aguenta o tranco do dia a dia, mas não se destaca em força ou resistência.'},
+      {min:3,t:'Robusto. Bate forte, segura peso e não cai fácil — uma presença física que impõe.'},
+      {min:5,t:'Descomunal. Força quase sobre-humana; dobra metal, encara o impossível de frente.'}]},
+  Motora:{what:'Agilidade, reflexos e precisão. Rege esquiva, mira, furtividade, equilíbrio e tudo que exige mão firme e rapidez.',
+    tiers:[{min:0,t:'Desengonçado. Movimentos lentos e imprecisos — tropeça onde outros deslizam.'},
+      {min:1,t:'Mediano. Reflexos funcionais, coordenação razoável, nada de acrobacias.'},
+      {min:3,t:'Ágil. Reage rápido, mira certeiro, move-se com leveza e silêncio.'},
+      {min:5,t:'Felino. Velocidade e precisão de elite; desvia do que mal se vê chegar.'}]},
+  Psique:{what:'Vontade, percepção e energia interior. Rege resistir ao medo e à manipulação, sentir o ambiente e canalizar poder paranormal.',
+    tiers:[{min:0,t:'Frágil de espírito. Cede ao medo e à pressão; pouca sensibilidade ao redor.'},
+      {min:1,t:'Mediano. Mantém a cabeça no lugar na maior parte do tempo.'},
+      {min:3,t:'Firme. Vontade resistente, percepção aguçada, canaliza energia com controle.'},
+      {min:5,t:'Inabalável. Mente como fortaleza; percebe o oculto e dobra o paranormal à sua vontade.'}]},
+  Intelecto:{what:'Raciocínio, conhecimento e memória. Rege deduzir, investigar, dominar saberes técnicos e resolver problemas sob pressão.',
+    tiers:[{min:0,t:'Lento de ideias. Confunde-se com facilidade; conexões escapam.'},
+      {min:1,t:'Mediano. Resolve o comum, mas trava no complexo.'},
+      {min:3,t:'Perspicaz. Liga pontos rápido, retém muito, decifra o que outros não veem.'},
+      {min:5,t:'Genial. Mente analítica afiada; antecipa, calcula e domina qualquer campo.'}]}
+};
+function _adTierText(n,v){const tiers=_AD_INFO[n].tiers;let pick=tiers[0];tiers.forEach(t=>{if(v>=t.min)pick=t});return pick.t;}
 const _AD_RADAR=['Intelecto','Motora','Fisico','Psique']; // topo, dir, base, esq
 const _AD_COLORS={Fisico:'#f87171',Motora:'#34d399',Psique:'#a855f7',Intelecto:'#22d3ee'};
 const _AD_CX=120,_AD_CY=96,_AD_R=60;
@@ -29925,8 +29967,8 @@ function _adDonutMarkup(){
   const s=_adState;
   const lbl=(typeof ATTR_LABEL!=='undefined')?ATTR_LABEL:{};
   const C=2*Math.PI*52; // circunferencia (r=52)
-  const segs=_AD_KEYS.map(n=>`<circle class="ad-donut-seg" id="ad-donut-${n}" cx="80" cy="80" r="52" fill="none" stroke="${_AD_COLORS[n]||'var(--magenta)'}" stroke-width="20" stroke-linecap="round" stroke-dasharray="0 ${C.toFixed(1)}" stroke-dashoffset="0" transform="rotate(-90 80 80)"/>`).join('');
-  const legend=_AD_KEYS.map(n=>`<div class="ad-legend-row"><span class="ad-legend-dot" style="background:${_AD_COLORS[n]||'var(--magenta)'}"></span><span class="ad-legend-name">${lbl[n]||n}</span><span class="ad-legend-pct" id="ad-pct-${n}">0%</span></div>`).join('');
+  const segs=_AD_KEYS.map(n=>`<circle class="ad-donut-seg" id="ad-donut-${n}" cx="80" cy="80" r="52" fill="none" stroke="${_AD_COLORS[n]||'var(--magenta)'}" stroke-width="20" stroke-linecap="round" stroke-dasharray="0 ${C.toFixed(1)}" stroke-dashoffset="0" transform="rotate(-90 80 80)" style="cursor:pointer" onclick="_adInfoOpen('${n}')"/>`).join('');
+  const legend=_AD_KEYS.map(n=>`<button type="button" class="ad-legend-row" onclick="_adInfoOpen('${n}')"><span class="ad-legend-dot" style="background:${_AD_COLORS[n]||'var(--magenta)'}"></span><span class="ad-legend-name">${lbl[n]||n}</span><span class="ad-legend-pct" id="ad-pct-${n}">0%</span></button>`).join('');
   return `<div class="ad-donut-wrap">
     <div class="ad-legend">${legend}</div>
     <div class="ad-donut">
@@ -29999,6 +30041,26 @@ window._adSet=function(n,v){
   _adRefresh();
 };
 window._adStep=function(n,d){const s=_adState; if(!s)return; const btn=document.getElementById((d>0?'ad-inc-':'ad-dec-')+n); if(btn){btn.classList.remove('ad-step-punch');void btn.offsetWidth;btn.classList.add('ad-step-punch');} _adSet(n,(s.draft[n]||0)+d);};
+window._adInfoOpen=function(n){
+  const s=_adState; if(!s)return;
+  const lbl=(typeof ATTR_LABEL!=='undefined')?ATTR_LABEL:{};
+  const info=_AD_INFO[n]; if(!info)return;
+  const v=s.draft[n]||0, sMax=s.unlocked?5:s.cap.maxPerAttr;
+  const c=_AD_COLORS[n]||'var(--magenta)';
+  const tierTxt=_adTierText(n,v);
+  let ov=document.getElementById('ad-info-ov');
+  if(!ov){ov=document.createElement('div');ov.id='ad-info-ov';ov.className='ad-info-ov';ov.addEventListener('click',e=>{if(e.target===ov)_adInfoClose();});document.body.appendChild(ov);}
+  ov.style.setProperty('--c',c);
+  ov.innerHTML=`<div class="ad-info-card" role="dialog">
+    <button class="ad-info-x" onclick="_adInfoClose()" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="ad-info-head"><span class="ad-info-dot"></span><h3>${lbl[n]||n}</h3><span class="ad-info-val">${v}<small>/${sMax}</small></span></div>
+    <div class="ad-info-what">${info.what}</div>
+    <div class="ad-info-tierlbl">No nível atual</div>
+    <div class="ad-info-tier">${tierTxt}</div>
+  </div>`;
+  requestAnimationFrame(()=>ov.classList.add('open'));
+};
+window._adInfoClose=function(){const ov=document.getElementById('ad-info-ov');if(!ov)return;ov.classList.remove('open');setTimeout(()=>{if(ov&&ov.parentNode)ov.parentNode.removeChild(ov);},220);};
 window._adBarClick=function(ev,n){const s=_adState;if(!s)return;const bar=ev.currentTarget;const r=bar.getBoundingClientRect();const sMax=_adSliderMax(n);const x=(ev.clientX-r.left)/r.width;_adSet(n,Math.round(x*sMax));};
 function _adRefresh(){
   const s=_adState; if(!s)return;
