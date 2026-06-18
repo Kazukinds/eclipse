@@ -29844,7 +29844,7 @@ function _adMarkup(){
   const ptsBar=`<div class="ad-pts-bar">
     <div class="ad-pts-fill" id="ad-ptsfill"></div>
     <div class="ad-pts-block"><span class="ad-pts-lbl">Pontos distribuídos</span><span class="ad-pts-val-row"><span class="ad-pts-val" id="ad-used">0</span><span class="ad-pts-total" id="ad-total">/ ${s.unlocked?'∞':cap.totalPts}</span></span></div>
-    <div class="ad-pts-block ad-pts-max"><span class="ad-pts-lbl">Máx/atrib</span><span class="ad-pts-cap">${s.unlocked?'∞':cap.maxPerAttr}</span></div>
+    <div class="ad-pts-block ad-pts-max"><span class="ad-pts-lbl">Máx</span><span class="ad-pts-cap">${s.unlocked?'∞':cap.maxPerAttr}</span></div>
   </div>`;
   const rows=_AD_KEYS.map(n=>{
     const c=_AD_COLORS[n]||'var(--magenta)';
