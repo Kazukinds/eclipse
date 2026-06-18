@@ -30041,10 +30041,10 @@ function _adDonutUpdate(){
       const newOff=-acc;
       const prevGap=_adDonutUpdate._gap[n]; const prevOff=_adDonutUpdate._off[n];
       const da=g=>g.toFixed(2)+' '+(C-g).toFixed(2);
-      // estado final (persiste apos a animacao)
+      // estado final (persiste apos a animacao). opacity sempre 1 — o comprimento 0 ja some sozinho
+      seg.style.opacity='1';
       seg.style.strokeDasharray=da(gap);
       seg.style.strokeDashoffset=newOff.toFixed(2);
-      seg.style.opacity=v>0?'1':'0';
       if(seg.animate && (prevGap!==undefined) && (prevGap!==gap || prevOff!==newOff)){
         // anima prev -> novo nos dois sentidos (cresce ao + / encolhe ao -). easing simetrico, sem overshoot
         seg.getAnimations&&seg.getAnimations().forEach(a=>a.cancel());
