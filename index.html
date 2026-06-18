@@ -8583,12 +8583,20 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
   background-color:#161616;
   background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0,rgba(255,255,255,.06) 5px,transparent 5px,transparent 11px)}
 .ad-hbar:focus-visible{outline:2px solid var(--text-secondary);outline-offset:2px}
-.ad-hbar-fill{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:8px 0 0 8px;
+.ad-hbar-fill{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:8px 0 0 8px;overflow:hidden;
   background:var(--c,#fff);
-  box-shadow:0 0 16px color-mix(in srgb,var(--c) 45%,transparent);
-  transition:width .5s cubic-bezier(.34,1.2,.5,1),box-shadow .3s,filter .3s}
-.ad-hbar.ad-bar-pulse .ad-hbar-fill{animation:ad-bar-pulse .5s ease-out}
-@keyframes ad-bar-pulse{0%{filter:brightness(1)}40%{filter:brightness(1.4) saturate(1.2)}100%{filter:brightness(1)}}
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.22) 0,rgba(255,255,255,.22) 6px,transparent 6px,transparent 14px);
+  background-size:200% 100%;
+  box-shadow:0 0 18px color-mix(in srgb,var(--c) 50%,transparent);
+  transition:width .62s cubic-bezier(.34,1.45,.5,1),box-shadow .35s,filter .35s;
+  animation:ad-bar-stripes 1.1s linear infinite}
+@keyframes ad-bar-stripes{from{background-position:0 0}to{background-position:40px 0}}
+/* leve brilho varrendo ao mudar */
+.ad-hbar-fill::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-120%);opacity:0}
+.ad-hbar.ad-bar-pulse .ad-hbar-fill{animation:ad-bar-stripes 1.1s linear infinite,ad-bar-pulse .55s ease-out}
+.ad-hbar.ad-bar-pulse .ad-hbar-fill::after{animation:ad-bar-sweep .6s ease-out}
+@keyframes ad-bar-pulse{0%{filter:brightness(1)}35%{filter:brightness(1.45) saturate(1.25)}100%{filter:brightness(1)}}
+@keyframes ad-bar-sweep{0%{transform:translateX(-120%);opacity:1}100%{transform:translateX(120%);opacity:0}}
 .ad-hrow-val{flex:0 0 auto;min-width:20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:800;color:var(--text-primary);font-variant-numeric:tabular-nums;transition:opacity .35s ease,max-width .45s cubic-bezier(.22,1,.36,1),margin .45s cubic-bezier(.22,1,.36,1);max-width:40px;overflow:hidden}
 .ad-hbar{transition:flex-grow .45s cubic-bezier(.22,1,.36,1),width .45s cubic-bezier(.22,1,.36,1)}
 /* zerado: barra engole o espaco do valor e do "-"; ao ter pontos volta ao normal */
