@@ -7330,14 +7330,13 @@ html.app-booting #toast,html.app-booting .save-toast,html.app-booting .update-ba
   body[data-cutout="island"] .topbar-row-1,
   body[data-cutout="notch"] .topbar-row-1,
   body[data-cutout="punch"] .topbar-row-1{padding-left:0!important;padding-right:0!important}
-  .topbar-welcome{flex:0 1 auto;min-width:0;display:block!important;visibility:visible!important;opacity:1!important}
+  .topbar-welcome{flex:0 1 auto;min-width:0;display:flex!important;visibility:visible!important;opacity:1!important}
   .topbar-actions{justify-content:flex-end;margin-left:auto;flex:0 0 auto;flex-shrink:0;gap:6px;display:flex!important;visibility:visible!important;opacity:1!important}
-  /* garante a topbar visivel com altura no APK/WebView (estava colapsando = vao preto) */
-  .topbar{display:flex!important;min-height:calc(52px + env(safe-area-inset-top,0px))}
-  .topbar-row-1{display:flex!important;width:100%;min-height:44px}
+  .topbar{display:flex!important}
+  .topbar-row-1{display:flex!important;width:100%}
   /* Content compensa topbar fixa (sobe até embaixo da pill) */
-  .main-wrapper{padding-top:calc(60px + env(safe-area-inset-top,0px))}
-  .content{padding-top:6px}
+  .main-wrapper{padding-top:calc(54px + env(safe-area-inset-top,0px))}
+  .content{padding-top:0}
 
   /* Header XP/Estagio empilhado — botões verticais à direita */
   .xp-card{grid-template-columns:1fr auto!important;grid-template-rows:auto auto!important;gap:14px 12px!important;padding:16px!important;position:relative;align-items:center!important}
