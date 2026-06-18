@@ -9455,14 +9455,19 @@ body.forja-sub-open #modal-overlay{transition:backdrop-filter .25s}
 /* ═══ FEITIÇO BADGES (alpha-user dark/red crachá) ═══ */
 /* Acervo em LISTA (linhas) */
 .feit-grid{display:flex;flex-direction:column;gap:8px;margin:0;padding:12px;background:var(--bg-card-inner,#171717);border:1px solid color-mix(in srgb,#fff 14%,var(--border,#262626));border-radius:16px;box-shadow:none;width:100%;flex:1;min-width:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-gutter:stable;scrollbar-color:#525252 transparent}
-/* cada feitiço vira uma linha horizontal de altura fixa */
-.feit-grid .feit-badge{aspect-ratio:auto!important;max-width:none!important;width:100%;height:64px;min-height:64px;max-height:64px;flex:0 0 64px;flex-direction:row;align-items:center;gap:12px;padding:0 14px;border-radius:12px}
-/* fundo estático (sem animação), cor da essência sutil */
-.feit-grid .feit-badge-bg{opacity:.4;animation:none!important;background-size:100% 100%!important;background-position:0 0!important;filter:none!important}
-.feit-grid .feit-badge-overlay,.feit-grid .feit-badge-gleam,.feit-grid .feit-badge-spacer,.feit-grid .feit-badge-divider,.feit-grid .feit-badge-logo,.feit-grid .feit-badge-btn,.feit-grid .feit-badge-info{display:none!important}
-.feit-grid .feit-badge-stamp{position:static!important;order:-1;width:34px;height:34px;flex:0 0 34px;opacity:1}
-.feit-grid .feit-badge-name{position:relative!important;z-index:3;order:0;margin:0!important;flex:1 1 auto;min-width:0;display:block!important;-webkit-line-clamp:unset!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:15px;line-height:1.2}
-.feit-grid .feit-badge-tags{position:relative!important;z-index:3;order:1;margin:0!important;flex:0 0 auto;font-size:8.5px}
+/* linha de feitiço no Acervo */
+.feit-row{position:relative;display:flex;align-items:center;gap:14px;height:64px;flex:0 0 64px;padding:0 16px 0 14px;border-radius:12px;cursor:pointer;overflow:hidden;
+  border:1px solid color-mix(in srgb,#fff 8%,var(--border,#262626));background:var(--bg-card,#141414);transition:border-color .16s,transform .12s,background .16s}
+.feit-row::before{content:"";position:absolute;inset:0;z-index:0;opacity:.32;background:var(--frow-bg,transparent);pointer-events:none}
+.feit-row::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;z-index:1;background:var(--frow-bg,var(--magenta,#fe1455))}
+.feit-row:hover{transform:translateY(-1px);border-color:color-mix(in srgb,#fff 22%,var(--border))}
+.feit-row>*{position:relative;z-index:2}
+.feit-row-grau{flex:0 0 34px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.3);font-family:Inter,system-ui,sans-serif;font-size:13px;font-weight:800;color:#fff}
+.feit-row-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.feit-row-name{font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:700;color:#f2edea;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px}
+.feit-row-tags{font-family:'JetBrains Mono',monospace;font-size:8.5px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(242,237,234,.62);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feit-row-meta{flex:0 0 auto;max-width:46%;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.5px;text-transform:uppercase;color:rgba(242,237,234,.7);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:480px){.feit-row-meta{display:none}}
 .feit-grid::-webkit-scrollbar{width:6px;height:6px}
 .feit-grid::-webkit-scrollbar-button,.feit-grid::-webkit-scrollbar-button:start,.feit-grid::-webkit-scrollbar-button:end,.feit-grid::-webkit-scrollbar-button:single-button,.feit-grid::-webkit-scrollbar-button:double-button{display:none!important;width:0!important;height:0!important;background:transparent!important}
 .feit-grid::-webkit-scrollbar-corner{background:transparent}
@@ -24840,21 +24845,17 @@ function renderFeitTab(){
       const bg=f.customColor||SCHOOL_BG[f.school]||'';
       const tier=f.circle<=1?'INICIANTE':f.circle===2?'INTERMEDIÁRIO':f.circle===3?'AVANÇADO':'MESTRE';
       const stampPathId='stp-'+f.id.replace(/[^a-z0-9]/gi,'');
+      const nm=(esc(f.name)||'—').toLowerCase().replace(/^(\p{L})/u,c=>c.toUpperCase());
+      const alvoNm=f.alvo?(FORJA_ALVO.find(a=>a.tipo===f.alvo)?.nome||f.alvo):'';
+      const meta=[f.execucao,f.alcance,f.duracao].filter(Boolean).map(x=>esc(x)).join(' · ');
       return `
-      <div class="feit-badge" data-fid="${f.id}" onclick="openRitualView('${f.id}')">
-        <div class="feit-badge-bg"${bg?` style="background:${bg}"`:''}></div>
-        <div class="feit-badge-overlay"></div>
-        <div class="feit-badge-gleam"></div>
-        <div class="feit-badge-logo"><div class="feit-badge-logo-ico"></div></div>
-        <div class="feit-badge-stamp"><svg viewBox="0 0 64 64" overflow="visible"><defs><radialGradient id="grau-grad-${f.id}" cx="50%" cy="30%" r="65%"><stop offset="0%" stop-color="rgba(255,255,255,.35)"/><stop offset="55%" stop-color="rgba(255,255,255,.12)"/><stop offset="100%" stop-color="rgba(0,0,0,.18)"/></radialGradient></defs><circle cx="32" cy="34" r="25" fill="rgba(0,0,0,.28)"/><circle cx="32" cy="32" r="25" fill="url(#grau-grad-${f.id})" stroke="rgba(255,255,255,.55)" stroke-width="1.1"/><ellipse cx="32" cy="22" rx="14" ry="3.5" fill="rgba(255,255,255,.22)"/><text x="32" y="38" text-anchor="middle" font-size="20" font-weight="800" fill="rgba(255,255,255,.95)" font-family="Inter,system-ui,sans-serif" letter-spacing="-.5">${Math.max(1,f.circle)}º</text></svg></div>
-        <div class="feit-badge-spacer"></div>
-        <div class="feit-badge-name">${(esc(f.name)||'—').toLowerCase().replace(/^(\p{L})/u,c=>c.toUpperCase())}</div>
-        <div class="feit-badge-tags"><span class="feit-badge-tag">${esc(f.school).toUpperCase()||'—'}</span><span class="feit-badge-tag">${fmtId(f)}</span></div>
-        <hr class="feit-badge-divider"/>
-        <div class="feit-badge-info">
-          <div class="feit-badge-info-l">${f.execucao?'EXEC: '+f.execucao.toUpperCase():'GLOBAL / UTC'}<br>${f.alcance?'ALC: '+f.alcance.toUpperCase():'MEMBRO DESDE '+dt}<br>${f.duracao?'DUR: '+f.duracao.toUpperCase():tm}</div>
-          <div class="feit-badge-info-r">${f.alvo?(FORJA_ALVO.find(a=>a.tipo===f.alvo)?.nome||f.alvo).toUpperCase():'ATIVO'}</div>
+      <div class="feit-row" data-fid="${f.id}" onclick="openRitualView('${f.id}')"${bg?` style="--frow-bg:${bg}"`:''}>
+        <div class="feit-row-grau">${Math.max(1,f.circle)}º</div>
+        <div class="feit-row-main">
+          <div class="feit-row-name">${nm}</div>
+          <div class="feit-row-tags">${esc(f.school).toUpperCase()||'—'} · ${fmtId(f)}${alvoNm?' · '+esc(alvoNm).toUpperCase():''}</div>
         </div>
+        <div class="feit-row-meta">${meta}</div>
       </div>`}).join('');
   }
   document.querySelectorAll('#feit-filter-pills .ritual-filt-pill').forEach(p=>{
