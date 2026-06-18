@@ -30048,10 +30048,9 @@ function _adDonutUpdate(){
       if(seg.animate && (prevGap!==undefined) && (prevGap!==gap || prevOff!==newOff)){
         // anima prev -> novo nos dois sentidos (cresce ao + / encolhe ao -). easing simetrico, sem overshoot
         seg.getAnimations&&seg.getAnimations().forEach(a=>a.cancel());
-        const prevOp=prevGap>0?1:0, newOp=gap>0?1:0;
         seg.animate(
-          [{strokeDasharray:da(prevGap),strokeDashoffset:prevOff.toFixed(2),opacity:prevOp},
-           {strokeDasharray:da(gap),strokeDashoffset:newOff.toFixed(2),opacity:newOp}],
+          [{strokeDasharray:da(prevGap),strokeDashoffset:prevOff.toFixed(2)},
+           {strokeDasharray:da(gap),strokeDashoffset:newOff.toFixed(2)}],
           {duration:750,easing:'cubic-bezier(.4,0,.2,1)',fill:'backwards'}
         );
       }
