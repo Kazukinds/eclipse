@@ -808,6 +808,31 @@ body:has(.sidebar.open) .main-wrapper *{pointer-events:none}
 .save-toast-close svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
 .save-warning{display:flex;gap:10px;padding:12px 14px;background:var(--bg-card-inner);border:1px solid var(--border-light);border-radius:var(--radius-sm);font-size:11.5px;color:var(--text-secondary);line-height:1.55}
 .save-warning strong{color:var(--yellow);font-weight:700}
+/* ═══ Personagens (slots ilimitados) ═══ */
+.cslots{display:flex;flex-direction:column;gap:10px}
+.cslots-hint{font-size:12px;color:var(--text-dim);margin-bottom:4px;line-height:1.5}
+.cslot{display:flex;align-items:center;gap:13px;padding:13px 14px;border:1px solid var(--border-light);border-radius:13px;background:var(--bg-card-inner);transition:border-color .16s,background .16s}
+.cslot.active{border-color:color-mix(in srgb,var(--text-primary) 30%,var(--border-light));background:color-mix(in srgb,var(--text-primary) 4%,var(--bg-card-inner))}
+.cslot-num{flex:0 0 36px;width:36px;height:36px;border-radius:10px;background:var(--bg-input);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;font-family:'JetBrains Mono',monospace}
+.cslot.active .cslot-num{background:var(--text-primary);color:var(--bg-card)}
+.cslot-main{flex:1;min-width:0}
+.cslot-name{font-weight:600;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cslot.empty .cslot-name{color:var(--text-dim);font-weight:500}
+.cslot-sub{font-size:11px;color:var(--text-dim);margin-top:2px}
+.cslot-actions{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.cslot-tag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);padding:4px 9px;border:1px solid var(--border-light);border-radius:999px}
+.cslot-btn{padding:8px 16px;border-radius:9px;font:600 12.5px Inter,sans-serif;cursor:pointer;border:1px solid;transition:background .15s,border-color .15s,color .15s}
+.cslot-btn.save{background:var(--text-primary);color:var(--bg-card);border-color:var(--text-primary)}
+.cslot-btn.save:hover{filter:brightness(.92)}
+.cslot-btn.load{background:transparent;color:var(--text-primary);border-color:var(--border-light)}
+.cslot-btn.load:hover{background:var(--bg-hover);border-color:color-mix(in srgb,var(--text-primary) 25%,var(--border))}
+.cslot-ico{width:34px;height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:transparent;border:1px solid var(--border-light);color:var(--text-secondary);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.cslot-ico svg{width:15px;height:15px}
+.cslot-ico:hover{background:var(--bg-hover);color:var(--text-primary)}
+.cslot-ico.del:hover{color:#f87171;border-color:rgba(248,113,113,.45)}
+.cslot-add{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:4px;padding:13px;width:100%;border:1.5px dashed var(--border-light);border-radius:13px;background:transparent;color:var(--text-secondary);font:600 13px Inter,sans-serif;cursor:pointer;transition:border-color .16s,color .16s,background .16s}
+.cslot-add svg{width:18px;height:18px}
+.cslot-add:hover{border-color:color-mix(in srgb,var(--text-primary) 35%,var(--border));color:var(--text-primary);background:color-mix(in srgb,var(--text-primary) 4%,transparent)}
 .save-dropdown.open{opacity:1;pointer-events:all;transform:translateY(0)}
 @media(max-width:640px){
   .notif-dropdown{
@@ -22323,29 +22348,37 @@ function _slotMeta(slot){
 window.openCharSlotsModal=function(){
   const data=_loadCharSlots();
   const active=data.active||1;
-  let html='<div style="display:flex;flex-direction:column;gap:10px">';
-  html+='<div style="font-size:11px;color:var(--text-dim);margin-bottom:6px">Salve sua ficha em até 3 slots independentes. Alterne entre eles a qualquer momento.</div>';
-  for(let i=1;i<=3;i++){
+  // indices existentes (qualquer numero) + garante pelo menos 1
+  const ids=Object.keys(data.slots||{}).map(Number).filter(n=>n>=1).sort((a,b)=>a-b);
+  if(!ids.length)ids.push(1);
+  if(!ids.includes(active)&&data.slots[active])ids.push(active);
+  let html='<div class="cslots">';
+  html+='<div class="cslots-hint">Salve sua ficha em quantos slots quiser. Alterne entre eles a qualquer momento.</div>';
+  ids.forEach(i=>{
     const slot=data.slots[i];
     const meta=_slotMeta(slot);
     const isActive=i===active;
     const empty=!slot;
-    html+=`<div class="char-slot-card${isActive?' active':''}" style="display:flex;align-items:center;gap:12px;padding:12px;border:1px solid ${isActive?'var(--magenta)':'var(--border)'};border-radius:10px;background:var(--bg-card-inner)">`;
-    html+=`<div style="flex:0 0 38px;height:38px;border-radius:50%;background:${isActive?'var(--magenta)':'var(--bg-input)'};color:${isActive?'#000':'var(--text-secondary)'};display:flex;align-items:center;justify-content:center;font-weight:700">${i}</div>`;
-    html+=`<div style="flex:1;min-width:0">`;
-    html+=`<div style="font-weight:600;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${empty?'<span style="opacity:.5">— vazio —</span>':_esc(meta.name)}</div>`;
-    if(!empty)html+=`<div style="font-size:11px;color:var(--text-dim)">Nível ${meta.level} · ${meta.money} cr</div>`;
+    html+=`<div class="cslot${isActive?' active':''}${empty?' empty':''}">`;
+    html+=`<div class="cslot-num">${i}</div>`;
+    html+=`<div class="cslot-main">`;
+    html+=`<div class="cslot-name">${empty?'— vazio —':_esc(meta.name)}</div>`;
+    if(!empty)html+=`<div class="cslot-sub">Nível ${meta.level} · ${meta.money} cr</div>`;
+    else html+=`<div class="cslot-sub">Toque em salvar para ocupar</div>`;
     html+=`</div>`;
-    html+=`<div style="display:flex;gap:6px;flex-shrink:0">`;
+    html+=`<div class="cslot-actions">`;
     if(empty){
-      html+=`<button class="modal-btn primary" style="padding:6px 10px;font-size:11px" onclick="window.saveCharSlot(${i})">Salvar</button>`;
+      html+=`<button class="cslot-btn save" onclick="window.saveCharSlot(${i})">Salvar</button>`;
     } else {
-      if(!isActive)html+=`<button class="modal-btn primary" style="padding:6px 10px;font-size:11px" onclick="window.loadCharSlot(${i})">Carregar</button>`;
-      html+=`<button class="modal-btn secondary" style="padding:6px 10px;font-size:11px" onclick="window.saveCharSlot(${i})" title="Sobrescrever">⟳</button>`;
-      html+=`<button class="modal-btn danger" style="padding:6px 10px;font-size:11px" onclick="window.deleteCharSlot(${i})" title="Apagar">✕</button>`;
+      if(!isActive)html+=`<button class="cslot-btn load" onclick="window.loadCharSlot(${i})">Carregar</button>`;
+      else html+=`<span class="cslot-tag">Ativo</span>`;
+      html+=`<button class="cslot-ico" onclick="window.saveCharSlot(${i})" title="Sobrescrever" aria-label="Sobrescrever"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>`;
+      html+=`<button class="cslot-ico del" onclick="window.deleteCharSlot(${i})" title="Apagar" aria-label="Apagar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>`;
     }
     html+=`</div></div>`;
-  }
+  });
+  const nextId=(ids.length?Math.max(...ids):0)+1;
+  html+=`<button class="cslot-add" onclick="window.saveCharSlot(${nextId})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar ficha</button>`;
   html+=`</div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Fechar</button></div>`;
   document.getElementById('modal-title').textContent='Personagens';
   document.getElementById('modal-body').innerHTML=html;
