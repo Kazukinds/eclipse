@@ -2506,6 +2506,17 @@ html.no-radius,html.no-radius *{border-radius:0!important}
 /* ═══ CONFIG — Customize section (réplica 100% da imagem) ═══ */
 #tab-config .cfg-tabs,#tab-config .cfg-app{display:none!important}
 /* Revelados sob demanda quando o usuário abre uma "pasta"/Performance no feed (cfgGoPanel) — restaura acesso a modos de performance, cache, log e admin que ficavam inalcançáveis. */
+/* UI detalhada (abas+paineis) oculta no overview; revelada via cfgGoPanel */
+#tab-config:not(.cfg-detail-open) .wk-seclabel,
+#tab-config:not(.cfg-detail-open) .cfg-tabs,
+#tab-config:not(.cfg-detail-open) .cfg-app,
+#tab-config:not(.cfg-detail-open) .cfg-back,
+#tab-config:not(.cfg-detail-open) .cfg-confirm{display:none!important}
+#tab-config .cfg-back{display:none;align-items:center;gap:7px;max-width:600px;margin:4px auto 0;padding:9px 14px 9px 10px;background:var(--bg-card-inner);border:1px solid var(--border-light);border-radius:10px;color:var(--text-secondary);font:600 13px Inter,sans-serif;cursor:pointer;transition:background .15s,color .15s}
+#tab-config.cfg-detail-open .cfg-back{display:inline-flex}
+#tab-config .cfg-back:hover{background:var(--bg-hover);color:var(--text-primary)}
+#tab-config .cfg-back svg{width:16px;height:16px}
+#tab-config.cfg-detail-open .wk-feed{display:none}
 #tab-config.cfg-detail-open .cfg-tabs{display:flex!important}
 #tab-config.cfg-detail-open .cfg-app{display:block!important}
 #tab-config .cz-shell{position:relative;max-width:600px;margin:0 auto;background:#171717;border:1px solid #262626;border-radius:24px;padding:26px 26px 34px;display:flex;flex-direction:column;gap:18px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
@@ -2583,13 +2594,10 @@ html.no-radius,html.no-radius *{border-radius:0!important}
 #tab-config .wk-circle{flex-shrink:0;width:46px;height:46px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--text-primary);margin-right:24px}
 /* folders — pasta manila: aba conectada c/ lado direito inclinado, sombra só no corpo */
 #tab-config .wk-folders{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
-#tab-config .wk-folder{position:relative;flex-direction:column;justify-content:flex-end;min-height:126px;border-radius:3px 18px 18px 18px;overflow:visible;background:var(--bg-card-inner,#171717)}
-/* aba: sobe do corpo, encosta nele (overlap 3px), borda direita em diagonal */
-#tab-config .wk-folder::before{content:"";position:absolute;top:-11px;left:0;width:56%;height:14px;background:var(--bg-card-inner,#171717);border-radius:9px 2px 0 0;clip-path:polygon(0 0,68% 0,100% 100%,0 100%);transition:background .16s}
-/* linha-luz no topo da aba+corpo pra dar relevo de papel */
+#tab-config .wk-folder{position:relative;flex-direction:column;justify-content:flex-end;min-height:126px;border-radius:16px;overflow:hidden;background:var(--bg-card-inner,#171717);border:1px solid var(--border-light);transition:transform .16s,border-color .16s,background .16s}
+#tab-config .wk-folder::before{content:none}
 #tab-config .wk-folder::after{content:none}
-#tab-config .wk-folder:hover{transform:translateY(-3px)}
-#tab-config .wk-folder:hover::before{background:var(--wk-hover)}
+#tab-config .wk-folder:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--text-primary) 22%,var(--border-light))}
 #tab-config .wk-folder .wk-ficon{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:11px;background:color-mix(in srgb,var(--text-primary) 6%,transparent);border:1px solid color-mix(in srgb,var(--text-primary) 9%,transparent);color:var(--text-dim);margin-bottom:auto;transition:color .16s,background .16s,border-color .16s}
 #tab-config .wk-folder:hover .wk-ficon{color:var(--text-secondary);background:color-mix(in srgb,var(--text-primary) 10%,transparent);border-color:var(--wk-hover-bd)}
 #tab-config .wk-folder .wk-ficon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -11442,10 +11450,10 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
           root.classList.add('cfg-detail-open');
           var tab=root.querySelector('.cfg-tab[data-cfg-tab="'+k+'"]');
           if(tab)tab.click();
-          var nav=root.querySelector('.cfg-tabs');
-          if(nav)requestAnimationFrame(function(){nav.scrollIntoView({behavior:'smooth',block:'start'})});
+          root.scrollTop=0;requestAnimationFrame(function(){root.scrollTop=0});
           try{window.sfx&&sfx.tick&&sfx.tick()}catch(_){}
         };
+        window.cfgBackToFeed=function(){root.classList.remove('cfg-detail-open');root.scrollTop=0;try{window.sfx&&sfx.tick&&sfx.tick()}catch(_){}};
         window._wkToggleSound=function(){
           if(typeof toggleSound==='function')toggleSound();
           var s=document.getElementById('profile-sound-sub');
@@ -11481,6 +11489,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
         window._syncCfgFeed();
       })();
       </script>
+      <button type="button" class="cfg-back" onclick="cfgBackToFeed&&cfgBackToFeed()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Voltar</button>
       <div class="wk-seclabel"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Ajustes detalhados</div>
       <nav class="cfg-tabs" role="tablist">
         <button type="button" class="cfg-tab active" data-cfg-tab="ficha" role="tab"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Ficha</button>
