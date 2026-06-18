@@ -35943,14 +35943,20 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .st:nth-child(1) .st-v,.grimorio-root .st:nth-child(2) .st-v{font-family:'Fraunces',Georgia,serif;font-size:15px}
   .grimorio-root .desc{font-size:14px;line-height:1.72;margin:0;color:#cecbd6}
   .grimorio-root .desc b,.grimorio-root .apr-t b{color:var(--acc2);font-weight:600}
-  .grimorio-root .aprs{margin-top:16px;display:flex;flex-direction:column;gap:13px}
-  .grimorio-root .apr{padding-left:16px;border-left:2px solid var(--line)}
-  .grimorio-root .apr.asc{border-left-color:color-mix(in srgb,var(--acc) 55%,var(--line))}
-  .grimorio-root .apr-h{display:flex;align-items:center;gap:10px;margin-bottom:5px}
-  .grimorio-root .apr .tier{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acc2)}
-  .grimorio-root .apr .pe{font-size:10px;font-weight:600;letter-spacing:.04em;color:var(--muted);padding:2px 7px;border-radius:6px;background:#161619}
-  .grimorio-root .apr-t{font-size:14px;line-height:1.78;color:#c4c1cd}
-  .grimorio-root .apr-req{display:flex;align-items:baseline;gap:6px;margin-top:4px;font-size:12.5px;color:var(--muted)}
+  .grimorio-root .aprs{margin-top:18px;display:flex;flex-direction:column;gap:12px}
+  .grimorio-root .apr{position:relative;border:1px solid var(--line);border-radius:13px;padding:13px 15px 13px 17px;
+    background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 4%,var(--panel-2)),var(--panel))}
+  .grimorio-root .apr::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 3px 3px 0;background:color-mix(in srgb,var(--acc) 40%,var(--line))}
+  .grimorio-root .apr.asc{background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 9%,var(--panel-2)),var(--panel));border-color:color-mix(in srgb,var(--acc) 26%,var(--line))}
+  .grimorio-root .apr.asc::before{background:var(--acc)}
+  .grimorio-root .apr-h{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+  .grimorio-root .apr .tier{display:inline-flex;align-items:center;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--acc2);
+    padding:4px 10px;border-radius:999px;background:color-mix(in srgb,var(--acc) 14%,transparent);border:1px solid color-mix(in srgb,var(--acc) 30%,transparent)}
+  .grimorio-root .apr.asc .tier{color:#fff;background:color-mix(in srgb,var(--acc) 30%,transparent);border-color:color-mix(in srgb,var(--acc) 55%,transparent)}
+  .grimorio-root .apr .pe{margin-left:auto;font-family:'JetBrains Mono','Fraunces',monospace;font-size:11px;font-weight:700;letter-spacing:.02em;color:var(--acc2);
+    padding:3px 9px;border-radius:7px;background:color-mix(in srgb,var(--acc) 10%,#161619)}
+  .grimorio-root .apr-t{font-size:14px;line-height:1.72;color:#cbc8d4}
+  .grimorio-root .apr-req{display:flex;align-items:baseline;gap:7px;margin-top:10px;padding-top:9px;border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent);font-size:12px;color:var(--muted)}
   .grimorio-root .apr-req b{font-weight:700;letter-spacing:.02em;
     background:linear-gradient(115deg,#fff 0%,#fff 38%,var(--acc2) 50%,#fff 62%,#fff 100%);
     background-size:280% 100%;background-position:100% 0;
@@ -35988,9 +35994,9 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .gd-scroll .st-v{font-size:14px}
   .grimorio-root .gd-scroll .st:nth-child(1) .st-v,.grimorio-root .gd-scroll .st:nth-child(2) .st-v{font-size:17px}
   .grimorio-root .gd-scroll .desc{font-size:15.5px;line-height:1.85}
-  .grimorio-root .gd-scroll .apr-t{font-size:15px;line-height:1.85;color:#cecbd6}
-  .grimorio-root .gd-scroll .apr{padding-left:18px}
-  .grimorio-root .gd-scroll .aprs{margin-top:22px;gap:18px}
+  .grimorio-root .gd-scroll .apr-t{font-size:15px;line-height:1.8;color:#d4d1dc}
+  .grimorio-root .gd-scroll .apr{padding:16px 18px 16px 20px}
+  .grimorio-root .gd-scroll .aprs{margin-top:24px;gap:14px}
   @media(max-width:1080px){
     /* mobile: overlay sobe a tela toda, acima da topbar */
     .grimorio-root .gdetail{position:fixed;inset:0;z-index:9300;transform:translateY(100%)}
