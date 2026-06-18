@@ -9311,7 +9311,8 @@ body:has(#tab-feiticos.active) .topbar-search input{background:#262626!important
 .ritual-main-nav-dot.active{background:var(--ritual-accent);transform:scale(1.4)}
 .ritual-back-btn{width:30px;height:30px;flex-shrink:0;aspect-ratio:1/1;border-radius:50%;background:var(--bg-card-inner);border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;font-size:16px;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
 .ritual-back-btn:hover{border-color:var(--ritual-accent);color:var(--ritual-accent)}
-.ritual-back-btn svg{width:15px;height:15px;display:block}
+.ritual-back-btn{flex:0 0 30px!important;min-width:30px;max-width:30px;min-height:30px;max-height:30px}
+.ritual-back-btn svg{width:15px;height:15px;display:block;flex:0 0 auto}
 .rv-head-actions .ritual-back-btn[style*="--red"],.rv-head-actions .ritual-back-btn[title="Excluir"]{color:var(--text-secondary)}
 .rv-head-actions .ritual-back-btn[title="Excluir"]:hover{color:var(--red);border-color:var(--red)}
 .rv-page{display:flex;flex-direction:column;gap:12px;animation:rv-fade .25s ease}
