@@ -9309,6 +9309,22 @@ body:has(#tab-feiticos.active) .topbar{background:#1c1c1c}
 .ritual-back-btn:hover{border-color:var(--ritual-accent);color:var(--ritual-accent)}
 .rv-page{display:flex;flex-direction:column;gap:12px;animation:rv-fade .25s ease}
 @keyframes rv-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* ── detalhe do ritual (visão única, estilo grimório) ── */
+.rvd{max-width:780px;margin:0 auto;padding:30px 28px 60px;animation:rv-fade .25s ease;font-family:'Inter',system-ui,sans-serif}
+.rvd-head{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.rvd-grau{flex:0 0 46px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;border-radius:12px;font-family:Georgia,serif;font-size:19px;font-weight:600;color:#fff;background:color-mix(in srgb,var(--rvd-c) 28%,transparent);border:1px solid color-mix(in srgb,var(--rvd-c) 50%,transparent)}
+.rvd-head-main{min-width:0}
+.rvd-head-main h2{margin:0;font-size:clamp(24px,4vw,34px);font-weight:700;letter-spacing:-.02em;color:var(--text);line-height:1.1}
+.rvd-sub{margin-top:5px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--rvd-c) 60%,var(--text-dim))}
+.rvd-sub .mono{color:var(--text-dim)}
+.rvd-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px 18px;padding:16px 18px;margin-bottom:22px;border:1px solid var(--border);border-radius:12px;background:#1c1c1c}
+.rvd-st{display:flex;flex-direction:column;gap:3px;min-width:0}
+.rvd-k{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:color-mix(in srgb,var(--rvd-c) 55%,var(--text-dim))}
+.rvd-v{font-size:14px;font-weight:500;color:var(--text)}
+.rvd-desc{font-size:15px;line-height:1.8;color:#d6d3dd}
+.rvd-desc p{margin:0 0 12px}
+.rvd-desc p:last-child{margin-bottom:0}
+.rvd-empty{color:var(--text-dim);font-style:italic}
 .rv-row{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 16px;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:10px;gap:14px}
 .rv-row:hover{border-color:color-mix(in srgb,var(--ritual-accent) 30%,var(--border))}
 .rv-k{font-size:10px;letter-spacing:.2em;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-weight:600;flex-shrink:0;min-width:120px}
@@ -24807,40 +24823,25 @@ function renderFeitTab(){
   if(_ritualView&&mainBody){
     const f=list.find(x=>x.id===_ritualView.id);
     if(!f){_ritualView=null}else{
-      const PAGES=[
-        {k:'identidade',ttl:'Identidade'},
-        {k:'mecanica',ttl:'Mecânica'},
-        {k:'efeitos',ttl:'Efeitos'},
-        {k:'descricao',ttl:'Descrição'}
-      ];
-      const p=_ritualView.page;const pg=PAGES[p];
-      if(mainTtl)mainTtl.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0"><button class="ritual-back-btn" onclick="closeRitualView()" title="Voltar (Esc)">←</button><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${(f.name||'sem nome')} <span style="color:var(--text-dim);font-weight:400;font-size:13px">· ${pg.ttl}</span></span></div><div class="rv-head-actions"><button class="ritual-back-btn" onclick="duplicateRitual('${f.id}')" title="Duplicar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="ritual-back-btn" onclick="(async()=>{if(await appConfirm('Remover ritual?')){removeFeitico('${f.id}');closeRitualView()}})()" title="Excluir" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div>`;
-      if(mainPager)mainPager.textContent=(p+1)+' / '+PAGES.length;
       const esc=s=>String(s||'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
       const fmtId='#'+(f.id||'').replace(/^f/,'').slice(0,5).toUpperCase();
       const tier=f.circle<=1?'INICIANTE':f.circle===2?'INTERMEDIÁRIO':f.circle===3?'AVANÇADO':'MESTRE';
-      let content='';
-      if(p===0){content=`
-        <div class="rv-row"><div class="rv-k">NOME</div><div class="rv-v">${esc(f.name)||'—'}</div></div>
-        <div class="rv-row"><div class="rv-k">ID</div><div class="rv-v mono">${fmtId}</div></div>
-        <div class="rv-row"><div class="rv-k">GRAU</div><div class="rv-v">${f.circle||1}º Grau · ${tier}</div></div>
-        <div class="rv-row"><div class="rv-k">ESSÊNCIA</div><div class="rv-v">${esc(f.school)||'Carmin'}</div></div>
-        ${f.movimentos?.length?`<div class="rv-row"><div class="rv-k">MOVIMENTOS</div><div class="rv-v">${f.movimentos.map(m=>esc(m)).join(' · ')}</div></div>`:''}`;}
-      else if(p===1){content=`
-        <div class="rv-row"><div class="rv-k">EXECUÇÃO</div><div class="rv-v">${esc(f.execucao)||'Decisiva'}</div></div>
-        <div class="rv-row"><div class="rv-k">ALCANCE</div><div class="rv-v">${esc(f.alcance)||'Curto'}</div></div>
-        <div class="rv-row"><div class="rv-k">DURAÇÃO</div><div class="rv-v">${esc(f.duracao)||'Instantânea'}</div></div>
-        <div class="rv-row"><div class="rv-k">${(f.alvo||'').startsWith('area')?'ÁREA':'ALVO'}</div><div class="rv-v">${esc(FORJA_ALVO?.find(a=>a.tipo===f.alvo)?.nome||f.alvo||'Único')}</div></div>
-        <div class="rv-row"><div class="rv-k">RESISTÊNCIA</div><div class="rv-v">${esc(f.resistPericia)||'—'} · ${esc(f.resistTipo)||'—'}</div></div>`;}
-      else if(p===2){const efs=f.efeitosPri||[];const dc=f.danoCuraTipo&&f.danoCuraTipo!=='nenhum'?{tipo:f.danoCuraTipo,val:f.danoCuraValor,fis:f.danoFisico}:null;content=`
-        ${dc?`<div class="rv-row"><div class="rv-k">${dc.tipo==='dano'?'DANO':'CURA'}</div><div class="rv-v" style="color:var(--ritual-accent);font-weight:700">${dc.val}${dc.tipo==='dano'?(dc.fis?' (físico)':' (não-físico)'):''}</div></div>`:''}
-        ${efs.length?`<div class="rv-section">EFEITOS PRINCIPAIS</div>${efs.map(e=>`<div class="rv-eff"><span>+ ${esc(e.nome)}</span><span class="rv-eff-pts">${e.custo} pts</span></div>`).join('')}`:'<div class="rv-empty">Sem efeitos registrados.</div>'}
-        ${f.efeitosSec?.length?`<div class="rv-section">EFEITOS SECUNDÁRIOS</div>${f.efeitosSec.map(e=>`<div class="rv-eff sec"><span>− ${esc(e.nome)}</span><span class="rv-eff-pts" style="color:#50a870">−${e.custo} pts</span></div>`).join('')}`:''}`;}
-      else if(p===3){content=`
-        <div class="rv-desc">${f.desc?esc(f.desc).split('\n').map(l=>`<p>${l||'&nbsp;'}</p>`).join(''):'<p class="rv-empty-text">Nenhuma descrição registrada.</p>'}</div>
-        <div class="rv-actions"><button class="ritual-btn" style="border-color:var(--red);color:var(--red)" onclick="(async()=>{if(await appConfirm('Remover ritual?')){removeFeitico('${f.id}');closeRitualView()}})()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg><span>Excluir</span></button></div>`;}
-      mainBody.innerHTML='<div class="rv-page">'+content+'</div>';
-      if(mainNav)mainNav.innerHTML=`<button class="ritual-main-nav-btn" onclick="ritualViewNav(-1)" ${p===0?'disabled':''} title="Anterior (←)">←</button><div class="ritual-main-nav-dots">${PAGES.map((pp,i)=>`<button class="ritual-main-nav-dot${i===p?' active':''}" onclick="ritualViewGoto(${i})" title="${pp.ttl}"></button>`).join('')}</div><button class="ritual-main-nav-btn" onclick="ritualViewNav(1)" ${p===PAGES.length-1?'disabled':''} title="Próximo (→)">→</button>`;
+      const ESS_DOT={Alba:'#46b35f',Carmin:'#d11a14',Carmim:'#d11a14',Kaos:'#b25ce0',Lumen:'#e0a820',Perene:'#2fb89a',Ruina:'#7a7060'};
+      const dot=ESS_DOT[f.school]||'var(--magenta,#fe1455)';
+      const alvoNm=f.alvo?(FORJA_ALVO?.find(a=>a.tipo===f.alvo)?.nome||f.alvo):'';
+      const st=(k,v)=>v?`<div class="rvd-st"><span class="rvd-k">${k}</span><span class="rvd-v">${esc(v)}</span></div>`:'';
+      if(mainTtl)mainTtl.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0"><button class="ritual-back-btn" onclick="closeRitualView()" title="Voltar (Esc)">←</button><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(f.name)||'sem nome'}</span></div><div class="rv-head-actions"><button class="ritual-back-btn" onclick="duplicateRitual('${f.id}')" title="Duplicar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="ritual-back-btn" onclick="(async()=>{if(await appConfirm('Remover ritual?')){removeFeitico('${f.id}');closeRitualView()}})()" title="Excluir" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div>`;
+      if(mainPager)mainPager.textContent='';
+      const descHtml=f.desc?esc(f.desc).split('\n').map(l=>l.trim()?`<p>${l}</p>`:'').join(''):'<p class="rvd-empty">Nenhuma descrição registrada.</p>';
+      mainBody.innerHTML=`<div class="rvd" style="--rvd-c:${dot}">
+        <div class="rvd-head">
+          <span class="rvd-grau">${Math.max(1,f.circle)}º</span>
+          <div class="rvd-head-main"><h2>${esc(f.name)||'—'}</h2><div class="rvd-sub">${esc(f.school)||'—'} · ${f.circle||1}º Grau · ${tier} · <span class="mono">${fmtId}</span></div></div>
+        </div>
+        <div class="rvd-stats">${st('Execução',f.execucao)}${st('Alcance',f.alcance)}${st(alvoNm&&(f.alvo||'').startsWith('area')?'Área':'Alvo',alvoNm)}${st('Duração',f.duracao)}${st('Resistência',f.resistPericia)}</div>
+        <div class="rvd-desc">${descHtml}</div>
+      </div>`;
+      if(mainNav)mainNav.innerHTML='';
       return;
     }
   }
