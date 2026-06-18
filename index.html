@@ -9289,7 +9289,7 @@ img{content-visibility:auto}
 .rv-head-actions{display:flex;gap:6px;flex-shrink:0}
 .ritual-main-title{font-family:Inter,system-ui,sans-serif;font-size:18px;font-weight:700;color:var(--text);letter-spacing:-.2px}
 .ritual-main-pager{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);letter-spacing:.15em}
-.ritual-main-body{flex:1;overflow:hidden;padding:14px 14px;min-height:0;display:flex}
+.ritual-main-body{flex:1;overflow:hidden;padding:14px;min-height:0;display:flex;margin:12px;border:1px solid color-mix(in srgb,#fff 14%,var(--border));border-radius:12px;background:color-mix(in srgb,#fff 2%,transparent)}
 .ritual-main-nav{display:flex;justify-content:center;align-items:center;gap:14px;padding:12px 22px;border-top:1px solid var(--border);flex-shrink:0;min-height:48px}
 .ritual-main-nav:empty{display:none}
 .ritual-main-nav-btn{width:36px;height:36px;flex-shrink:0;aspect-ratio:1/1;border-radius:50%;background:var(--bg-card-inner);border:1px solid var(--border);color:var(--text-secondary);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:inherit}
@@ -36878,7 +36878,34 @@ function flyCardToCart(btn){
 function removeFromCart(el,n){cart=cart.filter(i=>!(i.el===el&&i.n===n));updateCart();render();}
 function openCart(){document.getElementById('grim-cartDrawer').dataset.on=1;document.getElementById('grim-cartScrim').dataset.on=1;ROOT.dataset.cart=1;}
 function closeCart(){document.getElementById('grim-cartDrawer').dataset.on=0;document.getElementById('grim-cartScrim').dataset.on=0;ROOT.dataset.cart=0;}
-function confirmBuy(){if(!cart.length)return;const n=cart.length;cart=[];updateCart();render();closeCart();toast(`Adquirido · ${n} feitiço${n===1?'':'s'}`);}
+const _ESC_TO_SCHOOL={carmim:'Carmim',lumen:'Lumen',kaos:'Kaos',ruina:'Ruina',alba:'Alba',perene:'Perene',abismo:'Carmim'};
+const _GRAD_BY_SCHOOL={Carmim:'linear-gradient(165deg in oklch,#1a0202 0%,#4a0a08 35%,#8b1414 70%,#c91a14 100%)',Lumen:'linear-gradient(165deg in oklch,#3a2808 0%,#9a7820 50%,#f0c030 100%)',Kaos:'linear-gradient(165deg in oklch,#2a0a3a 0%,#6b1a8a 45%,#c060e8 100%)',Ruina:'linear-gradient(165deg in oklch,#171717 0%,#4a4438 50%,#888070 100%)',Alba:'linear-gradient(165deg in oklch,#1a3a1f 0%,#4a9954 45%,#a8e6a0 100%)',Perene:'linear-gradient(165deg in oklch,#0a2a2a 0%,#1f6a6a 45%,#40e0b0 100%)'};
+function _addFeiticosAoAcervo(items){
+  if(typeof fichaData==='undefined')return;
+  fichaData.feiticos=fichaData.feiticos||[];
+  let add=0;
+  items.forEach(i=>{
+    const f=(FEITICOS[i.el]&&FEITICOS[i.el][i.g])?FEITICOS[i.el][i.g].find(x=>x.n===i.n):null;
+    if(!f)return;
+    const grau0=+i.g||1;
+    if(fichaData.feiticos.some(x=>x.name===f.n&&x.circle===grau0))return; // evita duplicar
+    const school=_ESC_TO_SCHOOL[i.el]||'Carmim';
+    const aprTxt=(f.ap||[]).map(x=>`${x.tier} (${x.pe}): ${String(x.txt).replace(/<\/?b>/g,'')}`).join('\n\n');
+    const desc=String(f.d).replace(/<\/?b>/g,'')+(aprTxt?'\n\n'+aprTxt:'');
+    fichaData.feiticos.push({
+      id:'f'+Date.now().toString(36)+Math.floor(add*7+grau0).toString(36),
+      name:f.n,circle:grau0,school,desc,
+      execucao:f.ex||'Decisiva',alcance:f.al||'Curto',
+      duracao:f.du||'Instantânea',alvo:f.av||'unico',
+      customColor:_GRAD_BY_SCHOOL[school]||''
+    });
+    add++;
+  });
+  if(add&&typeof renderFeitTab==='function')renderFeitTab();
+  if(add&&typeof autosaveDebounced==='function')autosaveDebounced();
+  return add;
+}
+function confirmBuy(){if(!cart.length)return;const n=cart.length;const added=_addFeiticosAoAcervo(cart)||0;cart=[];updateCart();render();closeCart();toast(`${added} feitiço${added===1?'':'s'} no acervo`);}
 function bumpFab(){document.getElementById('grim-cartFab').animate([{transform:'scale(1)'},{transform:'scale(1.18)'},{transform:'scale(1)'}],{duration:300,easing:'cubic-bezier(.34,1.56,.64,1)'});}
 let toastT;
 function toast(msg){let t=document.getElementById('grim-toast');t.textContent=msg;t.dataset.on=1;clearTimeout(toastT);toastT=setTimeout(()=>{t.dataset.on=0;},2300);}
