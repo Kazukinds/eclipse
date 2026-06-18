@@ -8587,7 +8587,13 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
   background:#ffffff;
   box-shadow:0 0 14px rgba(255,255,255,.18);
   transition:width .35s cubic-bezier(.4,0,.2,1)}
-.ad-hrow-val{flex:0 0 auto;min-width:20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:800;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.ad-hrow-val{flex:0 0 auto;min-width:20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:800;color:var(--text-primary);font-variant-numeric:tabular-nums;transition:opacity .35s ease,max-width .45s cubic-bezier(.22,1,.36,1),margin .45s cubic-bezier(.22,1,.36,1);max-width:40px;overflow:hidden}
+.ad-hbar{transition:flex-grow .45s cubic-bezier(.22,1,.36,1),width .45s cubic-bezier(.22,1,.36,1)}
+/* zerado: barra engole o espaco do valor e do "-"; ao ter pontos volta ao normal */
+.ad-hrow.is-zero .ad-hrow-val{opacity:0;max-width:0;min-width:0;margin-left:-14px}
+.ad-hrow.is-zero #ad-dec-fisico,.ad-hrow.is-zero #ad-dec-motora,.ad-hrow.is-zero #ad-dec-psique,.ad-hrow.is-zero #ad-dec-intelecto,
+.ad-hrow.is-zero .ad-hstep[id^="ad-dec-"]{opacity:0;max-width:0!important;min-width:0!important;width:0!important;margin-left:-6px;border-width:0;pointer-events:none;overflow:hidden}
+.ad-hstep[id^="ad-dec-"]{transition:opacity .3s ease,max-width .45s cubic-bezier(.22,1,.36,1),width .45s cubic-bezier(.22,1,.36,1),margin .45s cubic-bezier(.22,1,.36,1)}
 .ad-hsteps{flex:0 0 auto;display:flex;gap:6px}
 .ad-hsteps{align-items:center}
 .ad-hstep{width:32px!important;min-width:32px;max-width:32px;height:32px!important;min-height:32px;max-height:32px;flex:0 0 32px;box-sizing:border-box;padding:0!important;aspect-ratio:1/1;border-radius:4px;border:1px solid var(--border-light);background:var(--bg-card);color:var(--text-secondary);font-size:18px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,color .15s,border-color .15s,transform .1s;-webkit-tap-highlight-color:transparent}
@@ -29970,7 +29976,7 @@ function _adRefresh(){
     const rng=document.getElementById('ad-range-'+n); if(rng){if(parseInt(rng.max)!==sMax)rng.max=sMax; if(parseInt(rng.value)!==v)rng.value=v;}
     const dec=document.getElementById('ad-dec-'+n); if(dec)dec.disabled=v<=0;
     const inc=document.getElementById('ad-inc-'+n); if(inc)inc.disabled=!s.unlocked&&(remaining<=0||v>=s.cap.maxPerAttr);
-    const row=document.getElementById('ad-row-'+n); if(row)row.classList.toggle('has-points',v>0);
+    const row=document.getElementById('ad-row-'+n); if(row){row.classList.toggle('has-points',v>0);row.classList.toggle('is-zero',v<=0);}
   });
   _adDonutUpdate();
 }
