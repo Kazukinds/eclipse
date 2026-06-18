@@ -8646,17 +8646,14 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .ad-hbar:focus-visible{outline:2px solid var(--text-secondary);outline-offset:2px}
 .ad-hbar-fill{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:8px 0 0 8px;overflow:hidden;
   background:var(--c,#fff);
-  box-shadow:0 0 18px color-mix(in srgb,var(--c) 50%,transparent);
-  transition:width .62s cubic-bezier(.34,1.45,.5,1),box-shadow .35s,filter .35s}
+  transition:width .42s cubic-bezier(.22,1,.36,1);will-change:width}
 /* leve brilho varrendo ao mudar */
 .ad-hbar-fill::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-120%);opacity:0}
 .ad-hrow-val{display:inline-block}
 .ad-hrow-val.ad-bump{animation:ad-bump .42s cubic-bezier(.34,1.56,.64,1)}
-.ad-hbar.ad-bar-pulse{animation:ad-bar-punch .45s cubic-bezier(.34,1.56,.64,1)}
-.ad-hbar.ad-bar-pulse .ad-hbar-fill{animation:ad-bar-pulse .55s ease-out}
-.ad-hbar.ad-bar-pulse .ad-hbar-fill::after{animation:ad-bar-sweep .65s ease-out}
-@keyframes ad-bar-punch{0%{transform:scaleY(1)}30%{transform:scaleY(1.22)}100%{transform:scaleY(1)}}
-@keyframes ad-bar-pulse{0%{filter:brightness(1)}30%{filter:brightness(1.7) saturate(1.4)}100%{filter:brightness(1)}}
+.ad-hbar.ad-bar-pulse{animation:ad-bar-punch .32s cubic-bezier(.34,1.5,.64,1)}
+.ad-hbar.ad-bar-pulse .ad-hbar-fill::after{animation:ad-bar-sweep .5s ease-out}
+@keyframes ad-bar-punch{0%{transform:scaleY(1)}35%{transform:scaleY(1.18)}100%{transform:scaleY(1)}}
 @keyframes ad-bar-sweep{0%{transform:translateX(-130%);opacity:1}100%{transform:translateX(130%);opacity:0}}
 .ad-hrow-val{flex:0 0 auto;min-width:20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:800;color:var(--text-primary);font-variant-numeric:tabular-nums;transition:opacity .35s ease,max-width .45s cubic-bezier(.22,1,.36,1),margin .45s cubic-bezier(.22,1,.36,1);max-width:40px;overflow:hidden}
 .ad-hbar{transition:flex-grow .45s cubic-bezier(.22,1,.36,1),width .45s cubic-bezier(.22,1,.36,1)}
@@ -8672,15 +8669,12 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .ad-hstep:hover:not(:disabled){background:var(--bg-hover);color:var(--text-primary);border-color:color-mix(in srgb,var(--text-primary) 22%,var(--border))}
 .ad-hstep:disabled{opacity:.3;cursor:not-allowed}
 /* blob ao clicar — Notion-style: spring polido + morph sutil de cantos. !important vence perf mobile */
-.ad-hstep.ad-step-punch{animation:ad-step-blob .5s cubic-bezier(.22,1,.36,1)!important;transition:none!important;will-change:transform;backface-visibility:hidden}
-/* só transform (GPU) — sem border-radius/background animados p/ nao causar repaint/lag */
+.ad-hstep.ad-step-punch{animation:ad-step-blob .28s cubic-bezier(.34,1.6,.5,1)!important;transition:none!important;will-change:transform;backface-visibility:hidden}
+/* pop rapido e seco (responsivo) — so transform GPU */
 @keyframes ad-step-blob{
-  0%{transform:scale(1,1)}
-  24%{transform:scale(1.34,.7)}
-  46%{transform:scale(.8,1.26)}
-  66%{transform:scale(1.1,.92)}
-  84%{transform:scale(.98,1.03)}
-  100%{transform:scale(1,1)}
+  0%{transform:scale(1)}
+  45%{transform:scale(1.28)}
+  100%{transform:scale(1)}
 }
 /* ripple que expande e some */
 .ad-hstep::after{content:"";position:absolute;inset:0;border-radius:inherit;border:2px solid var(--c,var(--text-secondary));opacity:0;transform:scale(.6);pointer-events:none}
