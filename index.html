@@ -3583,6 +3583,9 @@ body:has(.modal-overlay.open){overflow:hidden!important}
 body:has(.modal-overlay.open) .modal-overlay{overscroll-behavior:contain}
 .modal{background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius);padding:22px;width:460px;height:auto;min-height:auto;max-width:90vw;max-height:90vh;overflow-y:auto;overflow-x:hidden;transform:translateY(16px) scale(.94);filter:blur(6px);transition:transform var(--dur-lg) var(--ease-spring),filter var(--dur-md) var(--ease-out-expo);box-shadow:var(--shadow-lg),0 0 0 1px rgba(255,255,255,.03);overscroll-behavior:contain;display:flex;flex-direction:column;will-change:transform,filter}
 .modal>#modal-body{flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;padding-right:4px;-webkit-overflow-scrolling:touch}
+/* tela Distribuir Atributos: trava scroll/bounce (cabe sem rolagem) */
+.modal:has(.ad-body-wrap)>#modal-body{overflow:hidden!important;overscroll-behavior:none;touch-action:pan-x}
+.modal:has(.ad-body-wrap) .ad-body-wrap{overscroll-behavior:none}
 .modal>#modal-body::-webkit-scrollbar{width:6px}
 .modal>#modal-body::-webkit-scrollbar-track{background:transparent}
 .modal>#modal-body::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
