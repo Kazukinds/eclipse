@@ -176,6 +176,9 @@ textarea,input,[contenteditable="true"],
 @media (max-width:520px),(pointer:coarse){
   /* backdrop-filter é caríssimo no GPU mobile */
   *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  /* excecao: o menu radial é uma superficie estatica, blur ok */
+  .radial-menu-backdrop{backdrop-filter:blur(34px) saturate(130%) brightness(.78)!important;-webkit-backdrop-filter:blur(34px) saturate(130%) brightness(.78)!important}
+  [data-theme="light"] .radial-menu-backdrop{backdrop-filter:blur(34px) saturate(130%)!important;-webkit-backdrop-filter:blur(34px) saturate(130%)!important}
   /* infinite ambient anims gastam frame budget contínuo */
   .pwa-install-btn,.tab-soon-ico,.save-toast-bar-fill::after,.save-toast-icon .sti-badge,
   .item-ammo-badge.empty,.xp-fill::before,.inv-cell.multi-origin:hover .item-overlay,
@@ -211,6 +214,8 @@ body[data-perf-low] .save-toast-icon .sti-badge{animation:none!important}
 @media (pointer:coarse){
   /* zero backdrop em todos */
   *,*::before,*::after{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .radial-menu-backdrop{backdrop-filter:blur(34px) saturate(130%) brightness(.78)!important;-webkit-backdrop-filter:blur(34px) saturate(130%) brightness(.78)!important}
+  [data-theme="light"] .radial-menu-backdrop{backdrop-filter:blur(34px) saturate(130%)!important;-webkit-backdrop-filter:blur(34px) saturate(130%)!important}
   /* limita filter pesado */
   *:not(svg):not(svg *){filter:none}
   /* permite drop-shadow e blur só em itens explicitamente marcados */
