@@ -8594,7 +8594,7 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .ad-hrow{display:flex;align-items:center;gap:14px;user-select:none;-webkit-user-select:none}
 .ad-hrow *{user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
 .ad-hrow-name{flex:0 0 120px;font-size:15px;color:var(--text-secondary);font-weight:500}
-.ad-hbar{position:relative;flex:1;min-width:0;height:30px;border-radius:8px;overflow:hidden;cursor:pointer;
+.ad-hbar{position:relative;flex:1;min-width:0;height:30px;border-radius:8px;overflow:hidden;
   background-color:#161616;
   background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0,rgba(255,255,255,.06) 5px,transparent 5px,transparent 11px)}
 .ad-hbar:focus-visible{outline:2px solid var(--text-secondary);outline-offset:2px}
@@ -29894,7 +29894,7 @@ function _adMarkup(){
     const sMax=_adSliderMax(n);
     return `<div class="ad-hrow" id="ad-row-${n}" style="--c:${c}" data-attr="${n}">
       <span class="ad-hrow-name">${lbl[n]||n}:</span>
-      <div class="ad-hbar" role="slider" aria-label="${lbl[n]||n}" aria-valuenow="0" aria-valuemax="${sMax}" tabindex="0" onclick="_adBarClick(event,'${n}')">
+      <div class="ad-hbar" role="progressbar" aria-label="${lbl[n]||n}" aria-valuenow="0" aria-valuemax="${sMax}">
         <div class="ad-hbar-fill" id="ad-fill-${n}"></div>
       </div>
       <span class="ad-hrow-val" id="ad-val-${n}">0</span>
