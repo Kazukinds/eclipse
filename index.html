@@ -9334,10 +9334,17 @@ body:has(#tab-feiticos.active) .topbar-search input{background:#262626!important
 .rvd-st{display:flex;flex-direction:column;gap:3px;min-width:0}
 .rvd-k{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:color-mix(in srgb,var(--rvd-c) 55%,var(--text-dim))}
 .rvd-v{font-size:14px;font-weight:500;color:var(--text)}
-.rvd-desc{font-size:15px;line-height:1.8;color:#d6d3dd;padding:0;text-align:left}
+.rvd-desc{font-size:15.5px;line-height:1.82;color:#cfccd6;padding:0;text-align:left}
 .rvd-desc p{margin:0 0 12px}
 .rvd-desc p:last-child{margin-bottom:0}
 .rvd-empty{color:var(--text-dim);font-style:italic}
+/* blocos de aprimoramento */
+.rvd-aprs{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+.rvd-apr{position:relative;padding:14px 16px 14px 18px;border:1px solid var(--border);border-left:3px solid var(--rvd-c);border-radius:10px;background:color-mix(in srgb,var(--rvd-c) 7%,#1a1a1a)}
+.rvd-apr-top{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.rvd-apr-nm{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--rvd-c) 70%,#fff)}
+.rvd-apr-pe{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:#fff;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--rvd-c) 42%,transparent);border:1px solid color-mix(in srgb,var(--rvd-c) 55%,transparent)}
+.rvd-apr p{margin:0;font-size:14.5px;line-height:1.7;color:#c4c1cb}
 .rv-row{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 16px;background:var(--bg-card-inner);border:1px solid var(--border);border-radius:10px;gap:14px}
 .rv-row:hover{border-color:color-mix(in srgb,var(--ritual-accent) 30%,var(--border))}
 .rv-k{font-size:10px;letter-spacing:.2em;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-weight:600;flex-shrink:0;min-width:120px}
@@ -24846,14 +24853,21 @@ function renderFeitTab(){
       const st=(k,v)=>v?`<div class="rvd-st"><span class="rvd-k">${k}</span><span class="rvd-v">${esc(v)}</span></div>`:'';
       if(mainTtl)mainTtl.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0"><button class="rv-back" onclick="closeRitualView()" title="Voltar (Esc)" aria-label="Voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(f.name)||'sem nome'}</span></div><div class="rv-head-actions"><button class="ritual-back-btn" onclick="duplicateRitual('${f.id}')" title="Duplicar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="ritual-back-btn" onclick="(async()=>{if(await appConfirm('Remover ritual?')){removeFeitico('${f.id}');closeRitualView()}})()" title="Excluir"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div>`;
       if(mainPager)mainPager.textContent='';
-      const descHtml=f.desc?esc(f.desc).split('\n').map(l=>l.trim()?`<p>${l}</p>`:'').join(''):'<p class="rvd-empty">Nenhuma descrição registrada.</p>';
+      // separa descricao base dos blocos de aprimoramento ("Nome (+N PE): ...")
+      const lines=(f.desc||'').split('\n').map(l=>l.trim()).filter(Boolean);
+      const APR=/^([A-Za-zÀ-ÿ][\wÀ-ÿ \-]*?)\s*\(\s*\+?\s*(\d+)\s*PE\s*\)\s*:?\s*(.*)$/;
+      let baseP=[];const aprs=[];
+      lines.forEach(l=>{const m=l.match(APR);if(m){aprs.push({nome:m[1].trim(),pe:m[2],txt:m[3].trim()});}else if(aprs.length){aprs[aprs.length-1].txt+=' '+l;}else{baseP.push(l);}});
+      const baseHtml=baseP.length?baseP.map(p=>`<p>${esc(p)}</p>`).join(''):(aprs.length?'':'<p class="rvd-empty">Nenhuma descrição registrada.</p>');
+      const aprHtml=aprs.length?`<div class="rvd-aprs">${aprs.map(a=>`<div class="rvd-apr"><div class="rvd-apr-top"><span class="rvd-apr-nm">${esc(a.nome)}</span><span class="rvd-apr-pe">+${a.pe} PE</span></div><p>${esc(a.txt)}</p></div>`).join('')}</div>`:'';
       mainBody.innerHTML=`<div class="rvd" style="--rvd-c:${dot}">
         <div class="rvd-head">
           <span class="rvd-grau">${Math.max(1,f.circle)}º</span>
           <div class="rvd-head-main"><h2>${esc(f.name)||'—'}</h2><div class="rvd-sub">${esc(f.school)||'—'} · ${f.circle||1}º Grau · ${tier} · <span class="mono">${fmtId}</span></div></div>
         </div>
         <div class="rvd-stats">${st('Execução',f.execucao)}${st('Alcance',f.alcance)}${st(alvoNm&&(f.alvo||'').startsWith('area')?'Área':'Alvo',alvoNm)}${st('Duração',f.duracao)}${st('Resistência',f.resistPericia)}</div>
-        <div class="rvd-desc">${descHtml}</div>
+        <div class="rvd-desc">${baseHtml}</div>
+        ${aprHtml}
       </div>`;
       if(mainNav)mainNav.innerHTML='';
       return;
