@@ -3578,6 +3578,9 @@ input[type="number"]{-moz-appearance:textfield}
 /* ═══ MODAL ═══ */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);display:flex;align-items:center;justify-content:center;z-index:300;opacity:0;pointer-events:none;transition:opacity var(--dur-md) var(--ease-out-expo),backdrop-filter var(--dur-md) ease}
 .modal-overlay.open{opacity:1;pointer-events:all;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+/* trava o scroll do fundo enquanto um modal esta aberto */
+body:has(.modal-overlay.open){overflow:hidden!important}
+body:has(.modal-overlay.open) .modal-overlay{overscroll-behavior:contain}
 .modal{background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius);padding:22px;width:460px;height:auto;min-height:auto;max-width:90vw;max-height:90vh;overflow-y:auto;overflow-x:hidden;transform:translateY(16px) scale(.94);filter:blur(6px);transition:transform var(--dur-lg) var(--ease-spring),filter var(--dur-md) var(--ease-out-expo);box-shadow:var(--shadow-lg),0 0 0 1px rgba(255,255,255,.03);overscroll-behavior:contain;display:flex;flex-direction:column;will-change:transform,filter}
 .modal>#modal-body{flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;padding-right:4px;-webkit-overflow-scrolling:touch}
 .modal>#modal-body::-webkit-scrollbar{width:6px}
@@ -3734,7 +3737,11 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
 .modal-title{font-size:16px;font-weight:700}
 .modal-close{width:32px!important;height:32px!important;min-width:32px;max-width:32px;min-height:32px;max-height:32px;flex:0 0 32px;flex-shrink:0;aspect-ratio:1/1;border-radius:50%!important;background:var(--bg-input);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dim);transition:all .2s;box-sizing:border-box}
-.modal-close:hover{color:var(--red);border-color:rgba(248,113,113,.3);background:var(--red-dim)}
+.modal-close{outline:none}
+.modal-close:hover{color:var(--text-primary);border-color:color-mix(in srgb,var(--text-primary) 30%,var(--border));background:var(--bg-hover);transform:rotate(90deg) scale(1.08)}
+.modal-close:focus-visible{outline:none!important;box-shadow:none!important}
+.modal-close svg{transition:transform .25s}
+.modal-close:active{transform:rotate(90deg) scale(.92)}
 .modal-close svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;display:block;flex-shrink:0;margin:auto}
 .modal-close svg line,.modal-close svg path{stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;fill:none}
 .modal .form-group{margin-bottom:14px}
