@@ -3047,7 +3047,11 @@ input[type="number"]{-moz-appearance:textfield}
 .xp-fill::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-100%);animation:xp-shimmer 2.4s ease-in-out infinite;pointer-events:none}
 @keyframes xp-shimmer{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
 @media(prefers-reduced-motion:reduce){.xp-fill::before{animation:none}.xp-fill{transition:none}}
-.xp-fill::after{display:none}
+.xp-fill::after{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);transform:translateX(-120%);opacity:0;pointer-events:none}
+.xp-fill.bar-bump{animation:bar-bump-glow .55s ease-out}
+.xp-fill.bar-bump::after{animation:bar-bump-sweep .6s ease-out}
+@keyframes bar-bump-glow{0%{filter:brightness(1)}35%{filter:brightness(1.5) saturate(1.2)}100%{filter:brightness(1)}}
+@keyframes bar-bump-sweep{0%{transform:translateX(-120%);opacity:1}100%{transform:translateX(120%);opacity:0}}
 .xp-gear{width:34px;height:34px;min-width:34px;min-height:34px;aspect-ratio:1/1;flex-shrink:0;flex-grow:0;margin-left:12px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dim);transition:all .3s;transform:none;box-sizing:border-box;padding:0}
 .xp-gear:hover{color:var(--magenta);border-color:var(--magenta-dim);transform:rotate(90deg)}
 .xp-gear svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -19715,6 +19719,8 @@ function addLogRow(ni){const tb=document.getElementById('item-log-body'),tr=docu
 
 // ═══ XP / LEVEL ═══
 let xpLog=[];
+// pulse/sweep numa barra quando o valor muda (motion estilo distribuir-atributos)
+function _barBump(el,pct){if(!el)return;const prev=el.dataset.pct;el.dataset.pct=pct;if(prev!==undefined&&parseFloat(prev)!==pct){el.classList.remove('bar-bump');void el.offsetWidth;el.classList.add('bar-bump');}}
 function renderXP(){
   if(!window._autoSkillsBooted){window._autoSkillsBooted=true;if(window._ensureAutoSkills)try{window._ensureAutoSkills()}catch(_){}}
   if(window._lastSeenLevel!==playerLevel){
@@ -19730,11 +19736,11 @@ function renderXP(){
   document.getElementById('xp-level-num').textContent=playerLevel;
   document.getElementById('xp-numbers').textContent=`${playerXP.toLocaleString()} / ${xpToNext.toLocaleString()} XP`;
   const xpPct=playerXP>0?Math.min(100,playerXP/xpToNext*100):0;
-  const xf=document.getElementById('xp-fill');xf.style.width=xpPct+'%';xf.style.visibility=xpPct>0?'visible':'hidden';
+  const xf=document.getElementById('xp-fill');_barBump(xf,xpPct);xf.style.width=xpPct+'%';xf.style.visibility=xpPct>0?'visible':'hidden';
   const sn=document.getElementById('stage-num');if(sn)sn.textContent=playerStage;
   const snums=document.getElementById('stage-numbers');if(snums)snums.textContent=`${stageXP.toLocaleString()} / ${stageToNext.toLocaleString()} XP`;
   const stPct=stageXP>0?Math.min(100,stageXP/stageToNext*100):0;
-  const sf=document.getElementById('stage-fill');if(sf){sf.style.width=stPct+'%';sf.style.visibility=stPct>0?'visible':'hidden'}
+  const sf=document.getElementById('stage-fill');if(sf){_barBump(sf,stPct);sf.style.width=stPct+'%';sf.style.visibility=stPct>0?'visible':'hidden'}
   const el=document.getElementById('evo-level');if(el)el.textContent=playerLevel;
   const ex=document.getElementById('evo-xp');if(ex)ex.textContent=playerXP.toLocaleString();
   const em=document.getElementById('evo-xpmax');if(em)em.textContent=xpToNext.toLocaleString();
