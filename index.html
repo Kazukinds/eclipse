@@ -8469,11 +8469,11 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .ad-pts-bar{
   position:relative;display:flex;gap:14px;align-items:center;
   background:var(--bg-card-inner);
-  border:1px solid var(--magenta-dim);
+  border:1px solid var(--border-light);
   border-radius:12px;padding:13px 16px 17px;margin-bottom:14px;
   overflow:hidden;
 }
-.ad-pts-bar::before{content:"";display:block;position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--magenta);z-index:0}
+.ad-pts-bar::before{content:"";display:block;position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--border);z-index:0}
 .ad-pts-block{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0;position:relative;z-index:1}
 .ad-pts-block.ad-pts-max{
   flex:0 0 auto;align-items:center;justify-content:center;
@@ -8505,7 +8505,7 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 }
 .ad-pts-progress{
   position:absolute;left:0;bottom:0;height:3px;z-index:1;
-  background:var(--magenta);
+  background:var(--text-secondary);
   border-radius:0;
   transition:width .35s cubic-bezier(.4,0,.2,1);
 }
@@ -8529,8 +8529,8 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .ad-radar-dot{fill:var(--magenta);stroke:var(--bg-card-inner);stroke-width:2}
 .ad-radar-name{font-family:inherit;font-size:8.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;fill:var(--text-dim)}
 .ad-radar-rv{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
-.ad-pts-fill{position:absolute;left:0;top:0;bottom:0;width:100%;z-index:0;pointer-events:none;background:color-mix(in srgb,var(--magenta) 14%,transparent);transition:width .5s cubic-bezier(.4,0,.2,1)}
-.ad-pts-fill::after{content:"";position:absolute;right:0;top:0;bottom:0;width:2px;background:var(--magenta);box-shadow:0 0 10px color-mix(in srgb,var(--magenta) 70%,transparent);opacity:.85}/* === Cards + stepper === */
+.ad-pts-fill{position:absolute;left:0;top:0;bottom:0;width:100%;z-index:0;pointer-events:none;background:color-mix(in srgb,var(--text-primary) 7%,transparent);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.ad-pts-fill::after{content:"";position:absolute;right:0;top:0;bottom:0;width:2px;background:var(--text-secondary);opacity:.5}/* === Cards + stepper === */
 .sp-list{display:flex;flex-direction:column;gap:10px;margin:4px 0 18px}
 .sp-card{background:var(--bg-card-inner);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:13px;transition:border-color .2s,box-shadow .2s}
 .sp-card.has-points{border-color:var(--border-light)}
@@ -8571,10 +8571,10 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .ad-range{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;background:transparent;-webkit-appearance:none;appearance:none;cursor:pointer;outline:none;z-index:2}
 .ad-range::-webkit-slider-runnable-track{background:transparent;height:32px;border:none}
 .ad-range::-moz-range-track{background:transparent;height:32px;border:none}
-.ad-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:var(--c);border:3px solid var(--bg-card-inner);box-shadow:0 2px 6px rgba(0,0,0,.4);cursor:grab;transition:transform .12s}
-.ad-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--c);border:3px solid var(--bg-card-inner);box-shadow:0 2px 6px rgba(0,0,0,.4);cursor:grab;transition:transform .12s}
-.ad-range:active::-webkit-slider-thumb{transform:scale(1.15);cursor:grabbing}
-.ad-range:active::-moz-range-thumb{transform:scale(1.15);cursor:grabbing}
+.ad-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:32px;background:transparent;border:0;cursor:grab}
+.ad-range::-moz-range-thumb{width:24px;height:32px;background:transparent;border:0;cursor:grab}
+.ad-range:active::-webkit-slider-thumb{cursor:grabbing}
+.ad-range:active::-moz-range-thumb{cursor:grabbing}
 .ad-benef-row{display:flex;flex-wrap:wrap;gap:6px}
 .ad-benef{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:11px;opacity:.55;transition:opacity .2s,border-color .2s}
 .ad-row.has-points .ad-benef{opacity:1;border-color:color-mix(in srgb,var(--c) 30%,var(--border))}
@@ -8591,9 +8591,9 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 .ad-row{padding:16px}
 /* === Distribuir Atributos — polish premium (só visual) === */
 /* Header: gradiente sutil magenta + barra de progresso com brilho */
-.ad-pts-bar{background:linear-gradient(180deg,color-mix(in srgb,var(--magenta) 7%,var(--bg-card-inner)),var(--bg-card-inner));box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 6px 22px -12px color-mix(in srgb,var(--magenta) 55%,transparent)}
-.ad-pts-bar::before{background:linear-gradient(90deg,var(--magenta-dim),var(--magenta));box-shadow:0 0 12px color-mix(in srgb,var(--magenta) 55%,transparent)}
-.ad-pts-fill{background:linear-gradient(90deg,color-mix(in srgb,var(--magenta) 16%,transparent),color-mix(in srgb,var(--magenta) 5%,transparent))}
+.ad-pts-bar{background:var(--bg-card-inner);box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+.ad-pts-bar::before{background:var(--border)}
+.ad-pts-fill{background:color-mix(in srgb,var(--text-primary) 6%,transparent)}
 .ad-pts-val{font-size:30px}
 .ad-pts-block.ad-pts-max{background:color-mix(in srgb,var(--bg-card) 55%,transparent);border-color:var(--border-light)}
 /* Cards: gradiente leve da cor do atributo + glow colorido quando ativo */
