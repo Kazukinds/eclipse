@@ -6905,8 +6905,8 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   .radial-menu{display:none;position:fixed;inset:0;z-index:400;pointer-events:none;opacity:0;transition:opacity .28s var(--ease-out-expo);align-items:center;justify-content:center;box-sizing:border-box}
   .radial-menu.open,.radial-menu.mount{display:flex}
   .radial-menu.open{opacity:1;pointer-events:auto}
-  .radial-menu-backdrop{position:fixed;inset:0;background:rgba(10,10,14,.55);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%)}
-  [data-theme="light"] .radial-menu-backdrop{background:rgba(245,246,248,.6);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%)}
+  .radial-menu-backdrop{position:fixed;inset:0;background:rgba(10,10,14,.68);backdrop-filter:blur(40px) saturate(135%) brightness(.8);-webkit-backdrop-filter:blur(40px) saturate(135%) brightness(.8)}
+  [data-theme="light"] .radial-menu-backdrop{background:rgba(244,245,247,.72);backdrop-filter:blur(40px) saturate(135%);-webkit-backdrop-filter:blur(40px) saturate(135%)}
   .radial-menu-ring{position:relative;width:min(86vw,460px);height:min(86vw,460px);--selected-angle:0deg;--wedge-opacity:0;flex-shrink:0}
   /* Spotlight wedge removido — glow agora fica só atrás do item ativo (ver .radial-menu-item.touched) */
   .radial-menu-ring::before,.radial-menu-ring::after{content:none}
@@ -6951,11 +6951,11 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   /* Tooltip pill — cor padrão lime + shortcut badge */
   .radial-menu-tooltip{
     position:absolute;left:50%;top:50%;
-    background:var(--magenta)!important;color:#0a0a0a!important;border:none;
+    background:rgba(255,255,255,.96)!important;color:#0a0a0a!important;border:none;
     padding:8px 8px 8px 16px;border-radius:999px;white-space:nowrap;pointer-events:none;
     font-family:inherit;font-size:13px;font-weight:700;letter-spacing:.2px;
     display:flex;align-items:center;gap:10px;
-    box-shadow:0 10px 30px color-mix(in srgb,var(--magenta) 40%,transparent),0 0 0 1px rgba(0,0,0,.1) inset,0 0 28px color-mix(in srgb,var(--magenta) 35%,transparent);
+    box-shadow:0 10px 30px rgba(0,0,0,.4),0 0 0 1px rgba(0,0,0,.08) inset;
     opacity:0;transform:translate(calc(-50% + var(--tt-x,0px)),calc(-50% + var(--tt-y,0px))) scale(.85);
     transition:opacity .2s var(--ease-out-expo),transform .28s var(--ease-spring);
     z-index:3;
@@ -6971,10 +6971,10 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
   .radial-menu-item.touched + .radial-menu-tooltip{
     opacity:1;transform:translate(calc(-50% + var(--tt-x,0px)),calc(-50% + var(--tt-y,0px))) scale(1);
   }
-  [data-theme="light"] .radial-menu-tooltip{background:var(--magenta-dim)!important;color:#fff!important;box-shadow:0 10px 30px color-mix(in srgb,var(--magenta-dim) 40%,transparent),0 0 28px color-mix(in srgb,var(--magenta-dim) 30%,transparent)}
-  [data-theme="light"] .radial-menu-tooltip .rmt-key{background:#fff;color:var(--magenta-dim)}
-  /* Iluminação sutil nas bordas (glow decorativo do radial) */
-  .radial-menu::before,.radial-menu::after{content:'';position:absolute;top:50%;width:180px;height:280px;transform:translateY(-50%);pointer-events:none;background:radial-gradient(closest-side,color-mix(in srgb,var(--magenta) 14%,transparent),transparent 70%);filter:blur(30px);opacity:0;transition:opacity .4s}
+  [data-theme="light"] .radial-menu-tooltip{background:#171717!important;color:#fff!important;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+  [data-theme="light"] .radial-menu-tooltip .rmt-key{background:#fff;color:#171717}
+  /* glow decorativo das bordas removido (sem rosa) */
+  .radial-menu::before,.radial-menu::after{content:none}
   .radial-menu::before{left:-40px}
   .radial-menu::after{right:-40px}
   .radial-menu.open::before,.radial-menu.open::after{opacity:1}
