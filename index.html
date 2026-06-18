@@ -973,7 +973,7 @@ svg{stroke-linecap:round;stroke-linejoin:round}
 /* ═══ CARDS ═══ */
 .dash-grid{display:grid;grid-template-columns:340px 1fr 280px;gap:10px}
 
-.item-list-section{grid-row:auto;max-height:420px;overflow:hidden;display:flex;flex-direction:column;padding-top:28px}
+.item-list-section{grid-row:auto;max-height:420px;overflow:hidden;display:flex;flex-direction:column}
 /* Esconde card Inventário do dashboard quando ambas listas estão vazias */
 /* Inventário vazio volta a aparecer (layout antigo: Inventário topo-esq + Evolução topo-meio) — não esconde */
 .item-list-section .item-list{flex:0 1 auto;overflow-y:auto;min-height:0}
@@ -6558,6 +6558,10 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--border-light)}
 
 /* ═══ RESPONSIVE ═══ */
+/* vertical/estreito: espaco acima do primeiro card (entre topbar e conteudo) */
+@media(max-width:700px){
+  .dash-grid{margin-top:16px}
+}
 @media(max-width:1200px){
   .dash-grid{grid-template-columns:1fr 1fr}
   .item-list-section{grid-row:auto}
