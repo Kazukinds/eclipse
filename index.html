@@ -8543,9 +8543,9 @@ body[data-perf-low] .attr-tank-wave-2{animation:none}
 @keyframes ad-donut-in{from{transform:rotate(-40deg) scale(.85);opacity:0}to{transform:none;opacity:1}}
 /* painel de info do atributo */
 .ad-legend-row{position:relative;background:none;border:0;text-align:left;cursor:pointer;font:inherit;padding:2px 4px;border-radius:8px;overflow:hidden}
-.ad-legend-row::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);transform:translateX(120%)}
-.ad-legend-row:hover::after{animation:ad-legend-shine .6s ease-out}
-@keyframes ad-legend-shine{from{transform:translateX(120%)}to{transform:translateX(-120%)}}
+.ad-legend-row::after{content:"";position:absolute;top:0;bottom:0;left:0;width:60%;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(180%);opacity:0}
+.ad-legend-row:hover::after,.ad-legend-row:active::after,.ad-legend-row:focus-visible::after{animation:ad-legend-shine .75s ease-out}
+@keyframes ad-legend-shine{0%{transform:translateX(180%);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateX(-180%);opacity:0}}
 /* info como tela sobreposta com desfoque */
 .ad-info-ov{position:fixed;inset:0;z-index:10001;display:flex;align-items:center;justify-content:center;padding:24px;
   background:rgba(8,8,10,.5);backdrop-filter:blur(14px) saturate(120%);-webkit-backdrop-filter:blur(14px) saturate(120%);
