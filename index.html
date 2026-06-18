@@ -35952,8 +35952,10 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .row-h:hover{background:#121216}
   .grimorio-root .row-n{flex:0 0 auto;font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:500;color:var(--txt)}
   .grimorio-root .row-meta{flex:1;min-width:0;color:var(--faint);font-size:11px;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .grimorio-root .row-chev{flex:0 0 auto;color:var(--faint);font-size:13px;transition:transform .2s}
-  .grimorio-root .row[open] .row-chev{transform:rotate(180deg)}
+  .grimorio-root .row-chev{flex:0 0 auto;color:var(--faint);transition:transform .28s cubic-bezier(.34,1.56,.64,1);display:inline-flex;align-items:center;justify-content:center}
+  .grimorio-root .row[open] .row-chev{transform:rotate(180deg);color:var(--acc2)}
+  .grimorio-root .row-chev svg,.grimorio-root .gfd-chev svg,.grimorio-root .about-tog .chev svg{width:15px;height:15px;display:block}
+  .grimorio-root .gfd-chev,.grimorio-root .about-tog .chev{display:inline-flex;align-items:center;justify-content:center;transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
   .grimorio-root .row[open] .row-n{color:var(--acc2)}
   .grimorio-root .row-body{padding:4px 6px 24px;max-width:780px}
 
@@ -36622,7 +36624,7 @@ function selecionar(id){
   if(d.ess){
     about.style.display='';
     if(!about.dataset.open)about.dataset.open='0';
-    about.innerHTML=`<button class="about-tog">Sobre a essência <span class="chev">⌄</span></button>
+    about.innerHTML=`<button class="about-tog">Sobre a essência <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></button>
       <div class="about-body"><p class="m-ess">${d.ess}</p></div>`;
     about.querySelector('.about-tog').onclick=()=>{about.dataset.open=about.dataset.open==='1'?'0':'1';};
   }else{about.style.display='none';about.innerHTML='';}
@@ -36661,9 +36663,9 @@ function renderToolbar(){
     +`<aside class="gfd-panel">`
     +`<div class="gfd-head"><span>Filtros</span><button class="gfd-x" id="gfd-x" aria-label="Fechar">✕</button></div>`
     +`<div class="gfd-body">`
-    +`<details class="gfd-sec" open><summary>Essência<span class="gfd-chev">▾</span></summary><div class="efilters">${ELEMENTOS.map(e=>`<button class="echip" data-e="${e.id}" style="--bc:${e.cor};--bc2:${e.cor2}" ${atual===e.id?'data-on="1"':''}>${e.nome}</button>`).join('')}</div></details>`
-    +`<details class="gfd-sec" open><summary>Grau<span class="gfd-chev">▾</span></summary><div class="gfilters">${gchips}</div></details>`
-    +(cchips?`<details class="gfd-sec" open><summary>Arquétipo<span class="gfd-chev">▾</span></summary><div class="cfilters">${cchips}</div></details>`:'')
+    +`<details class="gfd-sec" open><summary>Essência<span class="gfd-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary><div class="efilters">${ELEMENTOS.map(e=>`<button class="echip" data-e="${e.id}" style="--bc:${e.cor};--bc2:${e.cor2}" ${atual===e.id?'data-on="1"':''}>${e.nome}</button>`).join('')}</div></details>`
+    +`<details class="gfd-sec" open><summary>Grau<span class="gfd-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary><div class="gfilters">${gchips}</div></details>`
+    +(cchips?`<details class="gfd-sec" open><summary>Arquétipo<span class="gfd-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary><div class="cfilters">${cchips}</div></details>`:'')
     +`</div>`
     +`<div class="gfd-foot"><button class="gfd-clear" id="gfd-clear">Limpar</button><button class="gfd-apply" id="gfd-apply">Aplicar</button></div>`
     +`</aside>`;
@@ -36736,7 +36738,7 @@ function card(f,g){
   return `<div class="card" data-el="${atual}" data-n="${(f.n||'').replace(/"/g,'&quot;')}" data-g="${g}" tabindex="0" role="button"><div class="card-h"><h3>${f.n}</h3><div class="card-h-r">${catTag(f)}${addBtn(f,g)}</div></div><div class="stats">${statsOf(f,g)}</div><p class="desc">${f.d}</p>${aprsOf(f)}</div>`;
 }
 function row(f,g){
-  return `<details class="row"><summary class="row-h"><span class="row-n">${f.n}</span><span class="row-meta">${f.ex}${f.al?' · '+f.al:''}</span>${catTag(f)}${addBtn(f,g)}<span class="row-chev">⌄</span></summary><div class="row-body"><div class="stats">${statsOf(f,g)}</div><p class="desc">${f.d}</p>${aprsOf(f)}</div></details>`;
+  return `<details class="row"><summary class="row-h"><span class="row-n">${f.n}</span><span class="row-meta">${f.ex}${f.al?' · '+f.al:''}</span>${catTag(f)}${addBtn(f,g)}<span class="row-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary><div class="row-body"><div class="stats">${statsOf(f,g)}</div><p class="desc">${f.d}</p>${aprsOf(f)}</div></details>`;
 }
 
 // ===== visão detalhada do feitiço (clique no card) =====
