@@ -9343,7 +9343,14 @@ body:has(#tab-feiticos.active) .topbar-search input{background:#262626!important
 .rvd-empty{color:var(--text-dim);font-style:italic}
 /* blocos de aprimoramento */
 .rvd-aprs{display:flex;flex-direction:column;gap:12px;margin-top:24px}
-.rvd-apr{position:relative;padding:14px 16px;border:1px solid var(--border);border-radius:10px;background:#1c1c1c}
+.rvd-apr{position:relative;padding:14px 16px;border:1px solid var(--border);border-radius:10px;background:#1c1c1c;
+  opacity:0;animation:rvd-apr-in .42s cubic-bezier(.2,.8,.2,1) forwards;transition:border-color .18s,transform .18s,box-shadow .18s}
+.rvd-apr:nth-child(1){animation-delay:.06s}
+.rvd-apr:nth-child(2){animation-delay:.16s}
+.rvd-apr:nth-child(3){animation-delay:.26s}
+.rvd-apr:nth-child(4){animation-delay:.36s}
+.rvd-apr:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--rvd-c) 45%,var(--border))}
+@keyframes rvd-apr-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .rvd-apr-top{display:flex;align-items:center;gap:10px;margin-bottom:7px}
 .rvd-apr-nm{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--rvd-c) 70%,#fff)}
 .rvd-apr-pe{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:#fff;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--rvd-c) 42%,transparent);border:1px solid color-mix(in srgb,var(--rvd-c) 55%,transparent)}
