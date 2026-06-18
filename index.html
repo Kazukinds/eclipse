@@ -9294,6 +9294,8 @@ body:has(#tab-feiticos.active) .topbar{background:#1c1c1c}
 .ritual-main{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;position:relative;min-height:0}
 .ritual-main-head{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid color-mix(in srgb,#fff 12%,var(--border));flex-shrink:0;gap:14px;background:#1c1c1c}
 .rv-head-actions{display:flex;gap:6px;flex-shrink:0}
+.ritual-main-title:has(.rv-head-actions){display:flex;align-items:center;gap:12px;width:100%}
+.ritual-main-title:has(.rv-head-actions)>div:first-child{flex:1;min-width:0}
 .ritual-main-title{font-family:Inter,system-ui,sans-serif;font-size:18px;font-weight:700;color:var(--text);letter-spacing:-.2px}
 .ritual-main-pager{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);letter-spacing:.15em}
 .ritual-main-body{flex:1;overflow:hidden;padding:14px;min-height:0;display:flex}
@@ -9307,6 +9309,9 @@ body:has(#tab-feiticos.active) .topbar{background:#1c1c1c}
 .ritual-main-nav-dot.active{background:var(--ritual-accent);transform:scale(1.4)}
 .ritual-back-btn{width:30px;height:30px;flex-shrink:0;aspect-ratio:1/1;border-radius:50%;background:var(--bg-card-inner);border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;font-size:16px;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
 .ritual-back-btn:hover{border-color:var(--ritual-accent);color:var(--ritual-accent)}
+.ritual-back-btn svg{width:15px;height:15px;display:block}
+.rv-head-actions .ritual-back-btn[style*="--red"],.rv-head-actions .ritual-back-btn[title="Excluir"]{color:var(--text-secondary)}
+.rv-head-actions .ritual-back-btn[title="Excluir"]:hover{color:var(--red);border-color:var(--red)}
 .rv-page{display:flex;flex-direction:column;gap:12px;animation:rv-fade .25s ease}
 @keyframes rv-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 /* ── detalhe do ritual (visão única, estilo grimório) ── */
@@ -24830,7 +24835,7 @@ function renderFeitTab(){
       const dot=ESS_DOT[f.school]||'var(--magenta,#fe1455)';
       const alvoNm=f.alvo?(FORJA_ALVO?.find(a=>a.tipo===f.alvo)?.nome||f.alvo):'';
       const st=(k,v)=>v?`<div class="rvd-st"><span class="rvd-k">${k}</span><span class="rvd-v">${esc(v)}</span></div>`:'';
-      if(mainTtl)mainTtl.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0"><button class="ritual-back-btn" onclick="closeRitualView()" title="Voltar (Esc)">←</button><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(f.name)||'sem nome'}</span></div><div class="rv-head-actions"><button class="ritual-back-btn" onclick="duplicateRitual('${f.id}')" title="Duplicar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="ritual-back-btn" onclick="(async()=>{if(await appConfirm('Remover ritual?')){removeFeitico('${f.id}');closeRitualView()}})()" title="Excluir" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div>`;
+      if(mainTtl)mainTtl.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0"><button class="ritual-back-btn" onclick="closeRitualView()" title="Voltar (Esc)">←</button><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(f.name)||'sem nome'}</span></div><div class="rv-head-actions"><button class="ritual-back-btn" onclick="duplicateRitual('${f.id}')" title="Duplicar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="ritual-back-btn" onclick="(async()=>{if(await appConfirm('Remover ritual?')){removeFeitico('${f.id}');closeRitualView()}})()" title="Excluir"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div>`;
       if(mainPager)mainPager.textContent='';
       const descHtml=f.desc?esc(f.desc).split('\n').map(l=>l.trim()?`<p>${l}</p>`:'').join(''):'<p class="rvd-empty">Nenhuma descrição registrada.</p>';
       mainBody.innerHTML=`<div class="rvd" style="--rvd-c:${dot}">
