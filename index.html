@@ -35944,8 +35944,15 @@ body[data-perf-low] .dcard-handle{display:none}
   .grimorio-root .desc{font-size:14px;line-height:1.72;margin:0;color:#cecbd6}
   .grimorio-root .desc b,.grimorio-root .apr-t b{color:var(--acc2);font-weight:600}
   .grimorio-root .aprs{margin-top:18px;display:flex;flex-direction:column;gap:12px}
-  .grimorio-root .apr{position:relative;border:1px solid var(--line);border-radius:13px;padding:13px 15px;background:#16161a}
+  .grimorio-root .apr{position:relative;border:1px solid var(--line);border-radius:13px;padding:13px 15px;background:#16161a;
+    transition:border-color .2s,transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .25s,background .2s}
   .grimorio-root .apr.asc{background:#1b1b20;border-color:color-mix(in srgb,#fff 10%,var(--line))}
+  .grimorio-root .apr:hover{transform:translateY(-2px);background:#191920;border-color:color-mix(in srgb,var(--acc) 45%,var(--line));
+    box-shadow:0 10px 26px -16px color-mix(in srgb,var(--acc) 75%,#000),inset 0 0 0 1px color-mix(in srgb,var(--acc) 12%,transparent)}
+  .grimorio-root .apr:hover .tier{background:color-mix(in srgb,var(--acc) 22%,transparent);border-color:color-mix(in srgb,var(--acc) 45%,transparent)}
+  .grimorio-root .apr .pe{transition:background .2s,color .2s}
+  .grimorio-root .apr:hover .pe{background:color-mix(in srgb,var(--acc) 18%,#161619);color:#fff}
+  @media(prefers-reduced-motion:reduce){.grimorio-root .apr:hover{transform:none}}
   .grimorio-root .apr-h{display:flex;align-items:center;gap:9px;margin-bottom:8px}
   .grimorio-root .apr .tier{display:inline-flex;align-items:center;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--acc2);
     padding:4px 10px;border-radius:999px;background:color-mix(in srgb,var(--acc) 14%,transparent);border:1px solid color-mix(in srgb,var(--acc) 30%,transparent)}
