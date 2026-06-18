@@ -29999,6 +29999,7 @@ function _adMarkup(){
   }).join('');
   const footer=`<div class="modal-btns">
     <button class="modal-btn secondary" onclick="closeModal()">Fechar</button>
+    <button class="modal-btn secondary" onclick="_adRandom()">Aleatório</button>
     <button class="modal-btn secondary" onclick="_adReset()">Zerar</button>
     <button class="modal-btn primary" onclick="_adSave()">Salvar</button>
   </div>`;
@@ -30153,6 +30154,21 @@ function _adRadarUpdate(){
   const poly=document.getElementById('ad-poly'); if(poly)poly.setAttribute('points',pts.join(' '));
 }
 window._adReset=function(){const s=_adState;if(!s)return;_AD_KEYS.forEach(n=>s.draft[n]=0);_adRefresh();};
+window._adRandom=function(){
+  const s=_adState;if(!s)return;
+  _AD_KEYS.forEach(n=>s.draft[n]=0);
+  const cap=s.cap, maxA=s.unlocked?Infinity:cap.maxPerAttr;
+  let pool=s.unlocked?(cap.totalPts||12):cap.totalPts; // unlocked: usa total como base
+  // distribui ponto a ponto em atributos aleatorios que ainda comportam
+  let guard=0;
+  while(pool>0 && guard++<500){
+    const elig=_AD_KEYS.filter(n=>s.draft[n]<maxA);
+    if(!elig.length)break;
+    const n=elig[Math.floor(Math.random()*elig.length)];
+    s.draft[n]++; pool--;
+  }
+  _adRefresh();
+};
 window._adSave=function(){
   const s=_adState;if(!s)return;
   if(typeof _applyArchetypeAttrs==='function'){_applyArchetypeAttrs(s.draft);}
