@@ -16284,6 +16284,11 @@ document.querySelectorAll('.sidebar-btn[data-tab]').forEach(b=>{b.addEventListen
       moreBtn.classList.toggle('has-active',!isPrimary);
     });
   });
+  // Hard-reset defensivo: garante o menu fechado (sem 'bolha' presa) ao trocar aba / voltar foco
+  function hardClose(){if(closeTimer){clearTimeout(closeTimer);closeTimer=null}menu.classList.remove('open','mount');moreBtn.classList.remove('open');menu.setAttribute('aria-hidden','true')}
+  document.querySelectorAll('.sidebar-btn[data-tab]').forEach(b=>b.addEventListener('click',hardClose));
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')hardClose()});
+  window.addEventListener('focus',hardClose);
 })();
 
 // ═══ MOBILE: Pill ativa expande ao tocar/hover, colapsa em 2s ═══
