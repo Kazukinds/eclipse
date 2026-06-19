@@ -2843,13 +2843,19 @@ html.no-radius,html.no-radius *{border-radius:0!important}
 #tab-profile .profile-desktop-hero .profile-hero-back,#tab-profile .profile-desktop-hero .profile-hero-action{top:18px}
 #tab-profile .profile-desktop-hero .profile-hero-action{right:auto;left:18px}
 #tab-profile .profile-desktop-hero .profile-hero-back{display:none}
-#tab-profile .profile-desktop-body{display:grid;grid-template-columns:minmax(300px,1.3fr) minmax(280px,1.1fr) minmax(240px,1fr);gap:12px;align-items:start}
-#tab-profile .profile-desktop-slot{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;min-height:0;box-shadow:var(--shadow-sm)}
-/* Sistema: 2+ colunas sempre (evita quadrado full-width gigante) + sem esticar altura */
-#tab-profile .profile-desktop-slot-system .profile-detail-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));align-items:start;align-content:start;margin-bottom:0}
+/* ═══ PERFIL DESKTOP — 2 colunas harmonioso (perfil | sistema+conquistas) ═══ */
+#tab-profile .profile-desktop-body{display:grid;grid-template-columns:minmax(360px,1.15fr) minmax(340px,1fr);grid-template-areas:'main system' 'main aside';grid-template-rows:auto 1fr;gap:14px;align-items:start}
+#tab-profile .profile-main{grid-area:main}
+#tab-profile .profile-desktop-slot-system{grid-area:system}
+#tab-profile .profile-desktop-aside{grid-area:aside}
+#tab-profile .profile-desktop-slot{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;min-height:0;box-shadow:var(--shadow-sm)}
+/* Sistema: 2 colunas, cards maiores */
+#tab-profile .profile-desktop-slot-system .profile-detail-grid{grid-template-columns:repeat(2,1fr);align-items:stretch;align-content:start;gap:12px;margin-bottom:0}
 #tab-profile .profile-desktop-slot-system{display:flex;flex-direction:column;gap:14px;min-height:0}
 #tab-profile .profile-desktop-slot-system .profile-subsect-title{margin:0 0 4px}
-#tab-profile .profile-desktop-aside{display:flex;flex-direction:column;gap:14px;position:sticky;top:12px}
+#tab-profile .profile-desktop-aside{display:flex;flex-direction:column;gap:14px;align-self:stretch}
+/* cards do Sistema maiores (mais respiro, nao minusculos) */
+#tab-profile .profile-desktop-slot-system .profile-detail-grid .metric-card{min-height:104px;padding:16px;aspect-ratio:auto}
 #tab-profile .profile-desktop-aside .profile-block{margin:0}
 #tab-profile .profile-desktop-aside .profile-block-head{padding:0 4px 10px}
 /* Hero embutido no card Detalhes do Personagem (merge visual) */
@@ -2872,7 +2878,8 @@ html.no-radius,html.no-radius *{border-radius:0!important}
   #tab-profile .profile-desktop-hero{grid-template-columns:1fr;gap:14px}
   #tab-profile .profile-hero-card{grid-template-columns:auto 1fr;gap:18px;padding:22px 22px}
   #tab-profile .profile-desktop-hero .profile-stats-card{padding:14px 18px;min-width:0;justify-content:space-around}
-  #tab-profile .profile-desktop-body{grid-template-columns:1fr}
+  #tab-profile .profile-desktop-body{grid-template-columns:1fr;grid-template-areas:'main' 'system' 'aside';grid-template-rows:auto}
+  #tab-profile .profile-desktop-slot-system .profile-detail-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
   #tab-profile .profile-desktop-aside{position:static}
 }
 #tab-profile .profile-collapse{background:var(--bg-card-inner);border:1px solid var(--border);border-radius:16px;margin:0 16px 12px;overflow:hidden}
