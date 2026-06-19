@@ -7197,6 +7197,7 @@ body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-ins
 }
 /* ═══ APK nativo: EDGE-TO-EDGE — zero compensacao no topo, conteudo cola no topo ═══ */
 html[data-native]{--sa-top:0px!important}
+html[data-native] body{padding-top:0!important}            /* body nao recua mais (era a faixa preta) */
 html[data-native] .topbar{
   margin-top:0!important;
   padding-top:8px!important;
