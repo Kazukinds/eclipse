@@ -86,7 +86,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(Color.parseColor("#1c1c1f")); // barra cinza no topo (como na web)
+        getWindow().setStatusBarColor(Color.parseColor("#0c0c0c")); // = --bg-body / hud Bem-vindo (integra)
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {

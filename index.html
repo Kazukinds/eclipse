@@ -23959,7 +23959,7 @@ function updateMetaTheme(){
   // Barra de status adapta à cor real do fundo (a "ponta" do app) — sem cor desconexa.
   let c=currentTheme==='grimoire'?'#f1e6cd':currentTheme==='light'?'#f5f5f5':'#000000';
   // cor da barra de status: cinza distinto no dark (barra no topo), claro nos demais temas
-  const sbColor=currentTheme==='grimoire'?'#e6d6b0':currentTheme==='light'?'#ffffff':'#1c1c1f';
+  const sbColor=currentTheme==='grimoire'?'#f1e6cd':currentTheme==='light'?'#f5f5f5':'#0c0c0c';
   try{
     const bg=getComputedStyle(document.body).backgroundColor;
     if(bg&&bg!=='transparent'&&!/rgba?\(0,\s*0,\s*0,\s*0\)/.test(bg))c=bg;
