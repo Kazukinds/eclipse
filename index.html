@@ -2708,12 +2708,20 @@ html.no-radius,html.no-radius *{border-radius:0!important}
 #tab-profile .profile-prog-block .profile-prog-meta{display:flex;justify-content:space-between;gap:8px;margin-top:8px;font-size:11.5px;color:var(--text-secondary);font-family:'JetBrains Mono',monospace;flex-wrap:wrap}
 #tab-profile .profile-prog-block .profile-prog-rest{color:var(--text-secondary);opacity:.7}
 #tab-profile .profile-prog-block .profile-prog-desc{margin:8px 0 0;font-size:11.5px;color:var(--text-secondary);opacity:.8;line-height:1.4}
-#tab-profile .profile-ach-grid{background:var(--bg-card-inner);border:1px solid var(--border);border-radius:18px;padding:18px 14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+#tab-profile .profile-ach-grid{background:var(--bg-card-inner);border:1px solid var(--border);border-radius:18px;padding:20px 14px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;justify-items:center;align-items:start}
 #tab-profile .ach-tile{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer}
 /* Shape do ach-tile: SVG shield com 5 layers (bevel 3D + radial gradient + corner shadow).
    Cada variante (purple/green/locked) embed SVG completo com paleta própria. */
-#tab-profile .ach-tile-shape{position:relative;width:72px;height:72px;display:flex;align-items:center;justify-content:center;transition:transform .15s;background-position:center;background-size:contain;background-repeat:no-repeat}
-#tab-profile .ach-tile:hover .ach-tile-shape{transform:scale(1.05)}
+#tab-profile .ach-tile-shape{position:relative;width:72px;height:72px;display:flex;align-items:center;justify-content:center;transition:transform .35s cubic-bezier(.34,1.5,.5,1),filter .25s;background-position:center;background-size:contain;background-repeat:no-repeat}
+#tab-profile .ach-tile:hover .ach-tile-shape{transform:scale(1.12) translateY(-3px)}
+#tab-profile .ach-tile:hover .ach-tile-shape:not(.locked){filter:drop-shadow(0 8px 16px rgba(0,0,0,.45)) brightness(1.12)}
+#tab-profile .ach-tile:active .ach-tile-shape{transform:scale(1.05)}
+/* reflexo varrendo no icone interno (clipado pela forma do heptagono) */
+#tab-profile .ach-tile-shape > svg.ach-hept-bg{position:absolute}
+#tab-profile .ach-tile-shape .ach-shine{position:absolute;inset:0;z-index:3;pointer-events:none;
+  -webkit-mask:var(--hept-mask);mask:var(--hept-mask);background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.55) 50%,transparent 62%);transform:translateX(-130%);opacity:0}
+#tab-profile .ach-tile:hover .ach-tile-shape::before{content:"";position:absolute;inset:-20% ;z-index:3;pointer-events:none;background:radial-gradient(circle at 50% 38%,rgba(255,255,255,.32),transparent 60%);animation:ach-glow .6s ease-out}
+@keyframes ach-glow{0%{opacity:0}40%{opacity:1}100%{opacity:0}}
 #tab-profile .ach-tile-shape > svg:not(.ach-hept-bg){position:relative;z-index:2;width:28px;height:28px;transform:translateY(2px);fill:#fff;stroke:none;color:#fff;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}
 /* Heptágono inline (crisp, sem serrilhado do background-image rasterizado) — cobre o bg */
 #tab-profile .ach-tile-shape > svg.ach-hept-bg{position:absolute;inset:0;width:100%;height:100%;z-index:1;display:block;pointer-events:none}
@@ -2728,6 +2736,21 @@ html.no-radius,html.no-radius *{border-radius:0!important}
 #tab-profile .ach-tile-shape.locked > svg:not(.ach-hept-bg){fill:rgba(0,0,0,.22);stroke:none;color:rgba(0,0,0,.22);opacity:1;filter:none}
 #tab-profile .ach-tile-label{font-size:11px;color:var(--text-secondary);font-weight:600;text-align:center;display:inline-flex;align-items:center;gap:4px;line-height:1.2}
 #tab-profile .ach-tile-label.locked{color:var(--text-dim)}
+/* ═══ Modal Conquistas (Ver todas) ═══ */
+.ach-modal-head{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:14px}
+.ach-modal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:480px){.ach-modal-grid{grid-template-columns:repeat(2,1fr)}}
+.ach-modal-card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:7px;padding:16px 10px;border-radius:14px;background:var(--bg-card-inner);border:1px solid var(--border);transition:transform .25s cubic-bezier(.34,1.4,.5,1),border-color .2s,box-shadow .2s;position:relative;overflow:hidden}
+.ach-modal-card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--ac) 50%,var(--border));box-shadow:0 10px 24px -12px color-mix(in srgb,var(--ac) 70%,#000)}
+.ach-modal-card::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.18) 50%,transparent 60%);transform:translateX(-130%)}
+.ach-modal-card:hover::after{animation:ach-shine .7s ease-out}
+.ach-modal-ico{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--ac) 85%,#fff),var(--ac));box-shadow:0 4px 12px -2px color-mix(in srgb,var(--ac) 60%,transparent)}
+.ach-modal-ico svg{width:24px;height:24px}
+.ach-modal-card.locked{opacity:.62}
+.ach-modal-card.locked .ach-modal-ico{background:#3a3a3f;color:#8a8a92;box-shadow:none}
+.ach-modal-name{font-size:13px;font-weight:700;color:var(--text-primary)}
+.ach-modal-card.locked .ach-modal-name{color:var(--text-dim)}
+.ach-modal-desc{font-size:10.5px;line-height:1.4;color:var(--text-dim)}
 #tab-profile .ach-tile-label svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.2}
 #tab-profile .profile-metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 #tab-profile .metric-card{background:var(--bg-card-inner);border:1px solid var(--border);border-style:solid;border-radius:18px;padding:14px 10px;display:flex;flex-direction:column;gap:4px;aspect-ratio:1/1;min-height:0;transition:border-color .2s;justify-content:center;align-items:center;box-sizing:border-box;overflow:hidden;text-align:center}
@@ -11323,7 +11346,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
           <div class="profile-block">
             <div class="profile-block-head">
               <h3 class="profile-block-title">Conquistas</h3>
-              <button class="profile-block-link" type="button" onclick="if(typeof switchTab==='function')switchTab('progress')">Ver todas <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+              <button class="profile-block-link" type="button" onclick="openAchievements()">Ver todas <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
             </div>
             <div class="profile-ach-grid" id="profile-ach-preview">
               <div class="ach-tile">
@@ -11390,7 +11413,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
       <div class="profile-block">
         <div class="profile-block-head">
           <h3 class="profile-block-title">Conquistas</h3>
-          <button class="profile-block-link" type="button" onclick="if(typeof switchTab==='function')switchTab('progress')">Ver todas <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+          <button class="profile-block-link" type="button" onclick="openAchievements()">Ver todas <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
         </div>
         <div class="profile-ach-grid" id="profile-ach-preview-m">
           <div class="ach-tile">
@@ -22525,6 +22548,32 @@ function _slotMeta(slot){
     saved:slot?slot._savedAt:null
   };
 }
+window.openAchievements=function(){
+  // lista de conquistas (desbloqueadas coloridas + bloqueadas cinza)
+  const ACHS=[
+    {name:'Início',desc:'Abriu o app pela primeira vez.',color:'#a855f7',on:true},
+    {name:'Primeira ação',desc:'Registrou sua primeira ação na ficha.',color:'#22c55e',on:true},
+    {name:'Veterano',desc:'Alcance o nível 5.',on:false},
+    {name:'Arsenal',desc:'Tenha 10 itens no inventário.',on:false},
+    {name:'Erudito',desc:'Treine 5 perícias.',on:false},
+    {name:'Conjurador',desc:'Adquira 3 feitiços no grimório.',on:false},
+    {name:'Sobrevivente',desc:'Sobreviva a um combate com 1 de vitalidade.',on:false},
+    {name:'Milionário',desc:'Acumule 1000 de crédito.',on:false},
+    {name:'Lendário',desc:'Alcance o nível máximo.',on:false}
+  ];
+  const got=ACHS.filter(a=>a.on).length;
+  const cards=ACHS.map(a=>{
+    const c=a.on?a.color:'#6b7280';
+    return `<div class="ach-modal-card${a.on?'':' locked'}" style="--ac:${c}">
+      <div class="ach-modal-ico">${a.on?'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1 4-3 6-6 7 3 1 5 3 6 7 1-4 3-6 6-7-3-1-5-3-6-7z"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'}</div>
+      <div class="ach-modal-name">${a.name}</div>
+      <div class="ach-modal-desc">${a.desc}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('modal-title').textContent='Conquistas';
+  document.getElementById('modal-body').innerHTML=`<div class="ach-modal-head">${got} de ${ACHS.length} desbloqueadas</div><div class="ach-modal-grid">${cards}</div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Fechar</button></div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+};
 window.openCharSlotsModal=function(){
   const data=_loadCharSlots();
   const active=data.active||1;
