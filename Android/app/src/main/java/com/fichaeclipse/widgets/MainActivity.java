@@ -86,7 +86,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(Color.parseColor("#0c0c0c")); // = --bg-body; status bar oculta (immersive), aparece nessa cor ao puxar
+        getWindow().setStatusBarColor(Color.parseColor("#1c1c1f")); // barra cinza no topo (como na web)
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
@@ -413,14 +413,13 @@ public class MainActivity extends Activity {
     private void _enterImmersive() {
         try {
             View decor = getWindow().getDecorView();
-            // Tela cheia total: oculta status bar (relógio/bateria) E nav bar. Immersive sticky:
-            // ao puxar da borda, a status bar reaparece (cinza #26262B) e some sozinha.
+            // Status bar VISÍVEL (relógio/notif) com fundo cinza; só a nav bar fica imersiva.
+            // Conteúdo edge-to-edge → safe-area-inset-top empurra a topbar pra baixo da barra.
             decor.setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         } catch (Exception ignored) {}
     }
