@@ -86,7 +86,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(Color.parseColor("#26262B"));
+        getWindow().setStatusBarColor(Color.parseColor("#000000")); // = --bg-body (topbar), JS adapta ao tema
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
@@ -599,6 +599,14 @@ public class MainActivity extends Activity {
                 }
             } catch (Exception ignored) {}
             return "0.0.0.0";
+        }
+
+        @JavascriptInterface
+        public void setStatusBarColor(String hex) {
+            // JS adapta a cor da status bar ao tema (igual a topbar)
+            runOnUiThread(() -> {
+                try { getWindow().setStatusBarColor(Color.parseColor(hex)); } catch (Exception ignore) {}
+            });
         }
 
         @JavascriptInterface

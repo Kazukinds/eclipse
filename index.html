@@ -23964,6 +23964,7 @@ function updateMetaTheme(){
     if(typeof Capacitor!=='undefined'&&Capacitor.Plugins&&Capacitor.Plugins.StatusBar){
       try{Capacitor.Plugins.StatusBar.setBackgroundColor({color:c});}catch(_){}
     }
+    try{if(window.EclipseNative&&EclipseNative.setStatusBarColor)EclipseNative.setStatusBarColor(c);}catch(_){}
   }catch(_){}
   meta.setAttribute('content',c);
 }
