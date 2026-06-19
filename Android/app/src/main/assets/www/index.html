@@ -7195,9 +7195,13 @@ body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-ins
     background:var(--bg-body);z-index:9999;pointer-events:none;
   }
 }
-/* APK nativo: status bar oculta — a topbar (Bem-vindo) se estende e cobre o topo,
-   sem faixa separada. Aumenta o padding-top da topbar pra preencher a area do topo. */
-html[data-native] .topbar{padding-top:calc(18px + env(safe-area-inset-top,0px))!important}
+/* APK nativo: topbar (Bem-vindo) SOBREPOE o topo/entalhe — o fundo dela sobe ate o
+   topo absoluto (tampa a faixa/notch) e o conteudo fica abaixo da camera (safe-area). */
+html[data-native] .topbar{
+  margin-top:calc(-1 * env(safe-area-inset-top,0px))!important;
+  padding-top:calc(10px + env(safe-area-inset-top,0px))!important;
+  padding-bottom:10px!important;
+}
 /* Round overlay + damage flash animations */
 @keyframes roundIn{from{opacity:0;transform:translate(-50%,-50%) scale(.5)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 @keyframes flashOut{0%{opacity:1}100%{opacity:0}}
