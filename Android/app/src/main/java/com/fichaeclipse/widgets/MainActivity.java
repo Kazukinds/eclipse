@@ -86,17 +86,26 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(Color.parseColor("#0c0c0c")); // = --bg-body / hud Bem-vindo (integra)
+        // ═══ EDGE-TO-EDGE real (Android 12–16) ═══
+        // Conteudo renderiza atras das system bars; status/nav bar TRANSPARENTES; sem inset/compensacao.
+        androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
-        // fundo da janela (atras do conteudo, area do entalhe/cutout) = cor da topbar
-        getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.parseColor("#0c0c0c")));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
-                // SHORT_EDGES: app usa a area do entalhe -> topbar (Bem-vindo) se estende e tampa
+                // usa toda a tela, inclusive area do entalhe/notch/punch-hole/dynamic island
                 getWindow().getAttributes().layoutInDisplayCutoutMode =
-                        WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+                        WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
             } catch (Exception ignored) {}
         }
+        // fundo da janela = cor do app (sem flash branco; sem barra destoante atras do conteudo)
+        getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.parseColor("#0c0c0c")));
+        // icones da status bar claros (fundo escuro)
+        try {
+            androidx.core.view.WindowInsetsControllerCompat ic =
+                    androidx.core.view.WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+            if (ic != null) ic.setAppearanceLightStatusBars(false);
+        } catch (Exception ignored) {}
         _enterImmersive();
 
         FrameLayout root = new FrameLayout(this);
