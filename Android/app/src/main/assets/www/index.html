@@ -23958,15 +23958,17 @@ function updateMetaTheme(){
   if(!meta)return;
   // Barra de status adapta à cor real do fundo (a "ponta" do app) — sem cor desconexa.
   let c=currentTheme==='grimoire'?'#f1e6cd':currentTheme==='light'?'#f5f5f5':'#000000';
+  // cor da barra de status: cinza distinto no dark (barra no topo), claro nos demais temas
+  const sbColor=currentTheme==='grimoire'?'#e6d6b0':currentTheme==='light'?'#ffffff':'#1c1c1f';
   try{
     const bg=getComputedStyle(document.body).backgroundColor;
     if(bg&&bg!=='transparent'&&!/rgba?\(0,\s*0,\s*0,\s*0\)/.test(bg))c=bg;
     if(typeof Capacitor!=='undefined'&&Capacitor.Plugins&&Capacitor.Plugins.StatusBar){
-      try{Capacitor.Plugins.StatusBar.setBackgroundColor({color:c});}catch(_){}
+      try{Capacitor.Plugins.StatusBar.setBackgroundColor({color:sbColor});}catch(_){}
     }
-    try{if(window.EclipseNative&&EclipseNative.setStatusBarColor)EclipseNative.setStatusBarColor(c);}catch(_){}
+    try{if(window.EclipseNative&&EclipseNative.setStatusBarColor)EclipseNative.setStatusBarColor(sbColor);}catch(_){}
   }catch(_){}
-  meta.setAttribute('content',c);
+  meta.setAttribute('content',sbColor);
 }
 function toggleTheme(){setTheme(currentTheme==='light'?'dark':'light')}
 function _applyTheme(t){
