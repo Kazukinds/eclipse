@@ -86,7 +86,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(Color.parseColor("#26262B")); // cinza topbar; status bar fica oculta (immersive), aparece cinza ao puxar
+        getWindow().setStatusBarColor(Color.parseColor("#0c0c0c")); // = --bg-body; status bar oculta (immersive), aparece nessa cor ao puxar
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
