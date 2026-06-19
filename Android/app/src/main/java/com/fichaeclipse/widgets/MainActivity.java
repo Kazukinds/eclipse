@@ -88,6 +88,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().setStatusBarColor(Color.parseColor("#0c0c0c")); // = --bg-body / hud Bem-vindo (integra)
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        // fundo da janela (atras do conteudo, area do entalhe/cutout) = cor da topbar
+        getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.parseColor("#0c0c0c")));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
                 getWindow().getAttributes().layoutInDisplayCutoutMode =
@@ -97,7 +99,7 @@ public class MainActivity extends Activity {
         _enterImmersive();
 
         FrameLayout root = new FrameLayout(this);
-        root.setBackgroundColor(Color.parseColor("#09090B"));
+        root.setBackgroundColor(Color.parseColor("#0c0c0c")); // = topbar/--bg-body, cobre area do entalhe
         root.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
