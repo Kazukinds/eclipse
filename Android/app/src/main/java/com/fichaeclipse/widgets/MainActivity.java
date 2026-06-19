@@ -92,9 +92,9 @@ public class MainActivity extends Activity {
         getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.parseColor("#0c0c0c")));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
-                // NEVER: app nao desenha na area do entalhe -> faixa (letterbox) com a cor do window (#0c0c0c)
+                // SHORT_EDGES: app usa a area do entalhe -> topbar (Bem-vindo) se estende e tampa
                 getWindow().getAttributes().layoutInDisplayCutoutMode =
-                        WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER;
+                        WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
             } catch (Exception ignored) {}
         }
         _enterImmersive();
