@@ -7197,14 +7197,16 @@ body[data-cam-debug="1"]::before{content:'';position:fixed;top:env(safe-area-ins
 }
 /* ═══ APK nativo: EDGE-TO-EDGE — zero compensacao no topo, conteudo cola no topo ═══ */
 html[data-native]{--sa-top:0px!important}
-html[data-native] body{padding-top:0!important}            /* body nao recua mais (era a faixa preta) */
+/* edge-to-edge: body cola no topo (sem faixa preta), mas a topbar tem um respiro de
+   proteçao pra nao encostar na status bar/camera (safe-area real, pequena, + minimo). */
+html[data-native] body{padding-top:0!important}
 html[data-native] .topbar{
   margin-top:0!important;
-  padding-top:8px!important;
+  padding-top:max(14px, calc(8px + env(safe-area-inset-top,0px)))!important;
   padding-bottom:8px!important;
 }
 html[data-native] .main-wrapper{padding-top:0!important}
-html[data-native] .sidebar{padding-top:14px!important}
+html[data-native] .sidebar{padding-top:max(18px, calc(10px + env(safe-area-inset-top,0px)))!important}
 /* Round overlay + damage flash animations */
 @keyframes roundIn{from{opacity:0;transform:translate(-50%,-50%) scale(.5)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 @keyframes flashOut{0%{opacity:1}100%{opacity:0}}
