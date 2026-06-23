@@ -110,8 +110,8 @@
 */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg-body:#0c0c0c;--bg-sidebar:#0a0a0a;--bg-card:#171717;--bg-card-inner:#262626;
-  --bg-input:#262626;--bg-hover:#373737;--border:transparent;--border-light:rgba(255,255,255,.10);
+  --bg-body:#101010;--bg-sidebar:#161616;--bg-card:#1d1d1d;--bg-card-inner:#272727;
+  --bg-input:#202020;--bg-hover:#2e2e2e;--border:rgba(255,255,255,.07);--border-light:rgba(255,255,255,.12);
   --magenta:oklch(.66 .235 16);--magenta-dim:oklch(.55 .205 16);--magenta-rgb:248,40,94;--magenta-bg:rgba(var(--magenta-rgb),.10);--magenta-bg-strong:rgba(var(--magenta-rgb),.18);
   --lime:#84cc16;--lime-dim:#65a30d;--lime-rgb:132,204,22;--lime-bg:rgba(var(--lime-rgb),.10);--lime-bg-strong:rgba(var(--lime-rgb),.18);
   --green:oklch(.70 .165 163);--green-dim:rgba(52,211,153,.15);--red:oklch(.68 .19 22);--red-dim:rgba(248,113,113,.12);
@@ -1290,7 +1290,7 @@ body:has(.sidebar.open) .main-wrapper *{pointer-events:none}
 .cslot-ico svg{width:15px;height:15px}
 .cslot-ico:hover{background:var(--bg-hover);color:var(--text-primary)}
 .cslot-ico.del:hover{color:#f87171;border-color:rgba(248,113,113,.45)}
-.cslot-add{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:4px;padding:13px;width:100%;border:1.5px dashed var(--border-light);border-radius:13px;background:transparent;color:var(--text-secondary);font:600 13px Inter,sans-serif;cursor:pointer;transition:border-color .16s,color .16s,background .16s}
+.cslot-add{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:4px;padding:14px;width:100%;flex:0 0 auto!important;height:52px!important;min-height:52px!important;max-height:52px!important;box-sizing:border-box;border:1.5px dashed var(--border-light);border-radius:13px;background:transparent;color:var(--text-secondary);font:600 13px Inter,sans-serif;cursor:pointer;transition:border-color .16s,color .16s,background .16s}
 .cslot-add svg{width:18px;height:18px}
 .cslot-add:hover{border-color:color-mix(in srgb,var(--text-primary) 35%,var(--border));color:var(--text-primary);background:color-mix(in srgb,var(--text-primary) 4%,transparent)}
 .save-dropdown.open{opacity:1;pointer-events:all;transform:translateY(0)}
@@ -5041,13 +5041,17 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
     padding:18px !important;
   }
   /* Gerar ficha automatica = card flutuante (nao tela cheia) no vertical */
-  .modal-overlay:has(.gen-modal-section){align-items:center !important;justify-content:center !important;padding:16px !important}
-  .modal-overlay:has(.gen-modal-section) .modal{
+  .modal-overlay:has(.gen-modal-section),
+  .modal-overlay:has(.cslots){align-items:center !important;justify-content:center !important;padding:16px !important}
+  .modal-overlay:has(.gen-modal-section) .modal,
+  .modal-overlay:has(.cslots) .modal{
     height:auto !important;min-height:0 !important;max-height:calc(100dvh - 32px) !important;
     width:100% !important;max-width:440px !important;overflow-y:auto !important;
     border-radius:18px !important;box-shadow:var(--shadow-lg) !important;
     padding:20px !important;
   }
+  /* lista de slots não estica (altura natural) */
+  .modal-overlay:has(.cslots) .modal>#modal-body{flex:0 1 auto !important}
   /* Distribuir Atributos = card flutuante (nao tela cheia) no vertical */
   .modal-overlay:has(.ad-body-wrap){align-items:center !important;justify-content:center !important;padding:16px !important}
   .modal-overlay:has(.ad-body-wrap) .modal{
@@ -5076,7 +5080,22 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
   .modal-btns{position:sticky;bottom:0;background:var(--bg-card);padding:14px 0 calc(8px + env(safe-area-inset-bottom,0px));margin:0;border-top:none;z-index:5}
   /* fundo 100% solido — sem linha, sem corte do botao */
   .modal-overlay.modal-fit #modal-body{overflow:visible!important}
-  .modal-overlay.modal-fit #modal-body:has(.adv-detail){overflow:visible!important}
+  /* detalhe adv pode ser longo → body rola (sem :has, compat WebView) */
+  .modal-overlay.adv-detail-open .modal{max-height:calc(100dvh - 24px)!important;display:flex!important;flex-direction:column!important}
+  .modal-overlay.adv-detail-open #modal-body{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y!important;padding-top:10px!important;scroll-behavior:smooth}
+  /* body rola; footer fixo no rodapé (sem vazar) */
+  .modal-overlay.adv-detail-open #modal-body{display:flex!important;flex-direction:column!important}
+  .modal-overlay.adv-detail-open #modal-body>.adv-detail{flex:0 0 auto}
+  .modal-overlay.adv-detail-open #adv-pnav{flex:0 0 auto;margin:12px 0 0;padding:4px 0}
+  .modal-overlay.adv-detail-open .advd-foot{flex:0 0 auto;position:sticky;bottom:0;margin:12px 0 0;padding:14px 0 calc(8px + env(safe-area-inset-bottom,0px));background:var(--bg-card);border-top:1px solid var(--border);z-index:5}
+  .modal-overlay.adv-detail-open .advd-foot .advd-btn{flex:1 1 0;justify-content:center}
+  /* PAGINADO: body não rola (track desliza horizontal), nav+footer fixos no rodapé */
+  .modal-overlay.adv-paged #modal-body{overflow-y:hidden!important;display:flex!important;flex-direction:column!important}
+  .modal-overlay.adv-paged .adv-detail{flex:1 1 auto;min-height:0;overflow:hidden}
+  .modal-overlay.adv-paged .advp-track{height:100%}
+  .modal-overlay.adv-paged .advp-page{overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .modal-overlay.adv-paged #adv-pnav{flex:0 0 auto;position:static;margin:10px 0 0}
+  .modal-overlay.adv-paged .advd-foot{flex:0 0 auto;position:static;margin:10px -18px -18px;bottom:auto}
   .modal-overlay.modal-fit .modal-btns{display:flex;justify-content:flex-end;gap:10px;flex-wrap:nowrap;margin:0;padding:14px 2px calc(8px + env(safe-area-inset-bottom,0px));background:var(--bg-card);border:none!important;box-shadow:none!important}
   .modal-overlay.modal-fit .modal-btns .modal-btn{flex:0 0 auto;white-space:nowrap}
   .modal-overlay.modal-fit .adv-grid{margin-bottom:0}
@@ -6314,7 +6333,7 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
   background-image:radial-gradient(circle,#000000 30%,transparent 35%);
 }
 /* Adventurer detail view — preview do passado/linhagem/arquétipo/caminho */
-.adv-detail{display:flex;flex-direction:column;gap:18px;margin:-8px 0 14px;padding-bottom:8px}
+.adv-detail{display:flex;flex-direction:column;gap:13px;margin:0 0 12px;padding-top:4px;padding-bottom:12px}
 .adv-detail .adv-detail-peri-row:first-child{margin-top:-2px}
 .adv-detail-head{display:flex;align-items:center;gap:14px;padding:14px;background:var(--bg-input);border:1px solid var(--border);border-radius:12px}
 .adv-detail-ico{width:56px;height:56px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--magenta) 12%,var(--bg-card));color:var(--magenta)}
@@ -6331,12 +6350,13 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 /* efeitos/escolhas/modos: cards proprios em vez de texto corrido */
 .sk-modes{display:flex;flex-direction:column;gap:8px;margin:10px 0}
 .sk-modes-tag{font:800 10px 'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--tone,var(--magenta)) 60%,var(--text-dim));margin-bottom:2px}
-.sk-mode{display:flex;align-items:flex-start;gap:11px;padding:11px 13px;border-radius:12px;background:var(--bg-card-inner);transition:background .18s,transform .2s}
+.sk-mode{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:11px;background:var(--bg-card-inner);transition:background .18s,transform .2s}
 .sk-mode:hover{background:var(--bg-hover);transform:translateX(2px)}
 .sk-mode-idx{flex:0 0 22px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:7px;font:800 11px 'JetBrains Mono',monospace;background:color-mix(in srgb,var(--tone,var(--magenta)) 18%,var(--bg-card));color:var(--tone,var(--magenta));margin-top:1px}
 .sk-mode-body{flex:1;min-width:0}
 .sk-mode-name{font:800 13px Inter,system-ui,sans-serif;color:var(--text-primary);margin-bottom:2px}
-.sk-mode-desc{font:500 12.5px Inter,system-ui,sans-serif;line-height:1.5;color:var(--text-secondary)}
+.sk-mode-desc{font:500 12.5px Inter,system-ui,sans-serif;line-height:1.5;color:var(--text-secondary);opacity:1}
+.adv-detail-hab.locked .sk-mode,.adv-detail-hab.locked .sk-mode-desc,.adv-detail-hab.locked .sk-mode-name,.adv-detail-hab.locked .adv-detail-hab-desc{opacity:1!important;filter:none!important}
 .sk-mode-desc b{color:var(--tone,var(--magenta));font-weight:700}
 /* detalhe tematizado pela cor do item (--tone) — exceto pericias (cor do atributo) */
 .adv-detail-toned .adv-detail-label{color:var(--tone)!important}
@@ -6351,7 +6371,44 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 /* pericia: chip na cor do atributo correspondente */
 .adv-detail-peri.adv-peri-attr{background:color-mix(in srgb,var(--ac) 14%,var(--bg-card))!important;color:var(--ac)!important;border-color:color-mix(in srgb,var(--ac) 35%,transparent)!important}
 /* ── footer do detalhe: layout proprio do zero (sem herdar .modal-btn) ── */
+/* ── Paginação do detalhe adv ── */
+.advp-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin:0 -2px;gap:0}
+.advp-track::-webkit-scrollbar{display:none}
+.advp-page{flex:0 0 100%;scroll-snap-align:center;min-width:100%;box-sizing:border-box;padding:4px 2px 12px;display:flex;flex-direction:column;gap:14px}
+.advp-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin:14px 0 2px}
+.advp-arrow{width:38px;height:38px;flex:0 0 38px;border-radius:12px;border:1px solid var(--border);background:var(--bg-input);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .15s,color .15s,opacity .15s}
+.advp-arrow:hover:not(:disabled){border-color:var(--tone,var(--magenta));color:var(--tone,var(--magenta))}
+.advp-arrow:disabled{opacity:.3;cursor:default}
+.advp-arrow svg{width:18px;height:18px}
+.advp-dots{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;max-width:240px}
+.advp-dot{display:block;box-sizing:border-box;width:8px!important;height:8px!important;min-width:8px!important;min-height:8px!important;max-width:8px;max-height:8px!important;flex:0 0 auto;border-radius:50%;background:var(--border-light);border:0;padding:0;margin:0;cursor:pointer;align-self:center;appearance:none;-webkit-appearance:none;transition:width .25s,max-width .25s,background .2s}
+.advp-dot.active{width:22px!important;max-width:22px!important;border-radius:99px;background:var(--tone,var(--magenta))}
 .advd-foot{display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap;width:100%;max-width:100%;margin:16px 0 0;padding:0;box-sizing:border-box}
+/* desktop: detalhe adv rola dentro do modal (altura limitada), footer/nav fluem no fim */
+@media(min-width:641px){
+  .modal-overlay.adv-detail-open .modal{max-height:80vh;width:min(760px,92vw)!important;max-width:760px!important;display:flex;flex-direction:column;overflow:hidden}
+  /* habilidades de caminho em 2 colunas no desktop (aproveita largura) */
+  .modal-overlay.adv-detail-open .adv-detail-hab-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+  .modal-overlay.adv-detail-open .adv-detail-hab-list .adv-detail-hab{height:100%}
+  /* body rola; footer fixo no rodapé (sem margin negativa que corta a borda do botão) */
+  .modal-overlay.adv-detail-open #modal-body{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column}
+  .modal-overlay.adv-detail-open #modal-body>.adv-detail{flex:0 0 auto}
+  .modal-overlay.adv-detail-open #adv-pnav{flex:0 0 auto;margin-top:12px}
+  .modal-overlay.adv-detail-open .advd-foot{flex:0 0 auto;position:sticky;bottom:0;margin:12px 0 0;padding:14px 0 2px;background:var(--bg-card);border-top:1px solid var(--border);z-index:5}
+}
+/* celular paisagem: lista 2 colunas rolável (não pagina) */
+@media(max-width:900px) and (orientation:landscape){
+  .modal-overlay.adv-detail-open .modal{max-height:92dvh;display:flex;flex-direction:column;overflow:hidden}
+  .modal-overlay.adv-detail-open #modal-body{flex:1 1 auto;min-height:0;overflow-y:auto}
+  .modal-overlay.adv-detail-open .adv-detail-hab-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
+  /* corpo rola */
+  .modal-overlay.adv-detail-open .modal>#modal-body{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;display:flex;flex-direction:column}
+  .modal-overlay.adv-detail-open .adv-detail{flex:0 0 auto}
+  .modal-overlay.adv-detail-open #adv-pnav{flex:0 0 auto;margin-top:14px}
+  /* footer fixo no rodapé do modal (fora do scroll) */
+  .modal-overlay.adv-detail-open .advd-foot{flex:0 0 auto;margin:0;border-top:1px solid var(--border);padding:14px 0 0}
+  .modal-overlay.adv-detail-open .advd-foot .advd-btn{flex:1 1 0;justify-content:center}
+}
 .advd-btn{box-sizing:border-box;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:42px;padding:0 20px;border-radius:12px;border:0;cursor:pointer;font:700 13.5px Inter,system-ui,sans-serif;white-space:nowrap;outline:none;-webkit-tap-highlight-color:transparent;transition:filter .15s,background .15s,transform .12s}
 .advd-btn:focus,.advd-btn:focus-visible,.advd-btn:active{outline:none;box-shadow:none}
 .advd-btn svg{width:15px;height:15px;flex-shrink:0}
@@ -6537,20 +6594,23 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .adv-detail-free{font-size:11.5px;color:var(--text-secondary);font-style:italic;margin-top:4px}
 .adv-detail-hint{font-size:10.5px;font-weight:500;color:var(--text-dim);text-transform:none;letter-spacing:0;margin-left:6px}
 .adv-detail-hab-list{display:flex;flex-direction:column;gap:8px}
-.adv-detail-hab{padding:11px 13px;background:var(--bg-input);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;gap:6px}
-.adv-detail-hab.locked{opacity:.55;filter:grayscale(.4)}
+.adv-detail-hab{padding:13px 14px;background:var(--bg-input);border:1px solid var(--border);border-radius:14px;display:flex;flex-direction:column;gap:7px}
+.adv-detail-hab.locked{opacity:1;filter:none}
 .adv-detail-hab.unlocked{border-color:color-mix(in srgb,var(--magenta) 45%,transparent);background:linear-gradient(180deg in oklch,color-mix(in srgb,var(--magenta) 7%,var(--bg-input)),var(--bg-input))}
 button.adv-detail-hab{font-family:inherit;text-align:left;cursor:pointer;transition:border-color .15s,background .15s,transform .12s;width:100%}
-button.adv-detail-hab:hover{border-color:color-mix(in srgb,var(--magenta) 55%,transparent);background:color-mix(in srgb,var(--magenta) 5%,var(--bg-input))}
+button.adv-detail-hab:hover{border-color:color-mix(in srgb,var(--tone,var(--magenta)) 55%,transparent);background:color-mix(in srgb,var(--tone,var(--magenta)) 5%,var(--bg-input))}
 button.adv-detail-hab:active{transform:scale(.985)}
-button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(in srgb,var(--magenta) 12%,var(--bg-input));box-shadow:none}
+button.adv-detail-hab.selected{border-color:var(--tone,var(--magenta));background:color-mix(in srgb,var(--tone,var(--magenta)) 12%,var(--bg-input));box-shadow:none}
 .adv-detail-hab-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.adv-detail-hab-idx{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:22px;padding:0 7px;background:var(--magenta-bg);color:var(--magenta);border:1px solid var(--magenta-dim);border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.4px}
+.adv-detail-hab-idx{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;flex:0 0 24px;padding:0;background:color-mix(in srgb,var(--tone,var(--magenta)) 16%,var(--bg-card));color:var(--tone,var(--magenta));border:1px solid color-mix(in srgb,var(--tone,var(--magenta)) 38%,transparent);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;letter-spacing:0}
+/* badge de nível (milestone): só o número, cor sólida destacada */
+.adv-detail-hab-lv{width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;max-width:32px!important;max-height:32px!important;flex:0 0 32px!important;align-self:flex-start!important;box-sizing:border-box;border-radius:9px;background:var(--tone,var(--magenta));color:#0a0a0a;border:0;font-size:14px;font-weight:800;line-height:1}
+.adv-detail-hab.locked .adv-detail-hab-lv{background:color-mix(in srgb,var(--text-dim) 55%,var(--bg-card));color:var(--bg-card)}
 .adv-detail-hab-name{font-size:13.5px;font-weight:800;color:var(--text-primary);letter-spacing:-.15px;flex:1;min-width:0}
 .adv-detail-hab-cost{display:none}
 .adv-detail-hab-cost.zero{display:none}
 .adv-detail-hab-locked{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.6px;color:var(--text-dim);background:rgba(255,255,255,.05);border:1px solid var(--border);padding:2px 6px;border-radius:3px}
-.adv-detail-hab-desc{font-size:14px;line-height:1.65;color:var(--text-primary);text-align:left;hyphens:none;padding:16px 18px;background:linear-gradient(180deg in oklch,var(--bg-input),var(--bg-card-inner));border-radius:10px;border:1px solid var(--border);margin-top:4px;font-weight:500;display:flex;flex-direction:column;gap:10px}
+.adv-detail-hab-desc{font-size:13.5px;line-height:1.55;color:var(--text-primary);text-align:left;hyphens:none;padding:13px 15px;background:linear-gradient(180deg in oklch,var(--bg-input),var(--bg-card-inner));border-radius:12px;border:1px solid var(--border);margin-top:4px;font-weight:500;display:flex;flex-direction:column;gap:9px}
 .adv-detail-hab-desc>.sk-para{font-size:14px;line-height:1.65;margin:0;color:var(--text-primary);font-weight:500}
 .adv-detail-hab-desc>.sk-eff{padding:10px 12px}
 .adv-detail-hab-desc b,.adv-detail-hab-desc strong{color:var(--magenta);font-weight:700}
@@ -12081,6 +12141,72 @@ body[data-perf-low] *,body[data-perf-low] *::before,body[data-perf-low] *::after
 /* ===== PADRONIZACAO DE TRACO DOS SVGs (estilo notion, coeso) ===== */
 /* arredonda pontas de TODOS os icones de linha; nao afeta os preenchidos (fill) */
 svg{stroke-linecap:round;stroke-linejoin:round}
+/* ═══ Modal de confirmação próprio (_confirmModal) ═══ */
+.cfm-ov{position:fixed;inset:0;z-index:10090;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(6,6,9,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;transition:opacity .2s}
+.cfm-ov.open{opacity:1}
+.cfm-modal{width:100%;max-width:360px;background:var(--bg-card);border:1px solid var(--border-light);border-radius:20px;padding:24px 22px 20px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;box-shadow:0 30px 80px rgba(0,0,0,.6);transform:translateY(12px) scale(.97);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.cfm-ov.open .cfm-modal{transform:none}
+.cfm-ico{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--blue) 14%,transparent);color:var(--blue);margin-bottom:2px}
+.cfm-ico svg{width:28px;height:28px}
+.cfm-ico.danger{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red)}
+.cfm-title{font-size:17px;font-weight:800;color:var(--text-primary);letter-spacing:-.2px}
+.cfm-msg{font-size:13px;line-height:1.5;color:var(--text-secondary);margin-bottom:8px}
+.cfm-actions{display:flex;gap:10px;width:100%;margin-top:4px}
+.cfm-btn{flex:1;padding:12px;border-radius:12px;border:1px solid var(--border);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s,border-color .15s,filter .15s}
+.cfm-cancel{background:var(--bg-input);color:var(--text-primary)}
+.cfm-cancel:hover{background:var(--bg-hover)}
+.cfm-ok{background:var(--text-primary);border-color:var(--text-primary);color:var(--bg-card)}
+.cfm-ok:hover{filter:brightness(.92)}
+.cfm-ok.danger{background:var(--red);border-color:var(--red);color:#fff}
+.cfm-ok.danger:hover{filter:brightness(1.08)}
+/* ═══ Painéis de atalho da Config (cfg-panel) ═══ */
+.cfg-panel-ov{position:fixed;inset:0;z-index:10075;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(6,6,9,.7);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);opacity:0;transition:opacity .2s}
+.cfg-panel-ov.open{opacity:1}
+.cfg-panel{width:100%;max-width:440px;max-height:88dvh;overflow-y:auto;background:var(--bg-card);border:1px solid var(--border-light);border-radius:20px;padding:20px;box-sizing:border-box;box-shadow:0 30px 80px rgba(0,0,0,.6);transform:translateY(12px) scale(.98);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.cfg-panel-ov.open .cfg-panel{transform:none}
+.cfg-panel-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.cfg-panel-ico{flex:0 0 40px;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--pc) 16%,transparent);color:var(--pc)}
+.cfg-panel-ico svg{width:22px;height:22px}
+.cfg-panel-title{flex:1;font-size:19px;font-weight:800;color:var(--text-primary);letter-spacing:-.2px}
+.cfg-panel-x{flex:0 0 34px;width:34px;height:34px;min-width:34px;min-height:34px;max-height:34px;align-self:center;border-radius:50%;border:1px solid var(--border);background:var(--bg-input);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
+.cfg-panel-x:hover{background:var(--bg-hover);color:var(--text-primary)}
+.cfg-panel-x svg{width:14px;height:14px}
+.cfg-panel-list{display:flex;flex-direction:column;gap:8px}
+.cfg-panel-item{display:flex;align-items:center;gap:10px;padding:14px 15px;border-radius:13px;border:1px solid var(--border);background:var(--bg-input);cursor:pointer;text-align:left;transition:border-color .15s,background .15s,transform .12s}
+.cfg-panel-item:hover{border-color:color-mix(in srgb,var(--pc) 50%,var(--border));background:var(--bg-hover)}
+.cfg-panel-item:active{transform:scale(.985)}
+.cfg-panel-item-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.cfg-panel-item-l{font-size:14.5px;font-weight:700;color:var(--text-primary)}
+.cfg-panel-item-d{font-size:12px;color:var(--text-dim)}
+.cfg-panel-item>svg{flex:0 0 auto;width:18px;height:18px;color:var(--text-dim)}
+.cfg-panel-item.danger .cfg-panel-item-l{color:var(--red)}
+.cfg-panel-item.danger:hover{border-color:var(--red);background:color-mix(in srgb,var(--red) 8%,var(--bg-input))}
+/* ═══ Modal Limpar Ficha (clear-sheet) ═══ */
+.clear-sheet-overlay{position:fixed;inset:0;z-index:10080;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(6,6,9,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);animation:csFade .2s ease}
+@keyframes csFade{from{opacity:0}to{opacity:1}}
+.clear-sheet-modal{position:relative;width:100%;max-width:420px;max-height:90dvh;overflow-y:auto;background:var(--bg-card);border:1px solid var(--border-light);border-radius:20px;padding:26px 24px 22px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.clear-sheet-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg-input);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,color .15s}
+.clear-sheet-x:hover{background:var(--bg-hover);color:var(--text-primary)}
+.clear-sheet-icon{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red);margin-bottom:6px}
+.clear-sheet-title{font-size:19px;font-weight:800;color:var(--text-primary);letter-spacing:-.2px}
+.clear-sheet-subtitle{font-size:12px;font-weight:600;color:var(--red);letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px}
+.clear-sheet-list{width:100%;display:flex;flex-direction:column;gap:8px;padding:14px 16px;background:var(--bg-input);border:1px solid var(--border);border-radius:14px;margin-bottom:14px}
+.csl-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-secondary);text-align:left}
+.csl-dot{width:6px;height:6px;border-radius:50%;background:var(--red);flex:0 0 6px}
+.clear-sheet-confirm-row{width:100%;display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.clear-sheet-confirm-row>span{font-size:13px;color:var(--text-secondary)}
+.clear-sheet-confirm-row>span b{color:var(--text-primary);font-weight:800;letter-spacing:.06em}
+.clear-sheet-confirm-row input{width:100%;box-sizing:border-box;padding:12px 14px;background:var(--bg-input);border:1px solid var(--border);border-radius:11px;color:var(--text-primary);font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;letter-spacing:.1em;text-align:center;outline:none;transition:border-color .18s,box-shadow .18s}
+.clear-sheet-confirm-row input:focus{border-color:var(--red);box-shadow:0 0 0 3px color-mix(in srgb,var(--red) 18%,transparent)}
+.clear-sheet-actions{width:100%;display:flex;gap:10px}
+.cs-btn{flex:1;padding:13px;border-radius:12px;border:1px solid var(--border);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s,border-color .15s,opacity .15s}
+.cs-cancel{background:var(--bg-input);color:var(--text-primary)}
+.cs-cancel:hover{background:var(--bg-hover)}
+.cs-danger{background:var(--red);border-color:var(--red);color:#fff}
+.cs-danger:hover:not(:disabled){filter:brightness(1.08)}
+.cs-danger:disabled{opacity:.4;cursor:not-allowed}
+/* ── Remover TODOS os glows coloridos (box-shadow/drop-shadow accent) ── */
+#grimorio-close:hover,#tab-profile .profile-fill-hint::before,.adv-card.adv-roll-win,.agm-card.agm-custom,.agm-spinner,.biblio-search:focus,.biblio-trait-card:active,.credit-amount-wrap:focus-within,.dash-wpn-2h-tag,.elemento-quiz-btn-primary:hover,.elemento-quiz-opt:hover,.elemento-swap-opt:hover,.equip-slot.equipped,.ficha-tag:hover,.forja-dice-btn:hover,.forja-resumo,.forja-sub-overlay.forja-sub-preview .forja-sub-modal,.hab-picker-dot.active,.hab-slot-card:active,.hab-slot-card:hover,.inv-filter-pill.active,.ip-next-card:hover,.item-form-compact .icon-tool.active,.item-tab.active,.lin-modal .lin-confirm,.lin-modal .lin-confirm:hover:not(:disabled),.lin-modal .lin-traco.active,.lvl-field input:focus,.modal-btn.primary:hover,.modal.addv2 .addv2-input-err,.modal.forja-active .forja-tab[data-active],.ota-btn-yes,.ota-progress-fill,.pc-item:hover,.peri-empty-pro .pe-cta:hover,.peri-empty-pro .pe-icon,.peri-slot-opt.active,.profile-avatar,.profile-avatar:hover,.profile-char-figure:hover,.profile-section-title::before,.profile-sidebar-card h4::before,.radial-menu.swap-mode .radial-menu-item.selected,.rd-val-edit input:focus,.re4-case-btn.active,.re4-item-detail .rid-stat-bar::after,.rid-ico-btn.active,.save-toast-bar-fill,.save-toast-icon .sti-badge,.sk-eff:hover,.sk-eff:hover .sk-eff-tag,.skill-cost-pill.active,.skill-row.is-fav,.stat-edit-bar-bonus,.status-fill-bonus,.tab-content:not(#tab-biblioteca) .card:hover,.tab-content:not(#tab-biblioteca) .inv-filter-pill.active,.tab-soon-ico,.weapon-card-pick.active,.weapon-card-pick.active:focus-visible,.weapon-pick-btn.active{box-shadow:none!important}
 </style>
 <!-- OverlayScrollbars (CDN) removido — dependência sem uso (init era inerte); usa scrollbars nativos. -->
 <style>
@@ -13096,126 +13222,8 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
     <!-- ═══ PROFILE ═══ -->
     <section class="tab-content" id="tab-profile">
     <!-- ═══ DESKTOP VIEW (web/horizontal) — espelha mobile com hero+stats+conquistas ═══ -->
-    <div class="profile-desktop-view">
-      <div class="profile-desktop-body">
-        <div class="profile-main">
-          <div class="profile-section profile-section-with-hero">
-            <div class="profile-hero-card profile-hero-card-embedded">
-              <button class="profile-hero-action" type="button" onclick="openSheetGeneratorModal()" aria-label="Gerar ficha" title="Gerar ficha automática"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" preserveAspectRatio="xMidYMid meet"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
-              <div class="profile-avatar" onclick="changeProfileAvatar()" title="Trocar foto ou GIF">
-                <span id="profile-avatar-content"><svg viewBox="-125 -89.5 597 597" fill="currentColor" fill-rule="evenodd" stroke="none"><path d="M159.896.65C125.881 5.909 96.93 28.726 84.229 60.287c-2.06 5.122-4.507 12.805-5.434 17.074-2.216 10.195-2.24 30.192-.048 40.003 8.041 35.988 35.475 64.683 71.149 74.42 11.379 3.106 36.372 3.124 47.724.034 59.178-16.106 90.218-80.645 64.837-134.81-7.173-15.304-17.595-28.327-30.453-38.05-8.012-6.058-24.087-13.755-34.108-16.331-9.257-2.38-28.814-3.397-38-1.977Zm-9.593 217.486c-38.288 5.227-73.798 22.231-101.248 48.485-16.528 15.808-26.534 29.275-36.957 49.737-3.015 5.92-6.962 15.038-8.77 20.263C.398 345.077.032 347.33 0 357.121c-.03 8.942.41 12.374 2.348 18.346 4.842 14.908 17.113 28.918 31.62 36.099 12.963 6.416 5.771 6.12 141.526 5.824l123.401-.269 6.276-2.35c15.208-5.697 28.475-17.621 35.212-31.65 5.173-10.773 6.395-17.051 5.769-29.645-.412-8.284-1.162-12.155-3.752-19.355-15.415-42.866-48.477-79.026-91.231-99.78-30.435-14.774-67.602-20.745-100.867-16.205Z"/></svg></span>
-              </div>
-              <div class="profile-desktop-hero-info">
-                <h2 class="profile-hero-name" id="profile-display-name">Aventureiro</h2>
-                <div class="profile-hero-sub" id="profile-hero-sub">@aventureiro</div>
-                <div class="profile-hero-badge"><svg viewBox="0 0 24 24"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.4" fill="#0a0a0a"/></svg> <span id="profile-role-text">Nível 0</span></div>
-              </div>
-            </div>
-            <div class="profile-subsect-title">Informações Pessoais</div>
-            <div class="profile-detail-grid" id="profile-personal-fields">
-              <div class="metric-card">
-                <div class="metric-card-icon magenta"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></div>
-                <div class="metric-card-label">Nome</div>
-                <div class="metric-card-value" id="pf-charname" contenteditable="true" data-key="charname" data-ph="Personagem"></div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-card-icon blue"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg></div>
-                <div class="metric-card-label">Apelido</div>
-                <div class="metric-card-value" id="pf-nick" contenteditable="true" data-key="userNick" data-ph="Como te chamam"></div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-card-icon purple"><svg viewBox="0 0 24 24"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/></svg></div>
-                <div class="metric-card-label">Idade</div>
-                <div class="metric-card-value" id="pf-age" contenteditable="true" data-key="age" data-ph="Sua idade"></div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-card-icon yellow"><svg viewBox="0 0 24 24"><path d="M10 20h4"/><path d="M12 16v6"/><path d="M17 2h4v4"/><path d="m21 2-5.46 5.46"/><circle cx="12" cy="11" r="5"/></svg></div>
-                <div class="metric-card-label">Gênero</div>
-                <div class="metric-card-value" id="pf-gender" contenteditable="true" data-key="gender" data-ph="Como se identifica"></div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-card-icon red"><svg viewBox="0 0 24 24"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg></div>
-                <div class="metric-card-label">Altura</div>
-                <div class="metric-card-value" id="pf-height" contenteditable="true" data-key="height" data-ph="1.70 m"></div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-card-icon green"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><path d="M6.5 8a2 2 0 0 0-1.905 1.46L2.1 18.5A2 2 0 0 0 4 21h16a2 2 0 0 0 1.925-2.54L19.4 9.5A2 2 0 0 0 17.48 8Z"/></svg></div>
-                <div class="metric-card-label">Peso</div>
-                <div class="metric-card-value" id="pf-weight" contenteditable="true" data-key="weight" data-ph="70 kg"></div>
-              </div>
-            </div>
+    <div class="profile-desktop-view"></div>
 
-          </div>
-        </div>
-
-        <!-- Slot central — SISTEMA (movido pra cá conforme layout solicitado) -->
-        <div class="profile-desktop-slot profile-desktop-slot-system">
-          <div class="profile-subsect-title">Sistema</div>
-          <div class="profile-detail-grid" id="profile-details-fields">
-            <div class="metric-card metric-card-pick" onclick="openAdvPicker('linhagem')">
-              <div class="metric-card-icon yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M12 8c-3-3-7-3-7-3s0 4 3 7"/><path d="M12 8c3-3 7-3 7-3s0 4-3 7"/><path d="M12 14c-3-3-7-3-7-3s0 4 3 7"/><path d="M12 14c3-3 7-3 7-3s0 4-3 7"/></svg></div>
-              <div class="metric-card-label">Linhagem</div>
-              <div class="metric-card-value empty" id="pf-linhagem"></div>
-            </div>
-            <div class="metric-card metric-card-pick" onclick="openAdvPicker('passado')">
-              <div class="metric-card-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-              <div class="metric-card-label">Passado</div>
-              <div class="metric-card-value empty" id="pf-passado"></div>
-            </div>
-            <div class="metric-card metric-card-pick" onclick="openAdvPicker('arquetipo')">
-              <div class="metric-card-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
-              <div class="metric-card-label">Arquétipo</div>
-              <div class="metric-card-value empty" id="pf-arquetipo"></div>
-            </div>
-            <div class="metric-card metric-card-pick" onclick="openAdvPicker('caminho')">
-              <div class="metric-card-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
-              <div class="metric-card-label">Caminho</div>
-              <div class="metric-card-value empty" id="pf-caminho"></div>
-            </div>
-          </div>
-          <!-- area reservada pro livro (desktop) -->
-          <div class="profile-book-slot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>LIVRO · EM BREVE</span></div>
-        </div>
-
-        <aside class="profile-desktop-aside">
-          <div class="profile-block">
-            <div class="profile-block-head">
-              <h3 class="profile-block-title">Conquistas</h3>
-              <button class="profile-block-link" type="button" onclick="openAchievements()">Ver todas <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
-            </div>
-            <div class="profile-ach-grid" id="profile-ach-preview">
-              <div class="ach-tile">
-                <div class="ach-tile-shape purple"><svg class="ach-hept-bg" viewBox="-3 -3 130 132"><use href="#ach-hept-purple"/></svg><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
-                <div class="ach-tile-label">Início</div>
-              </div>
-              <div class="ach-tile">
-                <div class="ach-tile-shape green"><svg class="ach-hept-bg" viewBox="-3 -3 130 132"><use href="#ach-hept-green"/></svg><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
-                <div class="ach-tile-label">Primeira ação</div>
-              </div>
-              <div class="ach-tile">
-                <div class="ach-tile-shape locked"><svg class="ach-hept-bg" viewBox="-3 -3 130 132"><use href="#ach-hept-locked"/></svg><svg viewBox="0 0 866 1058"><use href="#ach-orb-icon"/></svg></div>
-                <div class="ach-tile-label locked"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Bloqueado</div>
-              </div>
-            </div>
-          </div>
-          <div class="profile-stats-card profile-stats-card-aside">
-            <div class="profile-stat-cell">
-              <div class="stat-value"><span class="stat-icon" style="color:var(--magenta)"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><span id="ps-xp">0</span></div>
-              <div class="stat-label">XP</div>
-            </div>
-            <div class="profile-stat-cell">
-              <div class="stat-value"><span class="stat-icon" style="color:#fb923c"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2c2 4 5 5 5 9.5a5 5 0 1 1-10 0c0-2 .8-3 1.7-3.8.1 1.4.9 2.3 2.1 2.3 0-2.2-1.3-3-1.3-5.2 0-1.3 1.1-2.3 2.5-2.8z"/></svg></span><span id="ps-lvl">0</span></div>
-              <div class="stat-label">Nível</div>
-            </div>
-            <div class="profile-stat-cell">
-              <div class="stat-value"><span class="stat-icon" style="color:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg></span><span id="ps-ach">0</span></div>
-              <div class="stat-label">Conquistas</div>
-            </div>
-          </div>
-        </aside>
-
-      </div>
-    </div>
     <!-- ═══ MOBILE VIEW (Android app + portrait phones) ═══ -->
     <div class="profile-mobile-view">
       <div class="profile-hero">
@@ -13544,7 +13552,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             <span><span class="wk-name">De código</span><span class="wk-sub">cola e importa</span></span>
           </button>
         </div>
-        <button type="button" class="wk-card wk-row" title="Performance · animações & FPS" onclick="cfgGoPanel&&cfgGoPanel('app')">
+        <button type="button" class="wk-card wk-row" title="Performance · alternar Máximo / Econômico" onclick="_wkTogglePerf&&_wkTogglePerf()">
                     <span class="wk-row-info"><span class="wk-name">Performance</span><span class="wk-sub">animações & FPS</span></span>
           <span class="wk-val sm" id="wk-perf">Máximo</span>
         </button>
@@ -13595,8 +13603,59 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
       <script>
       (function(){
         var root=document.getElementById('tab-config');if(!root)return;
-        // UI antiga de config (abas/paineis) removida — no-op seguro.
-        window.cfgGoPanel=function(){};
+        // Painéis de atalho (modal overlay agrupando ações existentes)
+        var CFG_PANELS={
+          ficha:{title:'Ficha',icon:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>',c:'#60a5fa',items:[
+            {l:'Salvar ficha',d:'Baixa o arquivo JSON',fn:'saveToFile'},
+            {l:'Importar ficha',d:'Carrega de arquivo JSON',fn:'importFromFile'},
+            {l:'Gerar ficha automática',d:'Cria por nível + arquétipo',fn:'openSheetGeneratorModal'},
+            {l:'Compartilhar',d:'Gera código da ficha',fn:'shareFichaCode'},
+            {l:'Importar de código',d:'Cola um código',fn:'importFichaCode'},
+            {l:'Personagens',d:'Trocar / gerenciar slots',fn:'openCharSlotsModal'},
+            {l:'Meu ID',d:'Vincula itens ao personagem',fn:'openMyCharIdPanel'}
+          ]},
+          app:{title:'App',icon:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',c:'#fb923c',items:[
+            {l:'Som',d:'Ativar / desativar efeitos',fn:'_wkToggleSound'},
+            {l:'Limpar cache',d:'Libera memória agora',fn:'runCacheCleanNow'},
+            {l:'Performance · Máximo',d:'Todas as animações',fn:"setPerfMode:high"},
+            {l:'Performance · Econômico',d:'Reduz efeitos (FPS)',fn:"setPerfMode:low"}
+          ]},
+          tema:{title:'Tema',icon:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',c:'#a78bfa',items:[
+            {l:'Tema Escuro',d:'Neutros profundos',fn:'setTheme:dark'},
+            {l:'Tema Claro',d:'Fundo branco',fn:'setTheme:light'},
+            {l:'Grimório',d:'Pergaminho RPG',fn:'setTheme:grimoire'}
+          ]},
+          avancado:{title:'Avançado',icon:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',c:'#f87171',items:[
+            {l:'Lixeira',d:'Itens apagados',fn:'_trashOpen'},
+            {l:'Limpar toda a ficha',d:'Apaga tudo (irreversível)',fn:'clearSheet',danger:true}
+          ]}
+        };
+        function cfgRun(fn){
+          try{
+            if(fn.indexOf(':')>0){var p=fn.split(':');if(typeof window[p[0]]==='function')window[p[0]](p[1]);return;}
+            if(fn==='_trashOpen'){window.Trash&&window.Trash.openModal&&window.Trash.openModal();return;}
+            if(typeof window[fn]==='function')window[fn]();
+          }catch(e){}
+        }
+        window.cfgGoPanel=function(cat){
+          var p=CFG_PANELS[cat];if(!p)return;
+          var ov=document.getElementById('cfg-panel-ov');
+          if(!ov){ov=document.createElement('div');ov.id='cfg-panel-ov';ov.className='cfg-panel-ov';ov.addEventListener('click',function(e){if(e.target===ov)cfgPanelClose();});document.body.appendChild(ov);}
+          ov.style.setProperty('--pc',p.c);
+          ov.innerHTML='<div class="cfg-panel" role="dialog">'
+            +'<div class="cfg-panel-head"><span class="cfg-panel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+p.icon+'</svg></span><span class="cfg-panel-title">'+p.title+'</span><button class="cfg-panel-x" type="button" aria-label="Fechar" onclick="cfgPanelClose()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>'
+            +'<div class="cfg-panel-list">'+p.items.map(function(it,i){return '<button type="button" class="cfg-panel-item'+(it.danger?' danger':'')+'" data-i="'+i+'"><span class="cfg-panel-item-body"><span class="cfg-panel-item-l">'+it.l+'</span><span class="cfg-panel-item-d">'+it.d+'</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>';}).join('')+'</div>'
+            +'</div>';
+          ov.querySelectorAll('.cfg-panel-item').forEach(function(b){b.addEventListener('click',function(){var it=p.items[parseInt(b.dataset.i)];cfgPanelClose();setTimeout(function(){cfgRun(it.fn);},180);});});
+          requestAnimationFrame(function(){ov.classList.add('open');});
+        };
+        window.cfgPanelClose=function(){var ov=document.getElementById('cfg-panel-ov');if(!ov)return;ov.classList.remove('open');setTimeout(function(){if(ov.parentNode)ov.parentNode.removeChild(ov);},200);};
+        window._wkTogglePerf=function(){
+          var low=document.body.hasAttribute('data-perf-low');
+          if(typeof setPerfMode==='function')setPerfMode(low?'high':'low');
+          var pf=document.getElementById('wk-perf');if(pf)pf.textContent=low?'Máximo':'Econômico';
+          window._syncCfgFeed&&window._syncCfgFeed();
+        };
         window.cfgBackToFeed=function(){};
         window._wkToggleSound=function(){
           if(typeof toggleSound==='function')toggleSound();
@@ -13620,7 +13679,7 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             var s=g('wk-sound');if(s)s.textContent=muted?'Off':'On';
             var th=document.documentElement.getAttribute('data-theme')||'dark';
             var t=g('wk-theme');if(t)t.textContent=(th==='light'?'Claro':'Escuro');
-            var pf=g('wk-perf');if(pf)pf.textContent=document.body.hasAttribute('data-perf-low')?'Baixo':'Máximo';
+            var pf=g('wk-perf');if(pf)pf.textContent=document.body.hasAttribute('data-perf-low')?'Econômico':'Máximo';
           }catch(_){}
         };
         window._syncCfgFeed();
@@ -25802,8 +25861,30 @@ window.openCharSlotsModal=function(){
   document.getElementById('modal-body').innerHTML=html;
   document.getElementById('modal-overlay').classList.add('open');
 };
-window.saveCharSlot=function(n){
-  if(!confirm('Salvar personagem atual no slot '+n+'? Sobrescreve o que estava lá.'))return;
+// modal de confirmação próprio (substitui confirm() nativo)
+window._confirmModal=function(opts){
+  opts=opts||{};
+  return new Promise(function(resolve){
+    var ov=document.getElementById('cfm-ov');
+    if(ov)ov.remove();
+    ov=document.createElement('div');ov.id='cfm-ov';ov.className='cfm-ov';
+    var danger=!!opts.danger;
+    ov.innerHTML='<div class="cfm-modal" role="dialog">'
+      +'<div class="cfm-ico'+(danger?' danger':'')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(danger?'<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>':'<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>')+'</svg></div>'
+      +'<div class="cfm-title">'+(opts.title||'Confirmar?')+'</div>'
+      +(opts.msg?'<div class="cfm-msg">'+opts.msg+'</div>':'')
+      +'<div class="cfm-actions"><button class="cfm-btn cfm-cancel" type="button">'+(opts.cancel||'Cancelar')+'</button><button class="cfm-btn cfm-ok'+(danger?' danger':'')+'" type="button">'+(opts.ok||'Confirmar')+'</button></div>'
+      +'</div>';
+    document.body.appendChild(ov);
+    var done=function(v){ov.classList.remove('open');setTimeout(function(){if(ov.parentNode)ov.parentNode.removeChild(ov);},200);resolve(v);};
+    ov.querySelector('.cfm-cancel').onclick=function(){done(false);};
+    ov.querySelector('.cfm-ok').onclick=function(){done(true);};
+    ov.addEventListener('click',function(e){if(e.target===ov)done(false);});
+    requestAnimationFrame(function(){ov.classList.add('open');});
+  });
+};
+window.saveCharSlot=async function(n){
+  if(!await _confirmModal({title:'Salvar no slot '+n+'?',msg:'Sobrescreve o que estava guardado neste slot.',ok:'Salvar'}))return;
   const data=_loadCharSlots();
   const snap=_snapshotChar();snap._savedAt=new Date().toISOString();
   data.slots[n]=snap;data.active=n;
@@ -25812,17 +25893,17 @@ window.saveCharSlot=function(n){
   if(typeof closeModal==='function')closeModal();
   setTimeout(()=>window.openCharSlotsModal(),200);
 };
-window.loadCharSlot=function(n){
+window.loadCharSlot=async function(n){
   const data=_loadCharSlots();
   if(!data.slots[n])return toast&&toast('Slot vazio','warn');
-  if(!confirm('Carregar slot '+n+'? Sua ficha atual será substituída (salve antes se quiser).'))return;
+  if(!await _confirmModal({title:'Carregar slot '+n+'?',msg:'Sua ficha atual será substituída. Salve antes se quiser mantê-la.',ok:'Carregar'}))return;
   _restoreChar(data.slots[n]);
   data.active=n;_saveCharSlots(data);
   toast&&toast('Slot '+n+' carregado · recarregando...','success');
   setTimeout(()=>location.reload(),600);
 };
-window.deleteCharSlot=function(n){
-  if(!confirm('Apagar slot '+n+' definitivamente?'))return;
+window.deleteCharSlot=async function(n){
+  if(!await _confirmModal({title:'Apagar slot '+n+'?',msg:'O personagem guardado neste slot será apagado definitivamente.',ok:'Apagar',danger:true}))return;
   const data=_loadCharSlots();
   delete data.slots[n];_saveCharSlots(data);
   toast&&toast('Slot '+n+' apagado','warn');
@@ -34676,6 +34757,7 @@ window._refreshOrigemSummary=function(){
 };
 window.openAdvPicker=function(field){
   let cat=ADV_CATALOG[field];if(!cat)return;
+  try{document.getElementById('modal-overlay').classList.remove('adv-detail-open','adv-paged');}catch(_){}
   const title=document.getElementById('modal-title'),body=document.getElementById('modal-body');
   if(!title||!body)return;
   title.textContent=`Escolher ${ADV_LABELS[field]}`;
@@ -34854,10 +34936,13 @@ window._advShowDetail=function(field,item){
   let habHtml='';
   if(field==='passado'){
     const h=window._PASSADO_HABILIDADES&&window._PASSADO_HABILIDADES[item.name];
+    const periRow=periChips?`<div class="adv-detail-peri-row">${periChips}</div>`:'';
     if(h){
       const cost=h.cost?`<span class="adv-detail-hab-cost">${h.cost} ${STATUS_LBL[h.costStatus]||h.costStatus||'PE'}</span>`:'';
-      const periRow=periChips?`<div class="adv-detail-peri-row">${periChips}</div>`:'';
       habHtml=`<div class="adv-detail-section">${periRow}<div class="adv-detail-hab"><div class="adv-detail-hab-head"><span class="adv-detail-hab-name">${esc(h.name)}</span>${cost}</div><div class="adv-detail-hab-desc">${_renderDesc(h.desc)}</div></div></div>`;
+    } else {
+      // sem habilidade cadastrada → mostra descrição do passado + perícias treinadas
+      habHtml=`<div class="adv-detail-section">${periRow}<div class="adv-detail-hab"><div class="adv-detail-hab-head"><span class="adv-detail-hab-name">${esc(item.name)}</span></div><div class="adv-detail-hab-desc">${_renderDesc(item.desc||'Sem descrição.')}</div></div>${periIds.length?'<div class="adv-detail-section-title" style="margin-top:6px">Perícias treinadas</div>':''}</div>`;
     }
   } else if(field==='linhagem'){
     const h=window._LINHAGEM_HABILIDADES&&window._LINHAGEM_HABILIDADES[item.name];
@@ -34891,21 +34976,75 @@ window._advShowDetail=function(field,item){
           const unlocked=lv>=ms.level;
           const cost=ms.cost?`<span class="adv-detail-hab-cost">${ms.cost} ${STATUS_LBL[ms.costStatus]||ms.costStatus||'PE'}</span>`:'';
           const tag=unlocked?'':'<span class="adv-detail-hab-locked">BLOQUEADO</span>';
-          return `<button type="button" class="adv-detail-hab${unlocked?' unlocked':' locked'}"><div class="adv-detail-hab-head"><span class="adv-detail-hab-idx">NV ${ms.level}</span><span class="adv-detail-hab-name">${esc(ms.name)}</span>${cost}${tag}</div><div class="adv-detail-hab-desc">${_renderDesc(ms.desc)}</div></button>`;
+          return `<button type="button" class="adv-detail-hab${unlocked?' unlocked':' locked'}"><div class="adv-detail-hab-head"><span class="adv-detail-hab-idx adv-detail-hab-lv">${ms.level}</span><span class="adv-detail-hab-name">${esc(ms.name)}</span>${cost}${tag}</div><div class="adv-detail-hab-desc">${_renderDesc(ms.desc)}</div></button>`;
         }).join('')}</div></div>`;
       }
     }
   }
   // Picker minimalista — só nome/desc curta + confirmar. Detalhes (perícias/habilidades)
   // aparecem na aba Progresso > Habilidades após confirmar. Long-press na habilidade abre full.
-  const tone=item.tone||'';
+  const FIELD_TONE={linhagem:'#e0b53f',passado:'#a78bfa',arquetipo:'#60a5fa',caminho:'#4ade80'};
+  const tone=item.tone||FIELD_TONE[field]||'#9aa0a6';
   body.innerHTML=`
     <div class="adv-detail${tone?' adv-detail-toned':''}"${tone?` style="--tone:${tone}"`:''}>${habHtml}</div>
+    <div class="advp-nav" id="adv-pnav" style="display:none"></div>
     <div class="advd-foot">
-      <button type="button" class="advd-btn advd-back" id="adv-detail-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Voltar</span></button>
-      <button type="button" class="advd-btn advd-confirm" id="adv-detail-confirm"${tone?` style="--tone:${tone}"`:''}${isSelected?' disabled':''}><span>${isSelected?'Já selecionado':'Confirmar'}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+      <button type="button" class="advd-btn advd-back" id="adv-detail-back"><span>Cancelar</span></button>
+      <button type="button" class="advd-btn advd-confirm" id="adv-detail-confirm"${tone?` style="--tone:${tone}"`:''}${isSelected?' disabled':''}><span>${isSelected?'Já selecionado':'Confirmar'}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
     </div>`;
-  document.getElementById('modal-overlay').classList.add('open','modal-fit');
+  document.getElementById('modal-overlay').classList.add('open','modal-fit','adv-detail-open');
+  body.style.setProperty('--tone', tone);   // nav/footer (fora do .adv-detail) herdam a cor do tema
+  // ── Paginação: SÓ em celular retrato estreito; desktop/paisagem = lista rolável ──
+  (function(){
+    const portraitPhone = window.matchMedia('(max-width:640px) and (orientation:portrait)').matches;
+    if(!portraitPhone) return; // tela larga/paisagem: mantém lista vertical rolável
+    const root=body.querySelector('.adv-detail'); if(!root)return;
+    // 1ª passada: conta quantas páginas SEM mexer no DOM (evita perder conteúdo se não paginar)
+    const secs=Array.from(root.children);
+    let count=0;
+    secs.forEach(sec=>{
+      const list=sec.querySelector('.adv-detail-hab-list');
+      const cards=list?Array.from(list.children):[];
+      count += (list && cards.length>1) ? cards.length : 1;
+    });
+    if(count<=1)return; // 1 página → mantém DOM original intacto
+    // 2ª passada: agora sim monta as páginas (move os nós)
+    const pages=[];
+    secs.forEach(sec=>{
+      const list=sec.querySelector('.adv-detail-hab-list');
+      const cards=list?Array.from(list.children):[];
+      if(list && cards.length>1){
+        const titleEl=sec.querySelector('.adv-detail-section-title');
+        cards.forEach(card=>{
+          const pg=document.createElement('div'); pg.className='advp-page';
+          const s=document.createElement('div'); s.className='adv-detail-section';
+          if(titleEl)s.appendChild(titleEl.cloneNode(true));
+          const l=document.createElement('div'); l.className='adv-detail-hab-list'; l.appendChild(card);
+          s.appendChild(l); pg.appendChild(s); pages.push(pg);
+        });
+      } else {
+        const pg=document.createElement('div'); pg.className='advp-page'; pg.appendChild(sec); pages.push(pg);
+      }
+    });
+    const track=document.createElement('div'); track.className='advp-track';
+    pages.forEach(p=>track.appendChild(p));
+    root.innerHTML=''; root.appendChild(track);
+    document.getElementById('modal-overlay').classList.add('adv-paged'); // trava scroll vertical, footer fixo
+    // nav (setas + dots)
+    const nav=document.getElementById('adv-pnav'); if(!nav)return; nav.style.display='flex';
+    let cur=0;
+    const draw=()=>{
+      nav.innerHTML=`<button type="button" class="advp-arrow" id="advp-prev" ${cur===0?'disabled':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>`
+        +`<div class="advp-dots">${pages.map((_,i)=>`<button type="button" class="advp-dot${i===cur?' active':''}" data-p="${i}"></button>`).join('')}</div>`
+        +`<button type="button" class="advp-arrow" id="advp-next" ${cur===pages.length-1?'disabled':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>`;
+      const p=nav.querySelector('#advp-prev'),n=nav.querySelector('#advp-next');
+      if(p)p.onclick=()=>go(cur-1); if(n)n.onclick=()=>go(cur+1);
+      nav.querySelectorAll('.advp-dot').forEach(d=>d.onclick=()=>go(parseInt(d.dataset.p)));
+    };
+    const go=(i)=>{cur=Math.max(0,Math.min(pages.length-1,i));track.scrollTo({left:track.clientWidth*cur,behavior:'smooth'});draw();};
+    let _st;track.addEventListener('scroll',()=>{clearTimeout(_st);_st=setTimeout(()=>{const i=Math.round(track.scrollLeft/track.clientWidth);if(i!==cur){cur=i;draw();}},80);},{passive:true});
+    draw();
+  })();
   const backBtn=document.getElementById('adv-detail-back');
   if(backBtn)backBtn.addEventListener('click',()=>openAdvPicker(field));
   const cbtn=document.getElementById('adv-detail-confirm');
@@ -40207,7 +40346,7 @@ body[data-perf-low] .dcard-handle{display:none}
 <div id="grimorio-screen" hidden></div>
 <style>
   #grimorio-screen[hidden]{display:none!important}
-  #grimorio-screen{position:fixed;inset:0;z-index:99999;background:#0a0a0c}
+  #grimorio-screen{position:fixed;inset:0;z-index:99999;background:#0a0a0c;padding-top:calc(56px + env(safe-area-inset-top,0px));box-sizing:border-box}
   body.grimorio-open .sidebar,body.grimorio-open .topbar{display:none!important}
   #grimorio-screen iframe{width:100%;height:100%;border:0;display:block}
   #grimorio-close{--gx:#e0455f;position:fixed!important;top:calc(12px + env(safe-area-inset-top,0px))!important;right:14px!important;z-index:100000!important;width:42px!important;height:42px!important;

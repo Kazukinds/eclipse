@@ -114,7 +114,7 @@
 </style>
 </helmet>
 
-<div style="position:relative; width:100%; min-height:100vh; background:radial-gradient(120% 90% at 50% 0%, #15131a, #0a0a0c 60%, #070708 100%); overflow:hidden; font-family:system-ui,-apple-system,'Segoe UI',sans-serif; color:#e8e8ea;">
+<div style="position:relative; width:100%; min-height:100dvh; background:radial-gradient(135% 100% at 50% 0%, #15131a, #0a0a0c 55%, #070708 100%); background-attachment:fixed; overflow:hidden; font-family:system-ui,-apple-system,'Segoe UI',sans-serif; color:#e8e8ea;">
 
   <!-- aura reativa à essência (cor do elemento ativo) -->
   <div style="position:absolute; inset:0; background:{{ bgGlow }}; pointer-events:none; transition:background .6s ease; animation:bgAuraPulse 9s ease-in-out infinite;"></div>
@@ -187,7 +187,7 @@
 
     <!-- CARD B (center) -->
     <div style="position:absolute; left:50%; top:50%; z-index:{{ zB }}; pointer-events:auto; transform:{{ cardTB }}; filter:{{ cardFB }}; opacity:{{ cardOB }}; transition:transform .55s cubic-bezier(.2,.7,.2,1), filter .55s ease, opacity .55s ease;">
-      <div onPointerDown="{{ downB }}" onPointerMove="{{ moveB }}" onPointerUp="{{ upB }}" onPointerCancel="{{ upB }}" style="position:relative; width:380px; height:566px; border-radius:20px; perspective:1100px; cursor:grab; touch-action:none; animation:{{ swapAnim }};">
+      <div onClick="{{ tapB }}" onPointerDown="{{ downB }}" onPointerMove="{{ moveB }}" onPointerUp="{{ upB }}" onPointerCancel="{{ upB }}" style="position:relative; width:380px; height:566px; border-radius:20px; perspective:1100px; cursor:pointer; touch-action:none; animation:{{ swapAnim }};">
         <div class="flip" style="--cardacc:{{ c1.cardBorder }}; --cardbg:{{ c1.cardBg }}; transform:rotateX({{ tiltX }}deg) rotateY({{ tiltYB }}deg); transition:{{ tiltTrans }};">
           <div class="face" style="border-radius:16px; border:1px solid var(--cardacc, rgba(224,69,95,0.12)); background:#220a0e;">
             <div style="position:absolute; inset:0; background:{{ c1.bg }};"></div>
@@ -252,11 +252,11 @@
           <button id="navArrowR" style="position:absolute; right:30px; top:50%; z-index:15; width:62px; height:62px; border-radius:58% 42% 44% 56% / 46% 58% 42% 54%; border:{{ arrowBorder }}; background:{{ arrowBg }}; backdrop-filter:blur(10px); box-shadow:{{ arrowShadow }}; color:#fff; font-size:24px; cursor:pointer; animation:blobMorph 9s ease-in-out infinite reverse, blobPulse 3.8s ease-in-out infinite; opacity:{{ browseO }}; pointer-events:{{ browsePE }}; transition:opacity .4s ease, box-shadow .3s ease; display:flex; align-items:center; justify-content:center; touch-action:none;" style-hover="box-shadow:0 0 44px {{ arrowGlow }};">›</button>
 
   <!-- icon pill (center) -->
-  <div style="position:absolute; top:{{ pillTop }}; bottom:{{ pillBottom }}; left:{{ pillLeft }}; transform:translateX(-50%); display:flex; align-items:center; gap:{{ pillGap }}; background:{{ pillBgT }}; backdrop-filter:blur(12px); border:{{ pillBorder }}; border-radius:999px; padding:9px 14px; transition:gap .35s ease; z-index:40;">
+  <div style="position:absolute; top:{{ pillTop }}; bottom:{{ pillBottom }}; left:{{ pillLeft }}; transform:translateX(-50%) translateZ(0); display:flex; align-items:center; gap:{{ pillGap }}; background:{{ pillBgT }}; -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); border:{{ pillBorder }}; border-radius:999px; padding:9px 14px; transition:gap .35s ease; z-index:40; will-change:transform; contain:layout paint;">
     <button onClick="{{ toggleSearch }}" title="Pesquisar" style="flex:none; display:flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:50%; border:none; background:{{ lupaBg }}; color:{{ pAcc }}; cursor:pointer; transition:background .25s ease;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
     </button>
-    <div style="display:flex; align-items:center; overflow:hidden; width:{{ searchW }}; opacity:{{ searchO }}; transition:width .42s cubic-bezier(.2,.7,.2,1), opacity .3s ease;">
+    <div style="display:flex; align-items:center; overflow:hidden; width:{{ searchW }}; opacity:{{ searchO }}; transition:width .42s cubic-bezier(.2,.7,.2,1), opacity .3s ease; will-change:width; contain:layout;">
       <input placeholder="Pesquisar feitiço…" value="{{ query }}" onInput="{{ onQuery }}" style="width:100%; min-width:0; background:transparent; border:none; outline:none; color:#f0f0f2; font-family:system-ui,-apple-system,sans-serif; font-size:14px; padding:0 8px;" />
     </div>
     <button onClick="{{ iconFav }}" title="Favoritar" style="position:relative; flex:none; display:flex; align-items:center; justify-content:center; width:{{ iconsW }}; height:38px; border-radius:50%; border:none; background:{{ favBg }}; opacity:{{ iconsO }}; overflow:visible; cursor:pointer; transition:width .35s cubic-bezier(.2,.7,.2,1), opacity .28s ease, background .25s ease;">
@@ -264,7 +264,7 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="{{ favFill }}" stroke="{{ favStroke }}" stroke-width="1.6" style="animation:{{ favPopAnim }};"><path d="M12 21s-7-4.5-9-9a4.5 4.5 0 0 1 9-2 4.5 4.5 0 0 1 9 2c-2 4.5-9 9-9 9Z"/></svg>
     </button>
     <button onClick="{{ iconFlip }}" title="Ver cartas" style="flex:none; display:flex; align-items:center; justify-content:center; width:{{ iconsW }}; height:38px; border-radius:50%; border:none; background:transparent; color:{{ flipColor }}; opacity:{{ iconsO }}; overflow:visible; cursor:pointer; transition:width .35s cubic-bezier(.2,.7,.2,1), opacity .28s ease, background .25s ease;" style-hover="background:{{ pillHover }};">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="animation:{{ cardsAnim }}; transform-origin:50% 70%;"><rect x="6" y="3" width="12" height="18" rx="2.4"/><circle cx="12" cy="12" r="2.6"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="animation:{{ cardsAnim }}; transform-origin:50% 70%; will-change:transform;"><rect x="6" y="3" width="12" height="18" rx="2.4"/><circle cx="12" cy="12" r="2.6"/></svg>
     </button>
     <button onClick="{{ toggleSearch }}" title="Fechar" style="flex:none; display:flex; align-items:center; justify-content:center; width:{{ closeW }}; height:34px; border-radius:50%; border:none; background:transparent; color:{{ pAcc }}; opacity:{{ searchO }}; overflow:hidden; cursor:pointer; transition:width .35s cubic-bezier(.2,.7,.2,1), opacity .28s ease;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -272,7 +272,7 @@
   </div>
 
   <!-- detail panel -->
-  <div style="position:absolute; top:{{ panelInset }}; right:{{ panelInset }}; bottom:{{ panelInset }}; width:{{ panelWidth }}; max-width:{{ panelMaxW }}; border-radius:{{ panelRadius }}; border:1px solid rgba(255,255,255,0.07); background:rgba(12,12,14,0.96); backdrop-filter:blur(20px); box-shadow:0 30px 80px rgba(0,0,0,0.65); display:flex; flex-direction:column; overflow:hidden; transform:{{ panelTransform }}; transition:transform .5s cubic-bezier(.2,.7,.2,1); z-index:30;">
+  <div style="position:absolute; top:{{ panelInset }}; right:{{ panelInset }}; bottom:{{ panelInset }}; width:{{ panelWidth }}; max-width:{{ panelMaxW }}; border-radius:{{ panelRadius }}; border:1px solid rgba(255,255,255,0.07); background:#0c0c0e; box-shadow:0 30px 80px rgba(0,0,0,0.65); display:flex; flex-direction:column; overflow:hidden; transform:{{ panelTransform }}; transition:transform .5s cubic-bezier(.2,.7,.2,1); z-index:30; will-change:transform; contain:layout paint;">
     <div style="flex:none; padding:30px 40px 20px; border-bottom:1px solid rgba(255,255,255,0.08); background:linear-gradient(180deg,rgba(18,18,22,0.9),rgba(12,12,14,0.6));">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
         <h1 style="margin:0; font-family:system-ui,-apple-system,sans-serif; font-weight:700; font-size:28px; letter-spacing:-0.3px; color:#f4f4f6; line-height:1.1; white-space:nowrap;">{{ headerTitle }}</h1>
@@ -862,10 +862,16 @@ class Component extends DCLogic {
   _postAccent() {
     try {
       const c = (this.essenceDefs[this.state.essence] || {}).color || '#e0455f';
+      if (c === this._lastAccent) return;        // só posta quando a cor muda (evita flood por frame)
+      this._lastAccent = c;
       if (window.parent && window.parent !== window) window.parent.postMessage({ type: 'grimorio-accent', color: c }, '*');
     } catch (_) {}
   }
-  componentDidUpdate() { requestAnimationFrame(() => this.sizeThumb()); this._postAccent(); }
+  componentDidUpdate() {
+    // sizeThumb só quando o painel de detalhe está aberto
+    if (this.state.focused != null) requestAnimationFrame(() => this.sizeThumb());
+    this._postAccent();
+  }
   sizeThumb() {
     const el = document.getElementById('detailScroll');
     const thumb = document.getElementById('blobThumb');
@@ -975,7 +981,8 @@ class Component extends DCLogic {
     if (wasHeld) {
       // solta → volta lentamente ao estado original (tilt zera com transição longa)
       this.setState({ held: null, tilting: false, tiltX: 0, tiltY: 0 });
-    } else if (!this._moved) {
+    } else if (!this._moved && i !== 1) {
+      // laterais: tap navega. Centro (1): o onClick (tapB) cuida — evita abrir 2×.
       this.tapCard(i);
     }
   }
@@ -1215,7 +1222,7 @@ class Component extends DCLogic {
       navA: nav(0), navB: nav(1), navC: nav(2),
       iconFav: () => this.toggleFav(),
       iconSave: () => this.toggleSave(),
-      iconFlip: () => { this.flipCur(); this.bumpCards(); },
+      iconFlip: () => { const rot = this.state.rot.slice(); rot[1] = Math.round(rot[1] / 180) * 180 + 180; this.setState({ rot, cardsTick: (this.state.cardsTick || 0) + 1 }); },
       favPopAnim: this.state.favTick ? (this.state.favTick % 2 ? 'heartPop' : 'heartPopB') + ' .55s ease' : 'none',
       favBurst: (this.state.favTick && this.state.fav[cur]) ? (this.state.favTick % 2 ? 'heartBurst' : 'heartBurstB') + ' .55s ease-out' : 'none',
       cardsAnim: this.state.cardsTick ? (this.state.cardsTick % 2 ? 'cardsWiggle' : 'cardsWiggleB') + ' .5s ease' : 'none',
@@ -1230,6 +1237,7 @@ class Component extends DCLogic {
       flipColor: hexA(accent, 0.7),
       downA: (e) => this.startHold(0, e), moveA: (e) => this.moveHold(0, e), upA: (e) => this.endHold(0, e),
       downB: (e) => this.startHold(1, e), moveB: (e) => this.moveHold(1, e), upB: (e) => this.endHold(1, e),
+      tapB: () => { if (this.state.focused == null && !this._moved && this.state.held == null) this.setState({ focused: this.state.active }); },
       downC: (e) => this.startHold(2, e), moveC: (e) => this.moveHold(2, e), upC: (e) => this.endHold(2, e),
       close: () => this.closeCard(),
       nextCard: () => this.stepFocus(1),
