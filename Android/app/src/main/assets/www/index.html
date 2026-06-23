@@ -174,7 +174,7 @@ textarea,input,[contenteditable="true"],
 .profile-note,.profile-note-text,.credit-log-info,.detail-desc,.modal-body,#modal-body,
 .skill-detail,.item-desc,.peri-desc,.spell-desc-text,
 .summary-value,.profile-field-value{user-select:text;-webkit-user-select:text}
-::selection{background:color-mix(in srgb,var(--magenta) 32%,transparent);color:var(--text-primary)}
+::selection{background:rgba(255,255,255,.18);color:var(--text-primary)}
 *:focus-visible{outline:2px solid var(--magenta);outline-offset:2px;border-radius:var(--radius-xs)}
 /* Kill Android/iOS tap highlight global — fica invisível ao tocar */
 *,*::before,*::after{-webkit-tap-highlight-color:transparent!important;-webkit-touch-callout:none}
@@ -6363,6 +6363,7 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .advd-confirm:disabled{opacity:.45;cursor:not-allowed}
 /* Ação Defensiva (substitui o donut de categorias) */
 /* Defesa = ring com numero (clicavel -> adicionar proteção) */
+.defact-rings{display:flex;align-items:center;gap:10px}
 .defact-ring{position:relative;width:46px;height:46px;flex-shrink:0;background:transparent;border:0;padding:0;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent;transition:transform .18s}
 .defact-ring:hover{transform:scale(1.06)}
 .defact-ring:active{transform:scale(.96)}
@@ -6406,6 +6407,79 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .prot-add-btn:hover{filter:brightness(1.1)}
 .prot-add-btn svg{width:18px;height:18px}
 .prot-card-lg{max-width:520px;width:calc(100vw - 36px);max-height:88vh;display:flex;flex-direction:column}
+/* Barra-resumo da Defesa (estilo Atributos) */
+.prot-sum-bar{display:flex;align-items:center;gap:14px;background:var(--bg-card-inner);border:1px solid var(--border-light);border-radius:12px;padding:12px 16px;margin-bottom:14px}
+.prot-sum-block{display:flex;flex-direction:column;gap:3px;flex:0 0 auto}
+.prot-sum-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);font-weight:700}
+.prot-sum-val{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:800;color:var(--text-primary);line-height:1;font-variant-numeric:tabular-nums}
+.prot-sum-chips{display:flex;gap:7px;flex:1;justify-content:flex-end;flex-wrap:wrap}
+.prot-sum-chip{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:52px;height:52px;border-radius:14px;background:var(--bg-card);border:1px solid var(--border)}
+.prot-sum-chip i{font-style:normal;font-size:9px;letter-spacing:.5px;text-transform:uppercase;color:var(--text-dim);font-weight:600}
+.prot-sum-chip b{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:800;color:var(--text-primary);font-variant-numeric:tabular-nums}
+/* cards de stat na defesa */
+.prot-stat-row{margin-bottom:10px}
+.prot-stat-row .ad-row-val{min-width:48px;justify-content:center}
+.prot-stat-row .ad-row-val>span:first-child{font-size:26px}
+/* Botão que abre o gerenciador de bônus de defesa */
+.prot-bonus-open{display:flex;align-items:center;gap:12px;width:100%;margin-top:8px;padding:13px 14px;border-radius:14px;border:1px solid var(--border-light);background:var(--bg-input);color:var(--text-primary);cursor:pointer;text-align:left;transition:border-color .18s,background .18s,transform .12s}
+.prot-bonus-open:hover{border-color:var(--blue,#60a5fa);background:var(--bg-hover)}
+.prot-bonus-open:active{transform:scale(.985)}
+.prot-bonus-open-ico{flex:0 0 auto;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--blue,#60a5fa) 16%,transparent);color:var(--blue,#60a5fa)}
+.prot-bonus-open-ico svg{width:18px;height:18px}
+.prot-bonus-open-txt{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px}
+.prot-bonus-open-txt b{font-size:14px;font-weight:700}
+.prot-bonus-open-txt small{font-size:11.5px;color:var(--text-dim)}
+.prot-bonus-open-arrow{flex:0 0 auto;color:var(--text-dim)}
+.prot-bonus-open-arrow svg{width:18px;height:18px}
+/* 2º overlay (sobre o modal Defesa) — blur mais forte, z acima */
+.prot-bonus-ov{z-index:10060!important;background:rgba(6,6,9,.62)!important;backdrop-filter:blur(20px) saturate(120%)!important;-webkit-backdrop-filter:blur(20px) saturate(120%)!important}
+/* 3º overlay (detalhe da habilidade) — blur ainda mais forte */
+.prot-detail-ov{z-index:10070!important;background:rgba(5,5,8,.7)!important;backdrop-filter:blur(26px) saturate(120%)!important;-webkit-backdrop-filter:blur(26px) saturate(120%)!important}
+.prot-hab-clickable{cursor:pointer;transition:border-color .15s,background .15s}
+.prot-hab-clickable:hover{border-color:var(--blue,#60a5fa)!important;background:var(--bg-hover)!important}
+.prot-hab-go{flex:0 0 auto;color:var(--text-dim);display:flex;align-items:center;margin-left:2px}
+.prot-hab-go svg{width:16px;height:16px}
+.prot-detail-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:10px;background:color-mix(in srgb,var(--blue,#60a5fa) 14%,transparent);border:1px solid color-mix(in srgb,var(--blue,#60a5fa) 40%,transparent);color:var(--text-secondary);font-size:12.5px;margin-bottom:14px}
+.prot-detail-badge b{color:var(--blue,#60a5fa)}
+.prot-detail-when{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:10px;background:var(--bg-input);border:1px solid var(--border);font-size:13px;color:var(--text-secondary);line-height:1.5}
+.prot-detail-when-l{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)}
+.prot-detail-desc{font-size:14px;line-height:1.65;color:var(--text-secondary);text-align:justify}
+.prot-detail-desc b{color:var(--text-primary)}
+/* Modal RD — legenda + círculo lado a lado (estilo Atributos) */
+.rd-head{display:flex;align-items:center;gap:16px;margin:8px 0 16px}
+.rd-legend{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;max-height:160px;overflow-y:auto;scrollbar-width:none}
+.rd-legend::-webkit-scrollbar{display:none}
+.rd-leg-row{display:flex;align-items:center;gap:10px;width:100%;padding:7px 9px;border-radius:10px;border:1px solid transparent;background:transparent;cursor:pointer;transition:background .15s,border-color .15s;text-align:left}
+.rd-leg-row:hover{background:var(--bg-hover);border-color:var(--border-light)}
+.rd-leg-row:active{transform:scale(.98)}
+.rd-leg-dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto}
+.rd-leg-name{flex:1;min-width:0;font-size:14px;color:var(--text-secondary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rd-leg-val{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:800;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.rd-ring-wrap{flex:0 0 auto;display:flex;justify-content:center}
+.rd-ring{position:relative;width:190px;height:190px}
+.rd-ring svg{width:190px;height:190px;display:block}
+.rd-ring .rd-arc{transform-box:fill-box;transform-origin:50px 50px;animation:rdArcIn .55s cubic-bezier(.2,.9,.3,1.05) both;animation-delay:calc(var(--i,0) * .08s)}
+@keyframes rdArcIn{0%{opacity:0;stroke-width:3}60%{opacity:1}100%{opacity:1;stroke-width:8}}
+.rd-ring-c b{animation:rdNumPop .5s cubic-bezier(.34,1.4,.5,1)}
+@keyframes rdNumPop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+.rd-ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.rd-ring-c b{font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:800;color:#fb923c;line-height:1}
+.rd-ring-c small{font-size:9px;font-weight:700;letter-spacing:.14em;color:var(--text-dim)}
+.rd-val-btn{min-width:54px;height:42px;padding:0 14px;border-radius:12px;border:1px solid var(--border);background:var(--bg-card);color:var(--c,#fb923c);font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;cursor:pointer;transition:border-color .15s,background .15s,transform .1s}
+.rd-val-btn:hover{border-color:var(--c,#fb923c);background:var(--bg-hover)}
+.rd-val-btn:active{transform:scale(.94)}
+.rd-val-edit{display:flex;align-items:center;justify-content:center;gap:12px;padding:18px 8px}
+.rd-val-edit input{width:96px;text-align:center;padding:12px;background:var(--bg-input);border:1px solid var(--border);border-radius:12px;color:var(--text-primary);font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;outline:none;transition:border-color .18s,box-shadow .18s;-moz-appearance:textfield}
+.rd-val-edit input::-webkit-outer-spin-button,.rd-val-edit input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.rd-val-edit input:focus{border-color:var(--vc,#fb923c);box-shadow:0 0 0 3px color-mix(in srgb,var(--vc,#fb923c) 18%,transparent)}
+.rd-val-edit input::selection{background:color-mix(in srgb,var(--vc,#fb923c) 35%,transparent);color:var(--text-primary)}
+.rd-remove{flex:0 0 auto;width:30px;height:30px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--text-dim);display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:2px;transition:color .15s,border-color .15s}
+.rd-remove:hover{color:#f87171;border-color:#f87171}
+.rd-remove svg{width:15px;height:15px}
+.rd-pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rd-pick-chip{display:flex;align-items:center;justify-content:center;padding:13px 12px;border-radius:12px;border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:border-color .15s,background .15s,transform .1s}
+.rd-pick-chip:hover{border-color:var(--border-light);background:var(--bg-hover)}
+.rd-pick-chip:active{transform:scale(.95)}
 .prot-body-scroll{display:block;flex:1 1 auto;min-height:0;overflow-y:auto;margin:0 -4px;padding:0 4px}
 .prot-body-scroll::-webkit-scrollbar{width:6px}
 .prot-body-scroll::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
@@ -6618,6 +6692,21 @@ button.adv-detail-hab.selected{border-color:var(--magenta);background:color-mix(
 .gen-modal-section{margin-bottom:18px}
 .gen-modal-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .gen-modal-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim)}
+/* Modal Ajustar Nível e Estágio — seções, espaçamento, sem rosa */
+.lvl-modal{display:flex;flex-direction:column;gap:16px;padding:2px 0 4px}
+.lvl-sec{padding:16px;border-radius:14px;background:var(--bg-card-inner);border:1px solid var(--border);display:flex;flex-direction:column;gap:12px}
+.lvl-sec-blue{--lc:#60a5fa}
+.lvl-sec-purple{--lc:var(--purple,#a78bfa)}
+.lvl-sec-head{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--lc)}
+.lvl-sec-dot{width:9px;height:9px;border-radius:50%;background:var(--lc);flex:0 0 auto}
+.lvl-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lvl-field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.lvl-field label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim)}
+.lvl-field input{width:100%;box-sizing:border-box;padding:12px 14px;background:var(--bg-input,#171717);border:1px solid var(--border);border-radius:10px;color:var(--text-primary);font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;outline:none;transition:border-color .18s,box-shadow .18s}
+.lvl-field input:focus{border-color:var(--lc);box-shadow:0 0 0 3px color-mix(in srgb,var(--lc) 18%,transparent)}
+.lvl-save{background:var(--text-primary)!important;border-color:var(--text-primary)!important;color:var(--bg-card)!important;box-shadow:none!important}
+.lvl-save:hover{filter:brightness(1.08)}
+.lvl-save::after{display:none!important}
 .gen-modal-level-val{
   font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;
   color:var(--text-primary);letter-spacing:-.02em;line-height:1;
@@ -12409,10 +12498,16 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
         </div>
         <!-- AÇÃO DEFENSIVA -->
         <div class="card assets-card"><div class="card-header"><div class="card-title">Ação Defensiva</div>
-          <button type="button" class="defact-ring" id="defact-def" title="Proteção / Defesa" onclick="_protOpen()">
-            <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="19" fill="none" stroke="var(--bg-input)" stroke-width="3"/><circle cx="22" cy="22" r="19" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-dasharray="90 30" transform="rotate(-90 22 22)"/></svg>
-            <span class="defact-ring-val" id="defact-def-val">10</span>
-          </button></div>
+          <div class="defact-rings">
+            <button type="button" class="defact-ring" id="defact-rd" title="Redução de Dano (RD)" onclick="_rdOpen()">
+              <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="19" fill="none" stroke="var(--bg-input)" stroke-width="3"/><circle cx="22" cy="22" r="19" fill="none" stroke="#fb923c" stroke-width="3" stroke-linecap="round" stroke-dasharray="90 30" transform="rotate(-90 22 22)"/></svg>
+              <span class="defact-ring-val" id="defact-rd-val">0</span>
+            </button>
+            <button type="button" class="defact-ring" id="defact-def" title="Proteção / Defesa" onclick="_protOpen()">
+              <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="19" fill="none" stroke="var(--bg-input)" stroke-width="3"/><circle cx="22" cy="22" r="19" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-dasharray="90 30" transform="rotate(-90 22 22)"/></svg>
+              <span class="defact-ring-val" id="defact-def-val">10</span>
+            </button>
+          </div></div>
         <div class="defact-list" id="defact-list"></div></div>
         <!-- GROUP -->
         <div class="card accounts-card">
@@ -13304,13 +13399,14 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
             </div>
             <div class="metric-card metric-card-pick" onclick="openModal('level')">
               <div class="metric-card-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-              <div class="metric-card-label">Nível / Estágio</div>
-              <div class="metric-card-value" id="pf-nivel-m" style="font-weight:500">0 · E0</div>
+              <div class="metric-card-label">Nível</div>
+              <div class="metric-card-value" id="pf-nivel-m" style="font-weight:500">0</div>
             </div>
-            <div class="metric-card metric-card-empty"><div class="metric-card-label">—</div></div>
-            <div class="metric-card metric-card-empty"><div class="metric-card-label">—</div></div>
-            <div class="metric-card metric-card-empty"><div class="metric-card-label">—</div></div>
-            <div class="metric-card metric-card-empty"><div class="metric-card-label">—</div></div>
+            <div class="metric-card metric-card-pick" onclick="openModal('level')">
+              <div class="metric-card-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.6 5.7 21l2.3-7.2-6-4.4h7.6z"/></svg></div>
+              <div class="metric-card-label">Estágio</div>
+              <div class="metric-card-value" id="pf-estagio-m" style="font-weight:500">E0</div>
+            </div>
           </div>
         </div>
       </div>
@@ -23053,7 +23149,25 @@ function openModal(type,eid){
 
   if(type==='level'){
     title.textContent='Ajustar Nível e Estágio';
-    body.innerHTML=`<div class="form-row"><div class="form-group"><label>Nível</label><input type="number" id="m-level" value="${playerLevel}" min="1" max="100"></div><div class="form-group"><label>XP Atual</label><input type="number" id="m-xp" value="${playerXP}" min="0"></div></div><div class="form-group"><label>XP Próximo Nível</label><input type="number" id="m-xpmax" value="${xpToNext}" min="1"></div><div style="border-top:1px solid var(--border);margin:12px 0;padding-top:12px"></div><div class="form-row"><div class="form-group"><label style="color:var(--purple)">Estágio</label><input type="number" id="m-stage" value="${playerStage}" min="1" max="100"></div><div class="form-group"><label style="color:var(--purple)">Progresso</label><input type="number" id="m-stagexp" value="${stageXP}" min="0"></div></div><div class="form-group"><label style="color:var(--purple)">Próximo Estágio</label><input type="number" id="m-stagemax" value="${stageToNext}" min="1"></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveLevel()">Salvar</button></div>`;
+    body.innerHTML=`<div class="lvl-modal">
+      <div class="lvl-sec lvl-sec-blue">
+        <div class="lvl-sec-head"><span class="lvl-sec-dot"></span>Nível</div>
+        <div class="lvl-grid">
+          <div class="lvl-field"><label>Nível</label><input type="number" id="m-level" value="${playerLevel}" min="1" max="100"></div>
+          <div class="lvl-field"><label>XP atual</label><input type="number" id="m-xp" value="${playerXP}" min="0"></div>
+        </div>
+        <div class="lvl-field"><label>XP próximo nível</label><input type="number" id="m-xpmax" value="${xpToNext}" min="1"></div>
+      </div>
+      <div class="lvl-sec lvl-sec-purple">
+        <div class="lvl-sec-head"><span class="lvl-sec-dot"></span>Estágio</div>
+        <div class="lvl-grid">
+          <div class="lvl-field"><label>Estágio</label><input type="number" id="m-stage" value="${playerStage}" min="1" max="100"></div>
+          <div class="lvl-field"><label>Progresso</label><input type="number" id="m-stagexp" value="${stageXP}" min="0"></div>
+        </div>
+        <div class="lvl-field"><label>Próximo estágio</label><input type="number" id="m-stagemax" value="${stageToNext}" min="1"></div>
+      </div>
+    </div>
+    <div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn lvl-save" onclick="saveLevel()">Salvar</button></div>`;
   } else if(type==='skill'){
     title.textContent='Nova Habilidade';
     const ORIGINS=[{k:'passado',l:'Passado',c:'var(--yellow)'},{k:'linhagem',l:'Linhagem',c:'var(--purple)'},{k:'arquetipo',l:'Arquétipo',c:'var(--red)'},{k:'caminho',l:'Caminho',c:'var(--magenta)'},{k:'geral',l:'Geral',c:'var(--text-dim)'}];
@@ -25064,6 +25178,7 @@ window.renderDefActions=function(){
   const list=document.getElementById('defact-list');if(!list)return;
   // Defesa no ring central
   try{const c=window._stCalc&&window._stCalc();const dv=document.getElementById('defact-def-val');if(c&&dv)dv.textContent=(c['pf-st-defesa']||'10');}catch(_){}
+  try{const rv=document.getElementById('defact-rd-val');const rd=(typeof profileData==='object'&&parseInt(profileData.rd))||0;if(rv)rv.textContent=rd;}catch(_){}
   const allP=(typeof PERICIAS_DATA!=='undefined')?Object.values(PERICIAS_DATA).flat():[];
   const _pn=id=>{const p=allP.find(x=>x.id===id);return p?p.name:id;};
   // TREINADO = rank>=treinado (bonus avulso nao conta)
@@ -25114,18 +25229,13 @@ window._getHabDefBonuses=function(){
       if(!def||def.reflexOnly)return;
       if(lv<(def.level||1))return;
       seen[nm]=1;
-      out.push({key:nm,value:window._defBonusValue(def),label:def.label,src:srcLabel,active:!!toggles[nm]});
+      // passiva: se possui a habilidade/poder, bônus automático (sempre ativo)
+      out.push({key:nm,value:window._defBonusValue(def),label:def.label,src:srcLabel,active:true});
     });
   };
   try{ if(typeof skills!=='undefined')_scan(skills,'hab'); }catch(_){}
+  try{ if(typeof window._poderes!=='undefined')_scan(window._poderes,'poder'); }catch(_){}
   try{ _scan(window._malds,'mald'); }catch(_){}
-  // bônus manuais adicionados pelo jogador no próprio modal
-  try{
-    const custom=(typeof profileData==='object'&&Array.isArray(profileData.defCustomBonuses))?profileData.defCustomBonuses:[];
-    custom.forEach((c,i)=>{
-      out.push({key:'__custom_'+i,value:parseInt(c.value)||0,label:c.label||'Bônus manual',src:'custom',active:c.active!==false,custom:true,idx:i});
-    });
-  }catch(_){}
   return out;
 };
 // Soma dos bônus de Defesa atualmente ATIVOS (toggles ligados).
@@ -25134,7 +25244,9 @@ window._getHabDefActive=function(){
 };
 // Defesa: campo de Defesa extra (manual) + Proteção equipada (vem do vestuário, read-only)
 window._protOpen=function(){
-  const base=10+(function(){function A(n){try{const a=(typeof attributes!=='undefined')&&attributes.find(x=>x.name===n);return a?(a.val||0):0;}catch(_){return 0;}}return Math.floor((A('Motora')+A('Fisico'))/2);})();
+  function _A(n){try{const a=(typeof attributes!=='undefined')&&attributes.find(x=>x.name===n);return a?(a.val||0):0;}catch(_){return 0;}}
+  const _mot=_A('Motora'),_fis=_A('Fisico');
+  const base=10+Math.floor((_mot+_fis)/2);
   const extra=(typeof profileData==='object'&&parseInt(profileData.defesaExtra))||0;
   // proteção equipada (vem do Vestuario = equippedGear), agrupada em 3 zonas
   const esc=s=>String(s||'').replace(/</g,'&lt;');
@@ -25164,19 +25276,33 @@ window._protOpen=function(){
   function _render(){
     const extraNow=(typeof profileData==='object'&&parseInt(profileData.defesaExtra))||0;
     const habActive=window._getHabDefActive();
+    const bonusSub=(function(){const bs=window._getHabDefBonuses();const n=bs.filter(b=>b.active).length;const tot=window._getHabDefActive();return n?(n+' ativo'+(n>1?'s':'')+' · +'+tot):'Nenhum ativo — toque pra gerenciar';})();
     m.innerHTML=`<div class="st-edit-card prot-card-lg" role="dialog">
       <div class="st-edit-head"><div class="st-edit-label">Defesa</div><button class="st-edit-x" onclick="_protClose()" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-      <div class="st-edit-calc">Base <b>${base}</b> &nbsp;·&nbsp; Extra <b id="prot-extra-sum">+${extraNow}</b> &nbsp;·&nbsp; Habilidades <b id="prot-hab-sum">+${habActive}</b> &nbsp;·&nbsp; Total <b id="prot-total">${base+extraNow+habActive}</b></div>
-      <div class="prot-body-scroll">
-        <div class="prot-field-lbl">Defesa extra</div>
-        <input class="st-edit-input" id="prot-input" type="number" inputmode="numeric" value="${extraNow}" placeholder="0">
-        <div class="prot-field-lbl" style="margin-top:16px">Bônus de habilidades, poderes e maldições <span class="prot-field-hint">(toque pra ativar)</span></div>
-        <div class="prot-hab-list">${_habListHtml()}</div>
-        <div class="prot-add-row">
-          <input class="prot-add-name" id="prot-add-name" type="text" placeholder="Feitiço/bônus (ex.: Couraça Hemática)">
-          <input class="prot-add-val" id="prot-add-val" type="number" inputmode="numeric" placeholder="+0">
-          <button type="button" class="prot-add-btn" id="prot-add-btn" aria-label="Adicionar bônus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+      <!-- barra-resumo estilo Atributos -->
+      <div class="prot-sum-bar">
+        <div class="prot-sum-block"><span class="prot-sum-lbl">Total</span><span class="prot-sum-val" id="prot-total">${base+extraNow+habActive}</span></div>
+        <div class="prot-sum-chips">
+          <span class="prot-sum-chip"><i>Base</i><b id="prot-base-sum">${base}</b></span>
+          <span class="prot-sum-chip"><i>Extra</i><b id="prot-extra-sum">+${extraNow}</b></span>
+          <span class="prot-sum-chip"><i>Habil.</i><b id="prot-hab-sum">+${habActive}</b></span>
         </div>
+      </div>
+      <div class="prot-body-scroll">
+        <!-- DEFESA BASE (read-only, card estilo ad-row) -->
+        <div class="ad-row prot-stat-row has-points" style="--c:#60a5fa">
+          <div class="ad-row-head">
+            <span class="ad-row-dot"></span>
+            <span class="ad-row-name">Defesa Base</span>
+            <span class="ad-row-val"><span>${base}</span></span>
+          </div>
+        </div>
+        <!-- BÔNUS & TEMPORÁRIAS — inclui Defesa Extra (abre 2º overlay) -->
+        <button type="button" class="prot-bonus-open" id="prot-bonus-open">
+          <span class="prot-bonus-open-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5l-8-3Z"/></svg></span>
+          <span class="prot-bonus-open-txt"><b>Bônus &amp; temporárias</b><small id="prot-bonus-open-sub">${bonusSub}</small></span>
+          <span class="prot-bonus-open-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+        </button>
         <div class="prot-field-lbl" style="margin-top:16px">Proteção equipada <span class="prot-field-hint">(Vestuário)</span></div>
         <div class="prot-eq-list">${protHtml}</div>
       </div>
@@ -25187,65 +25313,99 @@ window._protOpen=function(){
     </div>`;
     _bind();
   }
+  let _extraVal=(typeof profileData==='object'&&parseInt(profileData.defesaExtra))||0;
+  window._protGetExtra=function(){return _extraVal;};
   const _recalc=()=>{
-    const i=document.getElementById('prot-input');
-    const ex=i?(parseInt(i.value)||0):0;
+    const ex=_extraVal;
     const hb=window._getHabDefActive();
     const es=document.getElementById('prot-extra-sum');if(es)es.textContent='+'+ex;
     const hs=document.getElementById('prot-hab-sum');if(hs)hs.textContent='+'+hb;
     const t=document.getElementById('prot-total');if(t)t.textContent=base+ex+hb;
+    // espelha no editor do 2º overlay, se aberto
+    const od=document.getElementById('prot-extra-display');if(od)od.textContent=(ex>=0?'+':'')+ex;
+    const orow=document.getElementById('prot-extra-row');if(orow)orow.classList.toggle('has-points',ex!==0);
   };
   function _bind(){
-    const i=document.getElementById('prot-input');
-    if(i){i.addEventListener('input',_recalc);i.addEventListener('keydown',e=>{if(e.key==='Enter')_protSave();});}
-    m.querySelectorAll('.prot-hab-row').forEach(row=>{
-      row.addEventListener('click',e=>{
-        if(e.target.closest('.prot-hab-del'))return;
-        const k=row.dataset.habKey;
-        if(typeof profileData!=='object')return;
-        if(k.startsWith('__custom_')){
-          const idx=parseInt(k.slice('__custom_'.length));
-          const c=profileData.defCustomBonuses&&profileData.defCustomBonuses[idx];
-          if(c)c.active=(c.active===false);
-        }else{
-          if(!profileData.defHabToggles)profileData.defHabToggles={};
-          profileData.defHabToggles[k]=!profileData.defHabToggles[k];
-        }
-        row.classList.toggle('active');
-        _recalc();
-        if(typeof autosaveNow==='function')autosaveNow();
-        if(typeof window.renderStatusStats==='function')window.renderStatusStats();
-      });
-    });
-    m.querySelectorAll('.prot-hab-del').forEach(btn=>{
-      btn.addEventListener('click',e=>{
-        e.stopPropagation();
-        const idx=parseInt(btn.dataset.delIdx);
-        if(profileData.defCustomBonuses)profileData.defCustomBonuses.splice(idx,1);
-        if(typeof autosaveNow==='function')autosaveNow();
-        if(typeof window.renderStatusStats==='function')window.renderStatusStats();
-        _render();
-      });
-    });
-    const addBtn=document.getElementById('prot-add-btn');
-    if(addBtn)addBtn.addEventListener('click',()=>{
-      const nm=document.getElementById('prot-add-name'),vl=document.getElementById('prot-add-val');
-      const label=(nm&&nm.value.trim())||'';const val=(vl&&parseInt(vl.value))||0;
-      if(!label||!val){if(nm&&!label)nm.focus();return;}
-      if(typeof profileData!=='object')return;
-      if(!Array.isArray(profileData.defCustomBonuses))profileData.defCustomBonuses=[];
-      profileData.defCustomBonuses.push({label:label,value:val,active:true});
-      if(typeof autosaveNow==='function')autosaveNow();
-      if(typeof window.renderStatusStats==='function')window.renderStatusStats();
-      _render();
-    });
+    const ob=document.getElementById('prot-bonus-open');
+    if(ob)ob.addEventListener('click',()=>window._protBonusOpen());
   }
+  // re-render só do resumo do botão (depois de mexer nos bônus)
+  window._protRefreshMain=function(){ _recalc(); const sub=document.getElementById('prot-bonus-open-sub'); if(sub){const bs=window._getHabDefBonuses();const n=bs.filter(b=>b.active).length;const tot=window._getHabDefActive();sub.textContent=n?(n+' ativo'+(n>1?'s':'')+' · +'+tot):'Nenhum ativo — toque pra gerenciar';} };
+  // 2º overlay (blur): lista de habilidades de defesa + adicionar temporárias
+  window._protBonusOpen=function(){
+    let b=document.getElementById('prot-bonus-ov');
+    if(!b){b=document.createElement('div');b.id='prot-bonus-ov';b.className='st-edit-ov prot-bonus-ov';b.addEventListener('click',e=>{if(e.target===b)window._protBonusClose();});document.body.appendChild(b);}
+    function bodyHtml(){
+      const bonuses=window._getHabDefBonuses();
+      const total=bonuses.reduce((a,x)=>a+x.value,0);
+      const list=bonuses.length?bonuses.map(x=>{
+        const src=x.src==='mald'?'MALDIÇÃO':x.src==='poder'?'PODER':'HABILIDADE';
+        return `<div class="prot-hab-row active prot-hab-clickable" data-detail-key="${(x.key||'').replace(/"/g,'&quot;')}"><span class="prot-hab-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="prot-hab-body"><span class="prot-hab-name-row"><span class="prot-hab-name">${(x.key||'').replace(/</g,'&lt;')}</span><span class="prot-hab-src ${x.src==='mald'?'mald':''}">${src}</span></span><span class="prot-hab-desc">${(x.label||'').replace(/</g,'&lt;')}</span></span><span class="prot-hab-val">+${x.value}</span><span class="prot-hab-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>`;
+      }).join(''):'<div class="prot-eq-empty">Nenhum bônus passivo de defesa. Adquira habilidades, poderes ou arquétipos que concedam Defesa.</div>';
+      return `<div class="st-edit-card prot-card-lg" role="dialog">
+        <div class="st-edit-head"><div class="st-edit-label">Bônus de Defesa</div><button class="st-edit-x" onclick="_protBonusClose()" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+        <div class="prot-body-scroll">
+          <div class="prot-field-lbl">Defesa extra <span class="prot-field-hint">(manual)</span></div>
+          <div class="ad-row prot-stat-row${_extraVal?' has-points':''}" id="prot-extra-row" style="--c:#34d399;margin-bottom:14px">
+            <div class="ad-row-head">
+              <span class="ad-row-dot"></span>
+              <span class="ad-row-name">Defesa Extra</span>
+              <button type="button" class="sp-step" id="prot-extra-dec" aria-label="Diminuir">−</button>
+              <span class="ad-row-val"><span id="prot-extra-display">${_extraVal>=0?'+':''}${_extraVal}</span></span>
+              <button type="button" class="sp-step" id="prot-extra-inc" aria-label="Aumentar">+</button>
+            </div>
+          </div>
+          <div class="prot-field-lbl">Bônus passivos detectados <span class="prot-field-hint">(automático · +${total} · toque pra detalhes)</span></div>
+          <div class="prot-hab-list">${list}</div>
+        </div>
+        <div class="st-edit-actions"><button class="st-edit-save" onclick="_protBonusClose()">Concluir</button></div>
+      </div>`;
+    }
+    b.innerHTML=bodyHtml();
+    b.querySelectorAll('.prot-hab-clickable').forEach(row=>{
+      row.addEventListener('click',()=>window._protBonusDetail(row.dataset.detailKey));
+    });
+    // steppers da Defesa Extra (agora dentro deste overlay)
+    const punch=(btn)=>{if(btn){btn.classList.remove('ad-step-punch');void btn.offsetWidth;btn.classList.add('ad-step-punch');}};
+    const ed=document.getElementById('prot-extra-dec'),ei=document.getElementById('prot-extra-inc');
+    const refreshExtra=()=>{const d=document.getElementById('prot-extra-display');if(d)d.textContent=(_extraVal>=0?'+':'')+_extraVal;const r=document.getElementById('prot-extra-row');if(r)r.classList.toggle('has-points',_extraVal!==0);_recalc();};
+    if(ed)ed.addEventListener('click',()=>{_extraVal--;punch(ed);refreshExtra();});
+    if(ei)ei.addEventListener('click',()=>{_extraVal++;punch(ei);refreshExtra();});
+    requestAnimationFrame(()=>b.classList.add('open'));
+  };
+  // 3º overlay: detalhe da habilidade + onde concede defesa
+  window._protBonusDetail=function(key){
+    const esc=s=>String(s||'').replace(/</g,'&lt;');
+    const def=(window._HAB_DEF_BONUS||{})[key]||{};
+    const val=window._defBonusValue?window._defBonusValue(def):(def.value||0);
+    // descrição completa da habilidade/poder/maldição que o personagem possui
+    let full='';let srcLabel='Habilidade';
+    try{
+      let s=(typeof skills!=='undefined'&&skills.find(x=>x.name===key));
+      if(s){full=s.desc||'';srcLabel='Habilidade';}
+      else if(window._malds){const mm=window._malds.find(x=>x.name===key);if(mm){full=mm.desc||'';srcLabel='Maldição';}}
+      else if(window._poderes){const pp=window._poderes.find(x=>x.name===key);if(pp){full=pp.desc||'';srcLabel='Poder';}}
+    }catch(_){}
+    let d=document.getElementById('prot-detail-ov');
+    if(!d){d=document.createElement('div');d.id='prot-detail-ov';d.className='st-edit-ov prot-detail-ov';d.addEventListener('click',e=>{if(e.target===d)_protDetailClose();});document.body.appendChild(d);}
+    d.innerHTML=`<div class="st-edit-card prot-card-lg" role="dialog">
+      <div class="st-edit-head"><div class="st-edit-label">${esc(key)}</div><button class="st-edit-x" onclick="_protDetailClose()" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="prot-body-scroll">
+        <div class="prot-detail-badge">${esc(srcLabel)} · concede <b>+${val} Defesa</b></div>
+        <div class="prot-detail-when"><span class="prot-detail-when-l">Quando aplica</span>${esc(def.label||'Bônus passivo de Defesa.')}</div>
+        ${full?`<div class="prot-field-lbl" style="margin-top:14px">Descrição</div><div class="prot-detail-desc">${full}</div>`:'<div class="prot-eq-empty" style="margin-top:12px">Descrição completa indisponível para este item.</div>'}
+      </div>
+      <div class="st-edit-actions"><button class="st-edit-save" onclick="_protDetailClose()">Voltar</button></div>
+    </div>`;
+    requestAnimationFrame(()=>d.classList.add('open'));
+  };
+  window._protDetailClose=function(){const d=document.getElementById('prot-detail-ov');if(!d)return;d.classList.remove('open');setTimeout(()=>{if(d.parentNode)d.parentNode.removeChild(d);},200);};
+  window._protBonusClose=function(){const b=document.getElementById('prot-bonus-ov');if(!b)return;b.classList.remove('open');setTimeout(()=>{if(b.parentNode)b.parentNode.removeChild(b);},200);};
   _render();
   requestAnimationFrame(()=>m.classList.add('open'));
 };
 window._protSave=function(force){
-  const inp=document.getElementById('prot-input');
-  const v=force===0?0:(inp?(parseInt(inp.value)||0):0);
+  const v=force===0?0:((typeof window._protGetExtra==='function')?window._protGetExtra():0);
   if(typeof profileData==='object')profileData.defesaExtra=v;
   if(typeof autosaveNow==='function')autosaveNow();
   if(typeof window.renderDefActions==='function')window.renderDefActions();
@@ -25253,6 +25413,152 @@ window._protSave=function(force){
   _protClose();
 };
 window._protClose=function(){const m=document.getElementById('prot-ov');if(!m)return;m.classList.remove('open');setTimeout(()=>{if(m.parentNode)m.parentNode.removeChild(m);},200);};
+// ─── Redução de Dano (RD) — círculo gêmeo do de Defesa ───
+window._rdOpen=function(){
+  const TYPES=['Corte','Perfuração','Impacto','Fogo','Gelo','Raio','Ácido','Veneno','Carmim','Lúmen','Kaos','Ruína','Alba','Perene','Abismo'];
+  const TYPE_COL={'Corte':'#cbd5e1','Perfuração':'#fbbf24','Impacto':'#a16207','Fogo':'#f97316','Gelo':'#38bdf8','Raio':'#facc15','Ácido':'#a3e635','Veneno':'#22c55e','Carmim':'#e0455f','Lúmen':'#d8b13a','Kaos':'#a855f7','Ruína':'#9aa0a6','Alba':'#4ade80','Perene':'#bcd03a','Abismo':'#7c83f0'};
+  const tcol=(t)=>TYPE_COL[t]||'#60a5fa';
+  const esc=s=>String(s||'').replace(/</g,'&lt;');
+  // estado: geral + por tipo
+  const state={ geral:(typeof profileData==='object'&&parseInt(profileData.rd))||0, tipos:{} };
+  const saved=(typeof profileData==='object'&&profileData.rdTipos)||{};
+  TYPES.forEach(t=>{state.tipos[t]=parseInt(saved[t])||0;});
+  let m=document.getElementById('rd-ov');
+  if(!m){m=document.createElement('div');m.id='rd-ov';m.className='st-edit-ov';m.addEventListener('click',e=>{if(e.target===m)_rdClose();});document.body.appendChild(m);}
+  // tipos visíveis: começa só com os que já têm RD salvo (>0)
+  state.shown=TYPES.filter(t=>state.tipos[t]>0);
+  function stepRow(name,key,col,removable){
+    const v=key==='__geral'?state.geral:state.tipos[name];
+    const rm=removable?`<button type="button" class="rd-remove" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:'';
+    return `<div class="ad-row prot-stat-row${v?' has-points':''}" style="--c:${col}" data-rd-key="${esc(key==='__geral'?'__geral':name)}">
+      <div class="ad-row-head">
+        <span class="ad-row-dot"></span>
+        <span class="ad-row-name">${esc(name)}</span>
+        <button type="button" class="rd-val-btn" aria-label="Editar valor"><span class="rd-disp">${v}</span></button>
+        ${rm}
+      </div>
+    </div>`;
+  }
+  function ringSvg(){
+    const R=42,C=2*Math.PI*R;
+    // segmentos: geral (laranja) + cada tipo na sua cor — anel multicolor
+    const segs=[{c:'#fb923c',v:state.geral}].concat(state.shown.map(t=>({c:tcol(t),v:state.tipos[t]||0}))).filter(s=>s.v>0);
+    const total=segs.reduce((a,s)=>a+s.v,0);
+    const cap=Math.max(10,total);
+    let off=0,arcs='';const gap=total>1?1.5:0; // gap visual entre segmentos
+    segs.forEach((s,i)=>{
+      const len=(s.v/cap)*C; const seg=Math.max(0,len-gap);
+      arcs+=`<circle class="rd-arc" style="--i:${i}" cx="50" cy="50" r="${R}" fill="none" stroke="${s.c}" stroke-width="8" stroke-linecap="round" stroke-dasharray="${seg.toFixed(2)} ${(C-seg).toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}" transform="rotate(-90 50 50)"/>`;
+      off+=len;
+    });
+    return `<div class="rd-ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="${R}" fill="none" stroke="var(--bg-input)" stroke-width="8"/>${arcs}</svg><div class="rd-ring-c"><b id="rd-ring-total">${total}</b><small>RD TOTAL</small></div></div>`;
+  }
+  function legendHtml(){
+    const items=[{n:'Geral',k:'__geral',c:'#fb923c',v:state.geral}].concat(state.shown.map(t=>({n:t,k:t,c:tcol(t),v:state.tipos[t]||0})));
+    return `<div class="rd-legend">${items.map(it=>`<button type="button" class="rd-leg-row" data-leg-key="${esc(it.k)}"><span class="rd-leg-dot" style="background:${it.c}"></span><span class="rd-leg-name">${esc(it.n)}</span><span class="rd-leg-val">${it.v}</span></button>`).join('')}</div>`;
+  }
+  function render(){
+    m.innerHTML=`<div class="st-edit-card prot-card-lg" role="dialog">
+      <div class="st-edit-head"><div class="st-edit-label">Redução de Dano</div><button class="st-edit-x" onclick="_rdClose()" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="rd-head">${legendHtml()}<div class="rd-ring-wrap">${ringSvg()}</div></div>
+      <div class="prot-body-scroll">
+        <button type="button" class="prot-bonus-open" id="rd-add-btn" style="margin-top:10px">
+          <span class="prot-bonus-open-ico" style="--blue:#fb923c;background:color-mix(in srgb,#fb923c 16%,transparent);color:#fb923c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          <span class="prot-bonus-open-txt"><b>Adicionar tipo de dano</b><small>RD específica (corte, fogo, mental…)</small></span>
+          <span class="prot-bonus-open-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+        </button>
+      </div>
+      <div class="st-edit-actions">
+        <button class="st-edit-reset" onclick="_rdSave(0)">Zerar tudo</button>
+        <button class="st-edit-save" onclick="_rdSave()">Salvar</button>
+      </div>
+    </div>`;
+    const refreshHead=()=>{const wr=m.querySelector('.rd-ring-wrap');if(wr)wr.innerHTML=ringSvg();const lg=m.querySelector('.rd-legend');if(lg){lg.outerHTML=legendHtml();bindLegend();}};
+    function bindLegend(){
+      m.querySelectorAll('.rd-leg-row[data-leg-key]').forEach(row=>{
+        const key=row.dataset.legKey;
+        row.addEventListener('click',()=>{
+          const name=key==='__geral'?'RD Geral':key;
+          const cur=key==='__geral'?state.geral:(state.tipos[key]||0);
+          _rdEditVal(key,name,key==='__geral'?'#fb923c':tcol(key),cur,(v)=>{
+            v=Math.max(0,parseInt(v)||0);
+            if(key==='__geral'){state.geral=v;}
+            else{ if(v>0){if(state.shown.indexOf(key)<0)state.shown.push(key);state.tipos[key]=v;} else {state.tipos[key]=0;state.shown=state.shown.filter(t=>t!==key);} }
+            refreshHead();
+          });
+        });
+      });
+    }
+    bindLegend();
+    const addBtn=document.getElementById('rd-add-btn');
+    if(addBtn)addBtn.addEventListener('click',()=>_rdPicker());
+    window._rdGet=()=>state;
+  }
+  // sub-picker: escolher tipo de dano pra adicionar
+  function _rdPicker(){
+    const avail=TYPES.filter(t=>state.shown.indexOf(t)<0);
+    let p=document.getElementById('rd-pick-ov');
+    if(!p){p=document.createElement('div');p.id='rd-pick-ov';p.className='st-edit-ov prot-detail-ov';p.addEventListener('click',e=>{if(e.target===p)_rdPickClose();});document.body.appendChild(p);}
+    p.innerHTML=`<div class="st-edit-card prot-card-lg" role="dialog">
+      <div class="st-edit-head"><div class="st-edit-label">Tipo de dano</div><button class="st-edit-x" onclick="_rdPickClose()" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="prot-body-scroll">
+        ${avail.length?`<div class="rd-pick-grid">${avail.map(t=>`<button type="button" class="rd-pick-chip" data-pick="${esc(t)}">${esc(t)}</button>`).join('')}</div>`:'<div class="prot-eq-empty">Todos os tipos já foram adicionados.</div>'}
+      </div>
+      <div class="st-edit-actions"><button class="st-edit-save" onclick="_rdPickClose()">Voltar</button></div></div>`;
+    p.querySelectorAll('.rd-pick-chip').forEach(ch=>{
+      ch.addEventListener('click',()=>{
+        const t=ch.dataset.pick;
+        _rdPickClose();
+        // abre o editor de valor; ao aplicar, adiciona o tipo e volta ao círculo
+        _rdEditVal(t,t,tcol(t),state.tipos[t]||0,(v)=>{
+          if(v>0){if(state.shown.indexOf(t)<0)state.shown.push(t);state.tipos[t]=v;}
+          else{state.tipos[t]=0;state.shown=state.shown.filter(x=>x!==t);}
+          render();
+        });
+      });
+    });
+    requestAnimationFrame(()=>p.classList.add('open'));
+  }
+  window._rdPickClose=function(){const p=document.getElementById('rd-pick-ov');if(!p)return;p.classList.remove('open');setTimeout(()=>{if(p.parentNode)p.parentNode.removeChild(p);},200);};
+  // editor de valor — clica no número → overlay com input + ±
+  window._rdEditVal=function(key,name,col,cur,commit){
+    let cv=parseInt(cur)||0;
+    let e=document.getElementById('rd-val-ov');
+    if(!e){e=document.createElement('div');e.id='rd-val-ov';e.className='st-edit-ov prot-detail-ov';e.addEventListener('click',ev=>{if(ev.target===e)_rdValClose();});document.body.appendChild(e);}
+    e.style.setProperty('--vc',col||'#fb923c');
+    e.innerHTML=`<div class="st-edit-card" role="dialog" style="max-width:340px">
+      <div class="st-edit-head"><div class="st-edit-label">${esc(name)}</div><button class="st-edit-x" onclick="_rdValClose()" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="rd-val-edit">
+        <button type="button" class="sp-step" id="rd-v-dec" aria-label="Diminuir">−</button>
+        <input type="number" id="rd-v-input" inputmode="numeric" value="${cv}" min="0">
+        <button type="button" class="sp-step" id="rd-v-inc" aria-label="Aumentar">+</button>
+      </div>
+      <div class="st-edit-actions"><button class="st-edit-reset" onclick="_rdValClose()">Cancelar</button><button class="st-edit-save" id="rd-v-ok">Aplicar</button></div>
+    </div>`;
+    const inp=document.getElementById('rd-v-input');
+    const punch=(b)=>{if(b){b.classList.remove('ad-step-punch');void b.offsetWidth;b.classList.add('ad-step-punch');}};
+    document.getElementById('rd-v-dec').addEventListener('click',ev=>{inp.value=Math.max(0,(parseInt(inp.value)||0)-1);punch(ev.currentTarget);});
+    document.getElementById('rd-v-inc').addEventListener('click',ev=>{inp.value=(parseInt(inp.value)||0)+1;punch(ev.currentTarget);});
+    inp.addEventListener('keydown',ev=>{if(ev.key==='Enter')document.getElementById('rd-v-ok').click();});
+    document.getElementById('rd-v-ok').addEventListener('click',()=>{commit(Math.max(0,parseInt(inp.value)||0));_rdValClose();});
+    requestAnimationFrame(()=>{e.classList.add('open');inp.focus();const L=String(inp.value).length;try{inp.setSelectionRange(L,L);}catch(_){}});
+  };
+  window._rdValClose=function(){const e=document.getElementById('rd-val-ov');if(!e)return;e.classList.remove('open');setTimeout(()=>{if(e.parentNode)e.parentNode.removeChild(e);},200);};
+  render();
+  requestAnimationFrame(()=>m.classList.add('open'));
+};
+window._rdSave=function(force){
+  const st=(typeof window._rdGet==='function')?window._rdGet():{geral:0,tipos:{}};
+  if(typeof profileData==='object'){
+    if(force===0){profileData.rd=0;profileData.rdTipos={};}
+    else{profileData.rd=st.geral||0;profileData.rdTipos=Object.assign({},st.tipos);}
+  }
+  if(typeof autosaveNow==='function')autosaveNow();
+  if(typeof window.renderDefActions==='function')window.renderDefActions();
+  const el=document.getElementById('defact-rd-val');if(el)el.textContent=(typeof profileData==='object'?(profileData.rd||0):0);
+  _rdClose();
+};
+window._rdClose=function(){const m=document.getElementById('rd-ov');if(!m)return;m.classList.remove('open');setTimeout(()=>{if(m.parentNode)m.parentNode.removeChild(m);},200);};
 // configurar/usar a acao defensiva
 window._defActConfig=function(name){
   const a=(window._DEF_ACTIONS||[]).find(x=>x.name===name);if(!a)return;
@@ -25374,8 +25680,10 @@ window._pmBindCards=function(){
         }
       });
       // Nivel / Estagio
-      const nv=document.getElementById('pf-nivel-m');
-      if(nv){const lvl=(typeof playerLevel!=='undefined'?playerLevel:0),est=(typeof playerStage!=='undefined'?playerStage:0);nv.textContent=lvl+' · E'+est;}
+      const nv=document.getElementById('pf-nivel-m'),eg=document.getElementById('pf-estagio-m');
+      const lvl=(typeof playerLevel!=='undefined'?playerLevel:0),est=(typeof playerStage!=='undefined'?playerStage:0);
+      if(nv)nv.textContent=''+lvl;
+      if(eg)eg.textContent='E'+est;
     }
   }catch(_){}
   // picks vazios: cicla as opcoes (placeholder animado) ate escolher
