@@ -147,7 +147,7 @@
         <button onClick="{{ ess.onPick }}" style="display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:12px; border:{{ ess.wrapBorder }}; background:{{ ess.wrapBg }}; cursor:pointer; transition:background .2s ease, border-color .2s ease;">
           <span style="width:11px; height:11px; border-radius:50%; background:{{ ess.iconColor }}; flex:none;"></span>
           <span style="font-family:system-ui,-apple-system,sans-serif; font-size:15px; font-weight:600; color:{{ ess.nameColor }}; white-space:nowrap;">{{ ess.name }}</span>
-          <span style="margin-left:auto; font-family:'Space Mono',monospace; font-size:11px; font-weight:700; padding:2px 7px; border-radius:6px; background:{{ ess.countBg }}; color:{{ ess.countColor }};">{{ ess.count }}</span>
+          <span style="margin-left:auto; font-family:'Space Mono',monospace; font-size:11px; font-weight:700; padding:3px 6px; border-radius:5px; min-width:26px; text-align:center; background:{{ ess.countBg }}; color:{{ ess.countColor }};">{{ ess.count }}</span>
         </button>
       </sc-for>
     </div>
@@ -252,7 +252,7 @@
           <button id="navArrowR" style="position:absolute; right:30px; top:50%; z-index:15; width:62px; height:62px; border-radius:58% 42% 44% 56% / 46% 58% 42% 54%; border:{{ arrowBorder }}; background:{{ arrowBg }}; backdrop-filter:blur(10px); box-shadow:{{ arrowShadow }}; color:#fff; font-size:24px; cursor:pointer; animation:blobMorph 9s ease-in-out infinite reverse, blobPulse 3.8s ease-in-out infinite; opacity:{{ browseO }}; pointer-events:{{ browsePE }}; transition:opacity .4s ease, box-shadow .3s ease; display:flex; align-items:center; justify-content:center; touch-action:none;" style-hover="box-shadow:0 0 44px {{ arrowGlow }};">›</button>
 
   <!-- icon pill (center) -->
-  <div style="position:absolute; top:{{ pillTop }}; bottom:{{ pillBottom }}; left:{{ pillLeft }}; transform:translateX(-50%) translateZ(0); display:flex; align-items:center; gap:{{ pillGap }}; background:{{ pillBgT }}; -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); border:{{ pillBorder }}; border-radius:999px; padding:9px 14px; transition:gap .35s ease; z-index:40; will-change:transform; contain:layout paint;">
+  <div style="position:absolute; top:{{ pillTop }}; bottom:{{ pillBottom }}; left:{{ pillLeft }}; transform:translateX(-50%) translateZ(0); display:flex; align-items:center; gap:{{ pillGap }}; background:{{ pillBgT }}; -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); border:{{ pillBorder }}; border-radius:999px; padding:9px 14px; opacity:{{ pillOpacity }}; pointer-events:{{ pillPE }}; transition:gap .35s ease, opacity .35s ease; z-index:40; will-change:transform; contain:layout paint;">
     <button onClick="{{ toggleSearch }}" title="Pesquisar" style="flex:none; display:flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:50%; border:none; background:{{ lupaBg }}; color:{{ pAcc }}; cursor:pointer; transition:background .25s ease;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
     </button>
@@ -266,9 +266,40 @@
     <button onClick="{{ iconFlip }}" title="Ver cartas" style="flex:none; display:flex; align-items:center; justify-content:center; width:{{ iconsW }}; height:38px; border-radius:50%; border:none; background:transparent; color:{{ flipColor }}; opacity:{{ iconsO }}; overflow:visible; cursor:pointer; transition:width .35s cubic-bezier(.2,.7,.2,1), opacity .28s ease, background .25s ease;" style-hover="background:{{ pillHover }};">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="animation:{{ cardsAnim }}; transform-origin:50% 70%; will-change:transform;"><rect x="6" y="3" width="12" height="18" rx="2.4"/><circle cx="12" cy="12" r="2.6"/></svg>
     </button>
+    <button onClick="{{ toggleGrid }}" title="Todas as cartas" style="flex:none; display:flex; align-items:center; justify-content:center; width:{{ iconsW }}; height:38px; border-radius:50%; border:none; background:transparent; color:{{ flipColor }}; opacity:{{ iconsO }}; overflow:visible; cursor:pointer; transition:width .35s cubic-bezier(.2,.7,.2,1), opacity .28s ease, background .25s ease;" style-hover="background:{{ pillHover }};">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg>
+    </button>
     <button onClick="{{ toggleSearch }}" title="Fechar" style="flex:none; display:flex; align-items:center; justify-content:center; width:{{ closeW }}; height:34px; border-radius:50%; border:none; background:transparent; color:{{ pAcc }}; opacity:{{ searchO }}; overflow:hidden; cursor:pointer; transition:width .35s cubic-bezier(.2,.7,.2,1), opacity .28s ease;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
+  </div>
+
+  <!-- all-cards grid overlay -->
+  <div style="position:absolute; inset:0; z-index:45; display:flex; flex-direction:column; background:rgba(8,8,10,0.94); backdrop-filter:blur(22px); opacity:{{ gridOpacity }}; pointer-events:{{ gridPE }}; transform:{{ gridTransform }}; transition:opacity .4s ease, transform .5s cubic-bezier(.2,.7,.2,1);">
+    <div style="flex:none; display:flex; align-items:center; justify-content:space-between; padding:calc(28px + env(safe-area-inset-top,0px)) 28px 16px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="width:11px; height:11px; border-radius:50%; background:{{ pAcc }}; box-shadow:0 0 14px {{ pAcc }};"></span>
+        <h1 style="margin:0; font-family:system-ui,-apple-system,sans-serif; font-weight:700; font-size:22px; letter-spacing:-0.3px; color:#f4f4f6;">{{ gridTitle }}</h1>
+      </div>
+      <button onClick="{{ toggleGrid }}" style="width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); color:#cdcdd2; cursor:pointer; display:flex; align-items:center; justify-content:center;" style-hover="background:rgba(255,255,255,0.09);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="panel-scroll" style="flex:1; overflow-y:auto; overflow-x:hidden; padding:8px 24px 40px; display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:16px; align-content:start;">
+      <sc-for list="{{ gridCards }}" as="g" hint-placeholder-count="8">
+        <button onClick="{{ g.onPick }}" style="position:relative; height:236px; border-radius:14px; border:1px solid {{ g.cardBorder }}; background:{{ g.bg }}; overflow:hidden; cursor:pointer; padding:0; transition:transform .22s ease, box-shadow .22s ease;" style-hover="transform:translateY(-5px); box-shadow:0 18px 38px rgba(0,0,0,0.5);">
+          <div style="position:absolute; inset:0; opacity:0.4; mix-blend-mode:multiply; background-image:radial-gradient(circle, rgba(0,0,0,0.7) 1px, transparent 1.6px); background-size:5px 5px;"></div>
+          <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.62) 100%);"></div>
+          <div style="position:absolute; top:13px; left:14px; right:14px; display:flex; justify-content:space-between; font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1.5px; color:{{ g.label }};"><span>{{ g.feitico }}</span><span>{{ g.element }}</span></div>
+          <div style="position:absolute; top:40%; left:50%; transform:translate(-50%,-50%);">
+            <svg width="60" height="60" viewBox="0 0 120 120"><circle cx="60" cy="60" r="58" fill="#0a0306" stroke="{{ g.accentDim }}"/><path d="{{ g.glyph }}" fill="none" stroke="{{ g.accent }}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="position:absolute; bottom:32px; left:0; right:0; text-align:center; padding:0 8px;">
+            <div style="font-family:'Pixelify Sans',monospace; font-weight:600; font-size:17px; letter-spacing:0.5px; color:#f5e8ea; line-height:1.1;">{{ g.name }}</div>
+            <div style="margin-top:4px; font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1.5px; color:rgba(255,255,255,0.55);">{{ g.sub }}</div>
+          </div>
+          <div style="position:absolute; bottom:13px; left:14px; right:14px; display:flex; align-items:center; gap:6px;"><div style="flex:1; border-top:1px dashed {{ g.cardBorder }};"></div><span style="font-family:'Space Mono',monospace; font-size:7px; letter-spacing:2px; color:rgba(255,255,255,0.5);">{{ g.foot }}</span><div style="flex:1; border-top:1px dashed {{ g.cardBorder }};"></div></div>
+        </button>
+      </sc-for>
+    </div>
   </div>
 
   <!-- detail panel -->
@@ -300,7 +331,7 @@
               <span style="font-family:'Space Mono',monospace; font-size:13px; font-weight:700; letter-spacing:1px; color:{{ pAcc }};">{{ tier.pe }}</span>
             </div>
             <p style="margin:14px 0 0; font-size:15px; line-height:1.65; color:#b0b0b6; text-align:justify;"><sc-for list="{{ tier.desc }}" as="g" hint-placeholder-count="4"><span style="color:{{ g.c }}; font-weight:{{ g.w }};">{{ g.t }}</span></sc-for></p>
-            <div style="margin-top:14px; padding-top:13px; border-top:1px solid rgba(255,255,255,0.06); font-size:13px; color:#85858c;"><span style="font-weight:700; color:#bcbcc2;">Requer:</span> {{ tier.requer }}</div>
+            <div style="display:{{ tier.requerDisplay }}; margin-top:14px; padding-top:13px; border-top:1px solid rgba(255,255,255,0.06); font-size:13px; color:#85858c;"><span style="font-weight:700; color:#bcbcc2;">Requer:</span> {{ tier.requer }}</div>
           </div>
         </sc-for>
       </div>
@@ -845,7 +876,7 @@ window.GRIMORIO_FEITICOS={
 
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { focused: null, held: null, rot: [0, 0, 0], active: 0, fav: Array(60).fill(false), saved: Array(60).fill(false), essence: 0, searching: false, query: '', essOpen: false, swapTick: 0, tiltX: 0, tiltY: 0, tilting: false };
+  state = { focused: null, held: null, rot: [0, 0, 0], active: 0, fav: Array(60).fill(false), saved: Array(60).fill(false), essence: 0, searching: false, query: '', essOpen: false, gridOpen: false, swapTick: 0, tiltX: 0, tiltY: 0, tilting: false };
   get NCARDS() { const l = this.spells; return (l && l.length) ? l.length : 60; }
   componentDidMount() {
     this._onR = () => this.setState({ vw: window.innerWidth }); this._onR(); window.addEventListener('resize', this._onR);
@@ -867,10 +898,20 @@ class Component extends DCLogic {
       if (window.parent && window.parent !== window) window.parent.postMessage({ type: 'grimorio-accent', color: c }, '*');
     } catch (_) {}
   }
+  _postOverlay() {
+    try {
+      // overlay "cobrindo a tela" = grade, detalhe ou seletor de essência abertos → esconde o X externo do app
+      const cover = !!(this.state.gridOpen || this.state.focused != null || this.state.essOpen);
+      if (cover === this._lastCover) return;
+      this._lastCover = cover;
+      if (window.parent && window.parent !== window) window.parent.postMessage({ type: 'grimorio-overlay', cover }, '*');
+    } catch (_) {}
+  }
   componentDidUpdate() {
     // sizeThumb só quando o painel de detalhe está aberto
     if (this.state.focused != null) requestAnimationFrame(() => this.sizeThumb());
     this._postAccent();
+    this._postOverlay();
   }
   sizeThumb() {
     const el = document.getElementById('detailScroll');
@@ -1057,12 +1098,21 @@ class Component extends DCLogic {
           execucao: s.ex || '—', alcance: s.al || '—', alvo: s.av || '—', duracao: s.du || '—',
           resist: s.re || '',
           desc: this.parseDesc(s.d),
-          tiers: (s.ap || []).map((ap, i) => ({
-            name: (ap.tier || tierName(i)).toUpperCase(),
-            pe: ap.pe || '',
-            requer: '',
-            desc: this.parseDesc(ap.txt),
-          })),
+          tiers: (s.ap || []).map((ap, i) => {
+            let txt = ap.txt || '', requer = '';
+            const rm = txt.match(/\bRequer\s*:?\s*([^.]*?)\.?\s*$/i);
+            if (rm && rm[1] && /grau|n[ií]vel|treinad|af[ií]nidade|per[ií]cia|psique|f[ií]sico|intelecto|motora|robustez/i.test(rm[1])) {
+              requer = rm[1].trim().replace(/\.$/, '');
+              txt = txt.slice(0, rm.index).trim().replace(/\s*$/, '');
+            }
+            return {
+              name: (ap.tier || tierName(i)).toUpperCase(),
+              pe: ap.pe || '',
+              requer,
+              requerDisplay: requer ? 'block' : 'none',
+              desc: this.parseDesc(txt),
+            };
+          }),
         };
       });
     });
@@ -1176,6 +1226,20 @@ class Component extends DCLogic {
       essences,
       c0: frontCard((act + this.NCARDS - 1) % this.NCARDS), c1: frontCard(act), c2: frontCard((act + 1) % this.NCARDS),
       pAcc: accent, pAccBg: hexA(accent, 0.13), pAccBorder: hexA(accent, 0.4), pAccBorder2: hexA(accent, 0.22), pAccScroll: hexA(accent, 0.55),
+      toggleGrid: () => this.setState(s => ({ gridOpen: !s.gridOpen, searching: false })),
+      gridOpacity: this.state.gridOpen ? '1' : '0',
+      gridPE: this.state.gridOpen ? 'auto' : 'none',
+      gridTransform: this.state.gridOpen ? 'translateY(0)' : 'translateY(24px)',
+      gridTitle: 'Todas as cartas · ' + this.essenceDefs[ei].name + ' (' + sp3.length + ')',
+      gridCards: sp3.map((s, j) => {
+        const fc = frontCard(j);
+        return {
+          feitico: fc.feitico, element: fc.element, name: fc.name, sub: fc.sub, foot: fc.foot,
+          glyph: fc.glyph, accent: fc.accent, accentDim: fc.accentDim, label: fc.label, cardBorder: fc.cardBorder,
+          bg: fc.bg,
+          onPick: () => this.setState({ gridOpen: false, focused: j, active: j }),
+        };
+      }),
       essBarOpacity: open ? '0' : '1',
       essBarPE: open ? 'none' : 'auto',
       // Vertical (mobile portrait): barra inline some, botao "Essencia" + overlay com blur
@@ -1187,6 +1251,8 @@ class Component extends DCLogic {
       essBtnBorder: '1px solid ' + hexA(accent, 0.5),
       essOverlayDisplay: this.state.essOpen ? 'flex' : 'none',
       essOverlayOpacity: this.state.essOpen ? '1' : '0',
+      pillOpacity: (this.state.essOpen || this.state.gridOpen) ? '0' : '1',
+      pillPE: (this.state.essOpen || this.state.gridOpen) ? 'none' : 'auto',
       toggleEssBar: () => this.toggleEssBar(),
       closeEssBar: () => this.setState({ essOpen: false }),
       browseLeft: () => this.browse(-1),

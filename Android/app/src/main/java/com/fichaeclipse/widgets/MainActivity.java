@@ -422,19 +422,43 @@ public class MainActivity extends Activity {
     }
 
     @SuppressLint("InlinedApi")
+    // estado: status bar oculta? (espelha .toolbarVisibility(.hidden, for: .statusBar) do SwiftUI)
+    private boolean _statusBarHidden = true;
+
     private void _enterImmersive() {
+        // API moderna (WindowInsetsControllerCompat) — confiavel em Android 11+; fallback p/ legado.
+        try {
+            androidx.core.view.WindowInsetsControllerCompat ic =
+                    androidx.core.view.WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+            if (ic != null) {
+                ic.setSystemBarsBehavior(
+                        androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+                int bars = androidx.core.view.WindowInsetsCompat.Type.navigationBars()
+                        | (_statusBarHidden ? androidx.core.view.WindowInsetsCompat.Type.statusBars() : 0);
+                ic.hide(bars);
+                if (!_statusBarHidden) ic.show(androidx.core.view.WindowInsetsCompat.Type.statusBars());
+                return;
+            }
+        } catch (Exception ignored) {}
+        // Fallback legado (setSystemUiVisibility, depreciado mas funcional)
         try {
             View decor = getWindow().getDecorView();
-            // Tela cheia total: oculta status bar (relógio/bateria) E nav bar. Immersive sticky:
-            // ao puxar da borda reaparecem e somem sozinhas. Sem barra = sem linha divisoria.
-            decor.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+            int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            if (_statusBarHidden) flags |= View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decor.setSystemUiVisibility(flags);
         } catch (Exception ignored) {}
+    }
+
+    // bridge: web controla a status bar (equivalente ao SwiftUI .statusBar visibility)
+    public void _applyStatusBarHidden(final boolean hidden) {
+        runOnUiThread(new Runnable() { public void run() {
+            _statusBarHidden = hidden;
+            _enterImmersive();
+        }});
     }
 
     @Override
@@ -620,6 +644,12 @@ public class MainActivity extends Activity {
                 try { getWindow().setStatusBarColor(Color.parseColor(hex)); } catch (Exception ignore) {}
             });
         }
+
+        // .toolbarVisibility(.hidden, for: .statusBar) — web esconde a status bar
+        @JavascriptInterface
+        public void hideStatusBar() { _applyStatusBarHidden(true); }
+        @JavascriptInterface
+        public void showStatusBar() { _applyStatusBarHidden(false); }
 
         @JavascriptInterface
         public boolean startTradeServer() {

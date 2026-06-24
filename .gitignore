@@ -70,3 +70,6 @@ build-app/resources/
 # Exceção: keystores estáveis pra APK Eclipse (assinatura fixa → OTA update funciona)
 !Android/debug.keystore
 !Android/release.keystore
+
+# Lixo movido (arquivos orfaos/deprecated) — nao versionar
+lixinho/
