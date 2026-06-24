@@ -5068,6 +5068,15 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
     padding:20px !important;
   }
   .modal-overlay:has(.stat-edit-list) .modal>#modal-body{flex:0 1 auto !important}
+  /* Adicionar Progressão (XP) = card flutuante (nao tela cheia) no vertical */
+  .modal-overlay:has(.addxp-body){align-items:center !important;justify-content:center !important;padding:16px !important}
+  .modal-overlay:has(.addxp-body) .modal{
+    height:auto !important;min-height:0 !important;max-height:calc(100dvh - 32px) !important;
+    width:100% !important;max-width:440px !important;overflow-y:auto !important;
+    border-radius:18px !important;box-shadow:var(--shadow-lg) !important;
+    padding:20px !important;
+  }
+  .modal-overlay:has(.addxp-body) .modal>#modal-body{flex:0 1 auto !important}
   /* Picker de habilidades = TELA CHEIA no vertical */
   .hab-picker-overlay{padding:0 !important;align-items:stretch !important;justify-content:stretch !important}
   .hab-picker-modal{width:100% !important;max-width:100% !important;height:100dvh !important;max-height:100dvh !important;border-radius:0 !important}
@@ -6393,6 +6402,17 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
   .modal-overlay.adv-detail-open #adv-pnav{flex:0 0 auto;margin-top:12px}
   .modal-overlay.adv-detail-open .advd-foot{flex:0 0 auto;position:sticky;bottom:0;margin:12px 0 0;padding:14px 0 2px;background:var(--bg-card);border-top:1px solid var(--border);z-index:5}
 }
+/* ADV PAGINADO (Linhagem/Arquétipo/etc detalhe) — modo real usado pelo JS (classe adv-paged).
+   Vale em TODA viewport (desktop incluso): modal vira coluna com altura limitada,
+   corpo rola, nav+footer ficam fixos no rodapé sem cortar os botões. */
+.modal-overlay.adv-paged .modal{max-height:calc(100dvh - 32px)!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
+.modal-overlay.adv-paged #modal-body{flex:1 1 auto!important;min-height:0!important;overflow-y:hidden!important;display:flex!important;flex-direction:column!important}
+.modal-overlay.adv-paged .adv-detail{flex:1 1 auto;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.modal-overlay.adv-paged .advp-track{flex:1 1 auto;min-height:0;height:auto}
+.modal-overlay.adv-paged .advp-page{overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0}
+.modal-overlay.adv-paged #adv-pnav{flex:0 0 auto;margin-top:10px}
+.modal-overlay.adv-paged .advd-foot{flex:0 0 auto;position:static;margin:12px 0 0;padding:14px 0 calc(2px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border);background:var(--bg-card)}
+.modal-overlay.adv-paged .advd-foot .advd-btn{flex:1 1 0;justify-content:center}
 /* celular paisagem: lista 2 colunas rolável (não pagina) */
 @media(max-width:900px) and (orientation:landscape){
   .modal-overlay.adv-detail-open .modal{max-height:92dvh;display:flex;flex-direction:column;overflow:hidden}
@@ -6531,7 +6551,19 @@ body.wpn-picker-open #wpn-picker-backdrop{background:transparent;backdrop-filter
 .rd-remove:hover{color:#f87171;border-color:#f87171}
 .rd-remove svg{width:15px;height:15px}
 .rd-pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.rd-pick-chip{display:flex;align-items:center;justify-content:center;padding:13px 12px;border-radius:12px;border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:border-color .15s,background .15s,transform .1s}
+.rd-pick-chip{display:flex;align-items:center;justify-content:center;gap:7px;padding:13px 12px;border-radius:12px;border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:border-color .15s,background .15s,transform .1s}
+.rd-pick-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+/* picker 2 páginas (Físico/Paranormal) */
+.rd-pick-tabs{display:flex;gap:6px;padding:4px;background:var(--bg-input);border:1px solid var(--border);border-radius:999px;margin:0 0 14px}
+.rd-pick-tab{flex:1;padding:9px 12px;border:0;border-radius:999px;background:transparent;color:var(--text-dim);font:700 11px Inter,system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:color .18s,background .18s}
+.rd-pick-tab.active{color:var(--tabc);background:color-mix(in srgb,var(--tabc) 16%,var(--bg-card-inner))}
+.rd-pick-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rd-tcard{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;padding:16px 10px;border-radius:14px;border:1px solid var(--border);background:var(--bg-input);color:var(--text-primary);font:700 13px Inter,system-ui,sans-serif;cursor:pointer;transition:border-color .15s,background .15s,transform .12s}
+.rd-tcard:hover{border-color:color-mix(in srgb,var(--tc) 55%,var(--border-light));background:color-mix(in srgb,var(--tc) 8%,var(--bg-input))}
+.rd-tcard:active{transform:scale(.96)}
+.rd-tcard-ico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--tc) 16%,transparent);color:var(--tc)}
+.rd-tcard-ico svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rd-tcard-name{text-align:center;line-height:1.2}
 .rd-pick-chip:hover{border-color:var(--border-light);background:var(--bg-hover)}
 .rd-pick-chip:active{transform:scale(.95)}
 .prot-body-scroll{display:block;flex:1 1 auto;min-height:0;overflow-y:auto;margin:0 -4px;padding:0 4px}
@@ -13479,8 +13511,8 @@ try{if(window.EclipseNative&&EclipseNative.hideSplash)EclipseNative.hideSplash()
         </div>
         <!-- wide value: Versão -->
         <button type="button" class="wk-card wk-row" title="Verificar atualização" onclick="(window.otaCheckAndInstall&&window.otaCheckAndInstall(true))||(window.eclipseExt3&&window.eclipseExt3.checkSWUpdate&&window.eclipseExt3.checkSWUpdate())">
-                    <span class="wk-row-info"><span class="wk-name">Versão</span><span class="wk-sub" id="wk-ver-sub">Build 387 · Web</span></span>
-          <span class="wk-val" id="wk-ver">v3.9.14</span>
+                    <span class="wk-row-info"><span class="wk-name">Versão</span><span class="wk-sub" id="wk-ver-sub">Build 388 · Web</span></span>
+          <span class="wk-val" id="wk-ver">v3.9.15</span>
         </button>
         <!-- pair: Som | Tema -->
         <div class="wk-pair">
@@ -21937,7 +21969,7 @@ function openAddXPModal(){
   title.textContent='Adicionar Progressão';
   const xpPct=Math.min(100,playerXP/xpToNext*100).toFixed(0);
   const stPct=Math.min(100,stageXP/stageToNext*100).toFixed(0);
-  body.innerHTML=`<div class="form-group"><label>Destino</label><div style="display:flex;gap:8px"><button id="xp-dest-nivel" onclick="setXPDest('nivel')" style="flex:1;padding:12px;background:var(--magenta-bg-strong);border:2px solid var(--magenta);border-radius:var(--radius-sm);cursor:pointer;text-align:left;font-family:inherit;transition:all .2s"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--magenta);fill:none;stroke-width:2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span style="font-size:13px;font-weight:700;color:var(--magenta)">Nível ${playerLevel}</span></div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim)">${playerXP.toLocaleString()} / ${xpToNext.toLocaleString()} XP · ${xpPct}%</div></button><button id="xp-dest-estagio" onclick="setXPDest('estagio')" style="flex:1;padding:12px;background:var(--bg-input);border:2px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;text-align:left;font-family:inherit;transition:all .2s"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--purple);fill:none;stroke-width:2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span style="font-size:13px;font-weight:700;color:var(--purple)">Estágio ${playerStage}</span></div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim)">${stageXP.toLocaleString()} / ${stageToNext.toLocaleString()} · ${stPct}%</div></button></div></div><div class="form-group"><label>Quantidade</label><input type="number" id="m-xp-amount" value="100" min="1"></div><div class="form-group"><label>Descrição</label><input type="text" id="m-xp-desc" placeholder="Ex: Missão concluída"></div><div style="background:var(--bg-card-inner);border:1px solid var(--border);border-radius:var(--radius-xs);padding:12px;margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12px;align-items:center"><span id="xp-preview-label" style="font-weight:600;color:var(--magenta)">Nível ${playerLevel}</span><span id="xp-preview-val" style="font-family:'JetBrains Mono',monospace;color:var(--text-dim)">${playerXP.toLocaleString()} + 100 → ${(playerXP+100).toLocaleString()}</span></div></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveAddXP()">Adicionar</button></div>`;
+  body.innerHTML=`<div class="addxp-body" style="display:none"></div><div class="form-group"><label>Destino</label><div style="display:flex;gap:8px"><button id="xp-dest-nivel" onclick="setXPDest('nivel')" style="flex:1;padding:12px;background:var(--magenta-bg-strong);border:2px solid var(--magenta);border-radius:var(--radius-sm);cursor:pointer;text-align:left;font-family:inherit;transition:all .2s"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--magenta);fill:none;stroke-width:2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span style="font-size:13px;font-weight:700;color:var(--magenta)">Nível ${playerLevel}</span></div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim)">${playerXP.toLocaleString()} / ${xpToNext.toLocaleString()} XP · ${xpPct}%</div></button><button id="xp-dest-estagio" onclick="setXPDest('estagio')" style="flex:1;padding:12px;background:var(--bg-input);border:2px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;text-align:left;font-family:inherit;transition:all .2s"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--purple);fill:none;stroke-width:2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span style="font-size:13px;font-weight:700;color:var(--purple)">Estágio ${playerStage}</span></div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim)">${stageXP.toLocaleString()} / ${stageToNext.toLocaleString()} · ${stPct}%</div></button></div></div><div class="form-group"><label>Quantidade</label><input type="number" id="m-xp-amount" value="100" min="1"></div><div class="form-group"><label>Descrição</label><input type="text" id="m-xp-desc" placeholder="Ex: Missão concluída"></div><div style="background:var(--bg-card-inner);border:1px solid var(--border);border-radius:var(--radius-xs);padding:12px;margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12px;align-items:center"><span id="xp-preview-label" style="font-weight:600;color:var(--magenta)">Nível ${playerLevel}</span><span id="xp-preview-val" style="font-family:'JetBrains Mono',monospace;color:var(--text-dim)">${playerXP.toLocaleString()} + 100 → ${(playerXP+100).toLocaleString()}</span></div></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeModal()">Cancelar</button><button class="modal-btn primary" onclick="saveAddXP()">Adicionar</button></div>`;
   document.getElementById('modal-overlay').classList.add('open');
   document.getElementById('m-xp-amount').addEventListener('input',updateXPPreview);
   setTimeout(()=>window._safeFocus&&window._safeFocus(document.getElementById('m-xp-amount')),200);
@@ -25310,7 +25342,7 @@ window.renderDefActions=function(){
   const list=document.getElementById('defact-list');if(!list)return;
   // Defesa no ring central
   try{const c=window._stCalc&&window._stCalc();const dv=document.getElementById('defact-def-val');if(c&&dv)dv.textContent=(c['pf-st-defesa']||'10');}catch(_){}
-  try{const rv=document.getElementById('defact-rd-val');const rd=(typeof profileData==='object'&&parseInt(profileData.rd))||0;if(rv)rv.textContent=rd;}catch(_){}
+  try{const rv=document.getElementById('defact-rd-val');if(rv)rv.textContent=(window._rdTotal?window._rdTotal():((typeof profileData==='object'&&parseInt(profileData.rd))||0));}catch(_){}
   const allP=(typeof PERICIAS_DATA!=='undefined')?Object.values(PERICIAS_DATA).flat():[];
   const _pn=id=>{const p=allP.find(x=>x.id===id);return p?p.name:id;};
   // TREINADO = rank>=treinado (bonus avulso nao conta)
@@ -25546,13 +25578,48 @@ window._protSave=function(force){
 };
 window._protClose=function(){const m=document.getElementById('prot-ov');if(!m)return;m.classList.remove('open');setTimeout(()=>{if(m.parentNode)m.parentNode.removeChild(m);},200);};
 // ─── Redução de Dano (RD) — círculo gêmeo do de Defesa ───
+// RD total = Geral + soma de todos os tipos específicos (usado no dashboard/pele)
+window._rdTotal=function(){
+  if(typeof profileData!=='object')return 0;
+  let t=(parseInt(profileData.rd)||0)+(parseInt(profileData.rdFisico)||0)+(parseInt(profileData.rdParanormal)||0);
+  const tipos=profileData.rdTipos||{};
+  Object.keys(tipos).forEach(k=>{t+=parseInt(tipos[k])||0;});
+  return t;
+};
 window._rdOpen=function(){
-  const TYPES=['Corte','Perfuração','Impacto','Fogo','Gelo','Raio','Ácido','Veneno','Carmim','Lúmen','Kaos','Ruína','Alba','Perene','Abismo'];
+  const TYPES_FIS=['Corte','Perfuração','Impacto','Fogo','Gelo','Raio','Ácido','Veneno'];
+  const TYPES_PAR=['Carmim','Lúmen','Kaos','Ruína','Alba','Perene','Abismo'];
+  const TYPES=TYPES_FIS.concat(TYPES_PAR);
   const TYPE_COL={'Corte':'#cbd5e1','Perfuração':'#fbbf24','Impacto':'#a16207','Fogo':'#f97316','Gelo':'#38bdf8','Raio':'#facc15','Ácido':'#a3e635','Veneno':'#22c55e','Carmim':'#e0455f','Lúmen':'#d8b13a','Kaos':'#a855f7','Ruína':'#9aa0a6','Alba':'#4ade80','Perene':'#bcd03a','Abismo':'#7c83f0'};
+  const COL_FIS='#60a5fa',COL_PAR='#c084fc'; // RD Físico (azul) / RD Paranormal (roxo)
+  // SVG Lucide próprio por tipo de dano
+  const _RW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+  const TYPE_ICO={
+    'Corte':_RW+'<path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/></svg>',
+    'Perfuração':_RW+'<path d="m9 11-6 6v3h3l6-6"/><path d="m17 5 4 4"/><path d="M14 8 8.5 2.5a1 1 0 0 0-1.5 0L6 4l8 8 1.5-1.5a1 1 0 0 0 0-1.5z"/></svg>',
+    'Impacto':_RW+'<path d="m13 2-2 8h5l-3 12 9-14h-6l3-6z"/></svg>',
+    'Fogo':_RW+'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
+    'Gelo':_RW+'<path d="M2 12h20"/><path d="M12 2v20"/><path d="m4.93 4.93 14.14 14.14"/><path d="m19.07 4.93-14.14 14.14"/><path d="M12 2 9 5h6z"/><path d="m12 22 3-3H9z"/></svg>',
+    'Raio':_RW+'<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>',
+    'Ácido':_RW+'<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/><path d="M9 14h.01"/><path d="M14 16h.01"/></svg>',
+    'Veneno':_RW+'<path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a5 5 0 0 0-5 5c0 2 1 3 1 5h8c0-2 1-3 1-5a5 5 0 0 0-5-5z"/><path d="M10 7h.01"/><path d="M14 7h.01"/></svg>',
+    'Carmim':_RW+'<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+    'Lúmen':_RW+'<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>',
+    'Kaos':_RW+'<circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5Z"/><path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z"/></svg>',
+    'Ruína':_RW+'<path d="M12 2 2 19h20z"/><path d="m2 19 10-9 10 9"/><path d="m6.5 12.5 5.5 2 5.5-2"/></svg>',
+    'Alba':_RW+'<path d="M12 22V11"/><path d="M12 11c0-3-2.5-5-5.5-5 0 3 2.5 5 5.5 5Z"/><path d="M12 11c0-3 2.5-5 5.5-5 0 3-2.5 5-5.5 5Z"/></svg>',
+    'Perene':_RW+'<path d="m12 19-7-7 7-7 7 7z"/><path d="M12 12 8 8"/><path d="m12 12 4 4"/></svg>',
+    'Abismo':_RW+'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>',
+  };
   const tcol=(t)=>TYPE_COL[t]||'#60a5fa';
   const esc=s=>String(s||'').replace(/</g,'&lt;');
-  // estado: geral + por tipo
-  const state={ geral:(typeof profileData==='object'&&parseInt(profileData.rd))||0, tipos:{} };
+  // estado: geral + fisico + paranormal + por tipo
+  const state={
+    geral:(typeof profileData==='object'&&parseInt(profileData.rd))||0,
+    fisico:(typeof profileData==='object'&&parseInt(profileData.rdFisico))||0,
+    paranormal:(typeof profileData==='object'&&parseInt(profileData.rdParanormal))||0,
+    tipos:{}
+  };
   const saved=(typeof profileData==='object'&&profileData.rdTipos)||{};
   TYPES.forEach(t=>{state.tipos[t]=parseInt(saved[t])||0;});
   let m=document.getElementById('rd-ov');
@@ -25574,7 +25641,7 @@ window._rdOpen=function(){
   function ringSvg(){
     const R=42,C=2*Math.PI*R;
     // segmentos: geral (laranja) + cada tipo na sua cor — anel multicolor
-    const segs=[{c:'#fb923c',v:state.geral}].concat(state.shown.map(t=>({c:tcol(t),v:state.tipos[t]||0}))).filter(s=>s.v>0);
+    const segs=[{c:'#fb923c',v:state.geral},{c:COL_FIS,v:state.fisico},{c:COL_PAR,v:state.paranormal}].concat(state.shown.map(t=>({c:tcol(t),v:state.tipos[t]||0}))).filter(s=>s.v>0);
     const total=segs.reduce((a,s)=>a+s.v,0);
     const cap=Math.max(10,total);
     let off=0,arcs='';const gap=total>1?1.5:0; // gap visual entre segmentos
@@ -25586,7 +25653,11 @@ window._rdOpen=function(){
     return `<div class="rd-ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="${R}" fill="none" stroke="var(--bg-input)" stroke-width="8"/>${arcs}</svg><div class="rd-ring-c"><b id="rd-ring-total">${total}</b><small>RD TOTAL</small></div></div>`;
   }
   function legendHtml(){
-    const items=[{n:'Geral',k:'__geral',c:'#fb923c',v:state.geral}].concat(state.shown.map(t=>({n:t,k:t,c:tcol(t),v:state.tipos[t]||0})));
+    const items=[
+      {n:'Geral',k:'__geral',c:'#fb923c',v:state.geral},
+      {n:'Físico',k:'__fisico',c:COL_FIS,v:state.fisico},
+      {n:'Paranormal',k:'__paranormal',c:COL_PAR,v:state.paranormal}
+    ].concat(state.shown.map(t=>({n:t,k:t,c:tcol(t),v:state.tipos[t]||0})));
     return `<div class="rd-legend">${items.map(it=>`<button type="button" class="rd-leg-row" data-leg-key="${esc(it.k)}"><span class="rd-leg-dot" style="background:${it.c}"></span><span class="rd-leg-name">${esc(it.n)}</span><span class="rd-leg-val">${it.v}</span></button>`).join('')}</div>`;
   }
   function render(){
@@ -25610,11 +25681,15 @@ window._rdOpen=function(){
       m.querySelectorAll('.rd-leg-row[data-leg-key]').forEach(row=>{
         const key=row.dataset.legKey;
         row.addEventListener('click',()=>{
-          const name=key==='__geral'?'RD Geral':key;
-          const cur=key==='__geral'?state.geral:(state.tipos[key]||0);
-          _rdEditVal(key,name,key==='__geral'?'#fb923c':tcol(key),cur,(v)=>{
+          const NAMES={'__geral':'RD Geral','__fisico':'RD Físico','__paranormal':'RD Paranormal'};
+          const COLS={'__geral':'#fb923c','__fisico':COL_FIS,'__paranormal':COL_PAR};
+          const name=NAMES[key]||key;
+          const cur=key==='__geral'?state.geral:(key==='__fisico'?state.fisico:(key==='__paranormal'?state.paranormal:(state.tipos[key]||0)));
+          _rdEditVal(key,name,COLS[key]||tcol(key),cur,(v)=>{
             v=Math.max(0,parseInt(v)||0);
             if(key==='__geral'){state.geral=v;}
+            else if(key==='__fisico'){state.fisico=v;}
+            else if(key==='__paranormal'){state.paranormal=v;}
             else{ if(v>0){if(state.shown.indexOf(key)<0)state.shown.push(key);state.tipos[key]=v;} else {state.tipos[key]=0;state.shown=state.shown.filter(t=>t!==key);} }
             refreshHead();
           });
@@ -25626,29 +25701,40 @@ window._rdOpen=function(){
     if(addBtn)addBtn.addEventListener('click',()=>_rdPicker());
     window._rdGet=()=>state;
   }
-  // sub-picker: escolher tipo de dano pra adicionar
+  // sub-picker: 2 páginas (Físico / Paranormal), cada tipo com seu SVG
+  let _rdPickTab='fisico';
   function _rdPicker(){
-    const avail=TYPES.filter(t=>state.shown.indexOf(t)<0);
     let p=document.getElementById('rd-pick-ov');
     if(!p){p=document.createElement('div');p.id='rd-pick-ov';p.className='st-edit-ov prot-detail-ov';p.addEventListener('click',e=>{if(e.target===p)_rdPickClose();});document.body.appendChild(p);}
-    p.innerHTML=`<div class="st-edit-card prot-card-lg" role="dialog">
-      <div class="st-edit-head"><div class="st-edit-label">Tipo de dano</div><button class="st-edit-x" onclick="_rdPickClose()" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-      <div class="prot-body-scroll">
-        ${avail.length?`<div class="rd-pick-grid">${avail.map(t=>`<button type="button" class="rd-pick-chip" data-pick="${esc(t)}">${esc(t)}</button>`).join('')}</div>`:'<div class="prot-eq-empty">Todos os tipos já foram adicionados.</div>'}
-      </div>
-      <div class="st-edit-actions"><button class="st-edit-save" onclick="_rdPickClose()">Voltar</button></div></div>`;
-    p.querySelectorAll('.rd-pick-chip').forEach(ch=>{
-      ch.addEventListener('click',()=>{
-        const t=ch.dataset.pick;
-        _rdPickClose();
-        // abre o editor de valor; ao aplicar, adiciona o tipo e volta ao círculo
-        _rdEditVal(t,t,tcol(t),state.tipos[t]||0,(v)=>{
-          if(v>0){if(state.shown.indexOf(t)<0)state.shown.push(t);state.tipos[t]=v;}
-          else{state.tipos[t]=0;state.shown=state.shown.filter(x=>x!==t);}
-          render();
-        });
+    function pickCommit(t){
+      _rdPickClose();
+      _rdEditVal(t,t,tcol(t),state.tipos[t]||0,(v)=>{
+        v=Math.max(0,parseInt(v)||0);
+        if(v>0){if(state.shown.indexOf(t)<0)state.shown.push(t);state.tipos[t]=v;}
+        else{state.tipos[t]=0;state.shown=state.shown.filter(x=>x!==t);}
+        render();
+        const wr=m.querySelector('.rd-ring-wrap');if(wr)wr.innerHTML=ringSvg();
       });
-    });
+    }
+    function drawPick(){
+      const isFis=_rdPickTab==='fisico';
+      const col=isFis?COL_FIS:COL_PAR;
+      const arr=(isFis?TYPES_FIS:TYPES_PAR).filter(t=>state.shown.indexOf(t)<0);
+      const cards=arr.length
+        ? `<div class="rd-pick-grid2">${arr.map(t=>`<button type="button" class="rd-tcard" data-pick="${esc(t)}" style="--tc:${tcol(t)}"><span class="rd-tcard-ico">${TYPE_ICO[t]||''}</span><span class="rd-tcard-name">${esc(t)}</span></button>`).join('')}</div>`
+        : `<div class="prot-eq-empty">Todos os tipos ${isFis?'físicos':'paranormais'} já foram adicionados.</div>`;
+      p.innerHTML=`<div class="st-edit-card prot-card-lg rd-pick-card" role="dialog" style="--pcol:${col}">
+        <div class="st-edit-head"><div class="st-edit-label">Tipo de dano</div><button class="st-edit-x" onclick="_rdPickClose()" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+        <div class="rd-pick-tabs">
+          <button type="button" class="rd-pick-tab${isFis?' active':''}" data-tab="fisico" style="--tabc:${COL_FIS}">Físico</button>
+          <button type="button" class="rd-pick-tab${!isFis?' active':''}" data-tab="paranormal" style="--tabc:${COL_PAR}">Paranormal</button>
+        </div>
+        <div class="prot-body-scroll">${cards}</div>
+        <div class="st-edit-actions"><button class="st-edit-save" onclick="_rdPickClose()">Voltar</button></div></div>`;
+      p.querySelectorAll('.rd-pick-tab').forEach(tb=>tb.addEventListener('click',()=>{_rdPickTab=tb.dataset.tab;drawPick();}));
+      p.querySelectorAll('.rd-tcard').forEach(ch=>ch.addEventListener('click',()=>pickCommit(ch.dataset.pick)));
+    }
+    drawPick();
     requestAnimationFrame(()=>p.classList.add('open'));
   }
   window._rdPickClose=function(){const p=document.getElementById('rd-pick-ov');if(!p)return;p.classList.remove('open');setTimeout(()=>{if(p.parentNode)p.parentNode.removeChild(p);},200);};
@@ -25682,12 +25768,12 @@ window._rdOpen=function(){
 window._rdSave=function(force){
   const st=(typeof window._rdGet==='function')?window._rdGet():{geral:0,tipos:{}};
   if(typeof profileData==='object'){
-    if(force===0){profileData.rd=0;profileData.rdTipos={};}
-    else{profileData.rd=st.geral||0;profileData.rdTipos=Object.assign({},st.tipos);}
+    if(force===0){profileData.rd=0;profileData.rdFisico=0;profileData.rdParanormal=0;profileData.rdTipos={};}
+    else{profileData.rd=st.geral||0;profileData.rdFisico=st.fisico||0;profileData.rdParanormal=st.paranormal||0;profileData.rdTipos=Object.assign({},st.tipos);}
   }
   if(typeof autosaveNow==='function')autosaveNow();
   if(typeof window.renderDefActions==='function')window.renderDefActions();
-  const el=document.getElementById('defact-rd-val');if(el)el.textContent=(typeof profileData==='object'?(profileData.rd||0):0);
+  const el=document.getElementById('defact-rd-val');if(el)el.textContent=(window._rdTotal?window._rdTotal():(typeof profileData==='object'?(profileData.rd||0):0));
   _rdClose();
 };
 window._rdClose=function(){const m=document.getElementById('rd-ov');if(!m)return;m.classList.remove('open');setTimeout(()=>{if(m.parentNode)m.parentNode.removeChild(m);},200);};
@@ -33590,6 +33676,12 @@ window.addEventListener('load',async()=>{
 
 // ═══ CHANGELOG / ATUALIZAÇÕES ═══
 const APP_CHANGELOG=[
+  {version:'v3.9.15',date:'2026-06-24',title:'RD Físico/Paranormal + Caminho Combo Estelar + fixes de modais',items:[
+    'Redução de Dano: separa RD Físico e Paranormal (3 gerais) + picker em 2 páginas com ícone por tipo',
+    'Caminho da Vanguarda: nova subclasse Combo Estelar (6 tiers por nível, Cargas de Combo)',
+    'RD agora soma os tipos no dashboard (antes só o Geral)',
+    'Fixes: modal Adicionar Progressão e detalhe de Linhagem/Caminho não cortam mais botões; ícones de caminho próprios',
+  ]},
   {version:'v3.9.14',date:'2026-06-23',title:'Grimório: grade "todas as cartas" + Têmpera/Aplomo + ícones Lucide + fixes UI',items:[
     'Grimório: nova grade com todas as 60 cartas da essência (botão na barra); X externo some nas telas internas',
     'Status: Esquiva/Bloqueio → Têmpera (Físico) e Aplomo (Psique); Desarmado = dano por Físico; "Configurar valor base" por stat',
@@ -34028,14 +34120,53 @@ const ADV_CATALOG={
 };
 // Caminhos (subclasses) por arquétipo — extraídos da biblioteca.html
 const ADV_CAMINHOS_BY_ARQ={
-  Vanguarda:['Arsenal Favorito','Executor','Guardião','Lutador Untado','Desolado','Inquisidor','Esbulhador'],
+  Vanguarda:['Arsenal Favorito','Executor','Guardião','Lutador Untado','Desolado','Inquisidor','Esbulhador','Combo Estelar'],
   Operador:['Atirador Furtivo','Arquivista do Corpo','Culinário Dedicado'],
   Feiticeiro:['Aniquilador','Analista do Obscuro','Conduíte','Investigação Obscure','Escrita Fragmenta','Flagelador','Intuitivo','Portador de Máscaras','Seguidor do Prazer','Velado','Xamã'],
   Aberração:['Alma Atormentada','Amaldiçoado','Artesão de Si','Duquesa','Fera Imaculada','Monstruoso Tecnológico','Rudimento','Prisioneiro de Carne','Sangue Vinculante']
 };
+// Ícone Lucide próprio por caminho (subclasse). Cobre todos os arquétipos.
+const _CW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+const CAMINHO_ICONS={
+  // Vanguarda
+  'Arsenal Favorito':_CW+'<path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/></svg>',
+  'Executor':_CW+'<path d="m14.5 12.5-8 8a2.119 2.119 0 1 1-3-3l8-8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/></svg>',
+  'Guardião':_CW+'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>',
+  'Lutador Untado':_CW+'<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>',
+  'Desolado':_CW+'<path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg>',
+  'Inquisidor':_CW+'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>',
+  'Esbulhador':_CW+'<path d="M18 6 7 17l-4 1 1-4L15 3z"/><path d="m14 6 4 4"/><circle cx="19" cy="5" r="2"/></svg>',
+  'Combo Estelar':_CW+'<path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>',
+  // Operador
+  'Atirador Furtivo':_CW+'<circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>',
+  'Arquivista do Corpo':_CW+'<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>',
+  'Culinário Dedicado':_CW+'<path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"/><line x1="6" y1="17" x2="18" y2="17"/></svg>',
+  // Feiticeiro
+  'Aniquilador':_CW+'<path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/></svg>',
+  'Analista do Obscuro':_CW+'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 14a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg>',
+  'Conduíte':_CW+'<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>',
+  'Investigação Obscure':_CW+'<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>',
+  'Escrita Fragmenta':_CW+'<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>',
+  'Flagelador':_CW+'<path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg>',
+  'Intuitivo':_CW+'<path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>',
+  'Portador de Máscaras':_CW+'<path d="M10 11h.01"/><path d="M14 6h.01"/><path d="M18 6h.01"/><path d="M6.5 13.1h.01"/><path d="M22 5c0 9-4 12-6 12s-6-3-6-12c0-2 2-3 6-3s6 1 6 3"/><path d="M17.4 9.9c-.8.8-2 .8-2.8 0"/><path d="M10.1 7.1C9 7.2 7.7 7.7 6 8.6c-3.5 2-4.7 3.9-3.7 5.6 4.5 7.8 9.5 8.4 11.2 7.4.9-.5 1.9-2.1 1.9-4.7"/></svg>',
+  'Seguidor do Prazer':_CW+'<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+  'Velado':_CW+'<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>',
+  'Xamã':_CW+'<path d="M12 2 2 19h20z"/><path d="m2 19 10-9 10 9"/><circle cx="12" cy="13" r="1.5"/></svg>',
+  // Aberração
+  'Alma Atormentada':_CW+'<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+  'Amaldiçoado':_CW+'<path d="M12 2 2 19h20z"/><path d="M12 9v4"/><path d="M12 16h.01"/></svg>',
+  'Artesão de Si':_CW+'<path d="m15 12-8.373 8.373a1 1 0 1 1-3-3L12 9"/><path d="m18 15 4-4"/><path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172V7l-2.26-2.26a6 6 0 0 0-4.202-1.756L9 2.96l.92.82A6.18 6.18 0 0 1 12 8.4V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5"/></svg>',
+  'Duquesa':_CW+'<path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></svg>',
+  'Fera Imaculada':_CW+'<path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/></svg>',
+  'Monstruoso Tecnológico':_CW+'<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M20 15h2"/><path d="M2 9h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>',
+  'Rudimento':_CW+'<circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5Z"/><path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z"/></svg>',
+  'Prisioneiro de Carne':_CW+'<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M11 3v18"/><path d="M15 3v18"/><path d="M19 3v18"/></svg>',
+  'Sangue Vinculante':_CW+'<path d="M9 18V5l12-2v13"/><path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M18 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg>',
+};
 function _advBuildCaminhosFor(arq){
   const list=ADV_CAMINHOS_BY_ARQ[arq]||[];
-  return list.map(name=>({name,desc:`Subclasse de ${arq}.`,ico:ADV_ICO.sword}));
+  return list.map(name=>({name,desc:`Subclasse de ${arq}.`,ico:CAMINHO_ICONS[name]||ADV_ICO.sword}));
 }
 const ADV_LABELS={linhagem:'Linhagem',arquetipo:'Arquétipo',passado:'Passado',caminho:'Caminho'};
 // Limpa valores antigos (Obscuro, Erudito, Exilado, Líder etc) — caminho valida via lista dinâmica
@@ -35656,6 +35787,14 @@ window._CAMINHO_HABILIDADES={
   'Desolado':{name:'Marca da Perda',desc:'Causa **+2 dano** contra criatura que matou aliado seu nesta cena.'},
   'Inquisidor':{name:'Olhar Penetrante',desc:'Ação: detecta mentira e duplicidade contra 1 alvo visível pelo restante da cena.'},
   'Esbulhador':{name:'Pilhagem Veloz',desc:'Após abater inimigo: revista o corpo como ação livre.'},
+  'Combo Estelar':{milestones:[
+    {level:3,name:'Combo Crescente',desc:'Sempre que acertar um ataque corpo a corpo, recebe **1 Carga de Combo**. O máximo de Cargas é igual à **metade do seu Físico** (arredondado pra cima, mínimo 2). Cada carga concede **+1 de dano** corpo a corpo. No máximo de Cargas, seus ataques causam **+1 passo de dano** adicional.\n\nAs cargas duram até o fim da cena, mas são perdidas se você errar um ataque, ficar Inconsciente ou passar 1 rodada inteira sem atacar ofensivamente.'},
+    {level:6,name:'Ritmo Implacável',desc:'Com pelo menos **metade** do máximo de Cargas (arredondado pra cima): **+1** em testes de Luta. No máximo de Cargas: também **+2m de deslocamento** até perder as cargas.'},
+    {level:9,name:'Impacto Acumulado',desc:'Uma vez por rodada, ao acertar corpo a corpo no **máximo de Cargas**, gaste **2 PE** para causar **+1d6 de dano** adicional.',cost:2,costStatus:'esforco'},
+    {level:12,name:'Sequência Devastadora',desc:'No máximo de Cargas, seus ataques corpo a corpo **ignoram 2 de RD** do alvo. Além disso, você não perde Cargas por passar uma rodada sem atacar, desde que permaneça consciente e ainda participe do combate.'},
+    {level:15,name:'Estrela da Destruição',desc:'No máximo de Cargas, gaste **4 PE**: até o fim da rodada recebe **+1** em Luta, ataques corpo a corpo causam **+1d6** adicional e, na primeira vez que errar nesse período, **não perde** as Cargas.',cost:4,costStatus:'esforco'},
+    {level:18,name:'Combo Estelar Absoluto',desc:'Uma vez por cena, no máximo de Cargas, gaste **8 PE** pra entrar em **ofensiva absoluta** por 3 rodadas. Enquanto ativo: **+2** em Luta, ataques corpo a corpo causam **+2d6** adicional e, uma vez por rodada, **não perde** Cargas ao errar. Ao terminar, todas as Cargas são removidas.',cost:8,costStatus:'esforco'}
+  ]},
   'Atirador Furtivo':{name:'Disparo Velado',desc:'Ataque à distância sob furtividade: **+1 Passo** de dano. Mantém oculto no acerto.'},
   'Arquivista do Corpo':{name:'Diagnóstico Cirúrgico',desc:'Medicina (DT 12): revela todas as condições e PV exatos de criatura adjacente.'},
   'Culinário Dedicado':{name:'Receita Tática',desc:'Refeição preparada: até 4 aliados ganham **+1** em 1 atributo escolhido por 1 cena.'},
